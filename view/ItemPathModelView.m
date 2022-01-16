@@ -4,7 +4,7 @@
 #import "DirectoryItem.h" // Imports FileItem.h
 #import "ItemPathModel.h"
 #import "ItemPathBuilder.h"
-#import "SelectedItemLocator.h"
+#import "ItemLocator.h"
 #import "PreferencesPanelControl.h"
 
 
@@ -51,7 +51,7 @@
   if (self = [super init]) {
     pathModel = [pathModelVal retain];
     pathBuilder = [[ItemPathBuilder alloc] init];
-    itemLocator = [[SelectedItemLocator alloc] init];
+    itemLocator = [[ItemLocator alloc] init];
     fileItemPath =
       (NSMutableArray *)[pathModel fileItemPath: [[NSMutableArray alloc] initWithCapacity: 16]];
     scanTreeIndex = [self indexCorrespondingToItem: [pathModel scanTree] startingAt: 0];

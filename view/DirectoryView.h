@@ -19,7 +19,7 @@ extern NSString  *ColorMappingChangedEvent;
 @class ItemPathDrawer;
 @class ItemPathModelView;
 @class OverlayDrawer;
-@class SelectedItemLocator;
+@class ItemLocator;
 @protocol FileItemMappingScheme;
 
 @interface DirectoryView : NSView {
@@ -34,7 +34,7 @@ extern NSString  *ColorMappingChangedEvent;
 
   ItemPathDrawer  *pathDrawer;
   ItemPathModelView  *pathModelView;
-  SelectedItemLocator  *selectedItemLocator;
+  ItemLocator  *selectedItemLocator;
   
   // The current color mapping, which is being observed for any changes to the scheme.
   NSObject <FileItemMappingScheme>  *observedColorMapping;

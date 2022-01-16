@@ -1,4 +1,4 @@
-#import "SelectedItemLocator.h"
+#import "ItemLocator.h"
 
 #import "FileItem.h"
 #import "ItemPathModel.h"
@@ -6,7 +6,7 @@
 #import "TreeLayoutBuilder.h"
 
 
-@implementation SelectedItemLocator
+@implementation ItemLocator
 
 - (NSRect) locationForItemAtEndOfPath:(NSArray *)itemPath
                        startingAtTree:(FileItem *)treeRoot

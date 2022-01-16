@@ -6,7 +6,7 @@
 @class ItemPathModel;
 @class ItemPathBuilder;
 @class TreeLayoutBuilder;
-@class SelectedItemLocator;
+@class ItemLocator;
 
 typedef NS_ENUM(NSInteger, DirectionEnum) {
   DirectionUp = 1,
@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, DirectionEnum) {
   
   ItemPathBuilder  *pathBuilder;
   ItemPathModel  *pathModel;
-  SelectedItemLocator  *itemLocator;
+  ItemLocator  *itemLocator;
 
   BOOL  showPackageContents;
   

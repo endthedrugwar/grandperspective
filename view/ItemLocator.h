@@ -6,7 +6,7 @@
 @class ItemPathModelView;
 @class TreeLayoutBuilder;
 
-@interface SelectedItemLocator : NSObject <TreeLayoutTraverser> {
+@interface ItemLocator : NSObject <TreeLayoutTraverser> {
   // All variables below are temporary variables used while building the path. They are not
   // retained, as they are only used during a single recursive invocation.
 

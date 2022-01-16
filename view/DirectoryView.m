@@ -11,7 +11,7 @@
 #import "ItemPathDrawer.h"
 #import "ItemPathModel.h"
 #import "ItemPathModelView.h"
-#import "SelectedItemLocator.h"
+#import "ItemLocator.h"
 
 #import "OverlayDrawer.h"
 
@@ -76,7 +76,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   if (self = [super initWithFrame:frame]) {
     layoutBuilder = [[TreeLayoutBuilder alloc] init];
     pathDrawer = [[ItemPathDrawer alloc] init];
-    selectedItemLocator = [[SelectedItemLocator alloc] init];
+    selectedItemLocator = [[ItemLocator alloc] init];
 
     scrollWheelDelta = 0;
   }
