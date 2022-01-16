@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,7 +19,7 @@
         <window title="Welcome" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <rect key="contentRect" x="196" y="240" width="489" height="337"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <value key="minSize" type="size" width="489" height="332"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="489" height="337"/>
@@ -50,7 +50,7 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3I0-jG-MbN">
-                        <rect key="frame" x="427" y="19" width="42" height="23"/>
+                        <rect key="frame" x="426" y="18" width="44" height="23"/>
                         <buttonCell key="cell" type="roundTextured" title="Help" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="JEp-c0-ZgQ">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -60,19 +60,19 @@
                         </connections>
                     </button>
                     <scrollView autohidesScrollers="YES" horizontalLineScroll="40" horizontalPageScroll="10" verticalLineScroll="40" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dOt-rX-XVz">
-                        <rect key="frame" x="228" y="50" width="241" height="267"/>
+                        <rect key="frame" x="228" y="48" width="241" height="269"/>
                         <clipView key="contentView" id="B4s-zX-iaC">
-                            <rect key="frame" x="1" y="1" width="239" height="265"/>
+                            <rect key="frame" x="1" y="1" width="239" height="267"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="40" viewBased="YES" id="H1C-Ro-5cg">
-                                    <rect key="frame" x="0.0" y="0.0" width="239" height="265"/>
+                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="40" viewBased="YES" id="H1C-Ro-5cg">
+                                    <rect key="frame" x="0.0" y="0.0" width="239" height="267"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <size key="intercellSpacing" width="2" height="0.0"/>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                     <tableColumns>
-                                        <tableColumn width="237" minWidth="40" maxWidth="1000" id="5vk-8O-RRu" userLabel="Icon Column">
+                                        <tableColumn width="227" minWidth="40" maxWidth="1000" id="5vk-8O-RRu" userLabel="Icon Column">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -149,7 +149,7 @@
                         </scroller>
                     </scrollView>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="C8h-tH-Ynb">
-                        <rect key="frame" x="228" y="19" width="45" height="23"/>
+                        <rect key="frame" x="227" y="18" width="48" height="23"/>
                         <buttonCell key="cell" type="roundTextured" title="Scan" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Cd8-ae-UVZ">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -159,7 +159,7 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="E5k-bP-5eO">
-                        <rect key="frame" x="281" y="19" width="93" height="23"/>
+                        <rect key="frame" x="281" y="18" width="96" height="23"/>
                         <buttonCell key="cell" type="roundTextured" title="Clear History" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="9nG-ap-dHC">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
