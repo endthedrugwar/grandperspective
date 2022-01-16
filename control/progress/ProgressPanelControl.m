@@ -61,7 +61,8 @@ extern NSString  *EstimatedProgressKey;
 
 - (void) windowDidLoad {
   if (@available(macOS 10.11, *)) {
-    self->progressSummary.font = [NSFont monospacedDigitSystemFontOfSize: 0 weight: NSFontWeightRegular];
+    self->progressSummary.font = [NSFont monospacedDigitSystemFontOfSize: 0
+                                                                  weight: NSFontWeightRegular];
   }
 
   [self updateProgressDetails: @""];
