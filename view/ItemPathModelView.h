@@ -6,6 +6,7 @@
 @class ItemPathModel;
 @class ItemPathBuilder;
 @class TreeLayoutBuilder;
+@class SelectedItemLocator;
 
 typedef NS_ENUM(NSInteger, DirectionEnum) {
   DirectionUp = 1,
@@ -23,8 +24,8 @@ typedef NS_ENUM(NSInteger, DirectionEnum) {
 @interface ItemPathModelView : NSObject {
   
   ItemPathBuilder  *pathBuilder;
-
   ItemPathModel  *pathModel;
+  SelectedItemLocator  *itemLocator;
 
   BOOL  showPackageContents;
   
@@ -59,6 +60,13 @@ typedef NS_ENUM(NSInteger, DirectionEnum) {
   // Controls if the selection should be made to automatically stick to the end point, when the
   // end-point is reached when explicitly moving the selection down.
   BOOL  automaticallyStickToEndPoint;
+
+  // The position to use for keyboard navigation. When keyboard navigation is active, it should
+  // always be inside the selected item, but not necessarily at its center. This can be used to
+  // prevent drift in the direction orthogonal to the movement direction.
+  NSPoint  keyboardNavigationPos;
+
+  float  keyboardNavigationDelta;
 }
 
 - (instancetype) initWithPathModel:(ItemPathModel *)pathModel NS_DESIGNATED_INITIALIZER;

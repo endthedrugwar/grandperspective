@@ -57,6 +57,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>GPApplicationDefaults</key>
 	<dict>
+		<key>keyboardNavigationDelta</key>
+		<integer>5</integer>
 		<key>confirmFileDeletion</key>
 		<true/>
 		<key>confirmFolderDeletion</key>
@@ -92,7 +94,7 @@
 		<key>noViewsBehaviour</key>
 		<string>show welcome</string>
 		<key>progressPanelRefreshRate</key>
-		<real>0.20000000000000001</real>
+		<real>0.2</real>
 		<key>rescanBehaviour</key>
 		<string>keep old window</string>
 		<key>showEntireVolumeByDefault</key>

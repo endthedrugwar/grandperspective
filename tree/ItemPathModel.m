@@ -234,7 +234,8 @@ NSString  *FriendlySizeKey = @"friendlySize";
 
 
 - (BOOL) clearVisiblePath {
-  NSAssert(!visiblePathLocked, @"Cannot clear path when locked.");
+  // The below assertion is not valid anymore. Keyboard navigation can now change locked paths.
+  //NSAssert(!visiblePathLocked, @"Cannot clear path when locked.");
 
   NSUInteger  num = path.count - visibleTreeIndex - 1;
 
@@ -253,7 +254,8 @@ NSString  *FriendlySizeKey = @"friendlySize";
 }
 
 - (void) extendVisiblePath:(Item *)nextItem {
-  NSAssert(!visiblePathLocked, @"Cannot extend path when locked.");
+  // The below assertion is not valid anymore. Keyboard navigation can now change locked paths.
+  //NSAssert(!visiblePathLocked, @"Cannot extend path when locked.");
    
   [path addObject: nextItem]; 
 

@@ -112,6 +112,13 @@ extern NSString  *FriendlySizeKey;
  */
 - (void) selectFileItem:(FileItem *)fileItem;
 
+/* Indicates if the visible path is locked. The selected item will only follow the mouse pointer
+ * when locking is disabled.
+ *
+ * Note: When locking is enabled, it is possible to change the selected item via keyboard
+ * navigation. This is in fact a pre-requisite (so that there is no interference with control via
+ * the mouse)
+ */
 @property (nonatomic, getter=isVisiblePathLocked, readonly) BOOL visiblePathLocked;
 - (void) setVisiblePathLocking:(BOOL)value;
 
