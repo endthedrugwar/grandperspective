@@ -245,9 +245,6 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
     overlayTest = [overlayTestVal retain];
 
     [self forceOverlayRedraw];
-
-    // Assumption is that this method is only invoked when the window is the main one.
-    [self enablePeriodicRedraw: (overlayTest != nil)];
   }
 }
 
@@ -720,7 +717,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
 - (float) animatedOverlayStrength {
   return (self.window.mainWindow
-          ? 0.7 + 0.3 * sin([[NSDate date] timeIntervalSinceReferenceDate] * 3.1415)
+          ? 0.7 + 0.3 * sin([NSDate date].timeIntervalSinceReferenceDate * 3.1415)
           : 0.7);
 }
 
@@ -731,7 +728,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 - (void) enablePeriodicRedraw:(BOOL) enable {
   if (enable) {
     if (redrawTimer == nil) {
-      redrawTimer = [NSTimer scheduledTimerWithTimeInterval: 0.2f
+      redrawTimer = [NSTimer scheduledTimerWithTimeInterval: 0.1f
                                                      target: self
                                                    selector: @selector(refreshDisplay)
                                                    userInfo: nil
@@ -782,8 +779,9 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 - (void) windowMainStatusChanged:(NSNotification *)notification {
   [self updateAcceptMouseMovedEvents];
 
-  // Only when the window is the main one and there is an overlay active, animate the overlay.
-  [self enablePeriodicRedraw: (self.window.mainWindow && overlayTest != nil)];
+  // Only when the window is the main one enable periodic redraw. This takes care of the overlay
+  // animation as well as the selected item highlight animation.
+  [self enablePeriodicRedraw: self.window.mainWindow];
 }
 
 - (void) windowKeyStatusChanged:(NSNotification *)notification {
