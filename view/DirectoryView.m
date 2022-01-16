@@ -141,7 +141,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   [nc addObserver: self
          selector: @selector(visiblePathLockingChanged:)
              name: VisiblePathLockingChangedEvent
-           object: [pathModelView pathModel]];
+           object: pathModelView.pathModel];
 
   [nc addObserver: self
          selector: @selector(windowMainStatusChanged:)
@@ -170,15 +170,13 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 }
 
 - (FileItem *)treeInView {
-  return (showEntireVolume 
-          ? [pathModelView volumeTree]
-          : [pathModelView visibleTree]);
+  return showEntireVolume ? pathModelView.volumeTree : pathModelView.visibleTree;
 }
 
 
 - (NSRect) locationInViewForItemAtEndOfPath:(NSArray *)itemPath {
   return [selectedItemLocator locationForItemAtEndOfPath: itemPath
-                                          startingAtTree: [self treeInView]
+                                          startingAtTree: self.treeInView
                                       usingLayoutBuilder: layoutBuilder
                                                   bounds: self.bounds];
 }
@@ -200,15 +198,15 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
 
 - (TreeDrawerSettings *)treeDrawerSettings {
-  DrawTaskExecutor  *drawTaskExecutor = (DrawTaskExecutor*)[drawTaskManager taskExecutor];
+  DrawTaskExecutor  *drawTaskExecutor = (DrawTaskExecutor*)drawTaskManager.taskExecutor;
 
-  return [drawTaskExecutor treeDrawerSettings];
+  return drawTaskExecutor.treeDrawerSettings;
 }
 
 - (void) setTreeDrawerSettings:(TreeDrawerSettings *)settings {
-  DrawTaskExecutor  *drawTaskExecutor = (DrawTaskExecutor*)[drawTaskManager taskExecutor];
+  DrawTaskExecutor  *drawTaskExecutor = (DrawTaskExecutor*)drawTaskManager.taskExecutor;
 
-  TreeDrawerSettings  *oldSettings = [drawTaskExecutor treeDrawerSettings];
+  TreeDrawerSettings  *oldSettings = drawTaskExecutor.treeDrawerSettings;
   if (settings != oldSettings) {
     [oldSettings retain];
 
@@ -272,12 +270,11 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
 
 - (BOOL) canZoomIn {
-  return ( [[pathModelView pathModel] isVisiblePathLocked] 
-           && [pathModelView canMoveVisibleTreeDown] );
+  return pathModelView.pathModel.isVisiblePathLocked && pathModelView.canMoveVisibleTreeDown;
 }
 
 - (BOOL) canZoomOut {
-  return [pathModelView canMoveVisibleTreeUp];
+  return pathModelView.canMoveVisibleTreeUp;
 }
 
 
@@ -289,16 +286,16 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   [pathModelView moveVisibleTreeUp];
   
   // Automatically lock path as well.
-  [[pathModelView pathModel] setVisiblePathLocking: YES];
+  [pathModelView.pathModel setVisiblePathLocking: YES];
 }
 
 
 - (BOOL) canMoveFocusUp {
-  return [pathModelView canMoveSelectionUp];
+  return pathModelView.canMoveSelectionUp;
 }
 
 - (BOOL) canMoveFocusDown {
-  return ! [pathModelView selectionSticksToEndPoint];
+  return !pathModelView.selectionSticksToEndPoint;
 }
 
 
@@ -307,7 +304,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 }
 
 - (void) moveFocusDown {
-  if ([pathModelView canMoveSelectionDown]) {
+  if (pathModelView.canMoveSelectionDown) {
     [pathModelView moveSelectionDown];
   }
   else {
@@ -317,7 +314,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
 
 - (void) drawRect:(NSRect)rect {
-  if (pathModelView==nil) {
+  if (pathModelView == nil) {
     return;
   }
   
@@ -345,7 +342,6 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   }
   
   if (treeImage != nil) {
-    //NSLog(@"Drawing image");
     [treeImage drawAtPoint: NSZeroPoint
                   fromRect: NSZeroRect
                  operation: NSCompositeCopy
@@ -359,7 +355,6 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
     }
 
     if (!treeImageIsScaled) {
-      //NSLog(@"Drawing path");
       if ([pathModelView isSelectedFileItemVisible]) {
         [pathDrawer drawVisiblePath: pathModelView
                      startingAtTree: self.treeInView
@@ -438,7 +433,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
       return YES;
     }
   }
-  else if ([pathModelView.pathModel isVisiblePathLocked]) {
+  else if (pathModelView.pathModel.isVisiblePathLocked) {
     // Navigation via arrow keys is active when the path is locked (so that mouse movement does not
     // interfere).
     BOOL handled = YES;
@@ -489,10 +484,9 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
 
 - (void) mouseDown:(NSEvent *)theEvent {
-  ItemPathModel  *pathModel = [pathModelView pathModel];
+  ItemPathModel  *pathModel = pathModelView.pathModel;
 
-  if (self.window.acceptsMouseMovedEvents &&
-      [pathModel lastFileItem] == [pathModel visibleTree]) {
+  if (self.window.acceptsMouseMovedEvents && pathModel.lastFileItem == pathModel.visibleTree) {
     // Although the visible path is following the mouse, the visible path is empty. This can either
     // mean that the view only shows a single file item or, more likely, the view did not yet
     // receive the mouse moved events that are required to update the visible path because it was
@@ -501,7 +495,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
     // Force building (and drawing) of the visible path.
     [self mouseMoved: theEvent];
     
-    if ( [pathModel lastFileItem] != [pathModel visibleTree] ) {
+    if (pathModel.lastFileItem != pathModel.visibleTree) {
       // The path changed. Do not toggle the locking. This mouse click was used to make the view the
       // first responder, ensuring that the visible path is following the mouse pointer.
       return;
@@ -510,7 +504,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
   // Toggle the path locking.
 
-  BOOL  wasLocked = [pathModel isVisiblePathLocked];
+  BOOL  wasLocked = pathModel.isVisiblePathLocked;
   if (wasLocked) {
     // Unlock first, then build new path.
     [pathModel setVisiblePathLocking: NO];
@@ -522,7 +516,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   if (!wasLocked) {
     // Now lock, after having updated path.
 
-    if ([pathModelView isSelectedFileItemVisible]) {
+    if (pathModelView.isSelectedFileItemVisible) {
       // Only lock the path if it contains the selected item, i.e. if the mouse click was inside the
       // visible tree.
       [pathModel setVisiblePathLocking: YES];
@@ -532,12 +526,11 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
 
 - (void) mouseMoved:(NSEvent *)theEvent {
-  if ([[pathModelView pathModel] isVisiblePathLocked]) {
+  if (pathModelView.pathModel.isVisiblePathLocked) {
     // Ignore mouseMoved events when the item path is locked.
     //
     // Note: Although this view stops accepting mouse moved events when the path becomes locked,
-    // these may be generated later on anyway, requested by other components. In particular, mousing
-    // over the NSTextViews in the drawer triggers mouse moved events again.
+    // these may be generated later on anyway, requested by other components.
     return;
   }
   
@@ -547,8 +540,8 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   }
   
   NSPoint  loc = self.window.mouseLocationOutsideOfEventStream;
-  // Note: not using the location returned by [theEvent locationInWindow] as this is incorrect after
-  // the drawer has been clicked on.
+  // Note: not using the location returned by [theEvent locationInWindow] as this is not fully
+  // accurate.
 
   NSPoint  mouseLoc = [self convertPoint: loc fromView: nil];
   BOOL isInside = [self mouse: mouseLoc inRect: self.bounds];
@@ -557,7 +550,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
     [self updateSelectedItem: mouseLoc];
   }
   else {
-    [[pathModelView pathModel] clearVisiblePath];
+    [pathModelView.pathModel clearVisiblePath];
   }
 }
 
@@ -754,13 +747,13 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 }
 
 - (void) postColorPaletteChanged {
-  [[NSNotificationCenter defaultCenter]
-      postNotificationName: ColorPaletteChangedEvent object: self];
+  [[NSNotificationCenter defaultCenter] postNotificationName: ColorPaletteChangedEvent
+                                                      object: self];
 }
 
 - (void) postColorMappingChanged {
-  [[NSNotificationCenter defaultCenter]
-      postNotificationName: ColorMappingChangedEvent object: self];
+  [[NSNotificationCenter defaultCenter] postNotificationName: ColorMappingChangedEvent
+                                                      object: self];
 }
 
 
@@ -775,13 +768,11 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 }
 
 - (void) visiblePathLockingChanged:(NSNotification *)notification {
-  BOOL  locked = [[pathModelView pathModel] isVisiblePathLocked];
-  
   // Update the item path drawer directly. Although the drawer could also listen to the
   // notification, it seems better to do it like this. It keeps the item path drawer more general,
   // and as the item path drawer is tightly integrated with this view, there is no harm in updating
   // it directly.
-  [pathDrawer setHighlightPathEndPoint: locked];
+  [pathDrawer setHighlightPathEndPoint: pathModelView.pathModel.isVisiblePathLocked];
  
   [self updateAcceptMouseMovedEvents];
   
@@ -800,11 +791,10 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 }
 
 - (void) updateAcceptMouseMovedEvents {
-  BOOL  letPathFollowMouse = 
-    ( ![[pathModelView pathModel] isVisiblePathLocked] 
-      && self.window.mainWindow
-      && self.window.keyWindow );
-      
+  BOOL  letPathFollowMouse = !pathModelView.pathModel.isVisiblePathLocked
+                              && self.window.mainWindow
+                              && self.window.keyWindow;
+
   self.window.acceptsMouseMovedEvents = letPathFollowMouse;
 
   if (letPathFollowMouse) {
@@ -817,7 +807,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 - (void) observeColorMapping {
   TreeDrawerSettings  *treeDrawerSettings = [self treeDrawerSettings];
   NSObject <FileItemMappingScheme>  *colorMapping = 
-    [[treeDrawerSettings colorMapper] fileItemMappingScheme];
+    treeDrawerSettings.colorMapper.fileItemMappingScheme;
     
   if (colorMapping != observedColorMapping) {
     NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];
@@ -840,9 +830,9 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 - (void) colorMappingChanged:(NSNotification *) notification {
   // Replace the mapper that is used by a new one (still from the same scheme)
   NSObject <FileItemMapping>  *newMapping =
-    [observedColorMapping fileItemMappingForTree: [pathModelView scanTree]];
+    [observedColorMapping fileItemMappingForTree: pathModelView.scanTree];
 
-  [self setTreeDrawerSettings: [[self treeDrawerSettings] copyWithColorMapper: newMapping]];
+  [self setTreeDrawerSettings: [self.treeDrawerSettings copyWithColorMapper: newMapping]];
 
   [self postColorMappingChanged]; 
 }
@@ -850,7 +840,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
 - (void) updateSelectedItem: (NSPoint) point {
   [pathModelView selectItemAtPoint: point 
-                    startingAtTree: [self treeInView]
+                    startingAtTree: self.treeInView
                 usingLayoutBuilder: layoutBuilder
                             bounds: self.bounds];
   // Redrawing in response to any changes will happen when the change notification is received.
@@ -858,7 +848,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
 - (void) moveSelectedItem: (DirectionEnum) direction {
   [pathModelView moveSelectedItem: direction
-                  startingAtTree: [self treeInView]
+                  startingAtTree: self.treeInView
               usingLayoutBuilder: layoutBuilder
                           bounds: self.bounds];
 }

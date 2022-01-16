@@ -62,7 +62,7 @@
 }
 
 - (FileItemTest *)maskTest {
-  return [treeGuide fileItemTest];
+  return treeGuide.fileItemTest;
 }
 
 
@@ -71,7 +71,7 @@
 }
 
 - (BOOL) showPackageContents {
-  return ! [treeGuide packagesAsFiles];
+  return !treeGuide.packagesAsFiles;
 }
 
 
@@ -104,7 +104,7 @@
 
 - (void)drawFile:(PlainFileItem *)fileItem atRect:(NSRect) rect depth:(int) depth {
   NSUInteger  colorIndex = [colorMapper hashForFileItem: fileItem atDepth: depth];
-  if ( [colorMapper canProvideLegend] ) {
+  if (colorMapper.canProvideLegend) {
     colorIndex = MIN(colorIndex, rectangleDrawer.numGradientColors - 1);
   }
   else {
