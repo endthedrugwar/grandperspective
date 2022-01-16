@@ -7,6 +7,12 @@
 @class ItemPathBuilder;
 @class TreeLayoutBuilder;
 
+typedef NS_ENUM(NSInteger, DirectionEnum) {
+  DirectionUp = 1,
+  DirectionDown = 2,
+  DirectionRight = 3,
+  DirectionLeft = 4
+};
 
 /* Provides a view of a specific item path model. This view can be used to change how a path appears
  * in a specific DirectoryView. For example, it can be used to hide package contents. Furthermore,
@@ -69,6 +75,10 @@
         usingLayoutBuilder:(TreeLayoutBuilder *)layoutBuilder
                     bounds:(NSRect) bounds;
 
+- (void) moveSelectedItem:(DirectionEnum) direction
+           startingAtTree:(FileItem *)treeRoot
+       usingLayoutBuilder:(TreeLayoutBuilder *)layoutBuilder
+                   bounds:(NSRect) bounds;
 
 /* Returns the volume tree. It is the same as that of the underlying model.
  */

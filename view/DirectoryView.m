@@ -65,6 +65,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 - (void) colorMappingChanged:(NSNotification *)notification;
 
 - (void) updateSelectedItem:(NSPoint)point;
+- (void) moveSelectedItem:(DirectionEnum)direction;
 
 @end 
 
@@ -390,6 +391,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 - (BOOL)performKeyEquivalent:(NSEvent *)theEvent {
   int  flags = theEvent.modifierFlags & NSDeviceIndependentModifierFlagsMask;
   NSString  *chars = theEvent.characters;
+  unichar const  code = [chars characterAtIndex: 0];
   
   if ([chars isEqualToString: @"]"]) {
     if (flags == NSCommandKeyMask) {
@@ -436,7 +438,22 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
       return YES;
     }
   }
-  
+  else if ([pathModelView.pathModel isVisiblePathLocked]) {
+    // Navigation via arrow keys is active when the path is locked (so that mouse movement does not
+    // interfere).
+    BOOL handled = YES;
+    switch (code) {
+      case NSUpArrowFunctionKey: [self moveSelectedItem: DirectionUp]; break;
+      case NSDownArrowFunctionKey: [self moveSelectedItem: DirectionDown]; break;
+      case NSRightArrowFunctionKey: [self moveSelectedItem: DirectionRight]; break;
+      case NSLeftArrowFunctionKey: [self moveSelectedItem: DirectionLeft]; break;
+      default: handled = NO;
+    }
+    if (handled) {
+      return YES;
+    }
+  }
+
   return NO;
 }
 
@@ -837,6 +854,13 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
                 usingLayoutBuilder: layoutBuilder
                             bounds: self.bounds];
   // Redrawing in response to any changes will happen when the change notification is received.
+}
+
+- (void) moveSelectedItem: (DirectionEnum) direction {
+  [pathModelView moveSelectedItem: direction
+                  startingAtTree: [self treeInView]
+              usingLayoutBuilder: layoutBuilder
+                          bounds: self.bounds];
 }
 
 @end // @implementation DirectoryView (PrivateMethods)

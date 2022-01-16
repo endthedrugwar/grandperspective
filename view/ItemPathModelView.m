@@ -158,6 +158,13 @@
   }
 }
 
+- (void) moveSelectedItem:(DirectionEnum) direction
+           startingAtTree:(FileItem *)treeRoot
+       usingLayoutBuilder:(TreeLayoutBuilder *)layoutBuilder
+                   bounds:(NSRect) bounds {
+  NSLog(@"Move request: %ld", (long)direction);
+}
+
 
 - (DirectoryItem *)volumeTree {
   return [pathModel volumeTree];
