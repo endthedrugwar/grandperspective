@@ -56,6 +56,9 @@ CGFloat rectArea(NSRect rect) {
 - (void) refreshDisplay;
 - (void) enablePeriodicRedraw:(BOOL) enable;
 
+- (void) abortZoomAnimation;
+- (void) addZoomAnimationCompletionHandler;
+
 - (void) postColorPaletteChanged;
 - (void) postColorMappingChanged;
 
@@ -293,13 +296,11 @@ CGFloat rectArea(NSRect rect) {
 
 - (BOOL) canZoomIn {
   return (pathModelView.pathModel.isVisiblePathLocked &&
-          pathModelView.canMoveVisibleTreeDown &&
-          // The zoom animation should complete first
-          zoomImage == nil);
+          pathModelView.canMoveVisibleTreeDown);
 }
 
 - (BOOL) canZoomOut {
-  return pathModelView.canMoveVisibleTreeUp && zoomImage == nil;
+  return pathModelView.canMoveVisibleTreeUp;
 }
 
 
@@ -308,9 +309,10 @@ CGFloat rectArea(NSRect rect) {
   ItemPathModel  *pathModel = pathModelView.pathModel;
 
   NSLog(@"starting zoom-in animation");
-  if (zoomImage != nil) {
-    [zoomImage release];
-  }
+
+  // If an animation is ongoing, abort it so it won't interfere
+  [self abortZoomAnimation];
+
   zoomImage = [[self imageInViewForItem: pathModel.itemBelowVisibleTree
                                  onPath: pathModel.itemPath] retain];
   self.zoomBounds = [self locationInViewForItem: pathModel.itemBelowVisibleTree
@@ -319,14 +321,11 @@ CGFloat rectArea(NSRect rect) {
 
   if (rectArea(self.zoomBounds) < ZOOM_ANIMATION_THRESHOLD * rectArea(self.bounds)) {
     [NSAnimationContext beginGrouping];
-    [NSAnimationContext.currentContext setDuration: 0.5f];
-    [NSAnimationContext.currentContext setCompletionHandler: ^{
-      NSLog(@"zoom animation completed");
-      NSAssert(zoomImage != nil, @"zoomImage is nil");
-      [zoomImage release];
-      zoomImage = nil;
-    }];
+
+    [NSAnimationContext.currentContext setDuration: 0.5];
+    [self addZoomAnimationCompletionHandler];
     self.animator.zoomBounds = self.bounds;
+
     [NSAnimationContext endGrouping];
   } else {
     NSLog(@"Skipping zoom animation");
@@ -341,10 +340,9 @@ CGFloat rectArea(NSRect rect) {
   // Initiate zoom animation
   ItemPathModel  *pathModel = pathModelView.pathModel;
 
-  NSLog(@"starting zoom-out animation");
-  if (zoomImage != nil) {
-    [zoomImage release];
-  }
+  // If an animation is ongoing, abort it so it won't interfere
+  [self abortZoomAnimation];
+
   zoomImage = [treeImage retain];
   self.zoomBounds = self.bounds;
   zoomingIn = NO;
@@ -355,13 +353,11 @@ CGFloat rectArea(NSRect rect) {
                                             onPath: pathModel.itemPath];
   if (rectArea(destBounds) < ZOOM_ANIMATION_THRESHOLD * rectArea(self.bounds)) {
     [NSAnimationContext beginGrouping];
-    [NSAnimationContext.currentContext setDuration: 0.5f];
-    [NSAnimationContext.currentContext setCompletionHandler: ^{
-      NSLog(@"zoom animation completed");
-      [zoomImage release];
-      zoomImage = nil;
-    }];
+
+    [NSAnimationContext.currentContext setDuration: 0.5];
+    [self addZoomAnimationCompletionHandler];
     self.animator.zoomBounds = destBounds;
+
     [NSAnimationContext endGrouping];
   } else {
     NSLog(@"Skipping zoom animation");
@@ -861,6 +857,33 @@ CGFloat rectArea(NSRect rect) {
       redrawTimer = nil;
     }
   }
+}
+
+- (void) abortZoomAnimation {
+  if (zoomImage == nil) {
+    return;
+  }
+
+  [zoomImage release];
+  zoomImage = nil;
+
+  [NSAnimationContext beginGrouping];
+  [NSAnimationContext.currentContext setDuration: 0];
+  self.animator.zoomBounds = NSZeroRect;
+  [NSAnimationContext endGrouping];
+}
+
+- (void) addZoomAnimationCompletionHandler {
+  NSInteger  myCount = ++zoomAnimationCount;
+
+  [NSAnimationContext.currentContext setCompletionHandler: ^{
+    NSLog(@"zoom animation completed");
+    if (zoomAnimationCount == myCount) {
+      // Only clear my the image when it belongs to my animation.
+      [zoomImage release];
+      zoomImage = nil;
+    }
+  }];
 }
 
 - (void) postColorPaletteChanged {
