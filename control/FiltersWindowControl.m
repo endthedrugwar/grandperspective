@@ -111,9 +111,9 @@
 }
 
 - (IBAction) addFilterToRepository:(id)sender {
-  NamedFilter  *newFilter = [filterEditor newNamedFilter];
+  NamedFilter  *newFilter = [filterEditor createNamedFilter];
   
-  [self selectFilterNamed: [newFilter name]];
+  [self selectFilterNamed: newFilter.name];
   [self.window makeFirstResponder: filterView];
 }
 

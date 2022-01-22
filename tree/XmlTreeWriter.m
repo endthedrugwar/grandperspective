@@ -136,7 +136,6 @@ NSString *escapedXML(NSString *s, CharacterOptions escapeCharMask) {
     // Append final characters to buffer
     [buf appendString: [s substringWithRange:
                         NSMakeRange(numCharsInBuf, numCharsInVal - numCharsInBuf)]];
-    numCharsInBuf = numCharsInVal;
   }
 
   return buf;

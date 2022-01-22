@@ -64,7 +64,7 @@ NSString  *UniformTypesRankingKey = @"uniformTypesRanking";
 }
 
 - (void) storeRanking {
-  NSMutableArray  *rankedUTIs = [[NSMutableArray alloc] initWithCapacity: rankedTypes.count];
+  NSMutableArray  *rankedUTIs = [NSMutableArray arrayWithCapacity: rankedTypes.count];
     
   NSMutableSet  *encountered = [NSMutableSet setWithCapacity: rankedUTIs.count];
     

@@ -37,4 +37,10 @@
   return self;
 }
 
+- (void) dealloc {
+  [_overlayTest release];
+
+  [super dealloc];
+}
+
 @end

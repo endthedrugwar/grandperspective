@@ -58,7 +58,7 @@ NSString  *ColorDescriptionColumnIdentifier = @"colorDescription";
     imageColumn.identifier = ColorImageColumnIdentifier;
     [imageColumn setEditable: NO];
 
-    NSImageCell  *imageCell = [[NSImageCell alloc] initImageCell: nil];
+    NSImageCell  *imageCell = [[[NSImageCell alloc] initImageCell: nil] autorelease];
     imageColumn.dataCell = imageCell;
     
     NSTableColumn  *descrColumn = columns[1];

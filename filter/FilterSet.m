@@ -196,10 +196,11 @@
     testForFilterSet = nil;
   }
   else if (filterTests.count == 1) {
-    testForFilterSet = [filterTests[0] retain];
+    testForFilterSet = filterTests[0];
   }
   else {
-    testForFilterSet = [[CompoundAndItemTest alloc] initWithSubItemTests: filterTests];
+    testForFilterSet =
+      [[[CompoundAndItemTest alloc] initWithSubItemTests: filterTests] autorelease];
   }
 
   return [self initWithNamedFilters: namedFilters fileItemTest: testForFilterSet];

@@ -75,7 +75,8 @@ NSColorList* createGrandPerspectivePalette(void) {
     while (path = [pathEnum nextObject]) {
       NSString  *name = path.lastPathComponent.stringByDeletingPathExtension;
 
-      NSColorList  *colorList = [[NSColorList alloc] initWithName: name fromFile: path];
+      NSColorList  *colorList = [[[NSColorList alloc] initWithName: name
+                                                          fromFile: path] autorelease];
       if (colorList != nil) {
         [instance addColorList: colorList key: name];
       }

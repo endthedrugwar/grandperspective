@@ -26,6 +26,8 @@
 #import "FileItemMapping.h"
 #import "FileItemMappingScheme.h"
 
+#import "LocalizableStrings.h"
+
 #define SCROLL_WHEEL_SENSITIVITY  6.0
 
 
@@ -553,7 +555,8 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
 
 - (NSMenu *)menuForEvent:(NSEvent *)theEvent {
-  NSMenu  *popUpMenu = [[[NSMenu alloc] initWithTitle: @"Contextual Menu"] autorelease];
+  NSMenu  *popUpMenu = [[[NSMenu alloc] initWithTitle: LocalizationNotNeeded(@"Contextual Menu")]
+                        autorelease];
   int  itemCount = 0;
 
 

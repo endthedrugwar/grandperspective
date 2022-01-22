@@ -53,7 +53,7 @@
     pathBuilder = [[ItemPathBuilder alloc] init];
     itemLocator = [[ItemLocator alloc] init];
     fileItemPath =
-      (NSMutableArray *)[pathModel fileItemPath: [[NSMutableArray alloc] initWithCapacity: 16]];
+      (NSMutableArray *)[[pathModel fileItemPath: [NSMutableArray arrayWithCapacity: 16]] retain];
     scanTreeIndex = [self indexCorrespondingToItem: [pathModel scanTree] startingAt: 0];
     
     invisibleSelectedItem = nil;

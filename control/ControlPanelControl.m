@@ -129,7 +129,7 @@ NSString  *DisplaySettingsChangedEvent = @"displaySettingsChanged";
 - (id)init {
   NSAssert(singletonInstance == nil, @"Can only create one ControlPanelControl.");
 
-  if ([super initWithWindow: nil]) {
+  if (self = [super initWithWindow: nil]) {
     colorMappings = [[FileItemMappingCollection defaultFileItemMappingCollection] retain];
     colorPalettes = [[ColorListCollection defaultColorListCollection] retain];
     filterRepository = [[FilterRepository defaultInstance] retain];

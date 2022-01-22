@@ -22,7 +22,7 @@
  * updates the repository. The repository's NotifyingDictionary will fire an "objectAdded" event in
  * response.
  */
-@property (nonatomic, readonly, strong) FilterTest *newFilterTest;
+- (FilterTest *)createFilterTest;
 
 /* Edits an existing test with the given name. The test should exist in the test repository. It
  * returns the modified test, or "nil" if the action was cancelled. It updates the filter in the

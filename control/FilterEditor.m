@@ -54,7 +54,7 @@
 }
 
 
-- (NamedFilter *)newNamedFilter {
+- (NamedFilter *)createNamedFilter {
   NSWindow  *editFilterWindow = [self loadEditFilterWindow];
   
   FilterNameValidator  *nameValidator = 
@@ -73,13 +73,11 @@
     NamedFilter  *namedFilter = [filterWindowControl createNamedFilter];
     
     if (namedFilter != nil) {
-      NSString  *name = [namedFilter name];
-
       // The nameValidator should have ensured that this check succeeds.
-      NSAssert( [filterRepository filtersByName][name] == nil,
+      NSAssert( [filterRepository filtersByName][namedFilter.name] == nil,
                 @"Duplicate name check failed.");
       [[filterRepository filtersByNameAsNotifyingDictionary]
-          addObject: [namedFilter filter] forKey: name];
+          addObject: namedFilter.filter forKey: namedFilter.name];
         
       // Rest of addition handled in response to notification event.
     }
