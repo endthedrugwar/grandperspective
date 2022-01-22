@@ -300,7 +300,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   // Initiate zoom animation
   ItemPathModel  *pathModel = pathModelView.pathModel;
 
-  NSLog(@"starting zoom animation");
+  NSLog(@"starting zoom-in animation");
   if (zoomImage != nil) {
     [zoomImage release];
   }
@@ -323,8 +323,29 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 }
 
 - (void) zoomOut {
+  // Initiate zoom animation
+  ItemPathModel  *pathModel = pathModelView.pathModel;
+
+  NSLog(@"starting zoom-out animation");
+  if (zoomImage != nil) {
+    [zoomImage release];
+  }
+  zoomImage = [treeImage retain];
+  self.zoomBounds = self.bounds;
+
   [pathModelView moveVisibleTreeUp];
-  
+
+  [NSAnimationContext beginGrouping];
+  [NSAnimationContext.currentContext setDuration: 0.5f];
+  [NSAnimationContext.currentContext setCompletionHandler: ^{
+    NSLog(@"zoom animation completed");
+    [zoomImage release];
+    zoomImage = nil;
+  }];
+  self.animator.zoomBounds = [self locationInViewForItem: pathModel.itemBelowVisibleTree
+                                                  onPath: pathModel.itemPath];
+  [NSAnimationContext endGrouping];
+
   // Automatically lock path as well.
   [pathModelView.pathModel setVisiblePathLocking: YES];
 }
