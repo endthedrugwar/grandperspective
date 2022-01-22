@@ -47,6 +47,8 @@ extern NSString  *ColorMappingChangedEvent;
   // generated (and treeImage is updated when done). Therefore a separate image is used here.
   NSImage  *zoomImage;
   NSRect  zoomBounds;
+  // Indicates the direction of the zoom animation.
+  BOOL  zoomingIn;
 
   NSImage  *overlayImage;
   NSTimer  *redrawTimer;

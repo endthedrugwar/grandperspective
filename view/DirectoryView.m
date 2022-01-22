@@ -288,11 +288,14 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
 
 - (BOOL) canZoomIn {
-  return pathModelView.pathModel.isVisiblePathLocked && pathModelView.canMoveVisibleTreeDown;
+  return (pathModelView.pathModel.isVisiblePathLocked &&
+          pathModelView.canMoveVisibleTreeDown &&
+          // The zoom animation should complete first
+          zoomImage == nil);
 }
 
 - (BOOL) canZoomOut {
-  return pathModelView.canMoveVisibleTreeUp;
+  return pathModelView.canMoveVisibleTreeUp && zoomImage == nil;
 }
 
 
@@ -308,11 +311,13 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
                                  onPath: pathModel.itemPath] retain];
   self.zoomBounds = [self locationInViewForItem: pathModel.itemBelowVisibleTree
                                          onPath: pathModel.itemPath];
+  zoomingIn = YES;
 
   [NSAnimationContext beginGrouping];
   [NSAnimationContext.currentContext setDuration: 0.5f];
   [NSAnimationContext.currentContext setCompletionHandler: ^{
     NSLog(@"zoom animation completed");
+    NSAssert(zoomImage != nil, @"zoomImage is nil");
     [zoomImage release];
     zoomImage = nil;
   }];
@@ -332,6 +337,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   }
   zoomImage = [treeImage retain];
   self.zoomBounds = self.bounds;
+  zoomingIn = NO;
 
   [pathModelView moveVisibleTreeUp];
 
@@ -747,24 +753,37 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
  * the drawing has been aborted, in which the image will be nil.
  */
 - (void) itemTreeImageReady: (id) image {
-  if (image != nil) {
-    //NSLog(@"Completed draw task");
-
+  if (image == nil) {
     // Only take action when the drawing task has completed succesfully.
     //
     // Without this check, a race condition can occur. When a new drawing task aborts the execution
     // of an ongoing task, the completion of the latter and subsequent invocation of -drawRect:
     // results in the abortion of the new task (as long as it has not yet completed).
-  
-    // Note: This method is called from the main thread (even though it has been triggered by the
-    // drawer's background thread). So calling setNeedsDisplay directly is okay.
-    [treeImage release];
-    treeImage = [image retain];
-    treeImageIsScaled = NO;
-    isTreeDrawInProgress = NO;
-  
-    [self setNeedsDisplay: YES];
+
+    return;
   }
+
+  // Note: This method is called from the main thread (even though it has been triggered by the
+  // drawer's background thread). So calling setNeedsDisplay directly is okay.
+  [treeImage release];
+  treeImage = [image retain];
+  treeImageIsScaled = NO;
+  isTreeDrawInProgress = NO;
+
+  if (zoomImage != nil) {
+    // Replace initial zoom image so the layout matches the new aspect ratio.
+    [zoomImage release];
+
+    if (zoomingIn) {
+      zoomImage = [treeImage retain];
+    } else {
+      ItemPathModel  *pathModel = pathModelView.pathModel;
+      zoomImage = [[self imageInViewForItem: pathModel.itemBelowVisibleTree
+                                     onPath: pathModel.itemPath] retain];
+    }
+  }
+
+  [self setNeedsDisplay: YES];
 }
 
 - (void) startOverlayDrawTask {
