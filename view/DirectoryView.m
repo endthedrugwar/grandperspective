@@ -29,11 +29,15 @@
 #import "FileItemMappingScheme.h"
 
 #define SCROLL_WHEEL_SENSITIVITY  6.0
+#define ZOOM_ANIMATION_THRESHOLD  0.99
 
 
 NSString  *ColorPaletteChangedEvent = @"colorPaletteChanged";
 NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
+CGFloat rectArea(NSRect rect) {
+  return rect.size.width * rect.size.height;
+}
 
 @interface DirectoryView (PrivateMethods)
 
@@ -313,16 +317,22 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
                                          onPath: pathModel.itemPath];
   zoomingIn = YES;
 
-  [NSAnimationContext beginGrouping];
-  [NSAnimationContext.currentContext setDuration: 0.5f];
-  [NSAnimationContext.currentContext setCompletionHandler: ^{
-    NSLog(@"zoom animation completed");
-    NSAssert(zoomImage != nil, @"zoomImage is nil");
+  if (rectArea(self.zoomBounds) < ZOOM_ANIMATION_THRESHOLD * rectArea(self.bounds)) {
+    [NSAnimationContext beginGrouping];
+    [NSAnimationContext.currentContext setDuration: 0.5f];
+    [NSAnimationContext.currentContext setCompletionHandler: ^{
+      NSLog(@"zoom animation completed");
+      NSAssert(zoomImage != nil, @"zoomImage is nil");
+      [zoomImage release];
+      zoomImage = nil;
+    }];
+    self.animator.zoomBounds = self.bounds;
+    [NSAnimationContext endGrouping];
+  } else {
+    NSLog(@"Skipping zoom animation");
     [zoomImage release];
     zoomImage = nil;
-  }];
-  self.animator.zoomBounds = self.bounds;
-  [NSAnimationContext endGrouping];
+  }
 
   [pathModelView moveVisibleTreeDown];
 }
@@ -341,16 +351,23 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
   [pathModelView moveVisibleTreeUp];
 
-  [NSAnimationContext beginGrouping];
-  [NSAnimationContext.currentContext setDuration: 0.5f];
-  [NSAnimationContext.currentContext setCompletionHandler: ^{
-    NSLog(@"zoom animation completed");
+  NSRect  destBounds = [self locationInViewForItem: pathModel.itemBelowVisibleTree
+                                            onPath: pathModel.itemPath];
+  if (rectArea(destBounds) < ZOOM_ANIMATION_THRESHOLD * rectArea(self.bounds)) {
+    [NSAnimationContext beginGrouping];
+    [NSAnimationContext.currentContext setDuration: 0.5f];
+    [NSAnimationContext.currentContext setCompletionHandler: ^{
+      NSLog(@"zoom animation completed");
+      [zoomImage release];
+      zoomImage = nil;
+    }];
+    self.animator.zoomBounds = destBounds;
+    [NSAnimationContext endGrouping];
+  } else {
+    NSLog(@"Skipping zoom animation");
     [zoomImage release];
     zoomImage = nil;
-  }];
-  self.animator.zoomBounds = [self locationInViewForItem: pathModel.itemBelowVisibleTree
-                                                  onPath: pathModel.itemPath];
-  [NSAnimationContext endGrouping];
+  }
 
   // Automatically lock path as well.
   [pathModelView.pathModel setVisiblePathLocking: YES];
