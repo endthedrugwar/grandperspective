@@ -18,7 +18,7 @@ extern NSString  *FriendlySizeKey;
   TreeContext  *treeContext;
 
   // Contains the Items from the root until the end of the path.
-  NSMutableArray  *path;
+  NSMutableArray<Item *>  *path;
 
   // The index in the path array where the subtree starts (always a FileItem)
   NSUInteger  visibleTreeIndex;
@@ -97,6 +97,11 @@ extern NSString  *FriendlySizeKey;
  * treemap is drawn.
  */
 @property (nonatomic, readonly, strong) FileItem *visibleTree;
+
+/* Returns the file item immediately below the visible tree. This will be the visibleTree after
+ * invoking moveVisibleTreeDown.
+ */
+@property (nonatomic, readonly, strong) FileItem *itemBelowVisibleTree;
 
 /* Returns the selected file item. It is always part of the visible path.
  */
