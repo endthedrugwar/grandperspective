@@ -173,16 +173,16 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   return showEntireVolume ? pathModelView.volumeTree : pathModelView.visibleTree;
 }
 
-
-- (NSRect) locationInViewForItemAtEndOfPath:(NSArray *)itemPath {
-  return [selectedItemLocator locationForItemAtEndOfPath: itemPath
-                                          startingAtTree: self.treeInView
-                                      usingLayoutBuilder: layoutBuilder
-                                                  bounds: self.bounds];
+- (NSRect) locationInViewForItem:(FileItem *)item onPath:(NSArray *)itemPath {
+  return [selectedItemLocator locationForItem: item
+                                       onPath: itemPath
+                               startingAtTree: self.treeInView
+                           usingLayoutBuilder: layoutBuilder
+                                       bounds: self.bounds];
 }
 
-- (NSImage *)imageInViewForItemAtEndOfPath:(NSArray *)itemPath {
-  NSRect sourceRect = [self locationInViewForItemAtEndOfPath: itemPath];
+- (NSImage *)imageInViewForItem:(FileItem *)item onPath:(NSArray *)itemPath {
+  NSRect sourceRect = [self locationInViewForItem: item onPath: itemPath];
 
   NSImage  *targetImage = [[[NSImage alloc] initWithSize: sourceRect.size] autorelease];
 
@@ -194,6 +194,14 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   [targetImage unlockFocus];
 
   return targetImage;
+}
+
+- (NSRect) locationInViewForItemAtEndOfPath:(NSArray *)itemPath {
+  return [self locationInViewForItem: itemPath.lastObject onPath: itemPath];
+}
+
+- (NSImage *)imageInViewForItemAtEndOfPath:(NSArray *)itemPath {
+  return [self imageInViewForItem: itemPath.lastObject onPath: itemPath];
 }
 
 

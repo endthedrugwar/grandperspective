@@ -66,6 +66,9 @@ extern NSString  *ColorMappingChangedEvent;
 @property (nonatomic, readonly, strong) ItemPathModelView *pathModelView;
 @property (nonatomic, readonly, strong) FileItem *treeInView;
 
+- (NSRect) locationInViewForItem:(FileItem *)item onPath:(NSArray *)itemPath;
+- (NSImage *)imageInViewForItem:(FileItem *)item onPath:(NSArray *)itemPath;
+
 - (NSRect) locationInViewForItemAtEndOfPath:(NSArray *)itemPath;
 - (NSImage *)imageInViewForItemAtEndOfPath:(NSArray *)itemPath;
 
