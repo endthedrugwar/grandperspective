@@ -1,3 +1,5 @@
+#import <Quartz/Quartz.h>
+
 #import "DirectoryView.h"
 
 #import "DirectoryViewControl.h"
@@ -105,6 +107,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   [pathModelView release];
   
   [treeImage release];
+  [zoomImage release];
   [overlayImage release];
   
   [super dealloc];
@@ -257,6 +260,16 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 }
 
 
+- (NSRect) zoomBounds {
+  return zoomBounds;
+}
+
+- (void) setZoomBounds:(NSRect)bounds {
+  zoomBounds = bounds;
+  [self setNeedsLayout: YES];
+}
+
+
 - (BOOL) showEntireVolume {
   return showEntireVolume;
 }
@@ -284,6 +297,28 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
 
 - (void) zoomIn {
+  // Initiate zoom animation
+  ItemPathModel  *pathModel = pathModelView.pathModel;
+
+  NSLog(@"starting zoom animation");
+  if (zoomImage != nil) {
+    [zoomImage release];
+  }
+  zoomImage = [[self imageInViewForItem: pathModel.itemBelowVisibleTree
+                                 onPath: pathModel.itemPath] retain];
+  self.zoomBounds = [self locationInViewForItem: pathModel.itemBelowVisibleTree
+                                         onPath: pathModel.itemPath];
+
+  [NSAnimationContext beginGrouping];
+  [NSAnimationContext.currentContext setDuration: 0.5f];
+  [NSAnimationContext.currentContext setCompletionHandler: ^{
+    NSLog(@"zoom animation completed");
+    [zoomImage release];
+    zoomImage = nil;
+  }];
+  self.animator.zoomBounds = self.bounds;
+  [NSAnimationContext endGrouping];
+
   [pathModelView moveVisibleTreeDown];
 }
 
@@ -339,14 +374,26 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
     isOverlayDrawInProgress = NO;
   }
 
+  // Initiate background draw tasks if needed
   if ((treeImage == nil || treeImageIsScaled) && !isTreeDrawInProgress) {
     [self startTreeDrawTask];
   } else if ((overlayImage == nil || overlayImageIsScaled) &&
              overlayTest != nil && !isOverlayDrawInProgress) {
     [self startOverlayDrawTask];
   }
-  
-  if (treeImage != nil) {
+
+  if (zoomImage != nil) {
+    NSLog(@"Drawing zoom animation");
+
+    [NSColor.blackColor setFill];
+    NSRectFill(self.bounds);
+
+    zoomImage.size = zoomBounds.size;
+    [zoomImage drawAtPoint: zoomBounds.origin
+                  fromRect: NSZeroRect
+                 operation: NSCompositeCopy
+                  fraction: 1.0f];
+  } else if (treeImage != nil) {
     [treeImage drawAtPoint: NSZeroPoint
                   fromRect: NSZeroRect
                  operation: NSCompositeCopy
@@ -610,6 +657,14 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   return (itemCount > 0) ? popUpMenu : nil;
 }
 
++ (id)defaultAnimationForKey:(NSString *)key {
+  if ([key isEqualToString: @"zoomBounds"]) {
+    return [CABasicAnimation animation];
+  }
+
+  return [super defaultAnimationForKey: key];
+}
+
 @end // @implementation DirectoryView
 
 
@@ -626,7 +681,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 }
 
 - (void) forceRedraw {
-  //NSLog(@"Forcing redraw");
+  NSLog(@"Forcing redraw");
   [self setNeedsDisplay: YES];
 
   // Discard the existing image

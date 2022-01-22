@@ -42,6 +42,12 @@ extern NSString  *ColorMappingChangedEvent;
   BOOL  showEntireVolume;
 
   NSImage  *treeImage;
+
+  // The image used for zoom animations. While the zoom animation is happening, the new image is
+  // generated (and treeImage is updated when done). Therefore a separate image is used here.
+  NSImage  *zoomImage;
+  NSRect  zoomBounds;
+
   NSImage  *overlayImage;
   NSTimer  *redrawTimer;
   
@@ -74,6 +80,9 @@ extern NSString  *ColorMappingChangedEvent;
 
 @property (nonatomic, strong) TreeDrawerSettings *treeDrawerSettings;
 @property (nonatomic, strong) FileItemTest *overlayTest;
+
+// Property used during zoom animation.
+@property (nonatomic) NSRect zoomBounds;
 
 @property (nonatomic) BOOL showEntireVolume;
 
