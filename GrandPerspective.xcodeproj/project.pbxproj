@@ -16,6 +16,7 @@
 		AA0CDE711544995C0018D583 /* TimeBasedMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0CDE701544995C0018D583 /* TimeBasedMapping.m */; };
 		AA0CDE7415487FF60018D583 /* CreationMappingScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0CDE7315487FF60018D583 /* CreationMappingScheme.m */; };
 		AA0CDE77154882BF0018D583 /* ModificationMappingScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0CDE76154882BE0018D583 /* ModificationMappingScheme.m */; };
+		AA0F0A71279BFD8200F91C9F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0F0A70279BFD8200F91C9F /* QuartzCore.framework */; };
 		AA1115C40A84CA320023C5CD /* DirectoryViewControlSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = AA1115C20A84CA320023C5CD /* DirectoryViewControlSettings.m */; };
 		AA12225A0EF2A822002A178F /* Toolbar.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA1222580EF2A822002A178F /* Toolbar.strings */; };
 		AA13BAD30B8A5747000AEAA9 /* Palettes in Resources */ = {isa = PBXBuildFile; fileRef = AA13BA8D0B8A5746000AEAA9 /* Palettes */; };
@@ -220,6 +221,7 @@
 		AA0DD93922F6F5BA00D9F9B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Taglines.strings; sourceTree = "<group>"; };
 		AA0DD93A22F6F5BA00D9F9B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Tests.strings; sourceTree = "<group>"; };
 		AA0DD93B22F6F5BA00D9F9B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Toolbar.strings; sourceTree = "<group>"; };
+		AA0F0A70279BFD8200F91C9F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		AA1049BF1511582C003C041C /* Compatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Compatibility.h; path = util/Compatibility.h; sourceTree = "<group>"; };
 		AA1115C10A84CA320023C5CD /* DirectoryViewControlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DirectoryViewControlSettings.h; path = control/DirectoryViewControlSettings.h; sourceTree = "<group>"; };
 		AA1115C20A84CA320023C5CD /* DirectoryViewControlSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DirectoryViewControlSettings.m; path = control/DirectoryViewControlSettings.m; sourceTree = "<group>"; };
@@ -648,6 +650,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA0F0A71279BFD8200F91C9F /* QuartzCore.framework in Frameworks */,
 				AAD85B9D1CD92FD300B3AF28 /* Security.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 			);
@@ -756,6 +759,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA0F0A70279BFD8200F91C9F /* QuartzCore.framework */,
 				AAD85B9C1CD92FD300B3AF28 /* Security.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,

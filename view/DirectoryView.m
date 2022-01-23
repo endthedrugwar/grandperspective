@@ -1,3 +1,5 @@
+#import <Quartz/Quartz.h>
+
 #import "DirectoryView.h"
 
 #import "DirectoryViewControl.h"
@@ -31,9 +33,20 @@
 #define SCROLL_WHEEL_SENSITIVITY  6.0
 
 
+#define ZOOM_ANIMATION_SKIP_THRESHOLD  0.99
+#define ZOOM_ANIMATION_MAXLEN_THRESHOLD  0.80
+
 NSString  *ColorPaletteChangedEvent = @"colorPaletteChanged";
 NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
+CGFloat rectArea(NSRect rect) {
+  return rect.size.width * rect.size.height;
+}
+
+// Returns 0 when x <= minX, 1 when x >= maxX, and interpolates lineairly when minX < x < maxX.
+CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
+  return MIN(1, MAX(0, x - minX) / (maxX - minX));
+}
 
 @interface DirectoryView (PrivateMethods)
 
@@ -51,6 +64,12 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 @property (nonatomic, readonly) float animatedOverlayStrength;
 - (void) refreshDisplay;
 - (void) enablePeriodicRedraw:(BOOL) enable;
+
+- (void) startZoomAnimation;
+- (void) drawZoomAnimation;
+- (void) releaseZoomImages;
+- (void) abortZoomAnimation;
+- (void) addZoomAnimationCompletionHandler;
 
 - (void) postColorPaletteChanged;
 - (void) postColorMappingChanged;
@@ -107,6 +126,8 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   [pathModelView release];
   
   [treeImage release];
+  [zoomImage release];
+  [zoomBackgroundImage release];
   [overlayImage release];
   
   [super dealloc];
@@ -175,27 +196,39 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   return showEntireVolume ? pathModelView.volumeTree : pathModelView.visibleTree;
 }
 
-
-- (NSRect) locationInViewForItemAtEndOfPath:(NSArray *)itemPath {
-  return [selectedItemLocator locationForItemAtEndOfPath: itemPath
-                                          startingAtTree: self.treeInView
-                                      usingLayoutBuilder: layoutBuilder
-                                                  bounds: self.bounds];
+- (NSRect) locationInViewForItem:(FileItem *)item onPath:(NSArray *)itemPath {
+  return [selectedItemLocator locationForItem: item
+                                       onPath: itemPath
+                               startingAtTree: self.treeInView
+                           usingLayoutBuilder: layoutBuilder
+                                       bounds: self.bounds];
 }
 
-- (NSImage *)imageInViewForItemAtEndOfPath:(NSArray *)itemPath {
-  NSRect sourceRect = [self locationInViewForItemAtEndOfPath: itemPath];
+- (NSImage *)imageInViewForItem:(FileItem *)item onPath:(NSArray *)itemPath {
+  NSRect sourceRect = [self locationInViewForItem: item onPath: itemPath];
+  CGFloat x = ceil(sourceRect.origin.x);
+  CGFloat y = ceil(sourceRect.origin.y);
+  CGFloat w = floor(sourceRect.origin.x + sourceRect.size.width) - x;
+  CGFloat h = floor(sourceRect.origin.y + sourceRect.size.height) - y;
 
-  NSImage  *targetImage = [[[NSImage alloc] initWithSize: sourceRect.size] autorelease];
+  NSImage  *targetImage = [[[NSImage alloc] initWithSize: NSMakeSize(w, h)] autorelease];
 
   [targetImage lockFocus];
-  [treeImage drawInRect: NSMakeRect(0, 0, sourceRect.size.width, sourceRect.size.height)
-               fromRect: sourceRect
+  [treeImage drawInRect: NSMakeRect(0, 0, w, h)
+               fromRect: NSMakeRect(x, y, w, h)
               operation: NSCompositeCopy
                fraction: 1.0];
   [targetImage unlockFocus];
 
   return targetImage;
+}
+
+- (NSRect) locationInViewForItemAtEndOfPath:(NSArray *)itemPath {
+  return [self locationInViewForItem: itemPath.lastObject onPath: itemPath];
+}
+
+- (NSImage *)imageInViewForItemAtEndOfPath:(NSArray *)itemPath {
+  return [self imageInViewForItem: itemPath.lastObject onPath: itemPath];
 }
 
 
@@ -251,6 +284,16 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 }
 
 
+- (NSRect) zoomBounds {
+  return zoomBounds;
+}
+
+- (void) setZoomBounds:(NSRect)bounds {
+  zoomBounds = bounds;
+  [self setNeedsLayout: YES];
+}
+
+
 - (BOOL) showEntireVolume {
   return showEntireVolume;
 }
@@ -269,7 +312,8 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
 
 - (BOOL) canZoomIn {
-  return pathModelView.pathModel.isVisiblePathLocked && pathModelView.canMoveVisibleTreeDown;
+  return (pathModelView.pathModel.isVisiblePathLocked &&
+          pathModelView.canMoveVisibleTreeDown);
 }
 
 - (BOOL) canZoomOut {
@@ -278,12 +322,48 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
 
 - (void) zoomIn {
+  // Initiate zoom animation
+  ItemPathModel  *pathModel = pathModelView.pathModel;
+
+  NSLog(@"starting zoom-in animation");
+
+  // If an animation is ongoing, abort it so it won't interfere
+  [self abortZoomAnimation];
+
+  zoomImage = [[self imageInViewForItem: pathModel.itemBelowVisibleTree
+                                 onPath: pathModel.itemPath] retain];
+  zoomBackgroundImage = [treeImage retain];
+  zoomBoundsStart = [self locationInViewForItem: pathModel.itemBelowVisibleTree
+                                         onPath: pathModel.itemPath];
+  zoomBounds = zoomBoundsStart;
+  zoomBoundsEnd = self.bounds;
+  zoomingIn = YES;
+
+  [self startZoomAnimation];
+
   [pathModelView moveVisibleTreeDown];
 }
 
 - (void) zoomOut {
+  // Initiate zoom animation
+  ItemPathModel  *pathModel = pathModelView.pathModel;
+
+  // If an animation is ongoing, abort it so it won't interfere
+  [self abortZoomAnimation];
+
+  zoomImage = [treeImage retain];
+  // The background image is not yet known. It will be set when the zoomed out image is drawn.
+  NSAssert(zoomBackgroundImage == nil, @"zoomBackgroundImage should be nil");
+  zoomBoundsStart = self.bounds;
+  zoomBounds = zoomBoundsStart;
+  zoomingIn = NO;
+
   [pathModelView moveVisibleTreeUp];
-  
+
+  zoomBoundsEnd = [self locationInViewForItem: pathModel.itemBelowVisibleTree
+                                       onPath: pathModel.itemPath];
+  [self startZoomAnimation];
+
   // Automatically lock path as well.
   [pathModelView.pathModel setVisiblePathLocking: YES];
 }
@@ -318,39 +398,39 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   }
   
   if (treeImage != nil && !NSEqualSizes(treeImage.size, self.bounds.size)) {
-    // Scale the existing image(s) for the new size. It will be used until a redrawn image is
+    // Handle resizing of the view
+
+    // Scale the existing image(s) for the new size. They will be used until redrawn images are
     // available.
-    treeImage.size = self.bounds.size;
     treeImageIsScaled = YES;
+    overlayImageIsScaled = YES;
 
-    if (overlayImage != nil) {
-      overlayImage.size = self.bounds.size;
-      overlayImageIsScaled = YES;
-    }
-
-    // Ensure any ongoing drawing tasks will be aborted
+    // Abort any ongoing drawing tasks
     isTreeDrawInProgress = NO;
     isOverlayDrawInProgress = NO;
   }
 
+  // Initiate background draw tasks if needed
   if ((treeImage == nil || treeImageIsScaled) && !isTreeDrawInProgress) {
     [self startTreeDrawTask];
   } else if ((overlayImage == nil || overlayImageIsScaled) &&
              overlayTest != nil && !isOverlayDrawInProgress) {
     [self startOverlayDrawTask];
   }
-  
-  if (treeImage != nil) {
-    [treeImage drawAtPoint: NSZeroPoint
-                  fromRect: NSZeroRect
-                 operation: NSCompositeCopy
-                  fraction: 1.0f];
+
+  if (zoomImage != nil) {
+    [self drawZoomAnimation];
+  } else if (treeImage != nil) {
+    [treeImage drawInRect: self.bounds
+                 fromRect: NSZeroRect
+                operation: NSCompositeCopy
+                 fraction: 1.0f];
 
     if (overlayImage != nil) {
-      [overlayImage drawAtPoint: NSZeroPoint
-                       fromRect: NSZeroRect
-                      operation: NSCompositingOperationColorDodge
-                       fraction: self.animatedOverlayStrength];
+      [overlayImage drawInRect: self.bounds
+                      fromRect: NSZeroRect
+                     operation: NSCompositingOperationColorDodge
+                      fraction: self.animatedOverlayStrength];
     }
 
     if (!treeImageIsScaled) {
@@ -605,6 +685,14 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   return (itemCount > 0) ? popUpMenu : nil;
 }
 
++ (id)defaultAnimationForKey:(NSString *)key {
+  if ([key isEqualToString: @"zoomBounds"]) {
+    return [CABasicAnimation animation];
+  }
+
+  return [super defaultAnimationForKey: key];
+}
+
 @end // @implementation DirectoryView
 
 
@@ -621,7 +709,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 }
 
 - (void) forceRedraw {
-  //NSLog(@"Forcing redraw");
+  NSLog(@"Forcing redraw");
   [self setNeedsDisplay: YES];
 
   // Discard the existing image
@@ -666,24 +754,40 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
  * the drawing has been aborted, in which the image will be nil.
  */
 - (void) itemTreeImageReady: (id) image {
-  if (image != nil) {
-    //NSLog(@"Completed draw task");
-
+  if (image == nil) {
     // Only take action when the drawing task has completed succesfully.
     //
     // Without this check, a race condition can occur. When a new drawing task aborts the execution
     // of an ongoing task, the completion of the latter and subsequent invocation of -drawRect:
     // results in the abortion of the new task (as long as it has not yet completed).
-  
-    // Note: This method is called from the main thread (even though it has been triggered by the
-    // drawer's background thread). So calling setNeedsDisplay directly is okay.
-    [treeImage release];
-    treeImage = [image retain];
-    treeImageIsScaled = NO;
-    isTreeDrawInProgress = NO;
-  
-    [self setNeedsDisplay: YES];
+
+    return;
   }
+  NSLog(@"itemTreeImageReady");
+
+  // Note: This method is called from the main thread (even though it has been triggered by the
+  // drawer's background thread). So calling setNeedsDisplay directly is okay.
+  [treeImage release];
+  treeImage = [image retain];
+  treeImageIsScaled = NO;
+  isTreeDrawInProgress = NO;
+
+  if (zoomImage != nil) {
+    // Replace initial zoom image so the layout matches the new aspect ratio.
+    [zoomImage release];
+
+    if (zoomingIn) {
+      zoomImage = [treeImage retain];
+    } else {
+      ItemPathModel  *pathModel = pathModelView.pathModel;
+      zoomImage = [[self imageInViewForItem: pathModel.itemBelowVisibleTree
+                                     onPath: pathModel.itemPath] retain];
+      NSAssert(zoomBackgroundImage == nil, @"zoomBackgroundImage should be nil");
+      zoomBackgroundImage = [treeImage retain];
+    }
+  }
+
+  [self setNeedsDisplay: YES];
 }
 
 - (void) startOverlayDrawTask {
@@ -744,6 +848,92 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
       redrawTimer = nil;
     }
   }
+}
+
+- (void) startZoomAnimation {
+  CGFloat  areaStart = rectArea(zoomBoundsStart);
+  CGFloat  areaEnd = rectArea(zoomBoundsEnd);
+  CGFloat  areaMin = MIN(areaStart, areaEnd);
+  CGFloat  areaMax = MAX(areaStart, areaEnd);
+
+  CGFloat  fraction = areaMin / areaMax;
+  CGFloat  durationMultiplier = ramp(1 - fraction,
+                                     1 - ZOOM_ANIMATION_SKIP_THRESHOLD,
+                                     1 - ZOOM_ANIMATION_MAXLEN_THRESHOLD);
+
+  if (durationMultiplier > 0) {
+    [treeImage release];
+    treeImage = nil;
+
+    [NSAnimationContext beginGrouping];
+
+    [NSAnimationContext.currentContext setDuration: 0.5 * durationMultiplier];
+    [self addZoomAnimationCompletionHandler];
+    self.animator.zoomBounds = zoomBoundsEnd;
+
+    [NSAnimationContext endGrouping];
+  } else {
+    NSLog(@"Skipping zoom animation");
+    [self releaseZoomImages];
+  }
+}
+
+- (void) drawZoomAnimation {
+  [NSColor.whiteColor setFill];
+  NSRectFill(self.bounds);
+
+  NSRect *zoomP = zoomingIn ? &zoomBoundsStart : &zoomBoundsEnd;
+  NSRect *fullP = zoomingIn ? &zoomBoundsEnd : &zoomBoundsStart;
+  CGFloat scaleX = zoomBounds.size.width / zoomP->size.width;
+  CGFloat scaleY = zoomBounds.size.height / zoomP->size.height;
+  if (zoomBackgroundImage != nil) {
+    CGFloat x = zoomP->origin.x - zoomBounds.origin.x / scaleX;
+    CGFloat y = zoomP->origin.y - zoomBounds.origin.y / scaleY;
+    [zoomBackgroundImage drawInRect: *fullP
+                           fromRect: NSMakeRect(x, y,
+                                                fullP->size.width / scaleX,
+                                                fullP->size.height / scaleY)
+                           operation: NSCompositeCopy
+                           fraction: 0.5];
+  }
+
+  [zoomImage drawInRect: zoomBounds
+               fromRect: NSZeroRect
+              operation: NSCompositeCopy
+               fraction: 1.0];
+}
+
+- (void) releaseZoomImages {
+  [zoomImage release];
+  zoomImage = nil;
+  [zoomBackgroundImage release];
+  zoomBackgroundImage = nil;
+  NSLog(@"released zoom images");
+}
+
+- (void) abortZoomAnimation {
+  if (zoomImage == nil) {
+    return;
+  }
+  [self releaseZoomImages];
+
+  [NSAnimationContext beginGrouping];
+  [NSAnimationContext.currentContext setDuration: 0];
+  self.animator.zoomBounds = NSZeroRect;
+  [NSAnimationContext endGrouping];
+}
+
+- (void) addZoomAnimationCompletionHandler {
+  NSInteger  myCount = ++zoomAnimationCount;
+
+  [NSAnimationContext.currentContext setCompletionHandler: ^{
+    NSLog(@"zoom animation completed");
+    if (zoomAnimationCount == myCount) {
+      // Only clear the images when they belong to my animation. They should not be cleared when a
+      // zoom request triggered a new animation thereby aborting the previous animation.
+      [self releaseZoomImages];
+    }
+  }];
 }
 
 - (void) postColorPaletteChanged {

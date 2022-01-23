@@ -173,10 +173,11 @@
            startingAtTree:(FileItem *)treeRoot
        usingLayoutBuilder:(TreeLayoutBuilder *)layoutBuilder
                    bounds:(NSRect) bounds {
-  NSRect rect = [itemLocator locationForItemAtEndOfPath: pathModel.itemPathToSelectedFileItem
-                                         startingAtTree: treeRoot
-                                     usingLayoutBuilder: layoutBuilder
-                                                 bounds: bounds];
+  NSRect rect = [itemLocator locationForItem: pathModel.selectedFileItem
+                                      onPath: pathModel.itemPathToSelectedFileItem
+                              startingAtTree: treeRoot
+                          usingLayoutBuilder: layoutBuilder
+                                      bounds: bounds];
   if (!NSPointInRect(keyboardNavigationPos, rect)) {
     keyboardNavigationPos = NSMakePoint(NSMidX(rect), NSMidY(rect));
   }
@@ -200,10 +201,11 @@
     if (oldSelectedItem != pathModel.selectedFileItem) {
       // In the movement direction, center the coordinate inside the newly selected rectangle.
 
-      rect = [itemLocator locationForItemAtEndOfPath: pathModel.itemPathToSelectedFileItem
-                                      startingAtTree: treeRoot
-                                  usingLayoutBuilder: layoutBuilder
-                                              bounds: bounds];
+      rect = [itemLocator locationForItem: pathModel.selectedFileItem
+                                   onPath: pathModel.itemPathToSelectedFileItem
+                           startingAtTree: treeRoot
+                       usingLayoutBuilder: layoutBuilder
+                                   bounds: bounds];
       switch (direction) {
         case DirectionUp:    // Fall-through
         case DirectionDown:  pos.y = NSMidY(rect); break;

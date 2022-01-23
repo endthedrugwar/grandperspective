@@ -8,14 +8,16 @@
 
 @implementation ItemLocator
 
-- (NSRect) locationForItemAtEndOfPath:(NSArray *)itemPath
-                       startingAtTree:(FileItem *)treeRoot
-                   usingLayoutBuilder:(TreeLayoutBuilder *)layoutBuilder
-                               bounds:(NSRect)bounds {
+- (NSRect) locationForItem:(FileItem *)item
+                    onPath:(NSArray *)itemPath
+            startingAtTree:(FileItem *)treeRoot
+        usingLayoutBuilder:(TreeLayoutBuilder *)layoutBuilder
+                    bounds:(NSRect)bounds {
   itemLocation = NSZeroRect;
 
   NSAssert(path == nil, @"path should be nil");
   path = itemPath; // Not retaining it. It is only needed during this method.
+  targetItem = item;
 
   // Align the path with the tree, as the path may contain invisible items not part of the tree.
   pathIndex = 0;
@@ -28,6 +30,7 @@
   [layoutBuilder layoutItemTree: treeRoot inRect: bounds traverser: self];
 
   path = nil;
+  targetItem = nil;
 
   return itemLocation;
 }
@@ -40,7 +43,7 @@
   pathIndex++;
   itemLocation = rect;
 
-  return (pathIndex < path.count);
+  return item != targetItem;
 }
 
 - (void) emergedFromItem: (Item *)item {
