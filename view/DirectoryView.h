@@ -50,10 +50,8 @@ extern NSString  *ColorMappingChangedEvent;
 
   // The active position of the zoom area on screen
   NSRect  zoomBounds;
-
-  // When zooming in, contains the start value of the zoomBounds.
-  // When zooming out, contains the end value of the zoomBounds.
-  NSRect  zoomRefBounds;
+  NSRect  zoomBoundsStart;
+  NSRect  zoomBoundsEnd;
 
   // Indicates the direction of the zoom animation.
   BOOL  zoomingIn;

@@ -56,6 +56,8 @@ CGFloat rectArea(NSRect rect) {
 - (void) refreshDisplay;
 - (void) enablePeriodicRedraw:(BOOL) enable;
 
+- (void) startZoomAnimation;
+- (void) drawZoomAnimation;
 - (void) releaseZoomImages;
 - (void) abortZoomAnimation;
 - (void) addZoomAnimationCompletionHandler;
@@ -318,23 +320,13 @@ CGFloat rectArea(NSRect rect) {
   zoomImage = [[self imageInViewForItem: pathModel.itemBelowVisibleTree
                                  onPath: pathModel.itemPath] retain];
   zoomBackgroundImage = [treeImage retain];
-  zoomBounds = [self locationInViewForItem: pathModel.itemBelowVisibleTree
-                                    onPath: pathModel.itemPath];
-  zoomRefBounds = zoomBounds;
+  zoomBoundsStart = [self locationInViewForItem: pathModel.itemBelowVisibleTree
+                                         onPath: pathModel.itemPath];
+  zoomBounds = zoomBoundsStart;
+  zoomBoundsEnd = self.bounds;
   zoomingIn = YES;
 
-  if (rectArea(self.zoomBounds) < ZOOM_ANIMATION_THRESHOLD * rectArea(self.bounds)) {
-    [NSAnimationContext beginGrouping];
-
-    [NSAnimationContext.currentContext setDuration: 0.5];
-    [self addZoomAnimationCompletionHandler];
-    self.animator.zoomBounds = self.bounds;
-
-    [NSAnimationContext endGrouping];
-  } else {
-    NSLog(@"Skipping zoom animation");
-    [self releaseZoomImages];
-  }
+  [self startZoomAnimation];
 
   [pathModelView moveVisibleTreeDown];
 }
@@ -349,25 +341,15 @@ CGFloat rectArea(NSRect rect) {
   zoomImage = [treeImage retain];
   // The background image is not yet known. It will be set when the zoomed out image is drawn.
   NSAssert(zoomBackgroundImage == nil, @"zoomBackgroundImage should be nil");
-  zoomBounds = self.bounds;
+  zoomBoundsStart = self.bounds;
+  zoomBounds = zoomBoundsStart;
   zoomingIn = NO;
 
   [pathModelView moveVisibleTreeUp];
 
-  zoomRefBounds = [self locationInViewForItem: pathModel.itemBelowVisibleTree
+  zoomBoundsEnd = [self locationInViewForItem: pathModel.itemBelowVisibleTree
                                        onPath: pathModel.itemPath];
-  if (rectArea(zoomRefBounds) < ZOOM_ANIMATION_THRESHOLD * rectArea(self.bounds)) {
-    [NSAnimationContext beginGrouping];
-
-    [NSAnimationContext.currentContext setDuration: 0.5];
-    [self addZoomAnimationCompletionHandler];
-    self.animator.zoomBounds = zoomRefBounds;
-
-    [NSAnimationContext endGrouping];
-  } else {
-    NSLog(@"Skipping zoom animation");
-    [self releaseZoomImages];
-  }
+  [self startZoomAnimation];
 
   // Automatically lock path as well.
   [pathModelView.pathModel setVisiblePathLocking: YES];
@@ -427,16 +409,7 @@ CGFloat rectArea(NSRect rect) {
   }
 
   if (zoomImage != nil) {
-    NSLog(@"Drawing zoom animation");
-
-    [NSColor.blackColor setFill];
-    NSRectFill(self.bounds);
-
-    zoomImage.size = zoomBounds.size;
-    [zoomImage drawAtPoint: zoomBounds.origin
-                  fromRect: NSZeroRect
-                 operation: NSCompositeCopy
-                  fraction: 1.0f];
+    [self drawZoomAnimation];
   } else if (treeImage != nil) {
     [treeImage drawAtPoint: NSZeroPoint
                   fromRect: NSZeroRect
@@ -797,6 +770,8 @@ CGFloat rectArea(NSRect rect) {
       ItemPathModel  *pathModel = pathModelView.pathModel;
       zoomImage = [[self imageInViewForItem: pathModel.itemBelowVisibleTree
                                      onPath: pathModel.itemPath] retain];
+      NSAssert(zoomBackgroundImage == nil, @"zoomBackgroundImage should be nil");
+      zoomBackgroundImage = [treeImage retain];
     }
   }
 
@@ -861,6 +836,70 @@ CGFloat rectArea(NSRect rect) {
       redrawTimer = nil;
     }
   }
+}
+
+- (void) startZoomAnimation {
+  CGFloat  areaStart = rectArea(zoomBoundsStart);
+  CGFloat  areaEnd = rectArea(zoomBoundsEnd);
+
+  if (MIN(areaStart, areaEnd) < ZOOM_ANIMATION_THRESHOLD * MAX(areaStart, areaEnd)) {
+    [NSAnimationContext beginGrouping];
+
+    [NSAnimationContext.currentContext setDuration: 3];
+    [self addZoomAnimationCompletionHandler];
+    self.animator.zoomBounds = zoomBoundsEnd;
+
+    [NSAnimationContext endGrouping];
+  } else {
+    NSLog(@"Skipping zoom animation");
+    [self releaseZoomImages];
+  }
+}
+
+- (void) drawZoomAnimation {
+  [NSColor.blackColor setFill];
+  NSRectFill(self.bounds);
+
+  if (zoomingIn) {
+//    CGFloat maxScaleX = zoomBoundsEnd.size.width / zoomBoundsStart.size.width;
+//    CGFloat maxScaleY = zoomBoundsEnd.size.height / zoomBoundsStart.size.height;
+    CGFloat scaleX = zoomBounds.size.width / zoomBoundsStart.size.width;
+    CGFloat scaleY = zoomBounds.size.height / zoomBoundsStart.size.height;
+    CGFloat fromX = scaleX * zoomBoundsStart.origin.x - zoomBounds.origin.x;
+    CGFloat fromY = scaleY * zoomBoundsStart.origin.y - zoomBounds.origin.y;
+//    NSLog(@"zoomBounds = %@", NSStringFromRect(zoomBounds));
+//    NSLog(@"(%f, %f) x (%f, %f), max = (%f, %f)", fromX, fromY, scaleX, scaleY, maxScaleX, maxScaleY);
+//    NSLog(@"Unscaled = (%f, %f)", fromX / scaleX, fromY / scaleY);
+    zoomBackgroundImage.size = NSMakeSize(zoomBoundsEnd.size.width * scaleX,
+                                          zoomBoundsEnd.size.height * scaleY);
+    [zoomBackgroundImage drawAtPoint: NSZeroPoint
+                            fromRect: NSMakeRect(fromX, fromY, self.bounds.size.width, self.bounds.size.height)
+                           operation: NSCompositeCopy
+                            fraction: 1.0f];
+  } else {
+    CGFloat maxScaleX = zoomBoundsStart.size.width / zoomBoundsEnd.size.width;
+    CGFloat maxScaleY = zoomBoundsStart.size.height / zoomBoundsEnd.size.height;
+    CGFloat scaleX = zoomBoundsStart.size.width / zoomBounds.size.width;
+    CGFloat scaleY = zoomBoundsStart.size.height / zoomBounds.size.height;
+    CGFloat fromX = scaleX * zoomBoundsEnd.origin.x - zoomBounds.origin.x;
+    CGFloat fromY = scaleY * zoomBoundsEnd.origin.y - zoomBounds.origin.y;
+    NSLog(@"zoomBounds = %@", NSStringFromRect(zoomBounds));
+    NSLog(@"(%f, %f) x (%f, %f), max = (%f, %f)", fromX, fromY, scaleX, scaleY, maxScaleX, maxScaleY);
+    NSLog(@"Unscaled = (%f, %f)", fromX / scaleX, fromY / scaleY);
+    zoomBackgroundImage.size = NSMakeSize(zoomBoundsStart.size.width * scaleX,
+                                          zoomBoundsStart.size.height * scaleY);
+    [zoomBackgroundImage drawAtPoint: NSZeroPoint
+                            fromRect: NSMakeRect(fromX, fromY, self.bounds.size.width, self.bounds.size.height)
+                           operation: NSCompositeCopy
+                            fraction: 1.0f];
+
+  }
+
+  zoomImage.size = zoomBounds.size;
+  [zoomImage drawAtPoint: zoomBounds.origin
+                fromRect: NSZeroRect
+               operation: NSCompositeCopy
+                fraction: 1.0f];
 }
 
 - (void) releaseZoomImages {
