@@ -833,7 +833,7 @@ NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
   NSObject <FileItemMapping>  *newMapping =
     [observedColorMapping fileItemMappingForTree: pathModelView.scanTree];
 
-  [self setTreeDrawerSettings: [self.treeDrawerSettings copyWithColorMapper: newMapping]];
+  [self setTreeDrawerSettings: [self.treeDrawerSettings settingsWithChangedColorMapper: newMapping]];
 
   [self postColorMappingChanged]; 
 }

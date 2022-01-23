@@ -14,7 +14,7 @@
                      colorPalette:(NSColorList *)colorPalette {
   TreeDrawerSettings  *defaultSettings = [[[TreeDrawerSettings alloc] init] autorelease];
   if (colorPalette) {
-    defaultSettings = [defaultSettings copyWithColorPalette: colorPalette];
+    defaultSettings = [defaultSettings settingsWithChangedColorPalette: colorPalette];
   }
 
   return [self initWithScanTree: scanTreeVal treeDrawerSettings: defaultSettings];

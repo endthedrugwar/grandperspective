@@ -51,7 +51,7 @@
 }
 
 
-- (id) copyWithColorMapper:(NSObject <FileItemMapping> *)colorMapperVal {
+- (id) settingsWithChangedColorMapper:(NSObject <FileItemMapping> *)colorMapperVal {
   return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapperVal
                                              colorPalette: colorPalette
                                             colorGradient: colorGradient
@@ -59,7 +59,7 @@
                                       showPackageContents: showPackageContents] autorelease];
 }
 
-- (id) copyWithColorPalette:(NSColorList *)colorPaletteVal {
+- (id) settingsWithChangedColorPalette:(NSColorList *)colorPaletteVal {
   return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
                                              colorPalette: colorPaletteVal
                                             colorGradient: colorGradient
@@ -67,7 +67,7 @@
                                       showPackageContents: showPackageContents] autorelease];
 }
 
-- (id) copyWithColorGradient:(float) colorGradientVal {
+- (id) settingsWithChangedColorGradient:(float) colorGradientVal {
   return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
                                              colorPalette: colorPalette
                                             colorGradient: colorGradientVal
@@ -75,7 +75,7 @@
                                       showPackageContents: showPackageContents] autorelease];
 }
 
-- (id) copyWithMaskTest:(FileItemTest *)maskTestVal {
+- (id) settingsWithChangedMaskTest:(FileItemTest *)maskTestVal {
   return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
                                              colorPalette: colorPalette
                                             colorGradient: colorGradient
@@ -83,7 +83,7 @@
                                       showPackageContents: showPackageContents] autorelease];
 }
 
-- (id) copyWithShowPackageContents:(BOOL) showPackageContentsVal {
+- (id) settingsWithChangedShowPackageContents:(BOOL) showPackageContentsVal {
   return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
                                              colorPalette: colorPalette
                                             colorGradient: colorGradient
