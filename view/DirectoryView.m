@@ -29,14 +29,21 @@
 #import "FileItemMappingScheme.h"
 
 #define SCROLL_WHEEL_SENSITIVITY  6.0
-#define ZOOM_ANIMATION_THRESHOLD  0.99
 
+
+#define ZOOM_ANIMATION_SKIP_THRESHOLD  0.99
+#define ZOOM_ANIMATION_MAXLEN_THRESHOLD  0.80
 
 NSString  *ColorPaletteChangedEvent = @"colorPaletteChanged";
 NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
 
 CGFloat rectArea(NSRect rect) {
   return rect.size.width * rect.size.height;
+}
+
+// Returns 0 when x <= minX, 1 when x >= maxX, and interpolates lineairly when minX < x < maxX.
+CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
+  return MIN(1, MAX(0, x - minX) / (maxX - minX));
 }
 
 @interface DirectoryView (PrivateMethods)
@@ -843,14 +850,21 @@ CGFloat rectArea(NSRect rect) {
 - (void) startZoomAnimation {
   CGFloat  areaStart = rectArea(zoomBoundsStart);
   CGFloat  areaEnd = rectArea(zoomBoundsEnd);
+  CGFloat  areaMin = MIN(areaStart, areaEnd);
+  CGFloat  areaMax = MAX(areaStart, areaEnd);
 
-  if (MIN(areaStart, areaEnd) < ZOOM_ANIMATION_THRESHOLD * MAX(areaStart, areaEnd)) {
+  CGFloat  fraction = areaMin / areaMax;
+  CGFloat  durationMultiplier = ramp(1 - fraction,
+                                     1 - ZOOM_ANIMATION_SKIP_THRESHOLD,
+                                     1 - ZOOM_ANIMATION_MAXLEN_THRESHOLD);
+
+  if (durationMultiplier > 0) {
     [treeImage release];
     treeImage = nil;
 
     [NSAnimationContext beginGrouping];
 
-    [NSAnimationContext.currentContext setDuration: 0.5];
+    [NSAnimationContext.currentContext setDuration: 0.5 * durationMultiplier];
     [self addZoomAnimationCompletionHandler];
     self.animator.zoomBounds = zoomBoundsEnd;
 
