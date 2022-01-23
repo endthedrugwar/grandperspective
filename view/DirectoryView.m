@@ -211,11 +211,6 @@ CGFloat rectArea(NSRect rect) {
                fraction: 1.0];
   [targetImage unlockFocus];
 
-  NSLog(@"imageInView: view=%@, rect=%@, image=%@",
-        NSStringFromSize(self.bounds.size),
-        NSStringFromRect(sourceRect),
-        NSStringFromSize(targetImage.size));
-
   return targetImage;
 }
 
@@ -870,11 +865,6 @@ CGFloat rectArea(NSRect rect) {
   [NSColor.whiteColor setFill];
   NSRectFill(self.bounds);
 
-//  NSLog(@"before: %@ %@ %@",
-//        NSStringFromSize(treeImage.size),
-//        NSStringFromSize(zoomImage.size),
-//        NSStringFromSize(zoomBackgroundImage.size));
-
   NSRect *zoomP = zoomingIn ? &zoomBoundsStart : &zoomBoundsEnd;
   NSRect *fullP = zoomingIn ? &zoomBoundsEnd : &zoomBoundsStart;
   CGFloat scaleX = zoomBounds.size.width / zoomP->size.width;
@@ -894,11 +884,6 @@ CGFloat rectArea(NSRect rect) {
                fromRect: NSZeroRect
               operation: NSCompositeCopy
                fraction: 1.0];
-
-//  NSLog(@"after: %@ %@ %@",
-//        NSStringFromSize(treeImage.size),
-//        NSStringFromSize(zoomImage.size),
-//        NSStringFromSize(zoomBackgroundImage.size));
 }
 
 - (void) releaseZoomImages {
