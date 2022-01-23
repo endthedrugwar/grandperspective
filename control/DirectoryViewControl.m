@@ -130,7 +130,8 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
     invisiblePathName = nil;
   }
 
-  return self;
+  // The control is responsible for itself. It auto-releases when the window closes.
+  return [self retain];
 }
 
 

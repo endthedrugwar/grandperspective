@@ -700,8 +700,7 @@ static MainMenuControl  *singletonInstance = nil;
   DirectoryViewControl  *dirViewControl = 
     [NSApplication sharedApplication].mainWindow.windowController;
 
-  // Dialog auto-disposes when its job is done.
-  [[SaveImageDialogControl alloc] initWithDirectoryViewControl: dirViewControl];
+  [[[SaveImageDialogControl alloc] initWithDirectoryViewControl: dirViewControl] autorelease];
 }
 
 - (IBAction) editPreferences:(id)sender {
@@ -996,11 +995,10 @@ static MainMenuControl  *singletonInstance = nil;
   }
 
   DirectoryViewControl  *newControl = [DirectoryViewControl alloc];
-  [newControl initWithAnnotatedTreeContext: oldControl.annotatedTreeContext
-                                 pathModel: pathModel
-                                  settings: oldControl.directoryViewControlSettings];
-  // Note: The control should auto-release itself when its window closes
-    
+  [[newControl initWithAnnotatedTreeContext: oldControl.annotatedTreeContext
+                                  pathModel: pathModel
+                                   settings: oldControl.directoryViewControlSettings] autorelease];
+
   // Force loading (and showing) of the window.
   [windowManager addWindow: newControl.window usingTitle: oldControl.window.title];
 }
@@ -1308,9 +1306,8 @@ static MainMenuControl  *singletonInstance = nil;
       noteNewRecentDocumentURL: [NSURL fileURLWithPath: scanPath]];
   }
 
-  // Note: The control should auto-release itself when its window closes 
-  DirectoryViewControl  *dirViewControl = 
-    [[self createDirectoryViewControlForAnnotatedTree: annTreeContext] retain];
+  DirectoryViewControl  *dirViewControl =
+    [self createDirectoryViewControlForAnnotatedTree: annTreeContext];
   
   NSString  *title = [MainMenuControl windowTitleForDirectoryView: dirViewControl];
   

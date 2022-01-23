@@ -33,7 +33,8 @@
     [self window];
   }
 
-  return self;
+  // Bump retain count as dialog is responsible for disposing itself.
+  return [self retain];
 }
 
 - (void) dealloc {
