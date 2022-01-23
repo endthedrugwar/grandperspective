@@ -197,15 +197,24 @@ CGFloat rectArea(NSRect rect) {
 
 - (NSImage *)imageInViewForItem:(FileItem *)item onPath:(NSArray *)itemPath {
   NSRect sourceRect = [self locationInViewForItem: item onPath: itemPath];
+  CGFloat x = ceil(sourceRect.origin.x);
+  CGFloat y = ceil(sourceRect.origin.y);
+  CGFloat w = floor(sourceRect.origin.x + sourceRect.size.width) - x;
+  CGFloat h = floor(sourceRect.origin.y + sourceRect.size.height) - y;
 
-  NSImage  *targetImage = [[[NSImage alloc] initWithSize: sourceRect.size] autorelease];
+  NSImage  *targetImage = [[[NSImage alloc] initWithSize: NSMakeSize(w, h)] autorelease];
 
   [targetImage lockFocus];
-  [treeImage drawInRect: NSMakeRect(0, 0, sourceRect.size.width, sourceRect.size.height)
-               fromRect: sourceRect
+  [treeImage drawInRect: NSMakeRect(0, 0, w, h)
+               fromRect: NSMakeRect(x, y, w, h)
               operation: NSCompositeCopy
                fraction: 1.0];
   [targetImage unlockFocus];
+
+  NSLog(@"imageInView: view=%@, rect=%@, image=%@",
+        NSStringFromSize(self.bounds.size),
+        NSStringFromRect(sourceRect),
+        NSStringFromSize(targetImage.size));
 
   return targetImage;
 }
@@ -384,18 +393,13 @@ CGFloat rectArea(NSRect rect) {
     return;
   }
   
-  if (treeImage != nil && zoomImage == nil && !NSEqualSizes(treeImage.size, self.bounds.size)) {
+  if (treeImage != nil && !NSEqualSizes(treeImage.size, self.bounds.size)) {
     // Handle resizing of the view
 
     // Scale the existing image(s) for the new size. They will be used until redrawn images are
     // available.
-    treeImage.size = self.bounds.size;
     treeImageIsScaled = YES;
-
-    if (overlayImage != nil) {
-      overlayImage.size = self.bounds.size;
-      overlayImageIsScaled = YES;
-    }
+    overlayImageIsScaled = YES;
 
     // Abort any ongoing drawing tasks
     isTreeDrawInProgress = NO;
@@ -413,16 +417,16 @@ CGFloat rectArea(NSRect rect) {
   if (zoomImage != nil) {
     [self drawZoomAnimation];
   } else if (treeImage != nil) {
-    [treeImage drawAtPoint: NSZeroPoint
-                  fromRect: NSZeroRect
-                 operation: NSCompositeCopy
-                  fraction: 1.0f];
+    [treeImage drawInRect: self.bounds
+                 fromRect: NSZeroRect
+                operation: NSCompositeCopy
+                 fraction: 1.0f];
 
     if (overlayImage != nil) {
-      [overlayImage drawAtPoint: NSZeroPoint
-                       fromRect: NSZeroRect
-                      operation: NSCompositingOperationColorDodge
-                       fraction: self.animatedOverlayStrength];
+      [overlayImage drawInRect: self.bounds
+                      fromRect: NSZeroRect
+                     operation: NSCompositingOperationColorDodge
+                      fraction: self.animatedOverlayStrength];
     }
 
     if (!treeImageIsScaled) {
@@ -754,6 +758,7 @@ CGFloat rectArea(NSRect rect) {
 
     return;
   }
+  NSLog(@"itemTreeImageReady");
 
   // Note: This method is called from the main thread (even though it has been triggered by the
   // drawer's background thread). So calling setNeedsDisplay directly is okay.
@@ -850,7 +855,7 @@ CGFloat rectArea(NSRect rect) {
 
     [NSAnimationContext beginGrouping];
 
-    [NSAnimationContext.currentContext setDuration: 3];
+    [NSAnimationContext.currentContext setDuration: 0.5];
     [self addZoomAnimationCompletionHandler];
     self.animator.zoomBounds = zoomBoundsEnd;
 
@@ -862,7 +867,7 @@ CGFloat rectArea(NSRect rect) {
 }
 
 - (void) drawZoomAnimation {
-  [NSColor.blackColor setFill];
+  [NSColor.whiteColor setFill];
   NSRectFill(self.bounds);
 
 //  NSLog(@"before: %@ %@ %@",
@@ -870,26 +875,25 @@ CGFloat rectArea(NSRect rect) {
 //        NSStringFromSize(zoomImage.size),
 //        NSStringFromSize(zoomBackgroundImage.size));
 
+  NSRect *zoomP = zoomingIn ? &zoomBoundsStart : &zoomBoundsEnd;
+  NSRect *fullP = zoomingIn ? &zoomBoundsEnd : &zoomBoundsStart;
+  CGFloat scaleX = zoomBounds.size.width / zoomP->size.width;
+  CGFloat scaleY = zoomBounds.size.height / zoomP->size.height;
   if (zoomBackgroundImage != nil) {
-    NSRect *zoomP = zoomingIn ? &zoomBoundsStart : &zoomBoundsEnd;
-    NSRect *fullP = zoomingIn ? &zoomBoundsEnd : &zoomBoundsStart;
-    CGFloat scaleX = zoomBounds.size.width / zoomP->size.width;
-    CGFloat scaleY = zoomBounds.size.height / zoomP->size.height;
-    CGFloat x = scaleX * zoomP->origin.x - zoomBounds.origin.x;
-    CGFloat y = scaleY * zoomP->origin.y - zoomBounds.origin.y;
-    zoomBackgroundImage.size = NSMakeSize(fullP->size.width * scaleX,
-                                          fullP->size.height * scaleY);
-    [zoomBackgroundImage drawAtPoint: NSZeroPoint
-                            fromRect: NSMakeRect(x, y, fullP->size.width, fullP->size.height)
+    CGFloat x = zoomP->origin.x - zoomBounds.origin.x / scaleX;
+    CGFloat y = zoomP->origin.y - zoomBounds.origin.y / scaleY;
+    [zoomBackgroundImage drawInRect: *fullP
+                           fromRect: NSMakeRect(x, y,
+                                                fullP->size.width / scaleX,
+                                                fullP->size.height / scaleY)
                            operation: NSCompositeCopy
-                            fraction: 1.0f];
+                           fraction: 0.5];
   }
 
-  zoomImage.size = zoomBounds.size;
-  [zoomImage drawAtPoint: zoomBounds.origin
-                fromRect: NSZeroRect
-               operation: NSCompositeCopy
-                fraction: 1.0f];
+  [zoomImage drawInRect: zoomBounds
+               fromRect: NSZeroRect
+              operation: NSCompositeCopy
+               fraction: 1.0];
 
 //  NSLog(@"after: %@ %@ %@",
 //        NSStringFromSize(treeImage.size),
@@ -926,10 +930,6 @@ CGFloat rectArea(NSRect rect) {
       // Only clear the images when they belong to my animation. They should not be cleared when a
       // zoom request triggered a new animation thereby aborting the previous animation.
       [self releaseZoomImages];
-
-      // One of the zoom images was also refering to the tree image and updating its size during
-      // the animation. Restore it, so that it is not needlessly regenerated.
-      treeImage.size = zoomingIn ? zoomBoundsEnd.size : zoomBoundsStart.size;
     }
   }];
 }
