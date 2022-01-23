@@ -861,15 +861,10 @@ CGFloat rectArea(NSRect rect) {
   NSRectFill(self.bounds);
 
   if (zoomingIn) {
-//    CGFloat maxScaleX = zoomBoundsEnd.size.width / zoomBoundsStart.size.width;
-//    CGFloat maxScaleY = zoomBoundsEnd.size.height / zoomBoundsStart.size.height;
     CGFloat scaleX = zoomBounds.size.width / zoomBoundsStart.size.width;
     CGFloat scaleY = zoomBounds.size.height / zoomBoundsStart.size.height;
     CGFloat fromX = scaleX * zoomBoundsStart.origin.x - zoomBounds.origin.x;
     CGFloat fromY = scaleY * zoomBoundsStart.origin.y - zoomBounds.origin.y;
-//    NSLog(@"zoomBounds = %@", NSStringFromRect(zoomBounds));
-//    NSLog(@"(%f, %f) x (%f, %f), max = (%f, %f)", fromX, fromY, scaleX, scaleY, maxScaleX, maxScaleY);
-//    NSLog(@"Unscaled = (%f, %f)", fromX / scaleX, fromY / scaleY);
     zoomBackgroundImage.size = NSMakeSize(zoomBoundsEnd.size.width * scaleX,
                                           zoomBoundsEnd.size.height * scaleY);
     [zoomBackgroundImage drawAtPoint: NSZeroPoint
@@ -877,22 +872,16 @@ CGFloat rectArea(NSRect rect) {
                            operation: NSCompositeCopy
                             fraction: 1.0f];
   } else {
-    CGFloat maxScaleX = zoomBoundsStart.size.width / zoomBoundsEnd.size.width;
-    CGFloat maxScaleY = zoomBoundsStart.size.height / zoomBoundsEnd.size.height;
-    CGFloat scaleX = zoomBoundsStart.size.width / zoomBounds.size.width;
-    CGFloat scaleY = zoomBoundsStart.size.height / zoomBounds.size.height;
+    CGFloat scaleX = zoomBounds.size.width / zoomBoundsEnd.size.width;
+    CGFloat scaleY = zoomBounds.size.height / zoomBoundsEnd.size.height;
     CGFloat fromX = scaleX * zoomBoundsEnd.origin.x - zoomBounds.origin.x;
     CGFloat fromY = scaleY * zoomBoundsEnd.origin.y - zoomBounds.origin.y;
-    NSLog(@"zoomBounds = %@", NSStringFromRect(zoomBounds));
-    NSLog(@"(%f, %f) x (%f, %f), max = (%f, %f)", fromX, fromY, scaleX, scaleY, maxScaleX, maxScaleY);
-    NSLog(@"Unscaled = (%f, %f)", fromX / scaleX, fromY / scaleY);
     zoomBackgroundImage.size = NSMakeSize(zoomBoundsStart.size.width * scaleX,
                                           zoomBoundsStart.size.height * scaleY);
     [zoomBackgroundImage drawAtPoint: NSZeroPoint
                             fromRect: NSMakeRect(fromX, fromY, self.bounds.size.width, self.bounds.size.height)
                            operation: NSCompositeCopy
                             fraction: 1.0f];
-
   }
 
   zoomImage.size = zoomBounds.size;
