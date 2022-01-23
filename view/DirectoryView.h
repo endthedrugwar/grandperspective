@@ -43,10 +43,18 @@ extern NSString  *ColorMappingChangedEvent;
 
   NSImage  *treeImage;
 
-  // The image used for zoom animations. While the zoom animation is happening, the new image is
-  // generated (and treeImage is updated when done). Therefore a separate image is used here.
+  // The images used for zoom animations. While the zoom animation is happening, the new image is
+  // generated (and treeImage is updated when done). Therefore separate images are used.
   NSImage  *zoomImage;
+  NSImage  *zoomBackgroundImage;
+
+  // The active position of the zoom area on screen
   NSRect  zoomBounds;
+
+  // When zooming in, contains the start value of the zoomBounds.
+  // When zooming out, contains the end value of the zoomBounds.
+  NSRect  zoomRefBounds;
+
   // Indicates the direction of the zoom animation.
   BOOL  zoomingIn;
   // Counter used to abort animations
