@@ -384,8 +384,10 @@ CGFloat rectArea(NSRect rect) {
     return;
   }
   
-  if (treeImage != nil && !NSEqualSizes(treeImage.size, self.bounds.size)) {
-    // Scale the existing image(s) for the new size. It will be used until a redrawn image is
+  if (treeImage != nil && zoomImage == nil && !NSEqualSizes(treeImage.size, self.bounds.size)) {
+    // Handle resizing of the view
+
+    // Scale the existing image(s) for the new size. They will be used until redrawn images are
     // available.
     treeImage.size = self.bounds.size;
     treeImageIsScaled = YES;
@@ -395,7 +397,7 @@ CGFloat rectArea(NSRect rect) {
       overlayImageIsScaled = YES;
     }
 
-    // Ensure any ongoing drawing tasks will be aborted
+    // Abort any ongoing drawing tasks
     isTreeDrawInProgress = NO;
     isOverlayDrawInProgress = NO;
   }
@@ -843,6 +845,9 @@ CGFloat rectArea(NSRect rect) {
   CGFloat  areaEnd = rectArea(zoomBoundsEnd);
 
   if (MIN(areaStart, areaEnd) < ZOOM_ANIMATION_THRESHOLD * MAX(areaStart, areaEnd)) {
+    [treeImage release];
+    treeImage = nil;
+
     [NSAnimationContext beginGrouping];
 
     [NSAnimationContext.currentContext setDuration: 3];
@@ -860,26 +865,22 @@ CGFloat rectArea(NSRect rect) {
   [NSColor.blackColor setFill];
   NSRectFill(self.bounds);
 
-  if (zoomingIn) {
-    CGFloat scaleX = zoomBounds.size.width / zoomBoundsStart.size.width;
-    CGFloat scaleY = zoomBounds.size.height / zoomBoundsStart.size.height;
-    CGFloat fromX = scaleX * zoomBoundsStart.origin.x - zoomBounds.origin.x;
-    CGFloat fromY = scaleY * zoomBoundsStart.origin.y - zoomBounds.origin.y;
-    zoomBackgroundImage.size = NSMakeSize(zoomBoundsEnd.size.width * scaleX,
-                                          zoomBoundsEnd.size.height * scaleY);
+//  NSLog(@"before: %@ %@ %@",
+//        NSStringFromSize(treeImage.size),
+//        NSStringFromSize(zoomImage.size),
+//        NSStringFromSize(zoomBackgroundImage.size));
+
+  if (zoomBackgroundImage != nil) {
+    NSRect *zoomP = zoomingIn ? &zoomBoundsStart : &zoomBoundsEnd;
+    NSRect *fullP = zoomingIn ? &zoomBoundsEnd : &zoomBoundsStart;
+    CGFloat scaleX = zoomBounds.size.width / zoomP->size.width;
+    CGFloat scaleY = zoomBounds.size.height / zoomP->size.height;
+    CGFloat x = scaleX * zoomP->origin.x - zoomBounds.origin.x;
+    CGFloat y = scaleY * zoomP->origin.y - zoomBounds.origin.y;
+    zoomBackgroundImage.size = NSMakeSize(fullP->size.width * scaleX,
+                                          fullP->size.height * scaleY);
     [zoomBackgroundImage drawAtPoint: NSZeroPoint
-                            fromRect: NSMakeRect(fromX, fromY, self.bounds.size.width, self.bounds.size.height)
-                           operation: NSCompositeCopy
-                            fraction: 1.0f];
-  } else {
-    CGFloat scaleX = zoomBounds.size.width / zoomBoundsEnd.size.width;
-    CGFloat scaleY = zoomBounds.size.height / zoomBoundsEnd.size.height;
-    CGFloat fromX = scaleX * zoomBoundsEnd.origin.x - zoomBounds.origin.x;
-    CGFloat fromY = scaleY * zoomBoundsEnd.origin.y - zoomBounds.origin.y;
-    zoomBackgroundImage.size = NSMakeSize(zoomBoundsStart.size.width * scaleX,
-                                          zoomBoundsStart.size.height * scaleY);
-    [zoomBackgroundImage drawAtPoint: NSZeroPoint
-                            fromRect: NSMakeRect(fromX, fromY, self.bounds.size.width, self.bounds.size.height)
+                            fromRect: NSMakeRect(x, y, fullP->size.width, fullP->size.height)
                            operation: NSCompositeCopy
                             fraction: 1.0f];
   }
@@ -889,6 +890,11 @@ CGFloat rectArea(NSRect rect) {
                 fromRect: NSZeroRect
                operation: NSCompositeCopy
                 fraction: 1.0f];
+
+//  NSLog(@"after: %@ %@ %@",
+//        NSStringFromSize(treeImage.size),
+//        NSStringFromSize(zoomImage.size),
+//        NSStringFromSize(zoomBackgroundImage.size));
 }
 
 - (void) releaseZoomImages {
@@ -896,6 +902,7 @@ CGFloat rectArea(NSRect rect) {
   zoomImage = nil;
   [zoomBackgroundImage release];
   zoomBackgroundImage = nil;
+  NSLog(@"released zoom images");
 }
 
 - (void) abortZoomAnimation {
@@ -916,9 +923,13 @@ CGFloat rectArea(NSRect rect) {
   [NSAnimationContext.currentContext setCompletionHandler: ^{
     NSLog(@"zoom animation completed");
     if (zoomAnimationCount == myCount) {
-      // Only clear the images when they belong to my animation. They should not be cleared when
-      // a zoom request triggered a new animation thereby aborting the previous animation.
+      // Only clear the images when they belong to my animation. They should not be cleared when a
+      // zoom request triggered a new animation thereby aborting the previous animation.
       [self releaseZoomImages];
+
+      // One of the zoom images was also refering to the tree image and updating its size during
+      // the animation. Restore it, so that it is not needlessly regenerated.
+      treeImage.size = zoomingIn ? zoomBoundsEnd.size : zoomBoundsStart.size;
     }
   }];
 }
