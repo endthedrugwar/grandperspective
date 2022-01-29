@@ -57,8 +57,6 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>GPApplicationDefaults</key>
 	<dict>
-		<key>keyboardNavigationDelta</key>
-		<integer>5</integer>
 		<key>confirmFileDeletion</key>
 		<true/>
 		<key>confirmFolderDeletion</key>
@@ -85,6 +83,8 @@
 		<string>physical</string>
 		<key>fileSizeUnitSystem</key>
 		<string>base-2</string>
+		<key>keyboardNavigationDelta</key>
+		<integer>5</integer>
 		<key>logAll</key>
 		<false/>
 		<key>logScanning</key>
