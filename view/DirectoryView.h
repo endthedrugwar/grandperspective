@@ -53,6 +53,8 @@ extern NSString  *ColorMappingChangedEvent;
   NSRect  zoomBoundsStart;
   NSRect  zoomBoundsEnd;
 
+  NSRect  pathEndRect;
+
   // Indicates the direction of the zoom animation.
   BOOL  zoomingIn;
   // Counter used to abort animations
@@ -93,6 +95,9 @@ extern NSString  *ColorMappingChangedEvent;
 
 // Property used during zoom animation.
 @property (nonatomic) NSRect zoomBounds;
+
+// Property used during animation
+@property (nonatomic) NSRect pathEndRect;
 
 @property (nonatomic) BOOL showEntireVolume;
 

@@ -14,6 +14,7 @@
 
 - (void) drawVisiblePath:(ItemPathModelView *)pathModelView
           startingAtTree:(FileItem *)treeRoot
+             withEndRect:(NSRect)endRect
       usingLayoutBuilder:(TreeLayoutBuilder *)layoutBuilder
                   bounds:(NSRect)bounds {
 
@@ -47,11 +48,11 @@
   // view and the selection is actually cleared. When highlighted, the endpoint is always drawn and
   // clearly visible, even when some/all borders align with the view's bounds, given that the bounds
   // are not expanded.
-  if (prevRect.size.width > 0 && (! NSEqualRects(prevRect, outerRect) || highlightPathEndPoint)) {
+  if (!NSIsEmptyRect(endRect) && (! NSEqualRects(endRect, outerRect) || highlightPathEndPoint)) {
     float fraction = 0.8 + 0.2 * sin([NSDate date].timeIntervalSinceReferenceDate * 3.1415);
     [[NSColor.selectedControlColor highlightWithLevel: fraction] set];
 
-    NSBezierPath  *path = [NSBezierPath bezierPathWithRect: prevRect];
+    NSBezierPath  *path = [NSBezierPath bezierPathWithRect: endRect];
     
     path.lineWidth = (highlightPathEndPoint ? 3 : 2);
     [path stroke];

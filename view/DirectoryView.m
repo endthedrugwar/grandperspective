@@ -71,6 +71,8 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 - (void) abortZoomAnimation;
 - (void) addZoomAnimationCompletionHandler;
 
+- (void) updatePathEndRect:(BOOL)animate;
+
 - (void) postColorPaletteChanged;
 - (void) postColorMappingChanged;
 
@@ -184,7 +186,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
            object: self.window];
           
   [self visiblePathLockingChanged: nil];
-  [self setNeedsDisplay: YES];
+  [self refreshDisplay];
 }
 
 
@@ -291,6 +293,16 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 - (void) setZoomBounds:(NSRect)bounds {
   zoomBounds = bounds;
   [self setNeedsLayout: YES];
+}
+
+
+- (NSRect) pathEndRect {
+  return pathEndRect;
+}
+
+- (void) setPathEndRect:(NSRect)rect {
+  pathEndRect = rect;
+  [self refreshDisplay];
 }
 
 
@@ -437,6 +449,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
       if ([pathModelView isSelectedFileItemVisible]) {
         [pathDrawer drawVisiblePath: pathModelView
                      startingAtTree: self.treeInView
+                        withEndRect: pathEndRect
                  usingLayoutBuilder: layoutBuilder
                              bounds: self.bounds];
       }
@@ -625,12 +638,16 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   NSPoint  mouseLoc = [self convertPoint: loc fromView: nil];
   BOOL isInside = [self mouse: mouseLoc inRect: self.bounds];
 
+  NSLog(@"mouseMoved inside = %d", isInside);
   if (isInside) {
     [self updateSelectedItem: mouseLoc];
   }
   else {
     [pathModelView.pathModel clearVisiblePath];
   }
+
+  // Ensure end-point changes immediately (without animation)
+  [self updatePathEndRect: NO];
 }
 
 
@@ -686,7 +703,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 }
 
 + (id)defaultAnimationForKey:(NSString *)key {
-  if ([key isEqualToString: @"zoomBounds"]) {
+  if ([key isEqualToString: @"zoomBounds"] || [key isEqualToString: @"pathEndRect"]) {
     return [CABasicAnimation animation];
   }
 
@@ -710,7 +727,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
 - (void) forceRedraw {
   NSLog(@"Forcing redraw");
-  [self setNeedsDisplay: YES];
+  [self refreshDisplay];
 
   // Discard the existing image
   [treeImage release];
@@ -724,7 +741,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
 - (void) forceOverlayRedraw {
   //NSLog(@"Forcing overlay redraw");
-  [self setNeedsDisplay: YES];
+  [self refreshDisplay];
 
   [overlayImage release];
   overlayImage = nil;
@@ -787,7 +804,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
     }
   }
 
-  [self setNeedsDisplay: YES];
+  [self refreshDisplay];
 }
 
 - (void) startOverlayDrawTask {
@@ -818,7 +835,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
     overlayImageIsScaled = NO;
     isOverlayDrawInProgress = NO;
 
-    [self setNeedsDisplay: YES];
+    [self refreshDisplay];
   }
 }
 
@@ -936,6 +953,19 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   }];
 }
 
+- (void) updatePathEndRect:(BOOL)animate {
+  ItemPathModel  *pathModel = pathModelView.pathModel;
+  NSRect  newPathEndRect = [self locationInViewForItem: pathModel.selectedFileItem
+                                                onPath: pathModel.itemPath];
+
+  if (!NSEqualRects(newPathEndRect, pathEndRect)) {
+    [NSAnimationContext beginGrouping];
+    [NSAnimationContext.currentContext setDuration: animate ? 0.3 : 0];
+    self.animator.pathEndRect = newPathEndRect;
+    [NSAnimationContext endGrouping];
+  }
+}
+
 - (void) postColorPaletteChanged {
   [[NSNotificationCenter defaultCenter] postNotificationName: ColorPaletteChangedEvent
                                                       object: self];
@@ -946,14 +976,17 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
                                                       object: self];
 }
 
-
 /* Called when selection changes in path
  */
 - (void) selectedItemChanged:(NSNotification *)notification {
-  [self setNeedsDisplay: YES];
+  [self updatePathEndRect: YES];
+
+  [self refreshDisplay];
 }
 
 - (void) visibleTreeChanged:(NSNotification *)notification {
+  [self updatePathEndRect: NO];
+
   [self forceRedraw];
 }
 
@@ -966,7 +999,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
  
   [self updateAcceptMouseMovedEvents];
   
-  [self setNeedsDisplay: YES];
+  [self refreshDisplay];
 }
 
 - (void) windowMainStatusChanged:(NSNotification *)notification {
