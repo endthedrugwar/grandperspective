@@ -9,14 +9,12 @@
 /* Begin PBXBuildFile section */
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
-		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		AA054A912393C439001A5826 /* RawTreeWriterOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = AA054A902393C439001A5826 /* RawTreeWriterOptions.m */; };
 		AA054A9523940BE4001A5826 /* ExportAsTextDialogControl.m in Sources */ = {isa = PBXBuildFile; fileRef = AA054A9323940BE4001A5826 /* ExportAsTextDialogControl.m */; };
 		AA054A9923942FE0001A5826 /* ExportAsTextDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA054A9723942FE0001A5826 /* ExportAsTextDialog.xib */; };
 		AA0CDE711544995C0018D583 /* TimeBasedMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0CDE701544995C0018D583 /* TimeBasedMapping.m */; };
 		AA0CDE7415487FF60018D583 /* CreationMappingScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0CDE7315487FF60018D583 /* CreationMappingScheme.m */; };
 		AA0CDE77154882BF0018D583 /* ModificationMappingScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0CDE76154882BE0018D583 /* ModificationMappingScheme.m */; };
-		AA0F0A71279BFD8200F91C9F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0F0A70279BFD8200F91C9F /* QuartzCore.framework */; };
 		AA1115C40A84CA320023C5CD /* DirectoryViewControlSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = AA1115C20A84CA320023C5CD /* DirectoryViewControlSettings.m */; };
 		AA12225A0EF2A822002A178F /* Toolbar.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA1222580EF2A822002A178F /* Toolbar.strings */; };
 		AA13BAD30B8A5747000AEAA9 /* Palettes in Resources */ = {isa = PBXBuildFile; fileRef = AA13BA8D0B8A5746000AEAA9 /* Palettes */; };
@@ -162,7 +160,6 @@
 		AAC9B6490B7FA94A002B3ECE /* GrandPerspectiveHelp in Resources */ = {isa = PBXBuildFile; fileRef = AAC9B6340B7FA94A002B3ECE /* GrandPerspectiveHelp */; };
 		AAD1BC63249D39E900F749EB /* TreeDrawerBase.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD1BC62249D39E900F749EB /* TreeDrawerBase.m */; };
 		AAD50FCE21BDB30F00784BBF /* AlertMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD50FCD21BDB30F00784BBF /* AlertMessage.m */; };
-		AAD85B9D1CD92FD300B3AF28 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD85B9C1CD92FD300B3AF28 /* Security.framework */; };
 		AAD8DFB30B077ED20060DADA /* PreferencesPanelControl.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD8DFB20B077ED20060DADA /* PreferencesPanelControl.m */; };
 		AADD34930B8B902000AC2C97 /* Tests.strings in Resources */ = {isa = PBXBuildFile; fileRef = AADD34910B8B902000AC2C97 /* Tests.strings */; };
 		AAE476C21D0D945E007CF42F /* RecentDocumentTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE476C11D0D945E007CF42F /* RecentDocumentTableCellView.m */; };
@@ -184,10 +181,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
-		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* GrandPerspective.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GrandPerspective.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA0490351CFB3A4200ADAA76 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/FilterSelectionPanel.strings; sourceTree = "<group>"; };
@@ -221,7 +215,6 @@
 		AA0DD93922F6F5BA00D9F9B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Taglines.strings; sourceTree = "<group>"; };
 		AA0DD93A22F6F5BA00D9F9B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Tests.strings; sourceTree = "<group>"; };
 		AA0DD93B22F6F5BA00D9F9B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Toolbar.strings; sourceTree = "<group>"; };
-		AA0F0A70279BFD8200F91C9F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		AA1049BF1511582C003C041C /* Compatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Compatibility.h; path = util/Compatibility.h; sourceTree = "<group>"; };
 		AA1115C10A84CA320023C5CD /* DirectoryViewControlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DirectoryViewControlSettings.h; path = control/DirectoryViewControlSettings.h; sourceTree = "<group>"; };
 		AA1115C20A84CA320023C5CD /* DirectoryViewControlSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DirectoryViewControlSettings.m; path = control/DirectoryViewControlSettings.m; sourceTree = "<group>"; };
@@ -594,7 +587,6 @@
 		AAD702BD1CE9C306005AA800 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SaveImageDialog.xib; sourceTree = "<group>"; };
 		AAD702BE1CE9C306005AA800 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/StartWindow.xib; sourceTree = "<group>"; };
 		AAD702BF1CE9C306005AA800 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ProgressPanel.xib; sourceTree = "<group>"; };
-		AAD85B9C1CD92FD300B3AF28 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		AAD8DFB00B077EB90060DADA /* PreferencesPanelControl.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PreferencesPanelControl.h; path = control/PreferencesPanelControl.h; sourceTree = "<group>"; };
 		AAD8DFB20B077ED20060DADA /* PreferencesPanelControl.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = PreferencesPanelControl.m; path = control/PreferencesPanelControl.m; sourceTree = "<group>"; };
 		AADD349A0B8B905900AC2C97 /* nl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Tests.strings; sourceTree = "<group>"; };
@@ -650,9 +642,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA0F0A71279BFD8200F91C9F /* QuartzCore.framework in Frameworks */,
-				AAD85B9D1CD92FD300B3AF28 /* Security.framework in Frameworks */,
-				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -674,23 +663,6 @@
 			name = Classes;
 			sourceTree = "<group>";
 		};
-		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
-			);
-			name = "Linked Frameworks";
-			sourceTree = "<group>";
-		};
-		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
-				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
-			);
-			name = "Other Frameworks";
-			sourceTree = "<group>";
-		};
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -706,7 +678,6 @@
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
-				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
 			indentWidth = 2;
@@ -754,17 +725,6 @@
 				AAC9B6340B7FA94A002B3ECE /* GrandPerspectiveHelp */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
-		};
-		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				AA0F0A70279BFD8200F91C9F /* QuartzCore.framework */,
-				AAD85B9C1CD92FD300B3AF28 /* Security.framework */,
-				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
-				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		AA2184AE0A26F9C6000E1C8C /* test */ = {
