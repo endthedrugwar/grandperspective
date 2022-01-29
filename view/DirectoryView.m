@@ -337,8 +337,6 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   // Initiate zoom animation
   ItemPathModel  *pathModel = pathModelView.pathModel;
 
-  NSLog(@"starting zoom-in animation");
-
   // If an animation is ongoing, abort it so it won't interfere
   [self abortZoomAnimation];
 
@@ -638,7 +636,6 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   NSPoint  mouseLoc = [self convertPoint: loc fromView: nil];
   BOOL isInside = [self mouse: mouseLoc inRect: self.bounds];
 
-  NSLog(@"mouseMoved inside = %d", isInside);
   if (isInside) {
     [self updateSelectedItem: mouseLoc];
   }
@@ -726,7 +723,6 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 }
 
 - (void) forceRedraw {
-  NSLog(@"Forcing redraw");
   [self refreshDisplay];
 
   // Discard the existing image
@@ -740,7 +736,6 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 }
 
 - (void) forceOverlayRedraw {
-  //NSLog(@"Forcing overlay redraw");
   [self refreshDisplay];
 
   [overlayImage release];
@@ -750,7 +745,6 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 }
 
 - (void) startTreeDrawTask {
-  //NSLog(@"Starting draw task");
   NSAssert(self.bounds.origin.x == 0 && self.bounds.origin.y == 0, @"Bounds not at (0, 0)");
 
   // Create image in background thread.
@@ -780,7 +774,6 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
     return;
   }
-  NSLog(@"itemTreeImageReady");
 
   // Note: This method is called from the main thread (even though it has been triggered by the
   // drawer's background thread). So calling setNeedsDisplay directly is okay.
@@ -808,7 +801,6 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 }
 
 - (void) startOverlayDrawTask {
-  //NSLog(@"Starting overlay draw task");
   NSAssert(self.bounds.origin.x == 0 && self.bounds.origin.y == 0, @"Bounds not at (0, 0)");
 
   // Create image in background thread.
@@ -828,8 +820,6 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
 - (void) overlayImageReady:(id)image {
   if (image != nil) {
-    //NSLog(@"Completed overlay draw task");
-
     [overlayImage release];
     overlayImage = [image retain];
     overlayImageIsScaled = NO;
@@ -890,7 +880,6 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
     [NSAnimationContext endGrouping];
   } else {
-    NSLog(@"Skipping zoom animation");
     [self releaseZoomImages];
   }
 }
@@ -925,7 +914,6 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   zoomImage = nil;
   [zoomBackgroundImage release];
   zoomBackgroundImage = nil;
-  NSLog(@"released zoom images");
 }
 
 - (void) abortZoomAnimation {
@@ -944,7 +932,6 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   NSInteger  myCount = ++zoomAnimationCount;
 
   [NSAnimationContext.currentContext setCompletionHandler: ^{
-    NSLog(@"zoom animation completed");
     if (zoomAnimationCount == myCount) {
       // Only clear the images when they belong to my animation. They should not be cleared when a
       // zoom request triggered a new animation thereby aborting the previous animation.
