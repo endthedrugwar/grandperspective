@@ -457,7 +457,12 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
 
 - (BOOL) isOpaque {
-  return YES;
+  // This setting was originally set to YES for performance reasons. The views contents are rendered
+  // using a view-spanning image without transparency, so the view is fully opaque. However, this
+  // setting causes drawing artifacts when zooming in (#94: Black pixel artefacts during zoom-in
+  // animation). These may be due to a problem in the underlying framework. Maybe this will
+  // eventually be fixed, but until then, falling back to the default NO setting.
+  return NO;
 }
 
 - (BOOL) acceptsFirstResponder {
