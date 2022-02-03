@@ -890,9 +890,6 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 }
 
 - (void) drawZoomAnimation {
-  [NSColor.whiteColor setFill];
-  NSRectFill(self.bounds);
-
   NSRect *zoomP = zoomingIn ? &zoomBoundsStart : &zoomBoundsEnd;
   NSRect *fullP = zoomingIn ? &zoomBoundsEnd : &zoomBoundsStart;
   CGFloat scaleX = zoomBounds.size.width / zoomP->size.width;
@@ -906,6 +903,9 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
                                                 fullP->size.height / scaleY)
                            operation: NSCompositeCopy
                            fraction: 0.5];
+  } else {
+    [NSColor.blackColor setFill];
+    NSRectFill(self.bounds);
   }
 
   [zoomImage drawInRect: zoomBounds
