@@ -1,22 +1,21 @@
-"num-taglines" = "7";
+/* Tag line in Welcome window */
+"tagline-1" = "auttaa palauttamaan menetetyn levytilan";
 
 /* Tag line in Welcome window */
-"tagline-1" = "helps you recover lost disk space";
+"tagline-2" = "auttaa sinua etsiämään valtavia tilan tuhlaajia";
 
 /* Tag line in Welcome window */
-"tagline-2" = "lets you track and hunt giant space wasters";
+"tagline-3" = "paljastaa mihin vapaa levytilasi on kadonnut";
 
 /* Tag line in Welcome window */
-"tagline-3" = "reveals where your free disk space went";
+"tagline-4" = "näyttää levytilan käytön graafisesti";
 
 /* Tag line in Welcome window */
-"tagline-4" = "graphically shows your disk usage";
+"tagline-5" = "luo levytilastasi kauniita kuvia";
 
 /* Tag line in Welcome window */
-"tagline-5" = "makes pretty pictures of your harddrive";
+"tagline-6" = "etsii valtavat tiedostot jotka kahmivat levytilaasi";
 
 /* Tag line in Welcome window */
-"tagline-6" = "finds those giant files that suck up your disk space";
+"tagline-7" = "paljastaa tilaa vievät tiedostot ja hakemistot";
 
-/* Tag line in Welcome window */
-"tagline-7" = "uncovers space-hogging files and folders";

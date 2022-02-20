@@ -1,75 +1,87 @@
 /* Toolbar action */
-"Delete" = "Delete";
+"Delete" = "Poista";
 
 /* Toolbar action */
-"Drawer" = "Drawer";
+"Drawer" = "Sivuikkuna";
 
 /* Label for focus controls */
-"Focus" = "Focus";
+"Focus" = "Kohdistus";
 
 /* Menu item */
-"Hide Toolbar" = "Hide Toolbar";
+"Hide Toolbar" = "Piilota työkalupalkki";
 
 /* Toolbar action */
-"Move focus down" = "Move focus down";
+"Info" = "Info";
 
 /* Toolbar action */
-"Move focus up" = "Move focus up";
+"Move focus down" = "Vie kohdistusta alaspäin";
+
+/* Toolbar action */
+"Move focus up" = "Vie kohdistusta ylöspäin";
 
 /* Tooltip */
-"Move to trash" = "Move to trash";
+"Move to trash" = "Vie roskakoriin";
 
 /* Toolbar action */
-"Open" = "Open";
+"Open" = "Avaa";
 
 /* Tooltip */
-"Open with Finder" = "Open with Finder";
+"Open with Finder" = "Avaa Finderissa";
 
 /* Tooltip */
-"Open/close drawer" = "Open/close drawer";
+"Open/close drawer" = "Avaa/sulje sivuikkuna";
 
 /* Tooltip */
-"Preview item in Quick Look panel" = "Preview item in Quick Look panel";
+"Preview item in Quick Look panel" = "Esikatsele pikakurkistus paneelissa";
 
 /* Toolbar action */
-"Quick Look" = "Quick Look";
+"Quick Look" = "Pikakurkistus";
 
 /* Toolbar action */
-"Rescan" = "Rescan";
+"Rescan" = "Skannaa uudelleen";
 
 /* Toolbar action */
-"Rescan all" = "Rescan all";
+"Rescan all" = "Skannaa kaikki uudelleen";
 
 /* Toolbar action */
-"Rescan folder in view" = "Rescan folder in view";
+"Rescan folder in view" = "Skannaa näkyvä hakemisto uudelleen";
 
 /* Toolbar action */
-"Rescan selected" = "Rescan selected";
+"Rescan selected" = "Skannaa valittu uudelleen";
 
 /* Tooltip */
-"Rescan view data" = "Rescan view data";
+"Rescan view data" = "Skannaa näkyvissä oleva data uudelleen";
 
 /* Toolbar action */
-"Reset focus" = "Reset focus";
+"Rescan with mask as filter" = "Skannaa uudelleen käyttäen maskia suotimena";
 
 /* Toolbar action */
-"Reset zoom" = "Reset zoom";
+"Reset focus" = "Nollaa kohdistus";
 
 /* Toolbar action */
-"Reveal" = "Reveal";
+"Reset zoom" = "Nollaa suurennus";
+
+/* Toolbar action */
+"Reveal" = "Paljasta";
 
 /* Tooltip */
-"Reveal in Finder" = "Reveal in Finder";
+"Reveal in Finder" = "Paljasta Finderissa";
+
+/* Tooltip */
+"Search files by name" = "Hae tiedostoja nimen perusteella";
+
+/* Tooltip */
+"Show info" = "Näytä info";
 
 /* Menu item */
-"Show Toolbar" = "Show Toolbar";
+"Show Toolbar" = "Näytä työkalupalkki";
 
 /* Label for zooming controls */
-"Zoom" = "Zoom";
+"Zoom" = "Suurennus";
 
 /* Toolbar action */
-"Zoom in" = "Zoom in";
+"Zoom in" = "Lähennä";
 
 /* Toolbar action */
-"Zoom out" = "Zoom out";
+"Zoom out" = "Loitonna";
 
