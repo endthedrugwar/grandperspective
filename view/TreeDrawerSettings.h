@@ -25,11 +25,11 @@
                             maskTest:(FileItemTest *)maskTest
                  showPackageContents:(BOOL)showPackageContents NS_DESIGNATED_INITIALIZER;
 
-- (id) copyWithColorMapper:(NSObject <FileItemMapping> *)colorMapper;
-- (id) copyWithColorPalette:(NSColorList *)colorPalette;
-- (id) copyWithColorGradient:(float)colorGradient;
-- (id) copyWithMaskTest:(FileItemTest *)maskTest;
-- (id) copyWithShowPackageContents:(BOOL)showPackageContents;
+- (id) settingsWithChangedColorMapper:(NSObject <FileItemMapping> *)colorMapper;
+- (id) settingsWithChangedColorPalette:(NSColorList *)colorPalette;
+- (id) settingsWithChangedColorGradient:(float)colorGradient;
+- (id) settingsWithChangedMaskTest:(FileItemTest *)maskTest;
+- (id) settingsWithChangedShowPackageContents:(BOOL)showPackageContents;
 
 @property (nonatomic, readonly, strong) NSObject<FileItemMapping> *colorMapper;
 @property (nonatomic, readonly, strong) NSColorList *colorPalette;

@@ -38,6 +38,7 @@ NSString  *CustomFileRevealApplication = @"customFileRevealApplication";
 NSString  *UpdateFiltersBeforeUse = @"updateFiltersBeforeUse";
 NSString  *TreeMemoryZoneKey = @"treeMemoryZone";
 NSString  *DelayBeforeWelcomeWindowAfterStartupKey = @"delayBeforeWelcomeWindowAfterStartup";
+NSString  *KeyboardNavigationDeltaKey = @"keyboardNavigationDelta";
 
 @interface PreferencesPanelControl (PrivateMethods)
 

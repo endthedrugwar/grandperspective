@@ -83,6 +83,8 @@
 		<string>physical</string>
 		<key>fileSizeUnitSystem</key>
 		<string>base-2</string>
+		<key>keyboardNavigationDelta</key>
+		<integer>5</integer>
 		<key>logAll</key>
 		<false/>
 		<key>logScanning</key>
@@ -92,7 +94,7 @@
 		<key>noViewsBehaviour</key>
 		<string>show welcome</string>
 		<key>progressPanelRefreshRate</key>
-		<real>0.20000000000000001</real>
+		<real>0.2</real>
 		<key>rescanBehaviour</key>
 		<string>keep old window</string>
 		<key>showEntireVolumeByDefault</key>

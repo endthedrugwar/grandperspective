@@ -56,12 +56,6 @@ NSString  *TallyFileSizeName = @"tally";
 
 @end // @interface ScanStackFrame
 
-@interface TreeBuilder ()
-
-// Re-declare to allow writing internally
-@property (nonatomic, readwrite, strong) NSAlert *informativeAlert;
-
-@end
 
 @interface TreeBuilder (PrivateMethods)
 

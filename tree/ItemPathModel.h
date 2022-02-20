@@ -18,7 +18,7 @@ extern NSString  *FriendlySizeKey;
   TreeContext  *treeContext;
 
   // Contains the Items from the root until the end of the path.
-  NSMutableArray  *path;
+  NSMutableArray<Item *>  *path;
 
   // The index in the path array where the subtree starts (always a FileItem)
   NSUInteger  visibleTreeIndex;
@@ -98,6 +98,11 @@ extern NSString  *FriendlySizeKey;
  */
 @property (nonatomic, readonly, strong) FileItem *visibleTree;
 
+/* Returns the file item immediately below the visible tree. This will be the visibleTree after
+ * invoking moveVisibleTreeDown.
+ */
+@property (nonatomic, readonly, strong) FileItem *itemBelowVisibleTree;
+
 /* Returns the selected file item. It is always part of the visible path.
  */
 @property (nonatomic, readonly, strong) FileItem *selectedFileItem;
@@ -112,6 +117,13 @@ extern NSString  *FriendlySizeKey;
  */
 - (void) selectFileItem:(FileItem *)fileItem;
 
+/* Indicates if the visible path is locked. The selected item will only follow the mouse pointer
+ * when locking is disabled.
+ *
+ * Note: When locking is enabled, it is possible to change the selected item via keyboard
+ * navigation. This is in fact a pre-requisite (so that there is no interference with control via
+ * the mouse)
+ */
 @property (nonatomic, getter=isVisiblePathLocked, readonly) BOOL visiblePathLocked;
 - (void) setVisiblePathLocking:(BOOL)value;
 

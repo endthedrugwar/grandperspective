@@ -65,8 +65,8 @@
 
 - (IBAction) addFilter:(id)sender {
   [self filterEditor];
-  NamedFilter  *newFilter = [filterEditor newNamedFilter];
-  [self selectFilterNamed: [newFilter name]];
+  NamedFilter  *newFilter = [filterEditor createNamedFilter];
+  [self selectFilterNamed: newFilter.name];
 }
 
 - (IBAction) okAction:(id)sender {

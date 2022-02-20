@@ -61,12 +61,12 @@ NSString  *FriendlySizeKey = @"friendlySize";
   
     path = [[NSMutableArray alloc] initWithCapacity: 64];
     
-    [path addObject: [treeContext volumeTree]];
+    [path addObject: treeContext.volumeTree];
     lastFileItemIndex = 0;
     visibleTreeIndex = 0;
     selectedItemIndex = 0;
     
-    BOOL  ok = [self buildPathToFileItem: [treeContext scanTree]];
+    BOOL  ok = [self buildPathToFileItem: treeContext.scanTree];
     NSAssert(ok, @"Failed to extend path to scan tree.");
     scanTreeIndex = lastFileItemIndex;
     visibleTreeIndex = lastFileItemIndex;
@@ -106,7 +106,7 @@ NSString  *FriendlySizeKey = @"friendlySize";
 }
 
 - (void) dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver: self];
+  [NSNotificationCenter.defaultCenter removeObserver: self];
   
   [treeContext release];
   [path release];
@@ -151,23 +151,23 @@ NSString  *FriendlySizeKey = @"friendlySize";
 }
 
 - (DirectoryItem *)volumeTree {
-  return path[0];
+  return (DirectoryItem *)path[0];
 }
 
 - (DirectoryItem *)scanTree {
-  return path[scanTreeIndex];
+  return (DirectoryItem *)path[scanTreeIndex];
 }
 
 - (FileItem *)visibleTree {
-  return path[visibleTreeIndex];
+  return (FileItem *)path[visibleTreeIndex];
 }
 
 - (FileItem *)selectedFileItem {
-  return path[selectedItemIndex];
+  return (FileItem *)path[selectedItemIndex];
 }
 
 - (FileItem *)lastFileItem {
-  return path[lastFileItemIndex];
+  return (FileItem *)path[lastFileItemIndex];
 }
 
 
@@ -190,14 +190,14 @@ NSString  *FriendlySizeKey = @"friendlySize";
     if (lastNotifiedSelectedItem != nil) {
       return; // Already suppressing notifications.
     }
-    lastNotifiedSelectedItem = [[self selectedFileItem] retain];
+    lastNotifiedSelectedItem = [self.selectedFileItem retain];
   }
   else {
     if (lastNotifiedSelectedItem == nil) {
       return; // Already instantaneously generating notifications.
     }
     
-    BOOL  changed = (lastNotifiedSelectedItem != [self selectedFileItem]);
+    BOOL  changed = (lastNotifiedSelectedItem != self.selectedFileItem);
 
     [lastNotifiedSelectedItem release];
     lastNotifiedSelectedItem = nil;
@@ -213,14 +213,14 @@ NSString  *FriendlySizeKey = @"friendlySize";
     if (lastNotifiedVisibleTree != nil) {
       return; // Already suppressing notifications.
     }
-    lastNotifiedVisibleTree = [[self visibleTree] retain];
+    lastNotifiedVisibleTree = [self.visibleTree retain];
   }
   else {
     if (lastNotifiedVisibleTree == nil) {
       return; // Already instantaneously generating notifications.
     }
     
-    BOOL  changed = (lastNotifiedVisibleTree != [self visibleTree]);
+    BOOL  changed = (lastNotifiedVisibleTree != self.visibleTree);
     
     [lastNotifiedVisibleTree release];
     lastNotifiedVisibleTree = nil;
@@ -232,9 +232,9 @@ NSString  *FriendlySizeKey = @"friendlySize";
 }
 
 
-
 - (BOOL) clearVisiblePath {
-  NSAssert(!visiblePathLocked, @"Cannot clear path when locked.");
+  // The below assertion is not valid anymore. Keyboard navigation can now change locked paths.
+  //NSAssert(!visiblePathLocked, @"Cannot clear path when locked.");
 
   NSUInteger  num = path.count - visibleTreeIndex - 1;
 
@@ -253,7 +253,8 @@ NSString  *FriendlySizeKey = @"friendlySize";
 }
 
 - (void) extendVisiblePath:(Item *)nextItem {
-  NSAssert(!visiblePathLocked, @"Cannot extend path when locked.");
+  // The below assertion is not valid anymore. Keyboard navigation can now change locked paths.
+  //NSAssert(!visiblePathLocked, @"Cannot extend path when locked.");
    
   [path addObject: nextItem]; 
 
@@ -288,9 +289,21 @@ NSString  *FriendlySizeKey = @"friendlySize";
 
   do {
     visibleTreeIndex--;
-  } while ([path[visibleTreeIndex] isVirtual]);
+  } while (path[visibleTreeIndex].isVirtual);
   
   [self postVisibleTreeChanged];
+}
+
+
+- (FileItem *)itemBelowVisibleTree {
+  NSAssert([self canMoveVisibleTreeDown], @"Cannot move down.");
+
+  NSUInteger  index = visibleTreeIndex;
+  do {
+    index++;
+  } while (path[index].isVirtual);
+
+  return (FileItem *)path[index];
 }
 
 - (void) moveVisibleTreeDown {
@@ -298,7 +311,7 @@ NSString  *FriendlySizeKey = @"friendlySize";
 
   do {
     visibleTreeIndex++;
-  } while ([path[visibleTreeIndex] isVirtual]);
+  } while (path[visibleTreeIndex].isVirtual);
   
   if (selectedItemIndex < visibleTreeIndex) {
     // Ensure that the selected file item is always in the visible path
@@ -349,8 +362,8 @@ NSString  *FriendlySizeKey = @"friendlySize";
 }
 
 - (void) fileItemDeleted:(NSNotification *)notification {
-  FileItem  *replacedItem = [treeContext replacedFileItem];
-  FileItem  *replacingItem = [treeContext replacingFileItem];
+  FileItem  *replacedItem = treeContext.replacedFileItem;
+  FileItem  *replacingItem = treeContext.replacingFileItem;
 
   // Check if all items in the path are still valid
   for (NSUInteger i = path.count; i-- > 0; ) {
@@ -389,7 +402,7 @@ NSString  *FriendlySizeKey = @"friendlySize";
   }
 
   // Check if the replaced item was part of the visible tree.
-  FileItem  *visibleTree = [self visibleTree];
+  FileItem  *visibleTree = self.visibleTree;
   FileItem  *item = replacingItem;
   do {
     if (item == visibleTree) {
@@ -398,7 +411,7 @@ NSString  *FriendlySizeKey = @"friendlySize";
       break;
     }
     
-    item = [item parentDirectory];
+    item = item.parentDirectory;
   } while (item != nil);
 }
 
@@ -411,9 +424,9 @@ NSString  *FriendlySizeKey = @"friendlySize";
 
   NSString  *itemSize = [treeContext stringForFileItemSize: self.selectedFileItem.itemSize];
 
-  [[NSNotificationCenter defaultCenter] postNotificationName: SelectedItemChangedEvent
-                                                      object: self
-                                                    userInfo: @{FriendlySizeKey: itemSize}];
+  [NSNotificationCenter.defaultCenter postNotificationName: SelectedItemChangedEvent
+                                                    object: self
+                                                  userInfo: @{FriendlySizeKey: itemSize}];
 }
 
 - (void) postVisibleTreeChanged {
@@ -422,25 +435,24 @@ NSString  *FriendlySizeKey = @"friendlySize";
     return;
   }
 
-  [[NSNotificationCenter defaultCenter] postNotificationName: VisibleTreeChangedEvent
-                                                      object: self];
+  [NSNotificationCenter.defaultCenter postNotificationName: VisibleTreeChangedEvent
+                                                    object: self];
 }
 
 - (void) postVisiblePathLockingChanged {
-  [[NSNotificationCenter defaultCenter] postNotificationName: VisiblePathLockingChangedEvent
-                                                      object: self];
+  [NSNotificationCenter.defaultCenter postNotificationName: VisiblePathLockingChangedEvent
+                                                    object: self];
 }
 
 
 - (BOOL) buildPathToFileItem:(FileItem *)targetItem {
   Item  *lastItem = path.lastObject;
   
-  if ([lastItem isVirtual]) {
+  if (lastItem.isVirtual) {
     // Can only extend from a file item.
     return NO;
   }
-  
-  
+
   NSMutableArray  *items = [NSMutableArray arrayWithCapacity: 16];
 
   // Collect all file items on the path (by ascending the file hierarchy)
@@ -448,7 +460,7 @@ NSString  *FriendlySizeKey = @"friendlySize";
   while (item != lastItem) {
     [items addObject: item];
 
-    item = [item parentDirectory];
+    item = item.parentDirectory;
     NSAssert(item != nil, @"Did not find path end-point in ancestors.");
   }
   
@@ -472,7 +484,7 @@ NSString  *FriendlySizeKey = @"friendlySize";
 
   NSUInteger  i = start;
   while (i <= end) {
-    if (![path[i] isVirtual]) {
+    if (!path[i].isVirtual) {
       [array addObject: path[i]];
     }
     i++;
@@ -487,8 +499,7 @@ NSString  *FriendlySizeKey = @"friendlySize";
   NSAssert(!visiblePathLocked, @"Cannot extend path when locked.");
   
   Item  *pathEndPoint = path.lastObject;
-  if ([pathEndPoint isVirtual] || 
-      ! [((FileItem *)pathEndPoint) isDirectory]) {
+  if (pathEndPoint.isVirtual || ! ((FileItem *)pathEndPoint).isDirectory) {
     // Can only extend from a DirectoryItem
     return NO;
   }
@@ -502,7 +513,7 @@ NSString  *FriendlySizeKey = @"friendlySize";
     return NO;
   }
   
-  NSAssert(! [[path lastObject] isVirtual], @"Unexpected virtual endpoint.");
+  NSAssert(! path.lastObject.isVirtual, @"Unexpected virtual endpoint.");
   lastFileItemIndex = path.count - 1;
 
   return YES;
@@ -515,7 +526,7 @@ NSString  *FriendlySizeKey = @"friendlySize";
            
   [path addObject: current];
   
-  if ([current isVirtual]) {
+  if (current.isVirtual) {
     CompoundItem  *compoundItem = (CompoundItem*)current;
     
     if ([self extendVisiblePathToFileItem: target
@@ -534,9 +545,9 @@ NSString  *FriendlySizeKey = @"friendlySize";
 
     if (target == fileItem ||
           (similar &&
-             ([[fileItem label] isEqualToString: [target label]] &&
-              [fileItem isDirectory] == [target isDirectory] &&
-              [fileItem isPhysical] == [target isPhysical]))) {
+             ([fileItem.label isEqualToString: target.label] &&
+              fileItem.isDirectory == target.isDirectory &&
+              fileItem.isPhysical == target.isPhysical))) {
       return YES;
     }
   }

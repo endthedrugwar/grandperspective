@@ -4,6 +4,8 @@
 #import "DirectoryItem.h" // Imports FileItem.h
 #import "ItemPathModel.h"
 #import "ItemPathBuilder.h"
+#import "ItemLocator.h"
+#import "PreferencesPanelControl.h"
 
 
 #define STICK_TO_ENDPOINT  0xFFFF
@@ -49,8 +51,9 @@
   if (self = [super init]) {
     pathModel = [pathModelVal retain];
     pathBuilder = [[ItemPathBuilder alloc] init];
+    itemLocator = [[ItemLocator alloc] init];
     fileItemPath =
-      (NSMutableArray *)[pathModel fileItemPath: [[NSMutableArray alloc] initWithCapacity: 16]];
+      (NSMutableArray *)[[pathModel fileItemPath: [NSMutableArray arrayWithCapacity: 16]] retain];
     scanTreeIndex = [self indexCorrespondingToItem: [pathModel scanTree] startingAt: 0];
     
     invisibleSelectedItem = nil;
@@ -65,6 +68,13 @@
     }
     else {
       preferredSelectionDepth = selectedItemIndex - visibleTreeIndex; 
+    }
+
+    keyboardNavigationDelta = [[NSUserDefaults standardUserDefaults]
+                               floatForKey: KeyboardNavigationDeltaKey];
+    if (keyboardNavigationDelta <= 0) {
+      NSLog(@"Invalid value for keyboardNavigationDelta.");
+      keyboardNavigationDelta = 5;
     }
     
     NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];
@@ -87,6 +97,7 @@
   
   [pathBuilder release];
   [pathModel release];
+  [itemLocator release];
   [fileItemPath release];
   [invisibleSelectedItem release];
   
@@ -155,6 +166,57 @@
     // Only post changes here to the invisible item. When the selected item in the path changed,
     // -selectedItemChanged will be notified and post the event in response.
     [self postSelectedItemChanged: nil];
+  }
+}
+
+- (void) moveSelectedItem:(DirectionEnum) direction
+           startingAtTree:(FileItem *)treeRoot
+       usingLayoutBuilder:(TreeLayoutBuilder *)layoutBuilder
+                   bounds:(NSRect) bounds {
+  NSRect rect = [itemLocator locationForItem: pathModel.selectedFileItem
+                                      onPath: pathModel.itemPathToSelectedFileItem
+                              startingAtTree: treeRoot
+                          usingLayoutBuilder: layoutBuilder
+                                      bounds: bounds];
+  if (!NSPointInRect(keyboardNavigationPos, rect)) {
+    keyboardNavigationPos = NSMakePoint(NSMidX(rect), NSMidY(rect));
+  }
+
+  NSPoint pos = keyboardNavigationPos;
+  switch (direction) {
+    case DirectionUp:    pos.y = NSMaxY(rect) + keyboardNavigationDelta; break;
+    case DirectionDown:  pos.y = NSMinY(rect) - keyboardNavigationDelta; break;
+    case DirectionRight: pos.x = NSMaxX(rect) + keyboardNavigationDelta; break;
+    case DirectionLeft:  pos.x = NSMinX(rect) - keyboardNavigationDelta; break;
+  }
+
+  if (NSPointInRect(pos, bounds)) {
+    FileItem  *oldSelectedItem = pathModel.selectedFileItem;
+
+    [self selectItemAtPoint: pos
+             startingAtTree: treeRoot
+         usingLayoutBuilder: layoutBuilder
+                     bounds: bounds];
+
+    if (oldSelectedItem != pathModel.selectedFileItem) {
+      // In the movement direction, center the coordinate inside the newly selected rectangle.
+
+      rect = [itemLocator locationForItem: pathModel.selectedFileItem
+                                   onPath: pathModel.itemPathToSelectedFileItem
+                           startingAtTree: treeRoot
+                       usingLayoutBuilder: layoutBuilder
+                                   bounds: bounds];
+      switch (direction) {
+        case DirectionUp:    // Fall-through
+        case DirectionDown:  pos.y = NSMidY(rect); break;
+        case DirectionRight: // Fall-through
+        case DirectionLeft:  pos.x = NSMidX(rect); break;
+      }
+
+      keyboardNavigationPos = pos;
+    } else {
+      NSLog(@"Selected item did not change when navigating via keyboard");
+    }
   }
 }
 
@@ -376,7 +438,7 @@
   }
   
   [self updatePath];
-  
+
   // Propagate event to my listeners.
   [self postSelectedItemChanged: notification];
 }

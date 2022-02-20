@@ -267,7 +267,7 @@ NSString  *MatchColumn = @"match";
 
 
 - (IBAction) addTestToRepository:(id)sender {
-  FilterTest  *newTest = [testEditor newFilterTest];
+  FilterTest  *newTest = [testEditor createFilterTest];
 
   if (newTest != nil) {
     NSUInteger  index = [availableTests indexOfObject: [newTest name]];
@@ -423,7 +423,7 @@ NSString  *MatchColumn = @"match";
     return selectedTest.description;
   }
   else {
-    return nil;
+    return @"";
   }
 }
 
@@ -563,7 +563,8 @@ NSString  *MatchColumn = @"match";
     return nil;
   }
 
-  MutableFilterTestRef  *filterTest = [[MutableFilterTestRef alloc] initWithName: name];
+  MutableFilterTestRef  *filterTest =
+    [[[MutableFilterTestRef alloc] initWithName: name] autorelease];
 
   if ([test appliesToDirectories]) {
     // Fix "inverted" state of the filter test. 

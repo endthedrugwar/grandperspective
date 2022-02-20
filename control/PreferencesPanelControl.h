@@ -24,6 +24,7 @@ extern NSString  *CustomFileRevealApplication;
 extern NSString  *UpdateFiltersBeforeUse;
 extern NSString  *TreeMemoryZoneKey;
 extern NSString  *DelayBeforeWelcomeWindowAfterStartupKey;
+extern NSString  *KeyboardNavigationDeltaKey;
 
 @class FilterPopUpControl;
 

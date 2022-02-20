@@ -8,6 +8,7 @@
 #import "ToolbarSegmentedCell.h"
 #import "MainMenuControl.h"
 #import "KBPopUpToolbarItem.h"
+#import "LocalizableStrings.h"
 
 
 NSString  *ToolbarZoom = @"Zoom"; 
@@ -446,7 +447,7 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   NSString  *rescanMaskAsFilterTitle =
     NSLocalizedStringFromTable(@"Rescan with mask as filter", @"Toolbar", @"Toolbar action");
 
-  NSMenu  *menu = [[NSMenu alloc] initWithTitle: @"Rescan actions"];
+  NSMenu  *menu = [[NSMenu alloc] initWithTitle: LocalizationNotNeeded(@"Rescan actions")];
   int  itemCount = 0;
 
   NSMenuItem  *rescanAllItem = [menu insertItemWithTitle: rescanAllTitle

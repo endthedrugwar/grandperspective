@@ -58,7 +58,7 @@
 }
 
 
-- (FilterTest *)newFilterTest {
+- (FilterTest *)createFilterTest {
   NSWindow  *editTestWindow = [self loadEditFilterTestWindow];
   
   FilterTestNameValidator  *testNameValidator = 
@@ -76,14 +76,12 @@
     FilterTest  *filterTest = [filterTestWindowControl createFilterTest];
     
     if (filterTest != nil) {
-      NSString  *name = [filterTest name];
-
       // The nameValidator should have ensured that this check succeeds.
-      NSAssert([testRepository testsByName][name] == nil,
+      NSAssert([testRepository testsByName][filterTest.name] == nil,
                @"Duplicate name check failed.");
 
-      [[testRepository testsByNameAsNotifyingDictionary] addObject: [filterTest fileItemTest]
-                                                            forKey: name];
+      [[testRepository testsByNameAsNotifyingDictionary] addObject: filterTest.fileItemTest
+                                                            forKey: filterTest.name];
         
       // Rest of addition handled in response to notification event.
     }

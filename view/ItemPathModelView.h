@@ -6,7 +6,14 @@
 @class ItemPathModel;
 @class ItemPathBuilder;
 @class TreeLayoutBuilder;
+@class ItemLocator;
 
+typedef NS_ENUM(NSInteger, DirectionEnum) {
+  DirectionUp = 1,
+  DirectionDown = 2,
+  DirectionRight = 3,
+  DirectionLeft = 4
+};
 
 /* Provides a view of a specific item path model. This view can be used to change how a path appears
  * in a specific DirectoryView. For example, it can be used to hide package contents. Furthermore,
@@ -17,8 +24,8 @@
 @interface ItemPathModelView : NSObject {
   
   ItemPathBuilder  *pathBuilder;
-
   ItemPathModel  *pathModel;
+  ItemLocator  *itemLocator;
 
   BOOL  showPackageContents;
   
@@ -53,6 +60,13 @@
   // Controls if the selection should be made to automatically stick to the end point, when the
   // end-point is reached when explicitly moving the selection down.
   BOOL  automaticallyStickToEndPoint;
+
+  // The position to use for keyboard navigation. When keyboard navigation is active, it should
+  // always be inside the selected item, but not necessarily at its center. This can be used to
+  // prevent drift in the direction orthogonal to the movement direction.
+  NSPoint  keyboardNavigationPos;
+
+  float  keyboardNavigationDelta;
 }
 
 - (instancetype) initWithPathModel:(ItemPathModel *)pathModel NS_DESIGNATED_INITIALIZER;
@@ -69,6 +83,10 @@
         usingLayoutBuilder:(TreeLayoutBuilder *)layoutBuilder
                     bounds:(NSRect) bounds;
 
+- (void) moveSelectedItem:(DirectionEnum) direction
+           startingAtTree:(FileItem *)treeRoot
+       usingLayoutBuilder:(TreeLayoutBuilder *)layoutBuilder
+                   bounds:(NSRect) bounds;
 
 /* Returns the volume tree. It is the same as that of the underlying model.
  */

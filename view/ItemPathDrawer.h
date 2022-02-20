@@ -32,9 +32,13 @@
 
 /* Draws the part of the path that is visible in the tree. The path may include invisible items, not
  * shown in the tree. However, the path must always include the root of the tree.
+ *
+ * The endRect is passed to enable animation. As it transitions from a previous position it will
+ * not actually match the rectangle of the actual end point.
  */
 - (void) drawVisiblePath:(ItemPathModelView *)pathModelView
           startingAtTree:(FileItem *)treeRoot
+             withEndRect:(NSRect)endRect
       usingLayoutBuilder:(TreeLayoutBuilder *)layoutBuilder
                   bounds:(NSRect)bounds;
 

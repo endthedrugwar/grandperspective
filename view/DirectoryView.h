@@ -19,7 +19,7 @@ extern NSString  *ColorMappingChangedEvent;
 @class ItemPathDrawer;
 @class ItemPathModelView;
 @class OverlayDrawer;
-@class SelectedItemLocator;
+@class ItemLocator;
 @protocol FileItemMappingScheme;
 
 @interface DirectoryView : NSView {
@@ -34,7 +34,7 @@ extern NSString  *ColorMappingChangedEvent;
 
   ItemPathDrawer  *pathDrawer;
   ItemPathModelView  *pathModelView;
-  SelectedItemLocator  *selectedItemLocator;
+  ItemLocator  *selectedItemLocator;
   
   // The current color mapping, which is being observed for any changes to the scheme.
   NSObject <FileItemMappingScheme>  *observedColorMapping;
@@ -42,6 +42,24 @@ extern NSString  *ColorMappingChangedEvent;
   BOOL  showEntireVolume;
 
   NSImage  *treeImage;
+
+  // The images used for zoom animations. While the zoom animation is happening, the new image is
+  // generated (and treeImage is updated when done). Therefore separate images are used.
+  NSImage  *zoomImage;
+  NSImage  *zoomBackgroundImage;
+
+  // The active position of the zoom area on screen
+  NSRect  zoomBounds;
+  NSRect  zoomBoundsStart;
+  NSRect  zoomBoundsEnd;
+
+  NSRect  pathEndRect;
+
+  // Indicates the direction of the zoom animation.
+  BOOL  zoomingIn;
+  // Counter used to abort animations
+  NSInteger  zoomAnimationCount;
+
   NSImage  *overlayImage;
   NSTimer  *redrawTimer;
   
@@ -66,11 +84,20 @@ extern NSString  *ColorMappingChangedEvent;
 @property (nonatomic, readonly, strong) ItemPathModelView *pathModelView;
 @property (nonatomic, readonly, strong) FileItem *treeInView;
 
+- (NSRect) locationInViewForItem:(FileItem *)item onPath:(NSArray *)itemPath;
+- (NSImage *)imageInViewForItem:(FileItem *)item onPath:(NSArray *)itemPath;
+
 - (NSRect) locationInViewForItemAtEndOfPath:(NSArray *)itemPath;
 - (NSImage *)imageInViewForItemAtEndOfPath:(NSArray *)itemPath;
 
 @property (nonatomic, strong) TreeDrawerSettings *treeDrawerSettings;
 @property (nonatomic, strong) FileItemTest *overlayTest;
+
+// Property used during zoom animation.
+@property (nonatomic) NSRect zoomBounds;
+
+// Property used during animation
+@property (nonatomic) NSRect pathEndRect;
 
 @property (nonatomic) BOOL showEntireVolume;
 

@@ -32,11 +32,13 @@ NS_ASSUME_NONNULL_BEGIN
  * root when the entire volume is drawn.
  *
  * Note: The tree starting at "treeRoot" should be immutable.
+ *
+ * Returns nil when the drawing was aborted.
  */
-- (NSImage *)drawImageOfVisibleTree:(FileItem *)visibleTree
-                     startingAtTree:(FileItem *)treeRoot
-                 usingLayoutBuilder:(TreeLayoutBuilder *)layoutBuilder
-                             inRect:(NSRect)bounds;
+- (nullable NSImage *)drawImageOfVisibleTree:(FileItem *)visibleTree
+                              startingAtTree:(FileItem *)treeRoot
+                          usingLayoutBuilder:(TreeLayoutBuilder *)layoutBuilder
+                                      inRect:(NSRect)bounds;
 
 /* Any outstanding request to abort Drawing is cancelled.
  */

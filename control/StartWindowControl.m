@@ -2,6 +2,7 @@
 
 #import "NSURL.h"
 #import "RecentDocumentTableCellView.h"
+#import "LocalizableStrings.h"
 
 NSString*  TaglineTable = @"Taglines";
 NSString*  NumTaglines = @"num-taglines";
@@ -96,7 +97,7 @@ NSString*  TaglineFormat = @"tagline-%d";
                       NSLocalizedString(@"Select Folder", @"Solitairy entry in Start window"));
 
     cellView.textField.stringValue = msg;
-    cellView.secondTextField.stringValue = @"...";
+    cellView.secondTextField.stringValue = LocalizationNotNeeded(@"...");
   }
 
   return cellView;

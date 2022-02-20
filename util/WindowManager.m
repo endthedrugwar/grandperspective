@@ -21,9 +21,9 @@
 }
 
 - (void) dealloc {
-  [super dealloc];
-  
   [titleLookup release];
+
+  [super dealloc];
 }
 
 - (void) addWindow:(NSWindow *)window usingTitle:(NSString *)title {

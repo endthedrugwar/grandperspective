@@ -64,7 +64,7 @@ extern NSString  *DateTimeFormat;
  */
 + (NSDateFormatter *)nsTimeFormatter;
 
-+ (NSString *)stringForTime:(CFAbsoluteTime)time;
++ (nullable NSString *)stringForTime:(CFAbsoluteTime)time;
 
 - (void) appendString:(NSString *)s;
 

@@ -163,12 +163,11 @@
 @implementation FilterTestWindowControl
 
 + (id) defaultInstance {
-  FilterTestWindowControl  *defaultInstance = nil;
-
-  if (defaultInstance == nil) {
+  static FilterTestWindowControl  *defaultInstance = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
     defaultInstance = [[FilterTestWindowControl alloc] init];
-  }
-  
+  });
   return defaultInstance;
 }
 

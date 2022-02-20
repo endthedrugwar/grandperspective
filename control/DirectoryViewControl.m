@@ -130,7 +130,8 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
     invisiblePathName = nil;
   }
 
-  return self;
+  // The control is responsible for itself. It auto-releases when the window closes.
+  return [self retain];
 }
 
 
@@ -149,6 +150,8 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   
   [scanPathName release];
   [invisiblePathName release];
+
+  [_previewPanel release];
   
   [super dealloc];
 }
@@ -574,13 +577,13 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   // source and refresh panel.
   panel.delegate = self;
   panel.dataSource = self;
-  _previewPanel = panel;
+  self.previewPanel = panel;
 }
 
 - (void)endPreviewPanelControl:(QLPreviewPanel *)panel {
   // This document loses its responsisibility on the preview panel. Until the next call to
   // -beginPreviewPanelControl: it must not change the panel's delegate, data source or refresh it.
-  _previewPanel = nil;
+  self.previewPanel = nil;
 }
 
 #pragma mark - QLPreviewPanelDataSource
