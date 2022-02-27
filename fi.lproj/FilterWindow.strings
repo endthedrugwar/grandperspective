@@ -1,11 +1,11 @@
 /* Class = "NSWindow"; title = "Filter"; ObjectID = "5"; */
-"5.title" = "Suodin";
+"5.title" = "Suodatin";
 
 /* Class = "NSBox"; title = "Selected tests"; ObjectID = "18"; */
-"18.title" = "Valitut testit";
+"18.title" = "Valitut ehdot";
 
 /* Class = "NSBox"; title = "Available tests"; ObjectID = "24"; */
-"24.title" = "Tarjolla olevat testit";
+"24.title" = "Tarjolla olevat ehdot";
 
 /* Class = "NSButtonCell"; title = "<"; ObjectID = "173"; */
 "173.title" = "<";

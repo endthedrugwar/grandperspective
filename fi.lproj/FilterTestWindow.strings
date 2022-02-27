@@ -1,8 +1,8 @@
 /* Class = "NSWindow"; title = "Filter test"; ObjectID = "5"; */
-"5.title" = "Suodintesti";
+"5.title" = "Suodatinehto";
 
 /* Class = "NSBox"; title = "Subtests"; ObjectID = "10"; */
-"10.title" = "Alitestit";
+"10.title" = "Aliehdot";
 
 /* Class = "NSMenuItem"; title = "contains"; ObjectID = "18"; */
 "18.title" = "sisältää";
@@ -110,7 +110,7 @@
 "502.title" = "kohde";
 
 /* Class = "NSTextFieldCell"; title = "hard-linked"; ObjectID = "504"; */
-"504.title" = "linkki (hard)";
+"504.title" = "linkki (kova)";
 
 /* Class = "NSButtonCell"; title = "item"; ObjectID = "505"; */
 "505.title" = "kohde";

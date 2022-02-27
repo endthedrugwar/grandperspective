@@ -1,8 +1,8 @@
 /* Class = "NSWindow"; title = "Select filter"; ObjectID = "1"; */
-"1.title" = "Valitse suodin";
+"1.title" = "Valitse suodatin";
 
 /* Class = "NSBox"; title = "Filter"; ObjectID = "11"; */
-"11.title" = "Suodin";
+"11.title" = "Suodatin";
 
 /* Class = "NSButtonCell"; title = "New"; ObjectID = "19"; */
 "19.title" = "Uusi";

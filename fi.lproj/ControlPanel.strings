@@ -23,7 +23,7 @@
 "915.title" = "Fyysinen";
 
 /* Class = "NSTextFieldCell"; title = "Filter1"; ObjectID = "916"; */
-"916.title" = "Suodin1";
+"916.title" = "Suodatin1";
 
 /* Class = "NSTextFieldCell"; title = "Volume size:"; ObjectID = "918"; */
 "918.title" = "Levyn koko:";
@@ -38,7 +38,7 @@
 "925.title" = "Levyn nimi";
 
 /* Class = "NSTextFieldCell"; title = "Filter:"; ObjectID = "926"; */
-"926.title" = "Suodin:";
+"926.title" = "Suodatin:";
 
 /* Class = "NSTextFieldCell"; title = "Number of scanned files:"; ObjectID = "927"; */
 "927.title" = "Skannattuja tiedostoja:";

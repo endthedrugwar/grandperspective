@@ -38,7 +38,7 @@
 "do nothing" = "Älä tee mitään";
 
 /* Color mapping scheme */
-"extension" = "Laajennus";
+"extension" = "Tiedostopääte";
 
 /* Color palette */
 "FengShui" = "Feng Shui";
@@ -53,7 +53,7 @@
 "free" = "Vapaa tila";
 
 /* Name of "special" file in the viewer */
-"freed" = "Vapautettu tilla";
+"freed" = "Vapautettu tila";
 
 /* Color palette */
 "GreenEggs" = "Vihreät kananmunat";
@@ -149,7 +149,7 @@
 "Small files" = "Pienet tiedostot";
 
 /* File size type */
-"tally" = "Lasku";
+"tally" = "Laskettu";
 
 /* Filter test */
 "Tiny files" = "Tosi pienet tiedostot";

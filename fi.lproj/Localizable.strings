@@ -41,13 +41,13 @@
 "%qu files" = "%qu tiedostoa";
 
 /* Alert message */
-"A filter named \"%@\" already exists." = "Suodin nimeltä \"%@\" on jo olemassa.";
+"A filter named \"%@\" already exists." = "Suodatin nimeltä \"%@\" on jo olemassa.";
 
 /* Alert message (Note: 'it' can refer to a file or a folder) */
 "A possible reason is that it does not exist anymore." = "Se ei ehkä ole enää olemassa.";
 
 /* Alert message */
-"A test named \"%@\" already exists." = "Testi nimeltä \"%@\" on jo olemassa.";
+"A test named \"%@\" already exists." = "Ehto nimeltä \"%@\" on jo olemassa.";
 
 /* Alert message (with filename arg) */
 "Aborted saving the scan data to \"%@\"" = "Skannin tulosten talletus kohteeseen \"%@\" keskeytettiin";
@@ -86,7 +86,7 @@
 "Do you want to delete the package \"%@\"?" = "Haluatko poistaa paketin \"%@\"?";
 
 /* Parse error */
-"Encountered filter after folder." = "Suodin kohdattiin hakemiston jälkeen.";
+"Encountered filter after folder." = "Suodatin kohdattiin hakemiston jälkeen.";
 
 /* Parse error */
 "Encountered more than one root element." = "Enemmän kuin yksi juurielementti.";
@@ -131,7 +131,7 @@
 "Export scan data as text" = "Vie skannitulokset tekstinä";
 
 /* Alert message */
-"Failed to bind one or more filter tests:\n%@" = "Yhden tai useamman suodintestin asettaminen epäonnistui:\n            %@";
+"Failed to bind one or more filter tests:\n%@" = "Yhden tai useamman suodatinehdon asettaminen epäonnistui:\n            %@";
 
 /* Alert message */
 "Failed to delete the file \"%@\"" = "Tiedoston \"%@\" poisto epäonnistui";
@@ -185,10 +185,10 @@
 "Filename" = "Tiedostonimi";
 
 /* Window title */
-"Filter - %@" = "Suodin - %@";
+"Filter - %@" = "Suodatin - %@";
 
 /* Window title */
-"Filter test - %@" = "Suodintesti - %@";
+"Filter test - %@" = "Suodatinehto - %@";
 
 /* Message in progress panel while filtering */
 "Filtering %@" = "Suodattaa %@";
@@ -278,10 +278,10 @@
 "Remove" = "Poista";
 
 /* Alert message */
-"Remove the filter named \"%@\"?" = "Poistetaanko suodin nimeltä \"%@\"?";
+"Remove the filter named \"%@\"?" = "Poistetaanko suodatin nimeltä \"%@\"?";
 
 /* Alert message */
-"Remove the test named \"%@\"?" = "Poistetaanko testi nimeltä \"%@\"?";
+"Remove the test named \"%@\"?" = "Poistetaanko ehto nimeltä \"%@\"?";
 
 /* Title of save panel */
 "Save image" = "Tallenna kuva";
@@ -347,10 +347,10 @@
 "The filter must have a name." = "Anna suotimelle nimi.";
 
 /* Alert informative text */
-"The filter will be irrevocably removed from the filter repository." = "Suodin poistetaan lopullisesti suodinkirjastosta.";
+"The filter will be irrevocably removed from the filter repository." = "Suodatin poistetaan lopullisesti suodatinkirjastosta.";
 
 /* Alert informative text */
-"The filter will be replaced by the default filter with this name." = "Suodin korvataan oletussuotimella käyttäen tätä nimeä.";
+"The filter will be replaced by the default filter with this name." = "Suodatin korvataan oletussuodattimella käyttäen tätä nimeä.";
 
 /* Alert message */
 "The path %@ does not exist or is not a folder" = "Polkua %@ ei ole tai se ei ole hakemisto";
@@ -374,16 +374,16 @@
 "The selected package will be moved to Trash." = "Valittu paketti siirretään roskakoriin.";
 
 /* Alert message */
-"The test must have a name." = "Testillä pitää olla nimi.";
+"The test must have a name." = "Ehdolla pitää olla nimi.";
 
 /* Alert informative text */
-"The test will be irrevocably removed from the test repository." = "Testi poistetaan lopullisesti testivarastosta.";
+"The test will be irrevocably removed from the test repository." = "Ehto poistetaan lopullisesti ehtovarastosta.";
 
 /* Alert informative text */
-"The test will be replaced by the default test with this name." = "Testi korvataan samannimisellä oletustestillä.";
+"The test will be replaced by the default test with this name." = "Ehto korvataan samannimisellä oletusehdolla.";
 
 /* Alert informative text */
-"The unbound tests have been omitted from the filter." = "Rajoittamattomat testit on jätetty huomioimatta suotimessa.";
+"The unbound tests have been omitted from the filter." = "Rajoittamattomat ehdot on jätetty huomioimatta suotimessa.";
 
 /* Alert informative text */
 "These filters do not exist anymore. Their old definition is used instead." = "Näitä suotimia ei ole enää olemassa. Sen sijaan käytössä on niiden vanha määritelmä.";
@@ -398,10 +398,10 @@
 "unknown file type" = "tuntematon tiedostotyyppi";
 
 /* Window title */
-"Unnamed filter" = "Nimetön suodin";
+"Unnamed filter" = "Nimetön suodatin";
 
 /* Window title */
-"Unnamed filter test" = "Nimetön suodintesti";
+"Unnamed filter test" = "Nimetön suodatinehto";
 
 /* Parse error */
 "Unrecognized value." = "Tunnistamaton arvo.";
