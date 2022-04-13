@@ -41,8 +41,7 @@ NSColorList* createPalette(NSArray *colors) {
 
 NSColorList* createFallbackPalette(void) {
   // Hardcoded CoffeeBeans palette
-  NSArray  *colors = [NSArray arrayWithObjects: @"CC3333", @"CC9933", @"FFCC66", @"CC6633",
-                                                @"CC6666", @"993300", @"666600", nil];
+  NSArray  *colors = @[@"CC3333", @"CC9933", @"FFCC66", @"CC6633", @"CC6666", @"993300", @"666600"];
 
   return createPalette(colors);
 }
@@ -50,7 +49,7 @@ NSColorList* createFallbackPalette(void) {
 #ifdef ENABLE_PALETTE_GRANDPERSPECTIVE
 NSColorList* createGrandPerspectivePalette(void) {
   // Hardcoded "GrandPerspective" palette
-  NSArray  *colors = [NSArray arrayWithObjects: @"35B7DA", @"61D7D7", @"679DB4", @"538CA7", nil];
+  NSArray  *colors = @[@"35B7DA", @"61D7D7", @"679DB4", @"538CA7"];
 
   return createPalette(colors);
 }

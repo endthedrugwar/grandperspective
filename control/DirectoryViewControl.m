@@ -512,7 +512,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
   if (spec.length > 0) {
     StringContainmentTest  *stringTest =
-      [[[StringContainmentTest alloc] initWithMatchTargets: [NSArray arrayWithObjects: spec, nil]
+      [[[StringContainmentTest alloc] initWithMatchTargets: @[spec]
                                              caseSensitive: NO] autorelease];
     ItemNameTest  *subTest = [[[ItemNameTest alloc] initWithStringTest: stringTest] autorelease];
 
