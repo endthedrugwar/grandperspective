@@ -418,6 +418,8 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
     // Abort any ongoing drawing tasks
     isTreeDrawInProgress = NO;
     isOverlayDrawInProgress = NO;
+
+    [self updatePathEndRect: NO];
   }
 
   // Initiate background draw tasks if needed
