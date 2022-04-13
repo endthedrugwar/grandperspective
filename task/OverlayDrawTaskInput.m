@@ -31,7 +31,7 @@
                              treeInView: treeInView
                           layoutBuilder: layoutBuilder
                                  bounds: bounds]) {
-    _overlayTest = overlayTest;
+    _overlayTest = [overlayTest retain];
   }
 
   return self;
