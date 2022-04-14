@@ -17,6 +17,7 @@ extern NSString  *MinimumTimeBoundForColorMappingKey;
 extern NSString  *ShowPackageContentsByDefaultKey;
 extern NSString  *ShowEntireVolumeByDefaultKey;
 extern NSString  *ProgressPanelRefreshRateKey;
+extern NSString  *ProgressPanelStableTimeKey;
 extern NSString  *DefaultViewWindowWidth;
 extern NSString  *DefaultViewWindowHeight;
 extern NSString  *CustomFileOpenApplication;

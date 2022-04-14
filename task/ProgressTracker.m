@@ -1,11 +1,12 @@
 #import "ProgressTracker.h"
 
 #import "DirectoryItem.h"
-
+#import "PreferencesPanelControl.h"
 
 NSString  *NumFoldersProcessedKey = @"numFoldersProcessed";
 NSString  *NumFoldersSkippedKey = @"numFoldersSkipped";
 NSString  *CurrentFolderPathKey = @"currentFolderPath";
+NSString  *StableFolderPathKey = @"stableFolderPath";
 NSString  *EstimatedProgressKey = @"estimatedProgress";
 
 
@@ -15,6 +16,13 @@ NSString  *EstimatedProgressKey = @"estimatedProgress";
   if (self = [super init]) {
     mutex = [[NSLock alloc] init];
     directoryStack = [[NSMutableArray alloc] initWithCapacity: 16];
+
+    NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+    stableTimeInterval = [userDefaults floatForKey: ProgressPanelStableTimeKey];
+    if (stableTimeInterval <= 0) {
+      NSLog(@"Invalid value for stableTimeInterval");
+      stableTimeInterval = 1;
+    }
   }
 
   return self;
@@ -23,6 +31,7 @@ NSString  *EstimatedProgressKey = @"estimatedProgress";
 - (void) dealloc {
   [mutex release];
   [directoryStack release];
+  [rootItem release];
   
   [super dealloc];
 
@@ -33,6 +42,8 @@ NSString  *EstimatedProgressKey = @"estimatedProgress";
   numFoldersProcessed = 0;
   numFoldersSkipped = 0;
   level = 0;
+  [rootItem release];
+  rootItem = nil;
   [directoryStack removeAllObjects];
   [mutex unlock];
 }
@@ -67,9 +78,23 @@ NSString  *EstimatedProgressKey = @"estimatedProgress";
   NSDictionary  *dict;
 
   [mutex lock];
+  // Find the stable folder, the deepest folder that been processed for more than the configured
+  // time interval
+  DirectoryItem  *stableFolder = rootItem;
+  if (level > 0) {
+    NSUInteger  stableLevel = 0;
+    NSUInteger  maxLevel = MIN(level, NUM_PROGRESS_ESTIMATE_LEVELS) - 1;
+    CFAbsoluteTime refTime = CFAbsoluteTimeGetCurrent() - stableTimeInterval;
+    while (stableLevel < maxLevel && entryTime[stableLevel + 1] < refTime) {
+      ++stableLevel;
+    }
+    stableFolder = [directoryStack objectAtIndex: stableLevel];
+  }
+
   dict = @{NumFoldersProcessedKey: @(numFoldersProcessed),
            NumFoldersSkippedKey: @(numFoldersSkipped),
            CurrentFolderPathKey: [directoryStack.lastObject path] ?: @"",
+           StableFolderPathKey: [stableFolder path] ?: @"",
            EstimatedProgressKey: @([self estimatedProgress])};
   [mutex unlock];
 
@@ -86,24 +111,24 @@ NSString  *EstimatedProgressKey = @"estimatedProgress";
 @implementation ProgressTracker (ProtectedMethods)
 
 - (void) _processingFolder:(DirectoryItem *)dirItem {
-  if (directoryStack.count == 0) {
+  if (rootItem == nil) {
     // Find the root of the tree
-    DirectoryItem  *root = dirItem;
-    DirectoryItem  *parent = nil;
-    while ((parent = [root parentDirectory]) != nil) {
-      root = parent;
+    DirectoryItem  *parent;
+    rootItem = dirItem;
+    while ((parent = [rootItem parentDirectory]) != nil) {
+      rootItem = parent;
     }
 
-    if (root != dirItem) {
-      // Add the root of the tree to the stack. This ensures that -path can be
-      // called for any FileItem in the stack, even after the tree has been
-      // released externally (e.g. because the task constructing it has been
-      // aborted).
-      [directoryStack addObject: root];
-    }
+    // Retain the root of the tree. This ensures that -path can be called for any FileItem in the
+    // stack, even after the tree has been released externally (e.g. because the task constructing
+    // it has been aborted).
+    [rootItem retain];
   }
 
   [directoryStack addObject: dirItem];
+  if (level < NUM_PROGRESS_ESTIMATE_LEVELS) {
+    entryTime[level] = CFAbsoluteTimeGetCurrent();
+  }
   level++;
 }
 

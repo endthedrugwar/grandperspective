@@ -6,6 +6,7 @@
 extern NSString  *NumFoldersProcessedKey;
 extern NSString  *CurrentFolderPathKey;
 extern NSString  *EstimatedProgressKey;
+extern NSString  *StableFolderPathKey;
 
 
 @interface ProgressPanelControl (PrivateMethods)
@@ -34,8 +35,9 @@ extern NSString  *EstimatedProgressKey;
 - (instancetype) initWithTaskExecutor:(NSObject <TaskExecutor> *)taskExecutorVal {
   if (self = [super initWithWindow: nil]) {
     taskExecutor = [taskExecutorVal retain];
-    
-    refreshRate = [[NSUserDefaults standardUserDefaults] floatForKey: ProgressPanelRefreshRateKey];
+
+    NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+    refreshRate = [userDefaults floatForKey: ProgressPanelRefreshRateKey];
     if (refreshRate <= 0) {
       NSLog(@"Invalid value for progressPanelRefreshRate.");
       refreshRate = 1;
@@ -67,7 +69,7 @@ extern NSString  *EstimatedProgressKey;
 
   [self updateProgressDetails: @""];
   [self updateProgressSummary: 0];
-  
+
   self.window.title = [self windowTitle];
 }
 
@@ -126,12 +128,12 @@ extern NSString  *EstimatedProgressKey;
 
   NSDictionary  *dict = [self progressInfo];
   if (dict != nil) {
-    [self updateProgressDetails: dict[CurrentFolderPathKey]];
+    [self updateProgressDetails: dict[StableFolderPathKey]];
     [self updateProgressSummary: [dict[NumFoldersProcessedKey] intValue]];
     [self updateProgressEstimate: [dict[EstimatedProgressKey] floatValue]];
   }
 
-  // Schedule another update 
+  // Schedule another update
   [self performSelector: @selector(updatePanel) withObject: 0 afterDelay: refreshRate];
 }
 

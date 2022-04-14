@@ -4,6 +4,13 @@
 extern NSString  *NumFoldersProcessedKey;
 extern NSString  *NumFoldersSkippedKey;
 extern NSString  *CurrentFolderPathKey;
+
+// The folder that is being processed whose processing is lasting longer than the configured time
+// interval (one second by default). This is typically an ancestor folder of the folder that is
+// currently being processed. It is more suitable for display than the latter as it changes less
+// frequently, has a path length that is typically quite short and is more meaningful to the user.
+extern NSString  *StableFolderPathKey;
+
 extern NSString  *EstimatedProgressKey;
 
 
@@ -35,9 +42,16 @@ extern NSString  *EstimatedProgressKey;
   
   // The recursion level.
   NSUInteger  level;
+
+  DirectoryItem  *rootItem;
    
   // The stack of directories that are being processed.
   NSMutableArray  *directoryStack;
+
+  // Records for each entry in the directoryStack when it was added
+  CFAbsoluteTime  entryTime[NUM_PROGRESS_ESTIMATE_LEVELS];
+
+  NSTimeInterval  stableTimeInterval;
 }
 
 /* Called to signal that a new task is about to be carried out. The progress statistics are reset.

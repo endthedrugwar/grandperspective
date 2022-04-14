@@ -95,6 +95,8 @@
 		<string>show welcome</string>
 		<key>progressPanelRefreshRate</key>
 		<real>0.2</real>
+		<key>progressPanelStableTime</key>
+		<real>1</real>
 		<key>rescanBehaviour</key>
 		<string>keep old window</string>
 		<key>showEntireVolumeByDefault</key>
