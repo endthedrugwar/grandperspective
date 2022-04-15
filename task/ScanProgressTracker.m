@@ -36,6 +36,7 @@
 - (void) setNumSubFolders:(NSUInteger)num {
   [mutex lock];
 
+  NSUInteger level = self.level;
   if (level <= maxLevels) {
     if (num > 0) {
       numSubFolders[level - 1] = num;
@@ -51,6 +52,7 @@
 - (void) _processingFolder:(DirectoryItem *)dirItem {
   [super _processingFolder: dirItem];
 
+  NSUInteger level = self.level;
   if (level <= maxLevels) {
     // Set to non-zero until actually set by setNumSubFolders, to simplify calculation by
     // estimatedProgress.
@@ -73,7 +75,7 @@
   float progress = 0;
   float fraction = 100;
   NSUInteger i = 0;
-  NSUInteger max_i = MIN(level, maxLevels);
+  NSUInteger max_i = MIN(self.level, maxLevels);
   while (i < max_i) {
     progress += fraction * numSubFoldersProcessed[i] / numSubFolders[i];
     fraction /= numSubFolders[i];
@@ -89,6 +91,7 @@
 @implementation ScanProgressTracker (PrivateMethods)
 
 - (void) processedOrSkippedFolder:(DirectoryItem *)dirItem {
+  NSUInteger level = self.level;
   if (level > 0 && level <= maxLevels) {
     if (numSubFoldersProcessed[level - 1] < numSubFolders[level - 1]) {
       numSubFoldersProcessed[level - 1] += 1;

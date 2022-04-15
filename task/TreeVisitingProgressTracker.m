@@ -11,6 +11,7 @@
 - (void) _processingFolder:(DirectoryItem *)dirItem {
   [super _processingFolder: dirItem];
 
+  NSUInteger level = self.level;
   if (level <= NUM_PROGRESS_ESTIMATE_LEVELS) {
     numFiles[level - 1] = [dirItem numFiles];
     numFilesProcessed[level - 1] = 0;
@@ -28,6 +29,7 @@
 }
 
 - (float) estimatedProgress {
+  NSUInteger level = self.level;
   if (level == 0) {
     // Abort to avoid dividing by uninitialized numFiles[0]
     return 0;
@@ -53,6 +55,7 @@
 @implementation TreeVisitingProgressTracker (PrivateMethods)
 
 - (void) processedOrSkippedFolder:(DirectoryItem *)dirItem {
+  NSUInteger level = self.level;
   if (level > 0 && level <= NUM_PROGRESS_ESTIMATE_LEVELS) {
     numFilesProcessed[level - 1] += [dirItem numFiles];
 

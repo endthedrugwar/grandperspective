@@ -41,7 +41,6 @@ NSString  *EstimatedProgressKey = @"estimatedProgress";
   [mutex lock];
   numFoldersProcessed = 0;
   numFoldersSkipped = 0;
-  level = 0;
   [rootItem release];
   rootItem = nil;
   [directoryStack removeAllObjects];
@@ -81,9 +80,9 @@ NSString  *EstimatedProgressKey = @"estimatedProgress";
   // Find the stable folder, the deepest folder that been processed for more than the configured
   // time interval
   DirectoryItem  *stableFolder = rootItem;
-  if (level > 0) {
+  if (directoryStack.count > 0) {
     NSUInteger  stableLevel = 0;
-    NSUInteger  maxLevel = MIN(level, NUM_PROGRESS_ESTIMATE_LEVELS) - 1;
+    NSUInteger  maxLevel = MIN(directoryStack.count, NUM_PROGRESS_ESTIMATE_LEVELS) - 1;
     CFAbsoluteTime refTime = CFAbsoluteTimeGetCurrent() - stableTimeInterval;
     while (stableLevel < maxLevel && entryTime[stableLevel + 1] < refTime) {
       ++stableLevel;
@@ -125,18 +124,16 @@ NSString  *EstimatedProgressKey = @"estimatedProgress";
     [rootItem retain];
   }
 
-  [directoryStack addObject: dirItem];
-  if (level < NUM_PROGRESS_ESTIMATE_LEVELS) {
-    entryTime[level] = CFAbsoluteTimeGetCurrent();
+  if (directoryStack.count < NUM_PROGRESS_ESTIMATE_LEVELS) {
+    entryTime[directoryStack.count] = CFAbsoluteTimeGetCurrent();
   }
-  level++;
+  [directoryStack addObject: dirItem];
 }
 
 - (void) _processedFolder:(DirectoryItem *)dirItem {
   NSAssert([directoryStack lastObject] == dirItem, @"Inconsistent stack.");
   [directoryStack removeLastObject];
   numFoldersProcessed++;
-  level--;
 }
 
 - (void) _skippedFolder:(DirectoryItem *)dirItem {
@@ -148,6 +145,10 @@ NSString  *EstimatedProgressKey = @"estimatedProgress";
  */
 - (float) estimatedProgress {
   return 0.0;
+}
+
+- (NSUInteger) level {
+  return directoryStack.count;
 }
 
 @end

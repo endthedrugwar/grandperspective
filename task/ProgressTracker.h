@@ -39,9 +39,6 @@ extern NSString  *EstimatedProgressKey;
 
   // The number of folders that have been skipped so far.
   NSUInteger  numFoldersSkipped;
-  
-  // The recursion level.
-  NSUInteger  level;
 
   DirectoryItem  *rootItem;
    
@@ -111,5 +108,9 @@ extern NSString  *EstimatedProgressKey;
  * not need to be obtained here.
  */
 @property (nonatomic, readonly) float estimatedProgress;
+
+/* The recursion level.
+ */
+@property (nonatomic, readonly) NSUInteger level;
 
 @end
