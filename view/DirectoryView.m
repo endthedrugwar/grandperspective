@@ -208,10 +208,17 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
 - (NSImage *)imageInViewForItem:(FileItem *)item onPath:(NSArray *)itemPath {
   NSRect sourceRect = [self locationInViewForItem: item onPath: itemPath];
-  CGFloat x = ceil(sourceRect.origin.x);
-  CGFloat y = ceil(sourceRect.origin.y);
-  CGFloat w = floor(sourceRect.origin.x + sourceRect.size.width) - x;
-  CGFloat h = floor(sourceRect.origin.y + sourceRect.size.height) - y;
+
+  // Round such that image dimensions are always non-zero (as trying to draw into a zero-sized
+  // image fails).
+  //
+  // Note: The only way for "w" or "h" to become zero is when the coordinate is exactly an integer
+  // value and the source rectangle dimension is zero. The former is unlikely and the latter never
+  // occurs (as all items in the tree have a size larger than zero)
+  CGFloat x = floor(sourceRect.origin.x);
+  CGFloat y = floor(sourceRect.origin.y);
+  CGFloat w = ceil(sourceRect.origin.x + sourceRect.size.width) - x;
+  CGFloat h = ceil(sourceRect.origin.y + sourceRect.size.height) - y;
 
   NSImage  *targetImage = [[[NSImage alloc] initWithSize: NSMakeSize(w, h)] autorelease];
 
