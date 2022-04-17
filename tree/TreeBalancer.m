@@ -5,9 +5,9 @@
 #import "PeekingEnumerator.h"
 
 NSInteger compareBySize(id item1, id item2, void* context) {
-  ITEM_SIZE  size1 = [(Item*)item1 itemSize];
-  ITEM_SIZE  size2 = [(Item*)item2 itemSize];
-  
+  ITEM_SIZE  size1 = ((Item*)item1).itemSize;
+  ITEM_SIZE  size2 = ((Item*)item2).itemSize;
+
   if (size1 < size2) {
     return NSOrderedAscending;
   }
@@ -23,8 +23,6 @@ NSInteger compareBySize(id item1, id item2, void* context) {
 - (instancetype) init {
   if (self = [super init]) {
     tmpArray = [[NSMutableArray alloc] initWithCapacity: 1024];
-
-    excludeZeroSizedItems = YES;
   }
   
   return self;
@@ -37,20 +35,10 @@ NSInteger compareBySize(id item1, id item2, void* context) {
 }
 
 
-- (void) setExcludeZeroSizedItems:(BOOL)flag {
-  excludeZeroSizedItems = flag;
-}
-
-- (BOOL) excludeZeroSizedItems {
-  return excludeZeroSizedItems;
-}
-
-
-
 // Note: assumes that array may be modified for sorting!
 - (Item *)createTreeForItems:(NSMutableArray *)items {
 
-  if (items.count==0) {
+  if (items.count == 0) {
     // No items, so nothing needs doing: return immediately.
     return nil;
   }
@@ -61,14 +49,13 @@ NSInteger compareBySize(id item1, id item2, void* context) {
   PeekingEnumerator  *sortedItems = 
     [[PeekingEnumerator alloc] initWithEnumerator: [items objectEnumerator]];
 
-  if (excludeZeroSizedItems) {
-    while ([sortedItems peekObject] != nil && [(Item*)[sortedItems peekObject] itemSize] == 0) {
-      [sortedItems nextObject];
-    }
+  // Exclude zero-sized items
+  while ([sortedItems peekObject] != nil && ((Item*)[sortedItems peekObject]).itemSize == 0) {
+    [sortedItems nextObject];
   }
   
   NSMutableArray*  sortedBranches = tmpArray;
-  NSAssert(tmpArray!=nil && [tmpArray count]==0, @"Temporary array not valid." );
+  NSAssert(tmpArray != nil && tmpArray.count == 0, @"Temporary array not valid." );
   
   int  branchesGetIndex = 0;
   int  numBranches = 0;
@@ -80,19 +67,23 @@ NSInteger compareBySize(id item1, id item2, void* context) {
     while (second == nil) {
       Item*  smallest;
 
-      if ([sortedItems peekObject]==nil || // Out of leafs, or
-          (branchesGetIndex < numBranches && // orphaned branches exist
-           compareBySize(sortedBranches[branchesGetIndex],
-                         [sortedItems peekObject], nil) ==
-           NSOrderedAscending)) {      // and the branch is smaller.
+      if (
+        // Out of leafs, or
+        [sortedItems peekObject] == nil || (
+          // orphaned branches exist, and
+          branchesGetIndex < numBranches &&
+          // the branch is smaller.
+          compareBySize(sortedBranches[branchesGetIndex],
+                        [sortedItems peekObject], nil) == NSOrderedAscending
+        )
+      ) {
         if (branchesGetIndex < numBranches) {
           smallest = sortedBranches[branchesGetIndex++];
         }
         else {
           // We're finished building the tree
           
-          // Note: with "excludeZeroSizedItems" set to YES, first can actually be nil but that is
-          // okay.
+          // As zero-sized items are excluded, first can actually be nil but that is okay.
           [first retain];
         
           // Clean up
@@ -115,10 +106,10 @@ NSInteger compareBySize(id item1, id item2, void* context) {
       }
     }
     
-    CompoundItem  *newBranch = [[CompoundItem allocWithZone: [first zone]] 
+    CompoundItem  *newBranch = [[CompoundItem allocWithZone: first.zone]
                                    initWithFirst: first second: second];
     numBranches++;
-    [sortedBranches addObject:newBranch];
+    [sortedBranches addObject: newBranch];
     // Not auto-releasing to minimise size of auto-release pool.
     [newBranch release];
   }
