@@ -426,6 +426,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
     isTreeDrawInProgress = NO;
     isOverlayDrawInProgress = NO;
 
+    // Recalculate the path-end rectangle to reflect the resizing
     [self updatePathEndRect: NO];
   }
 
@@ -810,6 +811,8 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
       zoomBackgroundImage = [treeImage retain];
     }
   }
+
+  [self updatePathEndRect: NO];
 
   [self refreshDisplay];
 }
