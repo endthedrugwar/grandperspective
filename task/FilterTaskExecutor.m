@@ -32,11 +32,11 @@
   FilterTaskInput  *filterInput = input;
   
   [taskLock lock];
-  treeFilter = [[TreeFilter alloc] initWithFilterSet: [filterInput filterSet]];
-  [treeFilter setPackagesAsFiles: [filterInput packagesAsFiles]];
+  treeFilter = [[TreeFilter alloc] initWithFilterSet: filterInput.filterSet];
+  [treeFilter setPackagesAsFiles: filterInput.packagesAsFiles];
   [taskLock unlock];
     
-  TreeContext  *originalTree = [filterInput treeContext];
+  TreeContext  *originalTree = filterInput.treeContext;
   [originalTree obtainReadLock];
 
   TreeContext  *filteredTree = [treeFilter filterTree: originalTree];
@@ -62,7 +62,7 @@
   [taskLock lock];
   // The "taskLock" ensures that when treeFilter is not nil, the object will
   // always be valid when it is used (i.e. it won't be deallocated).
-  dict = [treeFilter progressInfo];
+  dict = treeFilter.progressInfo;
   [taskLock unlock];
   
   return dict;

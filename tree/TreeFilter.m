@@ -37,7 +37,7 @@
   if (self = [super init]) {
     filterSet = [filterSetVal retain];
 
-    treeGuide = [[FilteredTreeGuide alloc] initWithFileItemTest: [filterSet fileItemTest]];
+    treeGuide = [[FilteredTreeGuide alloc] initWithFileItemTest: filterSet.fileItemTest];
     treeBalancer = [[TreeBalancer alloc] init];
     
     abort = NO;
@@ -188,7 +188,7 @@
     return;
   }
 
-  if ([item isVirtual]) {
+  if ( item.isVirtual ) {
     [self flattenAndFilterSiblings: ((CompoundItem *)item).first];
     [self flattenAndFilterSiblings: ((CompoundItem *)item).second];
   }
@@ -196,7 +196,7 @@
     FileItem  *fileItem = (FileItem *)item;
     
     if ( [treeGuide includeFileItem: fileItem] ) {
-      if ( [fileItem isDirectory] ) {
+      if ( fileItem.isDirectory ) {
         [tmpDirItems addObject: fileItem];
       }
       else {
@@ -204,7 +204,7 @@
       }
     }
     else {
-      if ( [fileItem isDirectory] ) {
+      if ( fileItem.isDirectory ) {
         [progressTracker skippedFolder: (DirectoryItem *)fileItem];
       }
     }

@@ -37,14 +37,14 @@ NSString  *ScanTaskAbortedEvent = @"scanTaskAborted";
   ScanTaskInput  *myInput = input;
 
   [taskLock lock];
-  treeBuilder = [[TreeBuilder alloc] initWithFilterSet: [input filterSet]];
-  [treeBuilder setFileSizeMeasure: [myInput fileSizeMeasure]];
-  [treeBuilder setPackagesAsFiles: [myInput packagesAsFiles]];
+  treeBuilder = [[TreeBuilder alloc] initWithFilterSet: myInput.filterSet];
+  [treeBuilder setFileSizeMeasure: myInput.fileSizeMeasure];
+  [treeBuilder setPackagesAsFiles: myInput.packagesAsFiles];
   [taskLock unlock];
   
   NSDate  *startTime = [NSDate date];
   
-  TreeContext*  scanTree = [treeBuilder buildTreeForPath: [myInput path]];
+  TreeContext*  scanTree = [treeBuilder buildTreeForPath: myInput.path];
   ScanTaskOutput  *scanResult = nil;
 
   if (scanTree != nil) {
@@ -84,7 +84,7 @@ NSString  *ScanTaskAbortedEvent = @"scanTaskAborted";
   [taskLock lock];
   // The "taskLock" ensures that when treeBuilder is not nil, the object will
   // always be valid when it is used (i.e. it won't be deallocated).
-  dict = [treeBuilder progressInfo];
+  dict = treeBuilder.progressInfo;
   [taskLock unlock];
   
   return dict;

@@ -87,7 +87,7 @@
     // It's a plain file
     
     if ( ! [item isPhysical] ) {
-      // Exclude all special items (inside  the volume tree, these all represent freed space).
+      // Exclude all special items (inside the volume tree, these all represent freed space).
       //
       // TO DO: Check if special items should still always be excluded.
 

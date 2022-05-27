@@ -155,7 +155,7 @@ NSString  *TallyFileSizeName = @"tally";
   if (self = [super init]) {
     filterSet = [filterSetVal retain];
 
-    treeGuide = [[FilteredTreeGuide alloc] initWithFileItemTest: [filterSet fileItemTest]];
+    treeGuide = [[FilteredTreeGuide alloc] initWithFileItemTest: filterSet.fileItemTest];
 
     treeBalancer = [[TreeBalancer alloc] init];
     typeInventory = [[UniformTypeInventory defaultUniformTypeInventory] retain];

@@ -40,23 +40,23 @@
   }
     
   if ( [traverser descendIntoItem: root atRect: rect depth: depth] ) {
-    if ([root isVirtual]) {
+    if (root.isVirtual) {
       Item  *sub1 = ((CompoundItem *)root).first;
       Item  *sub2 = ((CompoundItem *)root).second;
     
-      float  ratio = ([root itemSize]>0) ? ([sub1 itemSize]/(float)[root itemSize]) : 0.50;
+      float  ratio = (root.itemSize > 0) ? (sub1.itemSize / (float)root.itemSize) : 0.50;
       NSRect  rect1;
       NSRect  rect2;
     
       if (NSWidth(rect) > NSHeight(rect)) {
-        NSDivideRect(rect, &rect1, &rect2, ratio*NSWidth(rect), NSMaxXEdge);
+        NSDivideRect(rect, &rect1, &rect2, ratio * NSWidth(rect), NSMaxXEdge);
       }
       else {
-        NSDivideRect(rect, &rect1, &rect2, ratio*NSHeight(rect), NSMinYEdge); 
+        NSDivideRect(rect, &rect1, &rect2, ratio * NSHeight(rect), NSMinYEdge);
       }
         
-      [self layoutItemTree:sub1 inRect: rect1 traverser: traverser depth: depth];
-      [self layoutItemTree:sub2 inRect: rect2 traverser: traverser depth: depth];
+      [self layoutItemTree: sub1 inRect: rect1 traverser: traverser depth: depth];
+      [self layoutItemTree: sub2 inRect: rect2 traverser: traverser depth: depth];
     }
     else if ( [((FileItem *)root) isDirectory] ) { 
       Item  *sub = ((DirectoryItem *)root).contents;
