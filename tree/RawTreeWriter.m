@@ -64,7 +64,8 @@
 - (void) appendFolderElement:(DirectoryItem *)dirItem {
   [progressTracker processingFolder: dirItem];
 
-  [self dumpItemContents: dirItem.contents];
+  [self dumpItemContents: dirItem.fileItems];
+  [self dumpItemContents: dirItem.directoryItems];
 
   [progressTracker processedFolder: dirItem];
   if ([progressTracker numFoldersProcessed] % AUTORELEASE_PERIOD == 0) {

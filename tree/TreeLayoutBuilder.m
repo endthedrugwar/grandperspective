@@ -40,30 +40,41 @@
   }
     
   if ( [traverser descendIntoItem: root atRect: rect depth: depth] ) {
+    Item  *sub1 = nil;
+    Item  *sub2 = nil;
+
     if (root.isVirtual) {
-      Item  *sub1 = ((CompoundItem *)root).first;
-      Item  *sub2 = ((CompoundItem *)root).second;
-    
+      sub1 = ((CompoundItem *)root).first;
+      sub2 = ((CompoundItem *)root).second;
+    }
+    else if (((FileItem *)root).isDirectory) {
+      sub1 = ((DirectoryItem *)root).fileItems;
+      sub2 = ((DirectoryItem *)root).directoryItems;
+      ++depth;
+    }
+
+    if (sub1 != nil && sub2 != nil) {
+      // The common layout case (for all CompoundItems and many DirectoryItems)
       float  ratio = (root.itemSize > 0) ? (sub1.itemSize / (float)root.itemSize) : 0.50;
       NSRect  rect1;
       NSRect  rect2;
-    
+
       if (NSWidth(rect) > NSHeight(rect)) {
         NSDivideRect(rect, &rect1, &rect2, ratio * NSWidth(rect), NSMaxXEdge);
       }
       else {
         NSDivideRect(rect, &rect1, &rect2, ratio * NSHeight(rect), NSMinYEdge);
       }
-        
+
       [self layoutItemTree: sub1 inRect: rect1 traverser: traverser depth: depth];
       [self layoutItemTree: sub2 inRect: rect2 traverser: traverser depth: depth];
     }
-    else if ( [((FileItem *)root) isDirectory] ) { 
-      Item  *sub = ((DirectoryItem *)root).contents;
-
-      if (sub != nil) {
-        [self layoutItemTree: sub inRect: rect traverser: traverser depth: depth+1];
-      }
+    else if (sub1 != nil || sub2 != nil) {
+      // This happens for directory items that contain only files or only sub-directories
+      [self layoutItemTree: (sub1 != nil) ? sub1 : sub2
+                    inRect: rect
+                 traverser: traverser
+                     depth: depth];
     }
   
     [traverser emergedFromItem: root];

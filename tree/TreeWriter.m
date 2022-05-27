@@ -163,7 +163,7 @@ NSLocalizedString(@"Failed to write entire buffer.", @"Error message")
 }
 
 - (void) dumpItemContents:(Item *)item {
-  if (abort) {
+  if (abort || item == nil) {
     return;
   }
 

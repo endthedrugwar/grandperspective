@@ -20,8 +20,7 @@
   ProgressTracker  *progressTracker;
   
 @private
-  NSMutableArray  *tmpDirItems;
-  NSMutableArray  *tmpFileItems;
+  NSMutableArray  *tmpItems;
 }
 
 

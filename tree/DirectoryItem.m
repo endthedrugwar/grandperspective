@@ -34,14 +34,16 @@
                      creationTime: creationTime
                  modificationTime: modificationTime
                        accessTime: accessTime]) {
-    _contents = nil;
+    _fileItems = nil;
+    _directoryItems = nil;
   }
   return self;
 }
 
 
 - (void) dealloc {
-  [_contents release];
+  [_fileItems release];
+  [_directoryItems release];
 
   [super dealloc];
 }
@@ -60,22 +62,31 @@
 
 
 // Special "setter" with additional constraints
-- (void) setDirectoryContents:(Item *)contents {
-  NSAssert(_contents == nil, @"Contents should only be set once.");
+- (void) setFileItems:(Item *)fileItems
+       directoryItems:(Item *)dirItems {
+  NSAssert(_fileItems == nil && _directoryItems == nil, @"Contents should only be set once.");
   
-  _contents = [contents retain];
-  if (contents != nil) {
-    self.itemSize = contents.itemSize;
+  _fileItems = [fileItems retain];
+  _directoryItems = [dirItems retain];
+
+  self.itemSize = fileItems.itemSize + dirItems.itemSize;
+}
+
+- (void) replaceFileItems:(Item *)newItem {
+  NSAssert(newItem.itemSize == self.fileItems.itemSize, @"Sizes must be equal.");
+
+  if (_fileItems != newItem) {
+    [_fileItems release];
+    _fileItems = [newItem retain];
   }
 }
 
-// Special "setter" with additional constraints
-- (void) replaceDirectoryContents:(Item *)newItem {
-  NSAssert(newItem.itemSize == self.contents.itemSize, @"Sizes must be equal.");
-  
-  if (_contents != newItem) {
-    [_contents release];
-    _contents = [newItem retain];
+- (void) replaceDirectoryItems:(Item *)newItem {
+  NSAssert(newItem.itemSize == self.directoryItems.itemSize, @"Sizes must be equal.");
+
+  if (_directoryItems != newItem) {
+    [_directoryItems release];
+    _directoryItems = [newItem retain];
   }
 }
 
@@ -105,12 +116,12 @@
 
 - (NSString *)description {
   return [NSString stringWithFormat:
-          @"DirectoryItem(%@, %qu, %@)", self.label, self.itemSize, self.contents.description];
+          @"DirectoryItem(%@, %qu)", self.label, self.itemSize];
 }
 
 
 - (FILE_COUNT) numFiles {
-  return self.contents.numFiles;
+  return self.fileItems.numFiles + self.directoryItems.numFiles;
 }
 
 - (BOOL) isDirectory {

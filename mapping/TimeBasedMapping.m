@@ -152,14 +152,14 @@ const int  minTimeDelta = 60;
 
 
 - (void) visitItemToDetermineTimeBounds:(Item *)item {
-  if ([item isVirtual]) {
+  if (item.isVirtual) {
     [self visitItemToDetermineTimeBounds: ((CompoundItem *)item).first];
     [self visitItemToDetermineTimeBounds: ((CompoundItem *)item).second];
   }
   else {
     FileItem  *fileItem = (FileItem *)item;
     
-    if ([fileItem isPhysical]) {
+    if (fileItem.isPhysical) {
       // Only consider actual files.
       
       CFAbsoluteTime  itemTime = [self timeForFileItem: fileItem];
@@ -173,8 +173,9 @@ const int  minTimeDelta = 60;
       }
     }
     
-    if ([fileItem isDirectory]) {
-      [self visitItemToDetermineTimeBounds: ((DirectoryItem *)fileItem).contents];
+    if (fileItem.isDirectory) {
+      [self visitItemToDetermineTimeBounds: ((DirectoryItem *)fileItem).fileItems];
+      [self visitItemToDetermineTimeBounds: ((DirectoryItem *)fileItem).directoryItems];
     }
   }
 }

@@ -399,9 +399,8 @@ NSString  *TallyFileSizeName = @"tally";
     
     DirectoryItem  *dirItem = topDir->dirItem;
     
-    [dirItem setDirectoryContents:
-      [CompoundItem compoundItemWithFirst: [treeBalancer createTreeForItems: topDir->files]
-                                   second: [treeBalancer createTreeForItems: topDir->dirs]]];
+    [dirItem setFileItems: [treeBalancer createTreeForItems: topDir->files]
+           directoryItems: [treeBalancer createTreeForItems: topDir->dirs]];
 
     [treeGuide emergedFromDirectory: dirItem];
     [progressTracker processedFolder: dirItem];

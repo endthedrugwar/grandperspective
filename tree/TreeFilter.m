@@ -18,8 +18,7 @@
                    into:(DirectoryItem *)newDirItem;
 
 - (void) flattenAndFilterSiblings:(Item *)item
-                   directoryItems:(NSMutableArray *)dirItems
-                        fileItems:(NSMutableArray *)fileItems;
+                             into:(NSMutableArray *)flattenedItems;
 
 - (void) flattenAndFilterSiblings: (Item *)item;
 
@@ -44,8 +43,7 @@
     
     progressTracker = [[TreeVisitingProgressTracker alloc] init];
 
-    tmpDirItems = nil;
-    tmpFileItems = nil;
+    tmpItems = nil;
   }
 
   return self;
@@ -124,7 +122,8 @@
   [treeGuide descendIntoDirectory: newDir];
   [progressTracker processingFolder: oldDir];
 
-  [self flattenAndFilterSiblings: oldDir.contents directoryItems: dirs fileItems: files];
+  [self flattenAndFilterSiblings: oldDir.fileItems into: files];
+  [self flattenAndFilterSiblings: oldDir.directoryItems into: dirs];
 
   if (!abort) { // Break recursion when task has been aborted.
     NSUInteger  i;
@@ -151,9 +150,8 @@
       }
     }
   
-    [newDir setDirectoryContents: 
-      [CompoundItem compoundItemWithFirst: [treeBalancer createTreeForItems: files]
-                                   second: [treeBalancer createTreeForItems: dirs]]];
+    [newDir setFileItems: [treeBalancer createTreeForItems: files]
+          directoryItems: [treeBalancer createTreeForItems: dirs]];
   }
   
   [treeGuide emergedFromDirectory: newDir];
@@ -163,24 +161,20 @@
   [files release];
 }
 
-
 - (void) flattenAndFilterSiblings:(Item *)item
-                   directoryItems:(NSMutableArray *)dirItems
-                        fileItems:(NSMutableArray *)fileItems {
+                             into:(NSMutableArray *)flattenedItems {
   if (item == nil) {
     // All done.
     return;
   }
 
-  NSAssert(tmpDirItems==nil && tmpFileItems==nil, @"Helper arrays already in use?");
+  NSAssert(tmpItems==nil, @"Helper array already in use?");
   
-  tmpDirItems = dirItems;
-  tmpFileItems = fileItems;
-  
+  tmpItems = flattenedItems;
+
   [self flattenAndFilterSiblings: item];
   
-  tmpDirItems = nil;
-  tmpFileItems = nil;
+  tmpItems = nil;
 }
 
 - (void) flattenAndFilterSiblings: (Item *)item {
@@ -196,17 +190,10 @@
     FileItem  *fileItem = (FileItem *)item;
     
     if ( [treeGuide includeFileItem: fileItem] ) {
-      if ( fileItem.isDirectory ) {
-        [tmpDirItems addObject: fileItem];
-      }
-      else {
-        [tmpFileItems addObject: fileItem];
-      }
+      [tmpItems addObject: fileItem];
     }
-    else {
-      if ( fileItem.isDirectory ) {
-        [progressTracker skippedFolder: (DirectoryItem *)fileItem];
-      }
+    else if ( fileItem.isDirectory ) {
+      [progressTracker skippedFolder: (DirectoryItem *)fileItem];
     }
   }
 }

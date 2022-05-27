@@ -1064,7 +1064,7 @@ didStartElement:(NSString *)childElement
     }
   }
   else if ([childElement isEqualToString: FolderElem]) {
-    if (tree.scanTree.contents != nil) {
+    if (tree.scanTree.fileItems != nil || tree.scanTree.directoryItems != nil) {
       [self handlerError: MULTIPLE_ROOT_FOLDER_MSG];
     }
     else {
@@ -1415,9 +1415,8 @@ didStartElement:(NSString *)childElement
 - (id) objectForElement {
   TreeBalancer  *treeBalancer = [reader treeBalancer];
 
-  [dirItem setDirectoryContents: 
-    [CompoundItem compoundItemWithFirst: [treeBalancer createTreeForItems: files]
-                                 second: [treeBalancer createTreeForItems: dirs]]];
+  [dirItem setFileItems: [treeBalancer createTreeForItems: files]
+         directoryItems: [treeBalancer createTreeForItems: dirs]];
 
   [reader processedFolder: dirItem];
   

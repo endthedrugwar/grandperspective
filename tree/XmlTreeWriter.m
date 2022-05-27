@@ -310,7 +310,8 @@ NSString *escapedXML(NSString *s, CharacterOptions escapeCharMask) {
   }
   [self appendString: @">\n"];
 
-  [self dumpItemContents: dirItem.contents];
+  [self dumpItemContents: dirItem.fileItems];
+  [self dumpItemContents: dirItem.directoryItems];
 
   [self appendString: [NSString stringWithFormat: @"</%@>\n", FolderElem]];
 

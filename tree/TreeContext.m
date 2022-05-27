@@ -199,11 +199,9 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
                                             accessTime: 0
                         ] autorelease];
 
-  [usedSpaceItem setDirectoryContents: [CompoundItem compoundItemWithFirst: miscUsedSpaceItem
-                                                                    second: scanTree]];
+  [usedSpaceItem setFileItems: miscUsedSpaceItem directoryItems: scanTree];
     
-  [self.volumeTree setDirectoryContents: [CompoundItem compoundItemWithFirst: freeSpaceItem
-                                                                      second: usedSpaceItem]];
+  [self.volumeTree setFileItems: freeSpaceItem directoryItems: usedSpaceItem];
 }
 
 
@@ -272,12 +270,21 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
     }
   } 
   else {
+    // Unusual case where the item is directly stored by its parent directory item because it is
+    // the only child of this type (i.e. either a solitary file or sub-directory)
     DirectoryItem  *dirItem = (DirectoryItem *)containingItem;
   
     NSAssert(dirItem.isDirectory, @"Expected a DirectoryItem.");
-    NSAssert(dirItem.contents == replacedItem, @"Selected item not found.");
-    
-    [dirItem replaceDirectoryContents: replacingItem];
+
+    if (dirItem.fileItems == replacedItem) {
+      [dirItem replaceFileItems: replacingItem];
+    }
+    else if (dirItem.directoryItems == replacedItem) {
+      [dirItem replaceDirectoryItems: replacingItem];
+    }
+    else {
+      NSAssert(NO, @"Selected item not found.");
+    }
   } 
   [self releaseWriteLock];
   
@@ -438,7 +445,11 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
   replacingItem = nil; 
 }
 
-- (void) updateFreedSpaceForDeletedItem:(Item *)item; {
+- (void) updateFreedSpaceForDeletedItem:(Item *)item {
+  if (item == nil) {
+    return; // Can happen for children of a directory item
+  }
+
   if (item.isVirtual) {
     [self updateFreedSpaceForDeletedItem: ((CompoundItem *)item).first];
     [self updateFreedSpaceForDeletedItem: ((CompoundItem *)item).second];
@@ -453,7 +464,8 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
     // than the size of the "freed space" block that replaces all files that have been deleted.
 
     if (fileItem.isDirectory) {
-      [self updateFreedSpaceForDeletedItem: ((DirectoryItem *)item).contents];
+      [self updateFreedSpaceForDeletedItem: ((DirectoryItem *)item).fileItems];
+      [self updateFreedSpaceForDeletedItem: ((DirectoryItem *)item).directoryItems];
     }
     else {
       if (fileItem.isPhysical) {

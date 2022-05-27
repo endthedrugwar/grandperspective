@@ -503,12 +503,13 @@ NSString  *FriendlySizeKey = @"friendlySize";
     // Can only extend from a DirectoryItem
     return NO;
   }
-  
-  Item  *contents = ((DirectoryItem *)pathEndPoint).contents;
-  if (contents == nil ||
+
+  DirectoryItem  *dirItem = (DirectoryItem *)pathEndPoint;
+  Item  *fromItem = target.isDirectory ? dirItem.directoryItems : dirItem.fileItems;
+  if (fromItem == nil ||
       ! [self extendVisiblePathToFileItem: target
                                   similar: similar
-                                 fromItem: contents] ) {
+                                 fromItem: fromItem] ) {
     // Failed to find a similar file item
     return NO;
   }
@@ -523,7 +524,7 @@ NSString  *FriendlySizeKey = @"friendlySize";
                              similar:(BOOL)similar
                             fromItem:(Item *)current {
   NSAssert(current != nil, @"current cannot be nil.");
-           
+
   [path addObject: current];
   
   if (current.isVirtual) {
@@ -546,8 +547,10 @@ NSString  *FriendlySizeKey = @"friendlySize";
     if (target == fileItem ||
           (similar &&
              ([fileItem.label isEqualToString: target.label] &&
-              fileItem.isDirectory == target.isDirectory &&
               fileItem.isPhysical == target.isPhysical))) {
+      // The type should match given that only immediate children of the correct type are searched.
+      NSAssert(fileItem.isDirectory == target.isDirectory, @"file type mismatch");
+
       return YES;
     }
   }
