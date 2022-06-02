@@ -66,7 +66,8 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
                        volumeSize: volumeSize
                         freeSpace: freeSpace
                         filterSet: filterSet
-                         scanTime: [NSDate date]];
+                         scanTime: [NSDate date]
+                    monitorSource: YES];
 }
 
 - (instancetype) initWithVolumePath:(NSString *)volumePath
@@ -74,7 +75,8 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
                          volumeSize:(unsigned long long)volumeSize
                           freeSpace:(unsigned long long)freeSpace
                           filterSet:(FilterSet *)filterSet
-                           scanTime:(NSDate *)scanTime {
+                           scanTime:(NSDate *)scanTime
+                      monitorSource:(BOOL)monitorSource {
   if (self = [super init]) {
     _volumeTree = [[DirectoryItem alloc] initWithLabel: volumePath
                                                 parent: nil
@@ -98,6 +100,7 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
     _freedFiles = 0;
     
     _scanTime = [scanTime retain];
+    _monitorsSource = monitorSource;
 
     // Ensure filter set is always set
     _filterSet = [(filterSet ?: [FilterSet filterSet]) retain];

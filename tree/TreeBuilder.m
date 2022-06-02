@@ -294,6 +294,10 @@ NSString  *TallyFileSizeName = @"tally";
                 accessTime: [treeRootURL accessTime]
     ] autorelease];
 
+  // TODO: Start monitoring the target path for any changes before starting the scan.
+  // Q: How to handle changes while the tree is still being constructed? Can the event stream be
+  // created before the scan, but only started after scan completed?
+
   [progressTracker startingTask];
 
   BOOL  ok = [self buildTreeForDirectory: scanTree atPath: path];

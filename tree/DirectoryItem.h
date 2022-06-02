@@ -3,6 +3,13 @@
 #import "FileItem.h"
 #import "CompoundItem.h"
 
+/* Bitmasks used for the "dirty" flags field of the DirectoryItem
+ */
+typedef NS_OPTIONS(UInt8, DirectoryRescanOptions) {
+  DirectoryIsUpToDate = 0,
+  DirectoryNeedsShallowRescan = 0x01,
+  DirectoryNeedsFullRescan = 0x02,
+};
 
 @interface DirectoryItem : FileItem {
 }
@@ -49,5 +56,14 @@
  * when the directory should be represented by a file).
  */
 @property (nonatomic, readonly, strong) FileItem *itemWhenHidingPackageContents;
+
+/* Indicates if the state of the directory on disk has been changed since this object has been
+ * created.
+ *
+ * This property is not immutable. It may be changed. However, it is the responsibility of the
+ * sender to ensure that this method is only called when the tree can be modified (e.g. it should
+ * not be traversed in another thread).
+ */
+@property (nonatomic) DirectoryRescanOptions rescanFlags;
 
 @end

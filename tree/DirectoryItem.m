@@ -36,6 +36,8 @@
                        accessTime: accessTime]) {
     _fileItems = nil;
     _directoryItems = nil;
+
+    _rescanFlags = DirectoryIsUpToDate;
   }
   return self;
 }

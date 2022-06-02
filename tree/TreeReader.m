@@ -1026,7 +1026,8 @@ didStartElement:(NSString *)childElement
                                         volumeSize: volumeSize
                                          freeSpace: freeSpace
                                          filterSet: nil
-                                          scanTime: scanTime];
+                                          scanTime: scanTime
+                                     monitorSource: NO];
   }
   @catch (AttributeParseException *ex) {
     [self handlerAttributeParseError: ex];
@@ -1098,12 +1099,13 @@ didStartElement:(NSString *)childElement
   TreeContext  *oldTree = tree;
 
   // Replace tree by new one that also contains the given filter set. 
-  tree = [[TreeContext alloc] initWithVolumePath: [[oldTree volumeTree] systemPathComponent]
-                                 fileSizeMeasure: [oldTree fileSizeMeasure]
-                                      volumeSize: [oldTree volumeSize]
-                                       freeSpace: [oldTree freeSpace]
+  tree = [[TreeContext alloc] initWithVolumePath: oldTree.volumeTree.systemPathComponent
+                                 fileSizeMeasure: oldTree.fileSizeMeasure
+                                      volumeSize: oldTree.volumeSize
+                                       freeSpace: oldTree.freeSpace
                                        filterSet: filterSet
-                                        scanTime: [oldTree scanTime]];
+                                        scanTime: oldTree.scanTime
+                                   monitorSource: NO];
 
   [oldTree release];
 

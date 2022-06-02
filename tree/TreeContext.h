@@ -35,7 +35,7 @@ extern NSString  *FileItemDeletedEvent;
 }
 
 
-/* Creates a new tree context, with the scan time set to "now".
+/* Creates a new tree context, with the scan time set to "now" and source monitoring enabled.
  */
 - (instancetype) initWithVolumePath:(NSString *)volumePath
                     fileSizeMeasure:(NSString *)fileSizeMeasure
@@ -53,7 +53,8 @@ extern NSString  *FileItemDeletedEvent;
                          volumeSize:(unsigned long long)volumeSize
                           freeSpace:(unsigned long long)freeSpace
                           filterSet:(FilterSet *)filterSet
-                           scanTime:(NSDate *)scanTime NS_DESIGNATED_INITIALIZER;
+                           scanTime:(NSDate *)scanTime
+                      monitorSource:(BOOL)monitorSource NS_DESIGNATED_INITIALIZER;
 
 
 /* Sets the scan tree. This finalises the volume tree. The parent of the scan tree should be that
@@ -67,6 +68,13 @@ extern NSString  *FileItemDeletedEvent;
 
 @property (nonatomic, readonly, strong) DirectoryItem *volumeTree;
 @property (nonatomic, strong) DirectoryItem *scanTree;
+
+/* Flag that indicates if the source is being monitored for changes after the tree has been
+ * created. If so -DirectoryItem.rescanFlags tracks if a directory is outdated.
+ *
+ * TODO: Replace by checking if TreeSourceMonitor (to be created) is set?
+ */
+@property (nonatomic, readonly) BOOL monitorsSource;
 
 /* The size of the volume (in bytes)
  */
