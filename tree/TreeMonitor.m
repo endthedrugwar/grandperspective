@@ -103,8 +103,6 @@ void eventCallback(ConstFSEventStreamRef streamRef,
 @implementation TreeMonitor (PrivateMethods)
 
 - (void)invalidatePath:(NSString *)path mustScanSubDirs:(BOOL)mustScanSubDirs {
-  ++_numChanges;
-
   NSURL *url = [NSURL fileURLWithPath: path];
   NSArray<NSString *> *pathComponents = url.pathComponents;
 
@@ -117,8 +115,11 @@ void eventCallback(ConstFSEventStreamRef streamRef,
     ++i;
   }
 
+  DirectoryRescanOptions flag = 0;
+  DirectoryItem *dirItem = nil;
+
   if (i == rootPathComponents.count) {
-    DirectoryItem *dirItem = self.treeContext.scanTree;
+    dirItem = self.treeContext.scanTree;
     while (i < pathComponents.count) {
       DirectoryItem *child = [dirItem getSubDirectoryWithLabel: pathComponents[i]];
       if (child == nil) {
@@ -131,14 +132,19 @@ void eventCallback(ConstFSEventStreamRef streamRef,
       ++i;
     }
 
-    dirItem.rescanFlags |= (mustScanSubDirs
-                            ? DirectoryNeedsFullRescan
-                            : DirectoryNeedsShallowRescan);
-
-    NSLog(@"Updated rescanFlags for %@", dirItem.path);
+    flag = mustScanSubDirs ? DirectoryNeedsFullRescan : DirectoryNeedsShallowRescan;
   } else {
     NSLog(@"Warning: file item not found for %@", path);
-    self.treeContext.scanTree.rescanFlags |= DirectoryNeedsFullRescan;
+
+    dirItem = self.treeContext.scanTree;
+    flag = DirectoryNeedsFullRescan;
+  }
+
+  if ((dirItem.rescanFlags & flag) != flag) {
+    dirItem.rescanFlags |= flag;
+
+    ++_numChanges;
+    NSLog(@"Updated rescanFlags for %@", dirItem.path);
   }
 }
 
