@@ -1,5 +1,6 @@
 #import "CompoundItem.h"
 
+#import "FileItem.h"
 
 @implementation CompoundItem
 
@@ -27,10 +28,10 @@
 - (instancetype) initWithFirst:(Item *)first second:(Item *)second {
   NSAssert(first != nil && second != nil, @"Both values must be non nil.");
   
-  if (self = [super initWithItemSize:([first itemSize] + [second itemSize])]) {
+  if (self = [super initWithItemSize:(first.itemSize + second.itemSize)]) {
     _first = [first retain];
     _second = [second retain];
-    numFiles = [first numFiles] + [second numFiles];
+    numFiles = first.numFiles + second.numFiles;
   }
 
   return self;
@@ -77,6 +78,30 @@
     [_second release];
     _second = [newItem retain];
   }
+}
+
+- (FileItem *)findFileItemWithLabel:(NSString *)label {
+  if (_first.isVirtual) {
+    FileItem *found = [((CompoundItem *)_first)findFileItemWithLabel: label];
+    if (found != nil) {
+      return found;
+    }
+  }
+  else if ([((FileItem *)_first).label isEqualToString: label]) {
+    return (FileItem *)_first;
+  }
+
+  if (_second.isVirtual) {
+    FileItem *found = [((CompoundItem *)_second)findFileItemWithLabel: label];
+    if (found != nil) {
+      return found;
+    }
+  }
+  else if ([((FileItem *)_second).label isEqualToString: label]) {
+    return (FileItem *)_second;
+  }
+
+  return nil;
 }
 
 @end

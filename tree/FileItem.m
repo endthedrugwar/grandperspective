@@ -143,7 +143,6 @@ NSString*  FileSizeUnitSystemBase10 = @"base-10";
   return [self constructPath: YES];
 }
 
-
 + (NSString *)stringForFileItemSize:(ITEM_SIZE)filesize {
   int  bytesUnit = [FileItem bytesPerKilobyte];
   
@@ -282,7 +281,7 @@ NSString*  FileSizeUnitSystemBase10 = @"base-10";
 
 
 - (NSString *)constructPath:(BOOL) useFileSystemRepresentation {
-  NSString  *comp = useFileSystemRepresentation ? [self systemPathComponent] : [self pathComponent];
+  NSString  *comp = useFileSystemRepresentation ? self.systemPathComponent : self.pathComponent;
   
   if (comp != nil) {
     return ( (self.parentDirectory != nil)

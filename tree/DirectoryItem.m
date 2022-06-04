@@ -130,5 +130,16 @@
   return YES;
 }
 
-@end // @implementation DirectoryItem
+- (DirectoryItem *)getSubDirectoryWithLabel:(NSString *)label {
+  if (self.directoryItems.isVirtual) {
+    return (DirectoryItem *)[((CompoundItem *)self.directoryItems) findFileItemWithLabel: label];
+  }
+  else if ([((DirectoryItem *)self.directoryItems).label isEqualToString: label]) {
+    return (DirectoryItem *)self.directoryItems;
+  }
+  else {
+    return nil;
+  }
+}
 
+@end // @implementation DirectoryItem

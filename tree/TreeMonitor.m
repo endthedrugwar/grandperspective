@@ -57,27 +57,39 @@ void eventCallback(ConstFSEventStreamRef streamRef,
 
     CFStringRef cf_path = (__bridge CFStringRef)path;
     CFArrayRef pathsToWatch = CFArrayCreate(NULL, (const void **)&cf_path, 1, NULL);
-    void *callbackInfo = self; // could put stream-specific data here.
+
+    FSEventStreamContext context;
+    context.info = (__bridge void *)self;
+    context.version = 0;
+    context.retain = NULL;
+    context.release = NULL;
+    context.copyDescription = NULL;
 
     /* Create the stream, passing in a callback */
     eventStream = FSEventStreamCreate(NULL,
                                       &eventCallback,
-                                      callbackInfo,
+                                      &context,
                                       pathsToWatch,
                                       kFSEventStreamEventIdSinceNow,
                                       EVENT_UPDATE_LATENCY,
                                       kFSEventStreamCreateFlagNone);
 
     FSEventStreamSetDispatchQueue(eventStream, dispatch_get_main_queue());
+
+    rootPathComponents = [[[NSURL fileURLWithPath: path] pathComponents] retain];
   }
 
   return self;
 }
 
 - (void) dealloc {
+  NSLog(@"TreeMonitor dealloc");
+
   FSEventStreamStop(eventStream);
   FSEventStreamInvalidate(eventStream);
   FSEventStreamRelease(eventStream);
+
+  [rootPathComponents release];
 
   [super dealloc];
 }
@@ -93,15 +105,37 @@ void eventCallback(ConstFSEventStreamRef streamRef,
 - (void)invalidatePath:(NSString *)path mustScanSubDirs:(BOOL)mustScanSubDirs {
   ++_numChanges;
 
-  FileItem *fileItem = [self.treeContext.scanTree fileItemForPath: path];
-  if (fileItem != nil) {
-    if (!fileItem.isDirectory) {
-      fileItem = fileItem.parentDirectory;
+  NSURL *url = [NSURL fileURLWithPath: path];
+  NSArray<NSString *> *pathComponents = url.pathComponents;
+
+  int i = 0;
+  while (i < rootPathComponents.count) {
+    if (![pathComponents[i] isEqualToString: rootPathComponents[i]]) {
+      NSLog(@"Failed to match path %@ with root path", path);
+      break;
+    }
+    ++i;
+  }
+
+  if (i == rootPathComponents.count) {
+    DirectoryItem *dirItem = self.treeContext.scanTree;
+    while (i < pathComponents.count) {
+      DirectoryItem *child = [dirItem getSubDirectoryWithLabel: pathComponents[i]];
+      if (child == nil) {
+        // This can happen when the sub-directory was created after the scan tree was created and
+        // subsequently modified.
+        NSLog(@"Could not find sub-directory %@ in %@", pathComponents[i], dirItem.systemPath);
+        break;
+      }
+      dirItem = child;
+      ++i;
     }
 
-    ((DirectoryItem *)fileItem).rescanFlags |= (mustScanSubDirs
-                                                ? DirectoryNeedsFullRescan
-                                                : DirectoryNeedsShallowRescan);
+    dirItem.rescanFlags |= (mustScanSubDirs
+                            ? DirectoryNeedsFullRescan
+                            : DirectoryNeedsShallowRescan);
+
+    NSLog(@"Updated rescanFlags for %@", dirItem.path);
   } else {
     NSLog(@"Warning: file item not found for %@", path);
     self.treeContext.scanTree.rescanFlags |= DirectoryNeedsFullRescan;

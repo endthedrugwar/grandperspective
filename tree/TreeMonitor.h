@@ -8,6 +8,8 @@
   __weak TreeContext *_treeContext;
 
   FSEventStreamRef eventStream;
+
+  NSArray<NSString *> *rootPathComponents;
 }
 
 @property (nonatomic, readonly, weak) TreeContext *treeContext;

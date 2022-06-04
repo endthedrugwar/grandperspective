@@ -117,13 +117,6 @@ typedef NS_OPTIONS(UInt8, FileItemOptions) {
 @property (nonatomic, readonly, copy) NSString *systemPath;
 
 
-/* Returns the file item for the given path.
- *
- * Returns nil if the path is not contained within the current file item. Otherwise runs the file
- * item that matches the path, or if that cannot be found, the nearest directory that contains it.
- */
-- (FileItem *)fileItemForPath:(NSString *)systemPath;
-
 /* Returns a short string, approximating the given size. E.g. "1.23 MB"
  *
  * Note: This method assumes that the file size measure is "bytes". It should not be used, for

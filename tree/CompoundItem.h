@@ -2,6 +2,8 @@
 
 #import "Item.h"
 
+@class FileItem;
+
 @interface CompoundItem : Item {
   FILE_COUNT  numFiles;
 }
@@ -26,6 +28,8 @@
 
 // Replaces the second item. See also -replaceFirst.
 - (void) replaceSecond:(Item *)newItem;
+
+- (FileItem *)findFileItemWithLabel:(NSString *)label;
 
 /* Can handle case where either one or both are nil. If both are nil, it returns nil. If one item is
  * nil, it returns the other item. Otherwise it returns a CompoundItem containing both.
