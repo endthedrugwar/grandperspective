@@ -24,7 +24,7 @@ extern NSString  *FileItemDeletedEvent;
   FileItem  *replacingItem;
 
   TreeMonitor  *treeMonitor;
-  
+
   // Variables used for synchronizing read/write access to the tree.
   NSLock  *mutex;
   NSConditionLock  *lock;
@@ -78,6 +78,11 @@ extern NSString  *FileItemDeletedEvent;
  * created. If so -DirectoryItem.rescanFlags tracks if a directory is outdated.
  */
 @property (nonatomic, readonly) BOOL monitorsSource;
+
+/* Returns the number of detected tree changes. It can only become non-zero when the tree is
+ * being monitored.
+ */
+@property (nonatomic, readonly) int numTreeChanges;
 
 /* The size of the volume (in bytes)
  */

@@ -11,6 +11,7 @@
 }
 
 @property (nonatomic, readonly, weak) TreeContext *treeContext;
+@property (nonatomic, readonly) int numChanges;
 
 - (instancetype) initWithTreeContext:(TreeContext *)treeContext
                              forPath:(NSString *)path NS_DESIGNATED_INITIALIZER;

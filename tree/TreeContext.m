@@ -236,6 +236,10 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
   return treeMonitor != nil;
 }
 
+- (int) numTreeChanges {
+  return treeMonitor.numChanges;
+}
+
 - (NSString *)stringForScanTime {
   static NSDateFormatter *format = nil;
   if (format == nil) {
@@ -277,7 +281,7 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
                                        accessTime: 0];
 
   Item  *containingItem = [self itemContainingSelectedFileItem: pathModelView];
-  
+
   [self obtainWriteLock];
   if ([containingItem isVirtual]) {
     CompoundItem  *compoundItem = (CompoundItem *)containingItem;
