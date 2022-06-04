@@ -7,6 +7,7 @@
 #import "ItemPathModelView.h"
 
 #import "FilterSet.h"
+#import "TreeMonitor.h"
 
 extern NSString  *TallyFileSizeName;
 
@@ -51,8 +52,12 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
 // Overrides designated initialiser
 - (instancetype) init {
   NSAssert(NO, @"Use initWithVolumePath:scanPath:fileSizeMeasure:... instead.");
-  return
-    [self initWithVolumePath: nil fileSizeMeasure: nil volumeSize: 0 freeSpace: 0 filterSet: nil];
+  return [self initWithVolumePath: nil
+                  fileSizeMeasure: nil
+                       volumeSize: 0
+                        freeSpace: 0
+                        filterSet: nil
+                      monitorPath: nil];
 }
 
 
@@ -60,14 +65,15 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
                     fileSizeMeasure:(NSString *)fileSizeMeasure
                          volumeSize:(unsigned long long)volumeSize
                           freeSpace:(unsigned long long)freeSpace
-                          filterSet:(FilterSet *)filterSet {
+                          filterSet:(FilterSet *)filterSet
+                        monitorPath:(NSString *)pathToMonitor {
   return [self initWithVolumePath: volumePath
                   fileSizeMeasure: fileSizeMeasure
                        volumeSize: volumeSize
                         freeSpace: freeSpace
                         filterSet: filterSet
                          scanTime: [NSDate date]
-                    monitorSource: YES];
+                      monitorPath: pathToMonitor];
 }
 
 - (instancetype) initWithVolumePath:(NSString *)volumePath
@@ -76,7 +82,7 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
                           freeSpace:(unsigned long long)freeSpace
                           filterSet:(FilterSet *)filterSet
                            scanTime:(NSDate *)scanTime
-                      monitorSource:(BOOL)monitorSource {
+                        monitorPath:(NSString *)pathToMonitor {
   if (self = [super init]) {
     _volumeTree = [[DirectoryItem alloc] initWithLabel: volumePath
                                                 parent: nil
@@ -100,7 +106,12 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
     _freedFiles = 0;
     
     _scanTime = [scanTime retain];
-    _monitorsSource = monitorSource;
+
+    if (pathToMonitor != nil) {
+      treeMonitor = [[TreeMonitor alloc] initWithTreeContext: self forPath: pathToMonitor];
+    } else {
+      treeMonitor = nil;
+    }
 
     // Ensure filter set is always set
     _filterSet = [(filterSet ?: [FilterSet filterSet]) retain];
@@ -132,6 +143,7 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
   [_fileSizeMeasure release];
   [_scanTime release];
   [_filterSet release];
+  [treeMonitor release];
   
   [replacedItem release];
   [replacingItem release];
@@ -205,6 +217,10 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
   [usedSpaceItem setFileItems: miscUsedSpaceItem directoryItems: scanTree];
     
   [self.volumeTree setFileItems: freeSpaceItem directoryItems: usedSpaceItem];
+
+  if (self.monitorsSource) {
+    [treeMonitor startMonitoring];
+  }
 }
 
 
@@ -214,6 +230,10 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
 
 - (unsigned long long) miscUsedSpace {
   return [miscUsedSpaceItem itemSize];
+}
+
+- (BOOL) monitorsSource {
+  return treeMonitor != nil;
 }
 
 - (NSString *)stringForScanTime {

@@ -70,6 +70,9 @@
 
 
 - (TreeContext *)filterTree: (TreeContext *)oldTree {
+  DirectoryItem  *oldScanTree = oldTree.scanTree;
+  NSString  *pathToMonitor = oldTree.monitorsSource ? oldScanTree.systemPath : nil;
+
   TreeContext  *filterResult =
     [[[TreeContext alloc] initWithVolumePath: oldTree.volumeTree.systemPath
                              fileSizeMeasure: oldTree.fileSizeMeasure
@@ -77,17 +80,15 @@
                                    freeSpace: oldTree.freeSpace
                                    filterSet: filterSet
                                     scanTime: oldTree.scanTime
-                               monitorSource: oldTree.monitorsSource] autorelease];
+                                 monitorPath: pathToMonitor] autorelease];
 
-  DirectoryItem  *oldScanTree = [oldTree scanTree];
   DirectoryItem  *scanTree = [ScanTreeRoot allocWithZone: Item.zoneForTree];
   [[scanTree initWithLabel: oldScanTree.label
                     parent: filterResult.scanTreeParent
                      flags: oldScanTree.fileItemFlags
               creationTime: oldScanTree.creationTime
           modificationTime: oldScanTree.modificationTime
-                accessTime: oldScanTree.accessTime
-    ] autorelease];
+                accessTime: oldScanTree.accessTime] autorelease];
 
   [progressTracker startingTask];
   
@@ -96,9 +97,6 @@
   [progressTracker finishedTask];
 
   [filterResult setScanTree: scanTree];
-
-  // TODO: If the source tree was monitored, also apply it to the filtered tree
-  // Q: How to handle changes during filtering?
 
   return abort ? nil : filterResult;
 }

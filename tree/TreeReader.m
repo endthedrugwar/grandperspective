@@ -1027,7 +1027,7 @@ didStartElement:(NSString *)childElement
                                          freeSpace: freeSpace
                                          filterSet: nil
                                           scanTime: scanTime
-                                     monitorSource: NO];
+                                       monitorPath: nil];
   }
   @catch (AttributeParseException *ex) {
     [self handlerAttributeParseError: ex];
@@ -1105,7 +1105,7 @@ didStartElement:(NSString *)childElement
                                        freeSpace: oldTree.freeSpace
                                        filterSet: filterSet
                                         scanTime: oldTree.scanTime
-                                   monitorSource: NO];
+                                     monitorPath: nil];
 
   [oldTree release];
 
