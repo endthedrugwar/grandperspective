@@ -7,6 +7,8 @@ CFAbsoluteTime EVENT_UPDATE_LATENCY = 3.0; /* Latency in seconds */
 
 @interface TreeMonitor (PrivateMethods)
 
+- (void)invalidatePaths:(NSDictionary<NSString *, NSNumber *> *)paths;
+
 - (void)invalidatePath:(NSString *)path mustScanSubDirs:(BOOL)mustScanSubDirs;
 
 @end
@@ -18,15 +20,18 @@ void eventCallback(ConstFSEventStreamRef streamRef,
                    const FSEventStreamEventFlags eventFlags[],
                    const FSEventStreamEventId eventIds[]) {
   char **paths = eventPaths;
-  TreeMonitor *treeMonitor = (TreeMonitor *)clientCallBackInfo;
 
-  [treeMonitor.treeContext obtainWriteLock];
+  // Deleting a directory typically results in many duplicate events, one for each file inside the
+  // directory. As finding the DirectoryItem for paths is relatively expensive, first collect all
+  // the events in a dictionary to remove the duplicates.
+  NSMutableDictionary<NSString*, NSNumber*>  *modifiedDirs =
+    [NSMutableDictionary dictionaryWithCapacity: numEvents];
 
   for (int i = 0; i < numEvents; i++) {
     unsigned long eventFlag = eventFlags[i];
-    char *path = paths[i];
+    NSString  *path = [NSString stringWithUTF8String: paths[i]];
 
-    printf("Change %llu in %s, flags %lu\n", eventIds[i], path, eventFlag);
+    printf("Change %llu in %s, flags %lu\n", eventIds[i], paths[i], eventFlag);
 
     if (eventFlag & kFSEventStreamEventFlagEventIdsWrapped) {
       NSLog(@"Warning: FSEvent IDs wrapped");
@@ -35,11 +40,17 @@ void eventCallback(ConstFSEventStreamRef streamRef,
         || (eventFlag & kFSEventStreamEventFlagUserDropped)) {
       NSLog(@"Warning: Some FSEvents were dropped");
     }
-    [treeMonitor invalidatePath: [NSString stringWithUTF8String: paths[i]]
-                mustScanSubDirs: (eventFlag & kFSEventStreamEventFlagMustScanSubDirs)];
+
+    if (eventFlag & kFSEventStreamEventFlagMustScanSubDirs) {
+      modifiedDirs[path] = [NSNumber numberWithBool: YES];
+    }
+    else if (modifiedDirs[path] == nil) {
+      modifiedDirs[path] = [NSNumber numberWithBool: NO];
+    }
   }
 
-  [treeMonitor.treeContext releaseWriteLock];
+  TreeMonitor *treeMonitor = (TreeMonitor *)clientCallBackInfo;
+  [treeMonitor invalidatePaths: modifiedDirs];
 }
 
 @implementation TreeMonitor
@@ -102,9 +113,21 @@ void eventCallback(ConstFSEventStreamRef streamRef,
 
 @implementation TreeMonitor (PrivateMethods)
 
+- (void)invalidatePaths:(NSDictionary<NSString *, NSNumber *> *)paths {
+  [self.treeContext obtainWriteLock];
+
+  for (id path in paths) {
+    [self invalidatePath: path mustScanSubDirs: paths[path].boolValue];
+  }
+
+  [self.treeContext releaseWriteLock];
+}
+
 - (void)invalidatePath:(NSString *)path mustScanSubDirs:(BOOL)mustScanSubDirs {
   NSURL *url = [NSURL fileURLWithPath: path];
   NSArray<NSString *> *pathComponents = url.pathComponents;
+
+  NSLog(@"invalidatePath: %@ mustScanSubDirs: %d", path, mustScanSubDirs);
 
   int i = 0;
   while (i < rootPathComponents.count) {
