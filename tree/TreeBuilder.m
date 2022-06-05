@@ -46,7 +46,12 @@ NSString  *TallyFileSizeName = @"tally";
   NSMutableArray<PlainFileItem *>  *files;
 }
 
-- (void) initWithDirectoryItem:(DirectoryItem *)dirItemVal URL:(NSURL *)urlVal;
+- (instancetype) initWithDirs:(NSMutableArray<DirectoryItem *> *)dirs
+                        files:(NSMutableArray<PlainFileItem *> *)files NS_DESIGNATED_INITIALIZER;
+
+// Convenience "constructor" for repeated usage
+- (void) initWithDirectoryItem:(DirectoryItem *)dirItem
+                           URL:(NSURL *)url;
 
 /* Remove any sub-directories that should not be included according to the treeGuide. This
  * filtering needs to be done after all items inside this directory have been scanned, as the
@@ -65,8 +70,7 @@ NSString  *TallyFileSizeName = @"tally";
 - (void) addToStack:(DirectoryItem *)dirItem URL:(NSURL *)url;
 - (ScanStackFrame *)unwindStackToURL:(NSURL *)url;
 
-- (BOOL) buildTreeForDirectory:(DirectoryItem *)dirItem atPath:(NSString *)path;
-
+- (BOOL) visitItemAtURL:(NSURL *)url parent:(ScanStackFrame *)parent;
 - (BOOL) visitHardLinkedItemAtURL:(NSURL *)url;
 
 - (int) determineNumSubFoldersFor:(NSURL *)url;
@@ -80,11 +84,18 @@ NSString  *TallyFileSizeName = @"tally";
 
 // Overrides super's designated initialiser.
 - (instancetype) init {
+  return [self initWithDirs: [[NSMutableArray alloc] initWithCapacity: INITIAL_DIRS_CAPACITY * 32]
+                      files: [[NSMutableArray alloc] initWithCapacity: INITIAL_FILES_CAPACITY * 32]
+  ];
+}
+
+- (instancetype) initWithDirs:(NSMutableArray<DirectoryItem *> *)dirsVal
+                        files:(NSMutableArray<PlainFileItem *> *)filesVal {
   if (self = [super init]) {
     // Multiplying sizes specified in TreeConstants.h. As these arrays are being re-used, it is
     // better to make them initially larger to avoid unnecessary resizing.
-    dirs = [[NSMutableArray alloc] initWithCapacity: INITIAL_DIRS_CAPACITY * 32];
-    files = [[NSMutableArray alloc] initWithCapacity: INITIAL_FILES_CAPACITY * 32];
+    dirs = [dirsVal retain];
+    files = [filesVal retain];
   }
   return self;
 }
@@ -159,7 +170,21 @@ NSString  *TallyFileSizeName = @"tally";
 
     treeBalancer = [[TreeBalancer alloc] init];
     typeInventory = [[UniformTypeInventory defaultUniformTypeInventory] retain];
-    
+
+    dirEnumKeysFullScan = [@[
+      NSURLNameKey,
+      NSURLIsDirectoryKey,
+      NSURLParentDirectoryURLKey,
+      NSURLCreationDateKey,
+      NSURLContentModificationDateKey,
+      NSURLContentAccessDateKey,
+      NSURLLinkCountKey,
+      NSURLIsPackageKey,
+      NSURLTotalFileSizeKey,
+      NSURLTotalFileAllocatedSizeKey
+    ] retain];
+    dirEnumKeysCountSubdirs = [@[NSURLIsDirectoryKey] retain];
+
     hardLinkedFileNumbers = [[NSMutableSet alloc] initWithCapacity: 32];
     abort = NO;
     
@@ -185,6 +210,9 @@ NSString  *TallyFileSizeName = @"tally";
   [treeGuide release];
   [treeBalancer release];
   [typeInventory release];
+
+  [dirEnumKeysFullScan release];
+  [dirEnumKeysCountSubdirs release];
   
   [hardLinkedFileNumbers release];
   [fileSizeMeasureName release];
@@ -287,11 +315,11 @@ NSString  *TallyFileSizeName = @"tally";
 
   DirectoryItem  *scanTree = [ScanTreeRoot allocWithZone: [Item zoneForTree]];
   [[scanTree initWithLabel: relativePath
-                    parent: [treeContext scanTreeParent]
+                    parent: treeContext.scanTreeParent
                      flags: flags
-              creationTime: [treeRootURL creationTime]
-          modificationTime: [treeRootURL modificationTime]
-                accessTime: [treeRootURL accessTime]
+              creationTime: treeRootURL.creationTime
+          modificationTime: treeRootURL.modificationTime
+                accessTime: treeRootURL.accessTime
     ] autorelease];
 
   [progressTracker startingTask];
@@ -310,6 +338,76 @@ NSString  *TallyFileSizeName = @"tally";
   return treeContext;
 }
 
+- (BOOL) buildTreeForDirectory:(DirectoryItem *)dirItem atPath:(NSString *)path {
+  NSDirectoryEnumerator  *directoryEnumerator =
+    [NSFileManager.defaultManager enumeratorAtURL: [NSURL fileURLWithPath: path]
+                       includingPropertiesForKeys: dirEnumKeysFullScan
+                                          options: 0
+                                     errorHandler: nil];
+
+  NSAutoreleasePool  *autoreleasePool = nil;
+  int  i = 0;
+  dirStackTopIndex = -1;
+
+  @try {
+    for (NSURL *fileURL in directoryEnumerator) {
+      NSURL  *parentURL = nil;
+      [fileURL getParentURL: &parentURL];
+
+      if (dirStackTopIndex == -1) {
+        // Init first element of stack using URL as returned by getParentURL. This is done instead
+        // constructing the URL from the path using NSURL fileURLWithPath: as the latter can
+        // generate a different URL (see Bug #80), which in turn will cause an unwind failure.
+        [self addToStack: dirItem URL: parentURL];
+      }
+
+      ScanStackFrame  *parent = [self unwindStackToURL: parentURL];
+      NSAssert1(parent != nil, @"Unwind failure at %@", fileURL);
+
+      if (![self visitItemAtURL: fileURL parent: parent]) {
+        [directoryEnumerator skipDescendants];
+      }
+      if (++i == AUTORELEASE_PERIOD) {
+        [autoreleasePool release];
+        autoreleasePool = [[NSAutoreleasePool alloc] init];
+        i = 0;
+      }
+      if (abort) {
+        return NO;
+      }
+    }
+
+    if (dirStackTopIndex != -1) {
+      [self unwindStackToURL: nil]; // Force full unwind
+    }
+  }
+  @finally {
+    [autoreleasePool release];
+  }
+
+  return YES;
+}
+
+- (BOOL) getContentsForDirectory:(DirectoryItem *)dirItem
+                          atPath:(NSString *)path
+                            dirs:(NSMutableArray<DirectoryItem *> *)dirs
+                           files:(NSMutableArray<PlainFileItem *> *)files {
+  NSURL  *parentURL = [NSURL fileURLWithPath: path];
+  NSDirectoryEnumerator  *directoryEnumerator =
+    [NSFileManager.defaultManager enumeratorAtURL: parentURL
+                       includingPropertiesForKeys: dirEnumKeysFullScan
+                                          options: NSDirectoryEnumerationSkipsSubdirectoryDescendants
+                                     errorHandler: nil];
+
+  ScanStackFrame  *parent = [[[ScanStackFrame alloc] initWithDirs: dirs files: files] autorelease];
+  [parent initWithDirectoryItem: dirItem URL: parentURL];
+
+  for (NSURL *fileURL in directoryEnumerator) {
+    [self visitItemAtURL: fileURL parent: parent];
+  }
+
+  return !abort;
+}
 
 - (NSDictionary *)progressInfo {
   // To be safe, do not return info when aborted. Auto-releasing parts of constructed tree could
@@ -419,9 +517,9 @@ NSString  *TallyFileSizeName = @"tally";
 - (BOOL) visitItemAtURL:(NSURL *)url parent:(ScanStackFrame *)parent {
   FileItemOptions  flags = 0;
   BOOL  visitDescendants = YES;
-  BOOL  isDirectory = [url isDirectory];
+  BOOL  isDirectory = url.isDirectory;
 
-  if ([url isHardLinked]) {
+  if (url.isHardLinked) {
     flags |= FileItemIsHardlinked;
 
     if (![self visitHardLinkedItemAtURL: url]) {
@@ -435,17 +533,17 @@ NSString  *TallyFileSizeName = @"tally";
   NSString  *lastPathComponent = url.lastPathComponent;
 
   if (isDirectory) {
-    if ([url isPackage]) {
+    if (url.isPackage) {
       flags |= FileItemIsPackage;
     }
     
     DirectoryItem  *dirChildItem =
-      [[DirectoryItem allocWithZone: [parent zone]] initWithLabel: lastPathComponent
-                                                           parent: parent->dirItem
-                                                            flags: flags
-                                                     creationTime: [url creationTime]
-                                                 modificationTime: [url modificationTime]
-                                                       accessTime: [url accessTime]];
+      [[DirectoryItem allocWithZone: parent.zone] initWithLabel: lastPathComponent
+                                                         parent: parent->dirItem
+                                                          flags: flags
+                                                   creationTime: url.creationTime
+                                               modificationTime: url.modificationTime
+                                                     accessTime: url.accessTime];
 
     // Explicitly check if the path is the System Data volume. We do not want to scan its contents
     // to prevent its contents from being scanned twice (as they also appear inside the root via
@@ -453,7 +551,7 @@ NSString  *TallyFileSizeName = @"tally";
     // handled, but there does not yet seem to be an API to support this.
     BOOL isDataVolume = (
                          [lastPathComponent isEqualToString: @"Data"] &&
-                         [[dirChildItem path] isEqualToString: @"/System/Volumes/Data"]
+                         [dirChildItem.path isEqualToString: @"/System/Volumes/Data"]
                         );
 
     // Only add directories that should be scanned (this does not necessarily mean that it has
@@ -499,14 +597,14 @@ NSString  *TallyFileSizeName = @"tally";
     }
 
     PlainFileItem  *fileChildItem =
-      [[PlainFileItem allocWithZone: [parent zone]] initWithLabel: lastPathComponent
-                                                           parent: parent->dirItem
-                                                             size: fileSize
-                                                             type: fileType
-                                                            flags: flags
-                                                     creationTime: [url creationTime]
-                                                 modificationTime: [url modificationTime]
-                                                       accessTime: [url accessTime]];
+      [[PlainFileItem allocWithZone: parent.zone] initWithLabel: lastPathComponent
+                                                         parent: parent->dirItem
+                                                           size: fileSize
+                                                           type: fileType
+                                                          flags: flags
+                                                   creationTime: url.creationTime
+                                               modificationTime: url.modificationTime
+                                                     accessTime: url.accessTime];
 
     // Only add file items that pass the filter test.
     if ( [treeGuide includeFileItem: fileChildItem] ) {
@@ -519,78 +617,16 @@ NSString  *TallyFileSizeName = @"tally";
   return visitDescendants;
 }
 
-- (BOOL) buildTreeForDirectory:(DirectoryItem *)dirItem atPath:(NSString *)path {
-  NSDirectoryEnumerator  *directoryEnumerator =
-    [[NSFileManager defaultManager] enumeratorAtURL: [NSURL fileURLWithPath: path]
-                         includingPropertiesForKeys: @[
-                                                       NSURLNameKey,
-                                                       NSURLIsDirectoryKey,
-                                                       NSURLParentDirectoryURLKey,
-                                                       NSURLCreationDateKey,
-                                                       NSURLContentModificationDateKey,
-                                                       NSURLContentAccessDateKey,
-                                                       NSURLLinkCountKey,
-                                                       NSURLIsPackageKey,
-                                                       NSURLTotalFileSizeKey,
-                                                       NSURLTotalFileAllocatedSizeKey
-                                                      ]
-                                            options: 0
-                                       errorHandler: nil];
-
-  NSAutoreleasePool  *autoreleasePool = nil;
-  int  i = 0;
-  dirStackTopIndex = -1;
-
-  @try {
-    for (NSURL *fileURL in directoryEnumerator) {
-      NSURL  *parentURL = nil;
-      [fileURL getParentURL: &parentURL];
-
-      if (dirStackTopIndex == -1) {
-        // Init first element of stack using URL as returned by getParentURL. This is done instead
-        // constructing the URL from the path using NSURL fileURLWithPath: as the latter can
-        // generate a different URL (see Bug #80), which in turn will cause an unwind failure.
-        [self addToStack: dirItem URL: parentURL];
-      }
-
-      ScanStackFrame  *parent = [self unwindStackToURL: parentURL];
-      NSAssert1(parent != nil, @"Unwind failure at %@", fileURL);
-
-      if (![self visitItemAtURL: fileURL parent: parent]) {
-        [directoryEnumerator skipDescendants];
-      }
-      if (++i == AUTORELEASE_PERIOD) {
-        [autoreleasePool release];
-        autoreleasePool = [[NSAutoreleasePool alloc] init];
-        i = 0;
-      }
-      if (abort) {
-        return NO;
-      }
-    }
-
-    if (dirStackTopIndex != -1) {
-      [self unwindStackToURL: nil]; // Force full unwind
-    }
-  }
-  @finally {
-    [autoreleasePool release];
-  }
-
-  return YES;
-}
-
 
 /* Returns YES if item should be included in the tree. It returns NO when the item is hard-linked
  * and has already been encountered.
  */
 - (BOOL) visitHardLinkedItemAtURL:(NSURL *)url {
   NSError  *error = nil;
-  NSFileManager  *fileManager = [NSFileManager defaultManager];
+  NSFileManager  *fileManager = NSFileManager.defaultManager;
   NSDictionary  *fileAttributes = [fileManager attributesOfItemAtPath: url.path error: &error];
   NSAssert2(
-    error==nil, @"Error getting attributes for %@: %@",
-    url, [error description]
+    error==nil, @"Error getting attributes for %@: %@", url, error.description
   );
   NSNumber  *fileNumber = fileAttributes[NSFileSystemFileNumber];
 
@@ -615,13 +651,13 @@ NSString  *TallyFileSizeName = @"tally";
 
 - (int) determineNumSubFoldersFor:(NSURL *)url {
   NSDirectoryEnumerator  *directoryEnumerator =
-    [[NSFileManager defaultManager] enumeratorAtURL: url
-                         includingPropertiesForKeys: @[NSURLIsDirectoryKey]
-                                            options: NSDirectoryEnumerationSkipsSubdirectoryDescendants
-                                       errorHandler: nil];
+    [NSFileManager.defaultManager enumeratorAtURL: url
+                       includingPropertiesForKeys: dirEnumKeysCountSubdirs
+                                          options: NSDirectoryEnumerationSkipsSubdirectoryDescendants
+                                     errorHandler: nil];
   int  numSubDirs = 0;
   for (NSURL *fileURL in directoryEnumerator) {
-    if ([fileURL isDirectory]) {
+    if (fileURL.isDirectory) {
       numSubDirs++;
     }
   }
@@ -631,14 +667,14 @@ NSString  *TallyFileSizeName = @"tally";
 
 - (AlertMessage *)createAlertMessage:(DirectoryItem *)scanTree {
   if (fileSizeMeasure == LogicalFileSize) {
-    if ([scanTree itemSize] > totalPhysicalSize) {
+    if (scanTree.itemSize > totalPhysicalSize) {
       AlertMessage  *alert = [[[AlertMessage alloc] init] autorelease];
       alert.messageText = NSLocalizedString
         (@"The reported total size is larger than the actual size on disk", @"Alert message");
       NSString *fmt = NSLocalizedString
         (@"The actual (physical) size is %.1f%% of the reported (logical) size. Consider rescanning using the Physical file size measure",
          @"Alert message");
-      float percentage = (100.0 * totalPhysicalSize) / [scanTree itemSize];
+      float percentage = (100.0 * totalPhysicalSize) / scanTree.itemSize;
       alert.informativeText = [NSString stringWithFormat: fmt, percentage];
       return alert;
     }

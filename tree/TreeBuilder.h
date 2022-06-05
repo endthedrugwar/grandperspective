@@ -17,8 +17,9 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
 @class TreeBalancer;
 @class UniformTypeInventory;
 @class FileItem;
-@class FilterSet;
+@class PlainFileItem;
 @class DirectoryItem;
+@class FilterSet;
 @class TreeContext;
 @class ScanProgressTracker;
 
@@ -30,6 +31,9 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
 
   NSString  *fileSizeMeasureName;
   FileSizeEnum  fileSizeMeasure;
+
+  NSArray<NSURLResourceKey>  *dirEnumKeysFullScan;
+  NSArray<NSURLResourceKey>  *dirEnumKeysCountSubdirs;
 
   // In case logical file sizes are used, tracks total physical size.
   ITEM_SIZE  totalPhysicalSize;
@@ -64,9 +68,26 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
 
 @property (nonatomic, copy) NSString *fileSizeMeasure;
 
-/* Construct the tree for the given folder.
+/* Construct a full tree for the given folder.
  */
 - (TreeContext *)buildTreeForPath:(NSString *)path;
+
+/* Constructs a partial tree for the given folder.
+ *
+ * It is used to implement buildTreeForPath: but also by TreeRefresher to refresh parts of a tree.
+ */
+- (BOOL) buildTreeForDirectory:(DirectoryItem *)dirItem atPath:(NSString *)path;
+
+/* Performs a shallow scan of the folder at the given path to determine its contents.
+ *
+ * Note: The dirItem is provided so that it can be used as a parent for its children. However, it
+ * is not updated as the scan is shallow. Before the directory can be finalized, its
+ * sub-directory children need to be populated first.
+ */
+- (BOOL) getContentsForDirectory:(DirectoryItem *)dirItem
+                          atPath:(NSString *)path
+                            dirs:(NSMutableArray<DirectoryItem *> *)dirs
+                           files:(NSMutableArray<PlainFileItem *> *)files;
 
 - (void) abort;
 
