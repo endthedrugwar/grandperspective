@@ -457,9 +457,11 @@ static MainMenuControl  *singletonInstance = nil;
 - (BOOL) validateMenuItem:(NSMenuItem *)item {
   SEL  action = item.action;
 
-  NSWindow  *window = [NSApplication sharedApplication].mainWindow;
+  NSWindow  *window = NSApplication.sharedApplication.mainWindow;
   BOOL  mainWindowIsDirectoryView =
     [window.windowController isMemberOfClass:[DirectoryViewControl class]];
+  DirectoryViewControl  *dirViewControl =
+    mainWindowIsDirectoryView ? (DirectoryViewControl *)window.windowController : nil;
 
   if ( action == @selector(toggleToolbarShown:) ) {
     if (!mainWindowIsDirectoryView) {
@@ -483,6 +485,21 @@ static MainMenuControl  *singletonInstance = nil;
     return YES;
   }
 
+  if ( action == @selector(rescanSelected:) ) {
+    // Selection must be locked
+    return dirViewControl.isSelectedFileLocked;
+  }
+
+  if ( action == @selector(rescanWithMaskAsFilter:) ) {
+    // There should be a mask
+    return dirViewControl.directoryViewControlSettings.displaySettings.fileItemMaskEnabled;
+  }
+
+  if ( action == @selector(refresh:) ) {
+    // There must be a monitored change
+    return dirViewControl.treeContext.numTreeChanges > 0;
+  }
+
   if (
       action == @selector(duplicateDirectoryView:) ||
       action == @selector(twinDirectoryView:)  ||
@@ -492,7 +509,11 @@ static MainMenuControl  *singletonInstance = nil;
       action == @selector(saveScanData:) ||
       action == @selector(saveDirectoryViewImage:) ||
       action == @selector(saveScanDataAsText:) ||
+
       action == @selector(rescan:) ||
+      action == @selector(rescanAll:) ||
+      action == @selector(rescanVisible:) ||
+
       action == @selector(filterDirectoryView:)
   ) {
     return mainWindowIsDirectoryView;
@@ -509,6 +530,9 @@ static MainMenuControl  *singletonInstance = nil;
   [self scanFolderUsingFilter: YES];
 }
 
+- (IBAction) refresh:(id)sender {
+  NSLog(@"TODO: Implement refresh");
+}
 
 - (IBAction) rescan:(id)sender {
   NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];

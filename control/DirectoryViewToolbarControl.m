@@ -10,6 +10,8 @@
 #import "KBPopUpToolbarItem.h"
 #import "LocalizableStrings.h"
 
+#import "TreeContext.h"
+
 
 NSString  *ToolbarZoom = @"Zoom"; 
 NSString  *ToolbarFocus = @"Focus"; 
@@ -75,11 +77,8 @@ NSString  *ToolbarSearch = @"Search";
 - (void) deleteFile:(id)sender;
 
 // Methods corresponding to methods in MainMenuControl
+- (void) refresh:(id)sender;
 - (void) rescan:(id)sender;
-- (void) rescanAll:(id)sender;
-- (void) rescanVisible:(id)sender;
-- (void) rescanSelected:(id)sender;
-- (void) rescanWithMaskAsFilter:(id)sender;
 
 @end
 
@@ -431,52 +430,21 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   KBPopUpToolbarItem  *item = 
     [[[KBPopUpToolbarItem alloc] initWithItemIdentifier: ToolbarRescan] autorelease];
 
-  [item setLabel: NSLocalizedStringFromTable(@"Rescan", @"Toolbar", @"Toolbar action")];
+  TreeContext  *treeContext = dirViewControl.treeContext;
+  if (treeContext.monitorsSource) {
+    [item setLabel: NSLocalizedStringFromTable(@"Refresh", @"Toolbar", @"Toolbar action")];
+    [item setToolTip: NSLocalizedStringFromTable(@"Refresh view data", @"Toolbar", @"Tooltip")];
+    item.action = @selector(refresh:);
+  }
+  else {
+    [item setLabel: NSLocalizedStringFromTable(@"Rescan", @"Toolbar", @"Toolbar action")];
+    [item setToolTip: NSLocalizedStringFromTable(@"Rescan view data", @"Toolbar", @"Tooltip")];
+    item.action = @selector(rescan:);
+  }
+
   item.paletteLabel = item.label;
-  [item setToolTip: NSLocalizedStringFromTable(@"Rescan view data", @"Toolbar", @"Tooltip")];
   item.image = [NSImage imageNamed: @"Rescan"];
-  item.action = @selector(rescan:);
   item.target = self;
-  
-  NSString  *rescanAllTitle =
-    NSLocalizedStringFromTable(@"Rescan all", @"Toolbar", @"Toolbar action");
-  NSString  *rescanVisibleTitle =
-    NSLocalizedStringFromTable(@"Rescan folder in view", @"Toolbar", @"Toolbar action");
-  NSString  *rescanSelectedTitle =
-    NSLocalizedStringFromTable(@"Rescan selected", @"Toolbar", @"Toolbar action");
-  NSString  *rescanMaskAsFilterTitle =
-    NSLocalizedStringFromTable(@"Rescan with mask as filter", @"Toolbar", @"Toolbar action");
-
-  NSMenu  *menu = [[NSMenu alloc] initWithTitle: LocalizationNotNeeded(@"Rescan actions")];
-  int  itemCount = 0;
-
-  NSMenuItem  *rescanAllItem = [menu insertItemWithTitle: rescanAllTitle
-                                                  action: @selector(rescanAll:)
-                                           keyEquivalent: @""
-                                                 atIndex: itemCount++];
-  rescanAllItem.target = self;
-
-  NSMenuItem  *rescanVisibleItem = [menu insertItemWithTitle: rescanVisibleTitle
-                                                      action: @selector(rescanVisible:)
-                                               keyEquivalent: @""
-                                                     atIndex: itemCount++];
-  rescanVisibleItem.target = self;
-
-  NSMenuItem  *rescanSelectedItem = [menu insertItemWithTitle: rescanSelectedTitle
-                                                       action: @selector(rescanSelected:)
-                                                keyEquivalent: @""
-                                                      atIndex: itemCount++];
-  rescanSelectedItem.target = self;
-
-  NSMenuItem  *rescanMaskAsFilterItem =
-    [menu insertItemWithTitle: rescanMaskAsFilterTitle
-                       action: @selector(rescanWithMaskAsFilter:)
-                keyEquivalent: @""
-                      atIndex: itemCount++];
-  rescanMaskAsFilterItem.target = self;
-
-  [menu setAutoenablesItems: YES];
-  [item setMenu: menu];
 
   return item;
 }
@@ -513,7 +481,7 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 
 - (id) validateZoomControls:(NSToolbarItem *)toolbarItem {
   NSSegmentedControl  *control = (NSSegmentedControl *)toolbarItem.view;
-  DirectoryView  *dirView = [dirViewControl directoryView];
+  DirectoryView  *dirView = dirViewControl.directoryView;
 
   [control setEnabled: [dirView canZoomOut] forSegment: zoomOutSegment];
   [control setEnabled: [dirView canZoomIn] forSegment: zoomInSegment];
@@ -524,7 +492,7 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 
 - (id) validateFocusControls:(NSToolbarItem *)toolbarItem {
   NSSegmentedControl  *control = (NSSegmentedControl *)toolbarItem.view;
-  DirectoryView  *dirView = [dirViewControl directoryView];
+  DirectoryView  *dirView = dirViewControl.directoryView;
 
   [control setEnabled: [dirView canMoveFocusUp] forSegment: focusUpSegment];
   [control setEnabled: [dirView canMoveFocusDown] forSegment: focusDownSegment];
@@ -546,17 +514,17 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 - (BOOL) validateAction:(SEL)action {
   if ( action == @selector(zoomOut:) ||
        action == @selector(resetZoom:) ) {
-    return [[dirViewControl directoryView] canZoomOut];
+    return dirViewControl.directoryView.canZoomOut;
   }
   else if ( action == @selector(zoomIn:) ) {
-    return [[dirViewControl directoryView] canZoomIn];
+    return dirViewControl.directoryView.canZoomIn;
   }
   if ( action == @selector(moveFocusUp:) ) {
-    return [[dirViewControl directoryView] canMoveFocusUp];
+    return dirViewControl.directoryView.canMoveFocusUp;
   }
   else if ( action == @selector(moveFocusDown:) ||
             action == @selector(resetFocus:) ) {
-    return [[dirViewControl directoryView] canMoveFocusDown];
+    return dirViewControl.directoryView.canMoveFocusDown;
   }
   else if ( action == @selector(openFile:) ||
             action == @selector(previewFile:) ||
@@ -566,24 +534,16 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
     
              // Selection must be locked, as it would otherwise change when the mouse is moved in
              // order to click on the toolbar button.
-             [dirViewControl isSelectedFileLocked] );
+             dirViewControl.isSelectedFileLocked );
   }
-  else if ( action == @selector(rescanSelected:) ) {
-    return ( [NSApplication sharedApplication].mainWindow.windowController == dirViewControl &&
-    
-             // Selection must be locked (see above)
-             [dirViewControl isSelectedFileLocked] );
+  else if ( action == @selector(rescan:) ) {
+    return NSApplication.sharedApplication.mainWindow.windowController == dirViewControl;
   }
-  else if ( action == @selector(rescanWithMaskAsFilter:) ) {
-    return ( [NSApplication sharedApplication].mainWindow.windowController == dirViewControl &&
+  else if ( action == @selector(refresh:) ) {
+    return ( NSApplication.sharedApplication.mainWindow.windowController == dirViewControl &&
 
-             // There should be a mask
-             dirViewControl.directoryViewControlSettings.displaySettings.fileItemMaskEnabled );
-  }
-  else if ( action == @selector(rescan:) ||
-            action == @selector(rescanAll:) ||
-            action == @selector(rescanVisible:) ) {
-    return [NSApplication sharedApplication].mainWindow.windowController == dirViewControl;
+             // There must be a monitored change
+            dirViewControl.treeContext.numTreeChanges > 0);
   }
   else if ( action == @selector(search:) ) {
     return YES;
@@ -632,15 +592,15 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 
 
 - (void) zoomOut:(id)sender {
-  [[dirViewControl directoryView] zoomOut];
+  [dirViewControl.directoryView zoomOut];
 }
 
 - (void) zoomIn:(id)sender {
-  [[dirViewControl directoryView] zoomIn];
+  [dirViewControl.directoryView zoomIn];
 }
 
 - (void) resetZoom:(id)sender {
-  DirectoryView  *directoryView = [dirViewControl directoryView];
+  DirectoryView  *directoryView = dirViewControl.directoryView;
   while ([directoryView canZoomOut]) {
     [directoryView zoomOut];
   }
@@ -652,7 +612,7 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   // lagging. This can in particular happen when the path is not locked and the mouses moves
   // outside the directory view
   if ([self validateAction: _cmd]) {
-    [[dirViewControl directoryView] moveFocusUp];
+    [dirViewControl.directoryView moveFocusUp];
   }
 }
 
@@ -660,12 +620,12 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   // Check if we are really allowed to move the focus down. Disabling of the toolbar control may be
   // lagging.
   if ([self validateAction: _cmd]) {
-    [[dirViewControl directoryView] moveFocusDown];
+    [dirViewControl.directoryView moveFocusDown];
   }
 }
 
 - (void) resetFocus:(id)sender {
-  DirectoryView  *directoryView = [dirViewControl directoryView];
+  DirectoryView  *directoryView = dirViewControl.directoryView;
   while ([directoryView canMoveFocusDown]) {
     [directoryView moveFocusDown];
   }
@@ -692,24 +652,12 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   [dirViewControl deleteFile: sender];
 }
 
+- (void) refresh:(id)sender {
+  [MainMenuControl.singletonInstance refresh: sender];
+}
+
 - (void) rescan:(id)sender {
   [MainMenuControl.singletonInstance rescan: sender];
-}
-
-- (void) rescanAll:(id)sender {
-  [MainMenuControl.singletonInstance rescanAll: sender];
-}
-
-- (void) rescanVisible:(id)sender {
-  [MainMenuControl.singletonInstance rescanVisible: sender];
-}
-
-- (void) rescanSelected:(id)sender {
-  [MainMenuControl.singletonInstance rescanSelected: sender];
-}
-
-- (void) rescanWithMaskAsFilter:(id)sender {
-  [MainMenuControl.singletonInstance rescanWithMaskAsFilter: sender];
 }
 
 @end // @implementation DirectoryViewToolbarControl (PrivateMethods)

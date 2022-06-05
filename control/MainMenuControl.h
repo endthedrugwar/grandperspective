@@ -42,6 +42,9 @@
 - (IBAction) scanDirectoryView:(id)sender;
 - (IBAction) scanFilteredDirectoryView:(id)sender;
 
+// Refresh entire scan tree (based on changes reported by FSEvent)
+- (IBAction) refresh:(id)sender;
+
 // Default rescan action
 - (IBAction) rescan:(id)sender;
 
