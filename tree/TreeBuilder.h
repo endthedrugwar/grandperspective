@@ -19,6 +19,7 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
 @class FileItem;
 @class PlainFileItem;
 @class DirectoryItem;
+@class ScanTreeRoot;
 @class FilterSet;
 @class TreeContext;
 @class ScanProgressTracker;
@@ -72,23 +73,6 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
  */
 - (TreeContext *)buildTreeForPath:(NSString *)path;
 
-/* Constructs a partial tree for the given folder.
- *
- * It is used to implement buildTreeForPath: but also by TreeRefresher to refresh parts of a tree.
- */
-- (BOOL) buildTreeForDirectory:(DirectoryItem *)dirItem atPath:(NSString *)path;
-
-/* Performs a shallow scan of the folder at the given path to determine its contents.
- *
- * Note: The dirItem is provided so that it can be used as a parent for its children. However, it
- * is not updated as the scan is shallow. Before the directory can be finalized, its
- * sub-directory children need to be populated first.
- */
-- (BOOL) getContentsForDirectory:(DirectoryItem *)dirItem
-                          atPath:(NSString *)path
-                            dirs:(NSMutableArray<DirectoryItem *> *)dirs
-                           files:(NSMutableArray<PlainFileItem *> *)files;
-
 - (void) abort;
 
 /* Returns a dictionary containing information about the progress of the ongoing tree-building task.
@@ -104,5 +88,41 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
  * on the main thread to avoid exceptions.
  */
 @property (nonatomic, readonly, strong) AlertMessage *alertMessage;
+
+@end
+
+// The protected methods are only intended for use by the class itself or by TreeRefresher.
+@interface TreeBuilder (ProtectedMethods)
+
+/* Creates a tree context for the volume containing the path.
+ *
+ * The path should point to a directory. Returns nil if it does not. In this case, an alert
+ * message is also set.
+ */
+- (TreeContext *)treeContextForVolumeContaining:(NSString *)path;
+
+- (ScanTreeRoot *)treeRootForPath:(NSString *)path
+                          context:(TreeContext *)treeContext;
+
+/* Constructs a tree for the given folder. It is used to implement buildTreeForPath:. The default
+ * implementation redirects to scanTreeForDirectory:atPath:.
+ */
+- (BOOL) buildTreeForDirectory:(DirectoryItem *)dirItem atPath:(NSString *)path;
+
+/* Constructs a tree for the given folder. This is done by scanning the full contents of the folder
+ * (except when parts can be skipped given the configured filter).
+ */
+- (BOOL) scanTreeForDirectory:(DirectoryItem *)dirItem atPath:(NSString *)path;
+
+/* Performs a shallow scan of the folder at the given path to determine its contents.
+ *
+ * Note: The dirItem is provided so that it can be used as a parent for its children. However, it
+ * is not updated as the scan is shallow. Before the directory can be finalized, its
+ * sub-directory children need to be populated first.
+ */
+- (BOOL) getContentsForDirectory:(DirectoryItem *)dirItem
+                          atPath:(NSString *)path
+                            dirs:(NSMutableArray<DirectoryItem *> *)dirs
+                           files:(NSMutableArray<PlainFileItem *> *)files;
 
 @end

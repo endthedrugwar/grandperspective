@@ -66,7 +66,6 @@ NSString  *TallyFileSizeName = @"tally";
 
 + (ITEM_SIZE) getLogicalFileSize:(NSURL *)url withType:(UniformType *)fileType;
 
-- (TreeContext *)treeContextForVolumeContaining:(NSString *)path;
 - (void) addToStack:(DirectoryItem *)dirItem URL:(NSURL *)url;
 - (ScanStackFrame *)unwindStackToURL:(NSURL *)url;
 
@@ -268,6 +267,46 @@ NSString  *TallyFileSizeName = @"tally";
 - (TreeContext *)buildTreeForPath:(NSString *)path {
   TreeContext  *treeContext = [self treeContextForVolumeContaining: path];
   if (treeContext == nil) {
+    return nil;
+  }
+
+  DirectoryItem  *scanTree = [self treeRootForPath: path context: treeContext];
+
+  [progressTracker startingTask];
+
+  BOOL  ok = [self buildTreeForDirectory: scanTree atPath: path];
+
+  [progressTracker finishedTask];
+
+  if (! ok) {
+    return nil;
+  }
+
+  [treeContext setScanTree: scanTree];
+  _alertMessage = [[self createAlertMessage: scanTree] retain];
+
+  return treeContext;
+}
+
+- (NSDictionary *)progressInfo {
+  // To be safe, do not return info when aborted. Auto-releasing parts of constructed tree could
+  // invalidate path construction done by progressTracker. Even though it does not look that could
+  // happen with current code, it could after some refactoring.
+  return abort ? nil : progressTracker.progressInfo;
+}
+
+@end // @implementation TreeBuilder
+
+
+@implementation TreeBuilder (ProtectedMethods)
+
+- (TreeContext *)treeContextForVolumeContaining:(NSString *)path {
+  NSURL  *url = [NSURL fileURLWithPath: path];
+
+  if (!url.isDirectory) {
+    // This may happen when the directory has been deleted (which can happen when rescanning)
+    NSLog(@"Path to scan %@ is not a directory.", path);
+
     [_alertMessage release];
 
     _alertMessage = [[AlertMessage alloc] init];
@@ -279,8 +318,37 @@ NSString  *TallyFileSizeName = @"tally";
     return nil;
   }
 
+  NSError  *error = nil;
+  NSURL  *volumeRoot;
+  [url getResourceValue: &volumeRoot forKey: NSURLVolumeURLKey error: &error];
+  if (error != nil) {
+    NSLog(@"Failed to determine volume root of %@: %@", url, error.description);
+  }
+
+  NSNumber  *freeSpace;
+  [volumeRoot getResourceValue: &freeSpace forKey: NSURLVolumeAvailableCapacityKey error: &error];
+  if (error != nil) {
+    NSLog(@"Failed to determine free space for %@: %@", volumeRoot, error.description);
+  }
+
+  NSNumber  *volumeSize;
+  [volumeRoot getResourceValue: &volumeSize forKey: NSURLVolumeTotalCapacityKey error: &error];
+  if (error != nil) {
+    NSLog(@"Failed to determine capacity of %@: %@", volumeRoot, error.description);
+  }
+
+  return [[[TreeContext alloc] initWithVolumePath: volumeRoot.path
+                                  fileSizeMeasure: fileSizeMeasureName
+                                       volumeSize: volumeSize.unsignedLongLongValue
+                                        freeSpace: freeSpace.unsignedLongLongValue
+                                        filterSet: filterSet
+                                      monitorPath: path] autorelease];
+}
+
+- (ScanTreeRoot *)treeRootForPath:(NSString *)path
+                          context:(TreeContext *)treeContext {
   // Determine relative path
-  NSString  *volumePath = [[treeContext volumeTree] systemPathComponent];
+  NSString  *volumePath = treeContext.volumeTree.systemPathComponent;
   NSString  *relativePath =
     volumePath.length < path.length ? [path substringFromIndex: volumePath.length] : @"";
   if (relativePath.absolutePath) {
@@ -288,7 +356,7 @@ NSString  *TallyFileSizeName = @"tally";
     relativePath = [relativePath substringFromIndex: 1];
   }
 
-  NSFileManager  *manager = [NSFileManager defaultManager];
+  NSFileManager  *manager = NSFileManager.defaultManager;
   if (relativePath.length > 0) {
     NSLog(@"Scanning volume %@ [%@], starting at %@", volumePath,
           [manager displayNameAtPath: volumePath], relativePath);
@@ -297,23 +365,18 @@ NSString  *TallyFileSizeName = @"tally";
     NSLog(@"Scanning entire volume %@ [%@].", volumePath,
           [manager displayNameAtPath: volumePath]);
   }
-  
+
   // Get the properties
   NSURL  *treeRootURL = [NSURL fileURLWithPath: path];
   FileItemOptions  flags = 0;
-  if ([treeRootURL isPackage]) {
+  if (treeRootURL.isPackage) {
     flags |= FileItemIsPackage;
   }
-  if ([treeRootURL isHardLinked]) {
+  if (treeRootURL.isHardLinked) {
     flags |= FileItemIsHardlinked;
   }
 
-  totalPhysicalSize = 0;
-  numOverestimatedFiles = 0;
-  [_alertMessage release];
-  _alertMessage = nil;
-
-  DirectoryItem  *scanTree = [ScanTreeRoot allocWithZone: [Item zoneForTree]];
+  ScanTreeRoot  *scanTree = [ScanTreeRoot allocWithZone: [Item zoneForTree]];
   [[scanTree initWithLabel: relativePath
                     parent: treeContext.scanTreeParent
                      flags: flags
@@ -322,23 +385,21 @@ NSString  *TallyFileSizeName = @"tally";
                 accessTime: treeRootURL.accessTime
     ] autorelease];
 
-  [progressTracker startingTask];
+  // Reset other state
+  totalPhysicalSize = 0;
+  numOverestimatedFiles = 0;
+  [hardLinkedFileNumbers removeAllObjects];
+  [_alertMessage release];
+  _alertMessage = nil;
 
-  BOOL  ok = [self buildTreeForDirectory: scanTree atPath: path];
-
-  [progressTracker finishedTask];
-  
-  if (! ok) {
-    return nil;
-  }
-
-  [treeContext setScanTree: scanTree];
-  _alertMessage = [[self createAlertMessage: scanTree] retain];
-
-  return treeContext;
+  return scanTree;
 }
 
 - (BOOL) buildTreeForDirectory:(DirectoryItem *)dirItem atPath:(NSString *)path {
+  return [self scanTreeForDirectory: dirItem atPath: path];
+}
+
+- (BOOL) scanTreeForDirectory:(DirectoryItem *)dirItem atPath:(NSString *)path {
   NSDirectoryEnumerator  *directoryEnumerator =
     [NSFileManager.defaultManager enumeratorAtURL: [NSURL fileURLWithPath: path]
                        includingPropertiesForKeys: dirEnumKeysFullScan
@@ -409,14 +470,7 @@ NSString  *TallyFileSizeName = @"tally";
   return !abort;
 }
 
-- (NSDictionary *)progressInfo {
-  // To be safe, do not return info when aborted. Auto-releasing parts of constructed tree could
-  // invalidate path construction done by progressTracker. Even though it does not look that could
-  // happen with current code, it could after some refactoring.
-  return abort ? nil : [progressTracker progressInfo];
-}
-
-@end // @implementation TreeBuilder
+@end // @implementation TreeBuilder (ProtectedMethods)
 
 
 @implementation TreeBuilder (PrivateMethods)
@@ -433,42 +487,6 @@ NSString  *TallyFileSizeName = @"tally";
 
     return logicalFileSize.unsignedLongLongValue;
   }
-}
-
-- (TreeContext *)treeContextForVolumeContaining:(NSString *)path {
-  NSURL  *url = [NSURL fileURLWithPath: path];
-
-  if (! [url isDirectory]) {
-    // This may happen when the directory has been deleted (which can happen when rescanning)
-    NSLog(@"Path to scan %@ is not a directory.", path);
-    return nil;
-  }
-
-  NSError  *error = nil;
-  NSURL  *volumeRoot;
-  [url getResourceValue: &volumeRoot forKey: NSURLVolumeURLKey error: &error];
-  if (error != nil) {
-    NSLog(@"Failed to determine volume root of %@: %@", url, error.description);
-  }
-
-  NSNumber  *freeSpace;
-  [volumeRoot getResourceValue: &freeSpace forKey: NSURLVolumeAvailableCapacityKey error: &error];
-  if (error != nil) {
-    NSLog(@"Failed to determine free space for %@: %@", volumeRoot, error.description);
-  }
-
-  NSNumber  *volumeSize;
-  [volumeRoot getResourceValue: &volumeSize forKey: NSURLVolumeTotalCapacityKey error: &error];
-  if (error != nil) {
-    NSLog(@"Failed to determine capacity of %@: %@", volumeRoot, error.description);
-  }
-
-  return [[[TreeContext alloc] initWithVolumePath: volumeRoot.path
-                                  fileSizeMeasure: fileSizeMeasureName
-                                       volumeSize: volumeSize.unsignedLongLongValue
-                                        freeSpace: freeSpace.unsignedLongLongValue
-                                        filterSet: filterSet
-                                      monitorPath: path] autorelease];
 }
 
 - (void) addToStack:(DirectoryItem *)dirItem URL:(NSURL *)url {

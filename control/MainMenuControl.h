@@ -13,6 +13,7 @@
   WindowManager  *windowManager;
   
   VisibleAsynchronousTaskManager  *scanTaskManager;
+  VisibleAsynchronousTaskManager  *refreshTaskManager;
   VisibleAsynchronousTaskManager  *filterTaskManager;
   VisibleAsynchronousTaskManager  *rawWriteTaskManager;
   VisibleAsynchronousTaskManager  *xmlWriteTaskManager;

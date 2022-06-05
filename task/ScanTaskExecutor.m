@@ -49,8 +49,8 @@ NSString  *ScanTaskAbortedEvent = @"scanTaskAborted";
 
   if (scanTree != nil) {
     NSLog(@"Done scanning: %d folders scanned (%d skipped) in %.2fs.",
-            [[self progressInfo][NumFoldersProcessedKey] intValue],
-            [[self progressInfo][NumFoldersSkippedKey] intValue],
+            [self.progressInfo[NumFoldersProcessedKey] intValue],
+            [self.progressInfo[NumFoldersSkippedKey] intValue],
             -startTime.timeIntervalSinceNow);
     scanResult = [ScanTaskOutput scanTaskOutput: scanTree alert: treeBuilder.alertMessage];
   }

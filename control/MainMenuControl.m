@@ -25,6 +25,7 @@
 #import "TreeContext.h"
 #import "AnnotatedTreeContext.h"
 #import "TreeBuilder.h"
+#import "TreeRefresher.h"
 
 #import "WindowManager.h"
 
@@ -33,6 +34,8 @@
 #import "ScanTaskInput.h"
 #import "ScanTaskOutput.h"
 #import "ScanTaskExecutor.h"
+#import "RefreshTaskInput.h"
+#import "RefreshTaskExecutor.h"
 #import "FilterProgressPanelControl.h"
 #import "FilterTaskInput.h"
 #import "FilterTaskExecutor.h"
@@ -140,6 +143,8 @@ NSString  *AfterClosingLastViewDoNothing = @"do nothing";
 - (void) scanFolder:(NSString *)path namedFilter:(NamedFilter *)filter;
 - (void) scanFolder:(NSString *)path filterSet:(FilterSet *)filterSet;
 
+- (void) refreshItem:(DirectoryItem *)item deriveFrom:(DirectoryViewControl *)oldControl;
+
 - (void) rescanItem:(FileItem *)item deriveFrom:(DirectoryViewControl *)oldControl;
 - (void) rescanItem:(FileItem *)item
          deriveFrom:(DirectoryViewControl *)oldControl
@@ -158,6 +163,8 @@ NSString  *AfterClosingLastViewDoNothing = @"do nothing";
  */
 - (NamedFilter *)selectFilter:(NSString *)initialSelection;
 
++ (FilterSet *)updateFiltersIfNeeded:(FilterSet *)filterSet;
+
 /* Helper method for reporting the names of unbound filters or filter tests.
  */
 + (void) reportUnbound:(NSArray *)unboundNames
@@ -172,6 +179,7 @@ NSString  *AfterClosingLastViewDoNothing = @"do nothing";
 - (void) viewWillClose:(NSNotification *)notification;
 - (void) readTaskAborted:(NSNotification *)notification;
 - (void) scanTaskAborted:(NSNotification *)notification;
+- (void) refreshTaskAborted:(NSNotification *)notification;
 - (void) checkShowWelcomeWindow:(BOOL)allowAutoQuit;
 
 @end // @interface MainMenuControl (PrivateMethods)
@@ -258,7 +266,15 @@ static MainMenuControl  *singletonInstance = nil;
     scanTaskManager =
       [[VisibleAsynchronousTaskManager alloc] initWithProgressPanel: scanProgressPanelControl];
 
-    ProgressPanelControl  *filterProgressPanelControl = 
+    ProgressPanelControl  *refreshProgressPanelControl =
+      [[[ScanProgressPanelControl alloc]
+        initWithTaskExecutor: [[[RefreshTaskExecutor alloc] init] autorelease]
+       ] autorelease];
+
+    refreshTaskManager =
+      [[VisibleAsynchronousTaskManager alloc] initWithProgressPanel: refreshProgressPanelControl];
+
+    ProgressPanelControl  *filterProgressPanelControl =
       [[[FilterProgressPanelControl alloc]
         initWithTaskExecutor: [[[FilterTaskExecutor alloc] init] autorelease]
        ] autorelease];
@@ -315,6 +331,10 @@ static MainMenuControl  *singletonInstance = nil;
                                              selector: @selector(scanTaskAborted:)
                                                  name: ScanTaskAbortedEvent
                                                object: nil];
+//    [[NSNotificationCenter defaultCenter] addObserver: self
+//                                             selector: @selector(refreshTaskAborted:)
+//                                                 name: RefreshTaskAbortedEvent
+//                                               object: nil];
     
     showWelcomeWindow = YES; // Default
   }
@@ -531,7 +551,19 @@ static MainMenuControl  *singletonInstance = nil;
 }
 
 - (IBAction) refresh:(id)sender {
-  NSLog(@"TODO: Implement refresh");
+  DirectoryViewControl  *oldControl = NSApplication.sharedApplication.mainWindow.windowController;
+  if (oldControl == nil) {
+    return;
+  }
+
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
+  NSString  *rescanBehaviour = [userDefaults stringForKey: RescanBehaviourKey];
+  if ([rescanBehaviour isEqualToString: RescanClosesOldWindow]) {
+    [oldControl.window close];
+  }
+
+  TreeContext  *oldContext = oldControl.treeContext;
+  [self refreshItem: oldContext.scanTree deriveFrom: oldControl];
 }
 
 - (IBAction) rescan:(id)sender {
@@ -916,6 +948,30 @@ static MainMenuControl  *singletonInstance = nil;
                                          selector: @selector(createWindowForScanResult:)];
 }
 
+- (void) refreshItem:(DirectoryItem *)item
+          deriveFrom:(DirectoryViewControl *)oldControl {
+  TreeContext  *oldContext = oldControl.treeContext;
+  ItemPathModel  *pathModel = oldControl.pathModelView.pathModel;
+
+  DerivedDirViewWindowCreator  *windowCreator = [DerivedDirViewWindowCreator alloc];
+  [[windowCreator initWithWindowManager: windowManager
+                             targetPath: pathModel
+                               settings: oldControl.directoryViewControlSettings] autorelease];
+
+  // In constrast to the rescanItem:deriveFrom: methods, never update the filter set that is used.
+  // As only parts of the tree is rescanned, any changes to the filter would only be partially
+  // applied, which would result in inconsistencies.
+
+  RefreshTaskInput  *input =
+    [[[RefreshTaskInput alloc] initWithTreeSource: oldContext.scanTree
+                                  fileSizeMeasure: oldContext.fileSizeMeasure
+                                        filterSet: oldContext.filterSet] autorelease];
+
+  [refreshTaskManager asynchronouslyRunTaskWithInput: input
+                                            callback: windowCreator
+                                            selector: @selector(createWindowForScanResult:)];
+}
+
 /* Used to implement various Rescan commands. The new view is derived from the
  * current/old control, and its settings are matched as much as possible.
  */
@@ -935,7 +991,7 @@ static MainMenuControl  *singletonInstance = nil;
   if (!item.isDirectory) {
     item = item.parentDirectory;
   }
-           
+
   TreeContext  *oldContext = oldControl.treeContext;
   ItemPathModel  *pathModel = oldControl.pathModelView.pathModel;
     
@@ -944,16 +1000,8 @@ static MainMenuControl  *singletonInstance = nil;
                              targetPath: pathModel
                                settings: controlSettings] autorelease];
 
-  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
-  if ([userDefaults boolForKey: UpdateFiltersBeforeUse]) {
-    NSMutableArray  *unboundFilters = [NSMutableArray arrayWithCapacity: 8];
-    NSMutableArray  *unboundTests = [NSMutableArray arrayWithCapacity: 8];
-    filterSet = [filterSet updatedFilterSetUnboundFilters: unboundFilters
-                                             unboundTests: unboundTests];
-    [MainMenuControl reportUnboundFilters: unboundFilters];
-    [MainMenuControl reportUnboundTests: unboundTests];
-  }
-  
+  filterSet = [MainMenuControl updateFiltersIfNeeded: filterSet];
+
   ScanTaskInput  *input = [[[ScanTaskInput alloc] initWithPath: item.systemPath
                                                fileSizeMeasure: oldContext.fileSizeMeasure
                                                      filterSet: filterSet] autorelease];
@@ -1047,6 +1095,20 @@ static MainMenuControl  *singletonInstance = nil;
   return nil;
 }
 
++ (FilterSet *)updateFiltersIfNeeded:(FilterSet *)filterSet {
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
+
+  if ([userDefaults boolForKey: UpdateFiltersBeforeUse]) {
+    NSMutableArray  *unboundFilters = [NSMutableArray arrayWithCapacity: 8];
+    NSMutableArray  *unboundTests = [NSMutableArray arrayWithCapacity: 8];
+    filterSet = [filterSet updatedFilterSetUnboundFilters: unboundFilters
+                                             unboundTests: unboundTests];
+    [MainMenuControl reportUnboundFilters: unboundFilters];
+    [MainMenuControl reportUnboundTests: unboundTests];
+  }
+
+  return filterSet;
+}
 
 + (void) reportUnbound:(NSArray *)unboundNames
          messageFormat:(NSString *)format
@@ -1103,6 +1165,10 @@ static MainMenuControl  *singletonInstance = nil;
 }
 
 - (void) scanTaskAborted:(NSNotification *)notification {
+  [self checkShowWelcomeWindow: NO];
+}
+
+- (void) refreshTaskAborted:(NSNotification *)notification {
   [self checkShowWelcomeWindow: NO];
 }
 
