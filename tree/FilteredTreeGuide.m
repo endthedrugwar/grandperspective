@@ -66,7 +66,7 @@
       ItemSizeTestFinder  *sizeTestFinder = [[[ItemSizeTestFinder alloc] init] autorelease];
       
       [test acceptFileItemTestVisitor: sizeTestFinder];
-      testUsesSize = [sizeTestFinder itemSizeTestFound];
+      testUsesSize = sizeTestFinder.itemSizeTestFound;
     }
     else {
       testUsesSize = NO;
@@ -78,15 +78,15 @@
 - (FileItem *) includeFileItem: (FileItem *)item {
   FileItem  *proxyItem = item; // Default
 
-  if ( [item isDirectory] ) {
-    if ( packagesAsFiles ) {
-      proxyItem = [((DirectoryItem *)item) itemWhenHidingPackageContents];
+  if (item.isDirectory) {
+    if (packagesAsFiles) {
+      proxyItem = ((DirectoryItem *)item).itemWhenHidingPackageContents;
     }
   }
   else {
     // It's a plain file
     
-    if ( ! [item isPhysical] ) {
+    if (!item.isPhysical) {
       // Exclude all special items (inside the volume tree, these all represent freed space).
       //
       // TO DO: Check if special items should still always be excluded.
@@ -95,14 +95,14 @@
     }
   }
 
-  if ( packagesAsFiles && packageCount > 0 ) {
+  if (packagesAsFiles && packageCount > 0) {
     // Currently inside opaque package (implying that a tree is being constructed). Include all
     // items.
     return proxyItem;
   }
 
-  if ( itemTest == nil || [itemTest testFileItem: proxyItem
-                                         context: fileItemPathStringCache] != TEST_FAILED ) {
+  if (itemTest == nil || [itemTest testFileItem: proxyItem
+                                        context: fileItemPathStringCache] != TEST_FAILED) {
     // The item passed the test.
     return proxyItem;
   }
@@ -114,8 +114,8 @@
 - (BOOL) shouldDescendIntoDirectory:(DirectoryItem *)item {
   FileItem  *proxyItem = item; // Default
   
-  if ( packagesAsFiles ) {
-    if ( testUsesSize) {
+  if (packagesAsFiles) {
+    if (testUsesSize) {
       // The test considers the file's size. This means that the item should be constructed first
       // before applying the test.
       return YES;
@@ -123,30 +123,29 @@
     else {
       // Even though the directory has not yet been constructed, the test can be applied to its
       // plain file proxy.
-      proxyItem = [((DirectoryItem *)item) itemWhenHidingPackageContents];
+      proxyItem = ((DirectoryItem *)item).itemWhenHidingPackageContents;
     }
   }
 
   // Even though the directory item has not yet been fully created, the test can be applied already.
   // So only descend (and construct the contents) when it passed the test (and will be included in
   // the tree).
-  return ( itemTest == nil || [itemTest testFileItem: proxyItem
-                                             context: fileItemPathStringCache] != TEST_FAILED );
+  return (itemTest == nil || [itemTest testFileItem: proxyItem
+                                            context: fileItemPathStringCache] != TEST_FAILED);
 }
 
 
 - (void) descendIntoDirectory:(DirectoryItem *)item { 
-  if ( [item isPackage] ) {
+  if (item.isPackage) {
     packageCount++;
   }
 }
 
 - (void) emergedFromDirectory:(DirectoryItem *)item {
-  if ( [item isPackage] ) {
+  if (item.isPackage) {
     NSAssert(packageCount > 0, @"Count should be positive." );
     packageCount--;
   }
 }
 
 @end // @implementation FilteredTreeGuide
-
