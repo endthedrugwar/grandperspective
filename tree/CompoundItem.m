@@ -18,11 +18,19 @@
   return nil;
 }
 
++ (void)visitLeavesMaybeNil:(Item *)item callback:(void(^)(FileItem *))callback {
+  if (item != nil) {
+    [CompoundItem visitLeaves: item callback: callback];
+  }
+}
 
-// Overrides super's designated initialiser.
-- (instancetype) initWithItemSize:(ITEM_SIZE)size {
-  NSAssert(NO, @"Use initWithFirst:second instead.");
-  return [self initWithFirst: nil second: nil];
++ (void)visitLeaves:(Item *)item callback:(void(^)(FileItem *))callback {
+  if (item.isVirtual) {
+    [CompoundItem visitLeaves: ((CompoundItem *)item).first callback: callback];
+    [CompoundItem visitLeaves: ((CompoundItem *)item).second callback: callback];
+  } else {
+    callback((FileItem *)item);
+  }
 }
 
 - (instancetype) initWithFirst:(Item *)first second:(Item *)second {

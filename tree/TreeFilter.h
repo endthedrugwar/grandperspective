@@ -18,9 +18,6 @@
   BOOL  abort;
   
   ProgressTracker  *progressTracker;
-  
-@private
-  NSMutableArray  *tmpItems;
 }
 
 

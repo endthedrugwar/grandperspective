@@ -17,11 +17,6 @@
 - (void) filterItemTree:(DirectoryItem *)oldDirItem
                    into:(DirectoryItem *)newDirItem;
 
-- (void) flattenAndFilterSiblings:(Item *)item
-                             into:(NSMutableArray *)flattenedItems;
-
-- (void) flattenAndFilterSiblings: (Item *)item;
-
 @end // @interface TreeFilter (PrivateMethods)
 
 
@@ -42,8 +37,6 @@
     abort = NO;
     
     progressTracker = [[TreeVisitingProgressTracker alloc] init];
-
-    tmpItems = nil;
   }
 
   return self;
@@ -125,8 +118,23 @@
   [treeGuide descendIntoDirectory: newDir];
   [progressTracker processingFolder: oldDir];
 
-  [self flattenAndFilterSiblings: oldDir.fileItems into: files];
-  [self flattenAndFilterSiblings: oldDir.directoryItems into: dirs];
+  // Flatten and filter file children
+  [CompoundItem visitLeavesMaybeNil: oldDir.fileItems
+                           callback: ^(FileItem *file) {
+    if ( [treeGuide includeFileItem: file] ) {
+      [files addObject: file];
+    }
+  }];
+
+  // Flatten and filter directory children
+  [CompoundItem visitLeavesMaybeNil: oldDir.directoryItems
+                           callback: ^(FileItem *dir) {
+    if ([treeGuide includeFileItem: dir]) {
+      [dirs addObject: dir];
+    } else {
+      [progressTracker skippedFolder: (DirectoryItem *)dir];
+    }
+  }];
 
   if (!abort) { // Break recursion when task has been aborted.
     NSUInteger  i;
@@ -162,43 +170,6 @@
   
   [dirs release];
   [files release];
-}
-
-- (void) flattenAndFilterSiblings:(Item *)item
-                             into:(NSMutableArray *)flattenedItems {
-  if (item == nil) {
-    // All done.
-    return;
-  }
-
-  NSAssert(tmpItems==nil, @"Helper array already in use?");
-  
-  tmpItems = flattenedItems;
-
-  [self flattenAndFilterSiblings: item];
-  
-  tmpItems = nil;
-}
-
-- (void) flattenAndFilterSiblings: (Item *)item {
-  if (abort) {
-    return;
-  }
-
-  if ( item.isVirtual ) {
-    [self flattenAndFilterSiblings: ((CompoundItem *)item).first];
-    [self flattenAndFilterSiblings: ((CompoundItem *)item).second];
-  }
-  else {
-    FileItem  *fileItem = (FileItem *)item;
-    
-    if ( [treeGuide includeFileItem: fileItem] ) {
-      [tmpItems addObject: fileItem];
-    }
-    else if ( fileItem.isDirectory ) {
-      [progressTracker skippedFolder: (DirectoryItem *)fileItem];
-    }
-  }
 }
 
 @end

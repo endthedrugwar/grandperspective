@@ -20,9 +20,6 @@
 - (BOOL) refreshViaShallowCopyItemTree:(DirectoryItem *)oldDir
                                   into:(DirectoryItem *)newDir;
 
-- (BOOL) addSiblings:(Item *)item toLookup:(NSMutableDictionary *)lookup;
-- (BOOL) addSiblings:(Item *)item toArray:(NSMutableArray *)array;
-
 @end // @interface TreeRefresher (PrivateMethods)
 
 
@@ -118,11 +115,11 @@
   [progressTracker setNumSubFolders: dirs.count];
 
   // Gather the old directories
-  id  oldSubDirs = [NSMutableDictionary dictionary];
-  if (oldDir.directoryItems != nil &&
-      ![self addSiblings: oldDir.directoryItems toLookup: oldSubDirs]) {
-    return NO;
-  }
+  NSMutableDictionary  *oldSubDirs = [NSMutableDictionary dictionary];
+  [CompoundItem visitLeavesMaybeNil: oldDir.directoryItems
+                           callback: ^(FileItem *dir) {
+    oldSubDirs[dir.label] = dir;
+  }];
 
   // Populate the contents of all sub-directories
   for (NSUInteger i = dirs.count; i-- > 0; ) {
@@ -157,10 +154,10 @@
   [treeGuide descendIntoDirectory: newDir];
   [progressTracker processingFolder: newDir];
 
-  if (oldDir.fileItems != nil
-      && ![self addSiblings: oldDir.fileItems toArray: files]) {
-    return NO;
-  }
+  [CompoundItem visitLeavesMaybeNil: oldDir.fileItems
+                           callback: ^(FileItem *file) {
+    [files addObject: file];
+  }];
   for (NSUInteger i = files.count; i-- > 0; ) {
     PlainFileItem  *oldFile = files[i];
     PlainFileItem  *newFile = (PlainFileItem *)[oldFile duplicateFileItem: newDir];
@@ -168,10 +165,10 @@
     files[i] = newFile;
   }
 
-  if (oldDir.directoryItems != nil
-      && ![self addSiblings: oldDir.directoryItems toArray: dirs]) {
-    return NO;
-  }
+  [CompoundItem visitLeavesMaybeNil: oldDir.directoryItems
+                           callback: ^(FileItem *dir) {
+    [dirs addObject: dir];
+  }];
   [progressTracker setNumSubFolders: dirs.count];
 
   for (NSUInteger i = dirs.count; i-- > 0; ) {
@@ -190,38 +187,6 @@
 
   [treeGuide emergedFromDirectory: newDir];
   [progressTracker processedFolder: newDir];
-
-  return YES;
-}
-
-- (BOOL) addSiblings:(Item *)item toLookup:(NSMutableDictionary *)lookup {
-  if (abort) {
-    return NO;
-  }
-
-  if (item.isVirtual) {
-    [self addSiblings: ((CompoundItem *)item).first toLookup: lookup];
-    [self addSiblings: ((CompoundItem *)item).second toLookup: lookup];
-  }
-  else {
-    lookup[((FileItem *)item).label] = item;
-  }
-
-  return YES;
-}
-
-- (BOOL) addSiblings:(Item *)item toArray:(NSMutableArray *)array {
-  if (abort) {
-    return NO;
-  }
-
-  if (item.isVirtual) {
-    [self addSiblings: ((CompoundItem *)item).first toArray: array];
-    [self addSiblings: ((CompoundItem *)item).second toArray: array];
-  }
-  else {
-    [array addObject: item];
-  }
 
   return YES;
 }
