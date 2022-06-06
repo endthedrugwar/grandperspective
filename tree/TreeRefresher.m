@@ -3,6 +3,8 @@
 #import "DirectoryItem.h"
 #import "TreeConstants.h"
 #import "TreeBalancer.h"
+#import "FilteredTreeGuide.h"
+#import "ScanProgressTracker.h"
 
 @interface TreeRefresher (PrivateMethods)
 
@@ -103,6 +105,9 @@
 
   NSLog(@"Shallow rescan of %@", path);
 
+  [treeGuide descendIntoDirectory: newDir];
+  [progressTracker processingFolder: newDir];
+
   // Perform shallow rescan
   if (![self getContentsForDirectory: newDir
                               atPath: path
@@ -110,6 +115,7 @@
                                files: files]) {
     return NO;
   }
+  [progressTracker setNumSubFolders: dirs.count];
 
   // Gather the old directories
   id  oldSubDirs = [NSMutableDictionary dictionary];
@@ -137,6 +143,9 @@
   [newDir setFileItems: [treeBalancer createTreeForItems: files]
         directoryItems: [treeBalancer createTreeForItems: dirs]];
 
+  [treeGuide emergedFromDirectory: newDir];
+  [progressTracker processedFolder: newDir];
+
   return YES;
 }
 
@@ -144,6 +153,9 @@
                                   into:(DirectoryItem *)newDir {
   NSMutableArray  *files = [[NSMutableArray alloc] initWithCapacity: INITIAL_FILES_CAPACITY];
   NSMutableArray  *dirs = [[NSMutableArray alloc] initWithCapacity: INITIAL_DIRS_CAPACITY];
+
+  [treeGuide descendIntoDirectory: newDir];
+  [progressTracker processingFolder: newDir];
 
   if (oldDir.fileItems != nil
       && ![self addSiblings: oldDir.fileItems toArray: files]) {
@@ -160,6 +172,8 @@
       && ![self addSiblings: oldDir.directoryItems toArray: dirs]) {
     return NO;
   }
+  [progressTracker setNumSubFolders: dirs.count];
+
   for (NSUInteger i = dirs.count; i-- > 0; ) {
     DirectoryItem  *oldSubDir = dirs[i];
     DirectoryItem  *newSubDir = (DirectoryItem *)[oldSubDir duplicateFileItem: newDir];
@@ -173,6 +187,9 @@
 
   [newDir setFileItems: [treeBalancer createTreeForItems: files]
         directoryItems: [treeBalancer createTreeForItems: dirs]];
+
+  [treeGuide emergedFromDirectory: newDir];
+  [progressTracker processedFolder: newDir];
 
   return YES;
 }
