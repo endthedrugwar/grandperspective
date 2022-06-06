@@ -34,8 +34,6 @@
 #import "ScanTaskInput.h"
 #import "ScanTaskOutput.h"
 #import "ScanTaskExecutor.h"
-#import "RefreshTaskInput.h"
-#import "RefreshTaskExecutor.h"
 #import "FilterProgressPanelControl.h"
 #import "FilterTaskInput.h"
 #import "FilterTaskExecutor.h"
@@ -179,7 +177,6 @@ NSString  *AfterClosingLastViewDoNothing = @"do nothing";
 - (void) viewWillClose:(NSNotification *)notification;
 - (void) readTaskAborted:(NSNotification *)notification;
 - (void) scanTaskAborted:(NSNotification *)notification;
-- (void) refreshTaskAborted:(NSNotification *)notification;
 - (void) checkShowWelcomeWindow:(BOOL)allowAutoQuit;
 
 @end // @interface MainMenuControl (PrivateMethods)
@@ -266,14 +263,6 @@ static MainMenuControl  *singletonInstance = nil;
     scanTaskManager =
       [[VisibleAsynchronousTaskManager alloc] initWithProgressPanel: scanProgressPanelControl];
 
-    ProgressPanelControl  *refreshProgressPanelControl =
-      [[[ScanProgressPanelControl alloc]
-        initWithTaskExecutor: [[[RefreshTaskExecutor alloc] init] autorelease]
-       ] autorelease];
-
-    refreshTaskManager =
-      [[VisibleAsynchronousTaskManager alloc] initWithProgressPanel: refreshProgressPanelControl];
-
     ProgressPanelControl  *filterProgressPanelControl =
       [[[FilterProgressPanelControl alloc]
         initWithTaskExecutor: [[[FilterTaskExecutor alloc] init] autorelease]
@@ -331,11 +320,7 @@ static MainMenuControl  *singletonInstance = nil;
                                              selector: @selector(scanTaskAborted:)
                                                  name: ScanTaskAbortedEvent
                                                object: nil];
-//    [[NSNotificationCenter defaultCenter] addObserver: self
-//                                             selector: @selector(refreshTaskAborted:)
-//                                                 name: RefreshTaskAbortedEvent
-//                                               object: nil];
-    
+
     showWelcomeWindow = YES; // Default
   }
   
@@ -962,14 +947,14 @@ static MainMenuControl  *singletonInstance = nil;
   // As only parts of the tree is rescanned, any changes to the filter would only be partially
   // applied, which would result in inconsistencies.
 
-  RefreshTaskInput  *input =
-    [[[RefreshTaskInput alloc] initWithTreeSource: oldContext.scanTree
-                                  fileSizeMeasure: oldContext.fileSizeMeasure
-                                        filterSet: oldContext.filterSet] autorelease];
+  ScanTaskInput  *input =
+    [[[ScanTaskInput alloc] initWithTreeSource: oldContext.scanTree
+                               fileSizeMeasure: oldContext.fileSizeMeasure
+                                     filterSet: oldContext.filterSet] autorelease];
 
-  [refreshTaskManager asynchronouslyRunTaskWithInput: input
-                                            callback: windowCreator
-                                            selector: @selector(createWindowForScanResult:)];
+  [scanTaskManager asynchronouslyRunTaskWithInput: input
+                                         callback: windowCreator
+                                         selector: @selector(createWindowForScanResult:)];
 }
 
 /* Used to implement various Rescan commands. The new view is derived from the
@@ -1165,10 +1150,6 @@ static MainMenuControl  *singletonInstance = nil;
 }
 
 - (void) scanTaskAborted:(NSNotification *)notification {
-  [self checkShowWelcomeWindow: NO];
-}
-
-- (void) refreshTaskAborted:(NSNotification *)notification {
   [self checkShowWelcomeWindow: NO];
 }
 

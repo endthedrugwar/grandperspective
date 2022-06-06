@@ -1,6 +1,7 @@
 #import "ScanTaskExecutor.h"
 
 #import "TreeBuilder.h"
+#import "TreeRefresher.h"
 #import "ScanTaskInput.h"
 #import "ScanTaskOutput.h"
 #import "ProgressTracker.h"
@@ -37,7 +38,13 @@ NSString  *ScanTaskAbortedEvent = @"scanTaskAborted";
   ScanTaskInput  *myInput = input;
 
   [taskLock lock];
-  treeBuilder = [[TreeBuilder alloc] initWithFilterSet: myInput.filterSet];
+  if (myInput.treeSource != nil) {
+    // The scan is only a partial
+    treeBuilder = [[TreeRefresher alloc] initWithFilterSet: myInput.filterSet
+                                                   oldTree: myInput.treeSource];
+  } else {
+    treeBuilder = [[TreeBuilder alloc] initWithFilterSet: myInput.filterSet];
+  }
   [treeBuilder setFileSizeMeasure: myInput.fileSizeMeasure];
   [treeBuilder setPackagesAsFiles: myInput.packagesAsFiles];
   [taskLock unlock];

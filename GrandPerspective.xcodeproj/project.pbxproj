@@ -26,8 +26,6 @@
 		AA1A92651170579600217CF6 /* KBPopUpToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AA1A92641170579600217CF6 /* KBPopUpToolbarItem.m */; };
 		AA280136284BA33900E9EB7A /* TreeMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = AA280135284BA33900E9EB7A /* TreeMonitor.m */; };
 		AA280141284D3B1E00E9EB7A /* TreeRefresher.m in Sources */ = {isa = PBXBuildFile; fileRef = AA28013E284CEFBA00E9EB7A /* TreeRefresher.m */; };
-		AA280142284D488900E9EB7A /* RefreshTaskInput.m in Sources */ = {isa = PBXBuildFile; fileRef = AA280138284CEAC400E9EB7A /* RefreshTaskInput.m */; };
-		AA280143284D488D00E9EB7A /* RefreshTaskExecutor.m in Sources */ = {isa = PBXBuildFile; fileRef = AA28013B284CED4400E9EB7A /* RefreshTaskExecutor.m */; };
 		AA2B48B610495BDB00B10262 /* Rescan.png in Resources */ = {isa = PBXBuildFile; fileRef = AA2B48B510495BDB00B10262 /* Rescan.png */; };
 		AA2B49B8104AEF9B00B10262 /* PopUpMenu.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA2B49B6104AEF9B00B10262 /* PopUpMenu.strings */; };
 		AA2B4A0A104B122900B10262 /* AnnotatedTreeContext.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2B4A09104B122900B10262 /* AnnotatedTreeContext.m */; };
@@ -253,10 +251,6 @@
 		AA1A92641170579600217CF6 /* KBPopUpToolbarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KBPopUpToolbarItem.m; path = util/KBPopUpToolbarItem.m; sourceTree = "<group>"; };
 		AA280135284BA33900E9EB7A /* TreeMonitor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TreeMonitor.m; path = tree/TreeMonitor.m; sourceTree = "<group>"; };
 		AA280137284BA36100E9EB7A /* TreeMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TreeMonitor.h; path = tree/TreeMonitor.h; sourceTree = "<group>"; };
-		AA280138284CEAC400E9EB7A /* RefreshTaskInput.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RefreshTaskInput.m; path = task/RefreshTaskInput.m; sourceTree = "<group>"; };
-		AA28013A284CEB0800E9EB7A /* RefreshTaskInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RefreshTaskInput.h; path = task/RefreshTaskInput.h; sourceTree = "<group>"; };
-		AA28013B284CED4400E9EB7A /* RefreshTaskExecutor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RefreshTaskExecutor.m; path = task/RefreshTaskExecutor.m; sourceTree = "<group>"; };
-		AA28013C284CED4500E9EB7A /* RefreshTaskExecutor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RefreshTaskExecutor.h; path = task/RefreshTaskExecutor.h; sourceTree = "<group>"; };
 		AA28013E284CEFBA00E9EB7A /* TreeRefresher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TreeRefresher.m; path = tree/TreeRefresher.m; sourceTree = "<group>"; };
 		AA28013F284CEFBA00E9EB7A /* TreeRefresher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TreeRefresher.h; path = tree/TreeRefresher.h; sourceTree = "<group>"; };
 		AA2B48B510495BDB00B10262 /* Rescan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Rescan.png; path = Images/Rescan.png; sourceTree = "<group>"; };
@@ -1106,10 +1100,6 @@
 				AA8FEA0B0B6BFBB40049FF42 /* ScanTaskInput.m */,
 				AAAEEEA321AAE3C800B7C024 /* ScanTaskOutput.h */,
 				AAAEEEA421AAE3C800B7C024 /* ScanTaskOutput.m */,
-				AA28013C284CED4500E9EB7A /* RefreshTaskExecutor.h */,
-				AA28013B284CED4400E9EB7A /* RefreshTaskExecutor.m */,
-				AA28013A284CEB0800E9EB7A /* RefreshTaskInput.h */,
-				AA280138284CEAC400E9EB7A /* RefreshTaskInput.m */,
 				AA7A7F0F0E4F342100EB366E /* ReadTaskExecutor.h */,
 				AA7A7F100E4F342100EB366E /* ReadTaskExecutor.m */,
 				AA7A7F0B0E4F339D00EB366E /* ReadTaskInput.h */,
@@ -1266,13 +1256,11 @@
 				AA4030010A5B01A6004EAAF3 /* DirectoryViewControl.m in Sources */,
 				AA4030050A5B01A6004EAAF3 /* MainMenuControl.m in Sources */,
 				AA4030330A5B02F1004EAAF3 /* ItemPathModel.m in Sources */,
-				AA280142284D488900E9EB7A /* RefreshTaskInput.m in Sources */,
 				AAD1BC63249D39E900F749EB /* TreeDrawerBase.m in Sources */,
 				AA1115C40A84CA320023C5CD /* DirectoryViewControlSettings.m in Sources */,
 				AAC26BC10A8CAF4800F2DA33 /* DrawTaskExecutor.m in Sources */,
 				AAC26BC30A8CAF4800F2DA33 /* DrawTaskInput.m in Sources */,
 				AAC26BC50A8CAF4800F2DA33 /* FilterTaskExecutor.m in Sources */,
-				AA280143284D488D00E9EB7A /* RefreshTaskExecutor.m in Sources */,
 				AAC26BC70A8CAF4800F2DA33 /* FilterTaskInput.m in Sources */,
 				AAC26BCD0A8CAF4800F2DA33 /* ScanTaskExecutor.m in Sources */,
 				AA16DABC0AF93C7D005052D1 /* NotifyingPanel.m in Sources */,

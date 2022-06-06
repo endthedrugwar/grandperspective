@@ -69,7 +69,9 @@ NSString  *TallyFileSizeName = @"tally";
 - (void) addToStack:(DirectoryItem *)dirItem URL:(NSURL *)url;
 - (ScanStackFrame *)unwindStackToURL:(NSURL *)url;
 
-- (BOOL) visitItemAtURL:(NSURL *)url parent:(ScanStackFrame *)parent;
+- (BOOL) visitItemAtURL:(NSURL *)url
+                 parent:(ScanStackFrame *)parent
+                recurse:(BOOL)visitDescendants;
 - (BOOL) visitHardLinkedItemAtURL:(NSURL *)url;
 
 - (int) determineNumSubFoldersFor:(NSURL *)url;
@@ -425,7 +427,7 @@ NSString  *TallyFileSizeName = @"tally";
       ScanStackFrame  *parent = [self unwindStackToURL: parentURL];
       NSAssert1(parent != nil, @"Unwind failure at %@", fileURL);
 
-      if (![self visitItemAtURL: fileURL parent: parent]) {
+      if (![self visitItemAtURL: fileURL parent: parent recurse: YES]) {
         [directoryEnumerator skipDescendants];
       }
       if (++i == AUTORELEASE_PERIOD) {
@@ -464,7 +466,7 @@ NSString  *TallyFileSizeName = @"tally";
   [parent initWithDirectoryItem: dirItem URL: parentURL];
 
   for (NSURL *fileURL in directoryEnumerator) {
-    [self visitItemAtURL: fileURL parent: parent];
+    [self visitItemAtURL: fileURL parent: parent recurse: NO];
   }
 
   return !abort;
@@ -532,9 +534,10 @@ NSString  *TallyFileSizeName = @"tally";
   return topDir;
 }
 
-- (BOOL) visitItemAtURL:(NSURL *)url parent:(ScanStackFrame *)parent {
+- (BOOL) visitItemAtURL:(NSURL *)url
+                 parent:(ScanStackFrame *)parent
+                recurse:(BOOL)visitDescendants {
   FileItemOptions  flags = 0;
-  BOOL  visitDescendants = YES;
   BOOL  isDirectory = url.isDirectory;
 
   if (url.isHardLinked) {
@@ -542,7 +545,9 @@ NSString  *TallyFileSizeName = @"tally";
 
     if (![self visitHardLinkedItemAtURL: url]) {
       // Do not visit descendants if the item was a directory
-      visitDescendants = !isDirectory;
+      if (isDirectory) {
+        visitDescendants = NO;
+      }
 
       return visitDescendants;
     }
@@ -576,7 +581,9 @@ NSString  *TallyFileSizeName = @"tally";
     // passed the filter test already)
     if ( !isDataVolume && [treeGuide shouldDescendIntoDirectory: dirChildItem] ) {
       [parent->dirs addObject: dirChildItem];
-      [self addToStack: dirChildItem URL: url];
+      if (visitDescendants) {
+        [self addToStack: dirChildItem URL: url];
+      }
     } else {
       NSLog(@"Skipping scan of %@", url);
       [progressTracker skippedFolder: dirChildItem];
