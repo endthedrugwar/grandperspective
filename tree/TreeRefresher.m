@@ -8,16 +8,16 @@
 
 @interface TreeRefresher (PrivateMethods)
 
-- (BOOL) refreshItemTree:(DirectoryItem *)oldDir
+- (void) refreshItemTree:(DirectoryItem *)oldDir
                     into:(DirectoryItem *)newDir;
 
-- (BOOL) refreshViaFullRescanItemTree:(DirectoryItem *)oldDir
+- (void) refreshViaFullRescanItemTree:(DirectoryItem *)oldDir
                                  into:(DirectoryItem *)newDir;
 
-- (BOOL) refreshViaShallowRescanItemTree:(DirectoryItem *)oldDir
+- (void) refreshViaShallowRescanItemTree:(DirectoryItem *)oldDir
                                     into:(DirectoryItem *)newDir;
 
-- (BOOL) refreshViaShallowCopyItemTree:(DirectoryItem *)oldDir
+- (void) refreshViaShallowCopyItemTree:(DirectoryItem *)oldDir
                                   into:(DirectoryItem *)newDir;
 
 @end // @interface TreeRefresher (PrivateMethods)
@@ -62,42 +62,36 @@
 
 @implementation TreeRefresher (PrivateMethods)
 
-- (BOOL) refreshItemTree:(DirectoryItem *)oldDir
+- (void) refreshItemTree:(DirectoryItem *)oldDir
                     into:(DirectoryItem *)newDir {
   NSAssert([oldDir.label isEqualToString: newDir.label] , @"Label mismatch");
 
+  if (abort) return;
+
   if ((oldDir.rescanFlags & DirectoryNeedsFullRescan) != 0) {
-    if (![self refreshViaFullRescanItemTree: oldDir into: newDir]) {
-      return NO;
-    }
+    [self refreshViaFullRescanItemTree: oldDir into: newDir];
   }
   else if ((oldDir.rescanFlags & DirectoryNeedsShallowRescan) != 0) {
-    if (![self refreshViaShallowRescanItemTree: oldDir into: newDir]) {
-      return NO;
-    }
+    [self refreshViaShallowRescanItemTree: oldDir into: newDir];
   }
   else {
-    if (![self refreshViaShallowCopyItemTree: oldDir into: newDir]) {
-      return NO;
-    }
+    [self refreshViaShallowCopyItemTree: oldDir into: newDir];
   }
-
-  return YES;
 }
 
-- (BOOL) refreshViaFullRescanItemTree:(DirectoryItem *)oldDir
+- (void) refreshViaFullRescanItemTree:(DirectoryItem *)oldDir
                                  into:(DirectoryItem *)newDir {
   NSString  *path = newDir.systemPath;
 
   NSLog(@"Full rescan of %@", path);
-  return [self scanTreeForDirectory: newDir atPath: path];
+  [self scanTreeForDirectory: newDir atPath: path];
 }
 
 
-- (BOOL) refreshViaShallowRescanItemTree:(DirectoryItem *)oldDir
+- (void) refreshViaShallowRescanItemTree:(DirectoryItem *)oldDir
                                     into:(DirectoryItem *)newDir {
-  NSMutableArray  *dirs = [NSMutableArray arrayWithCapacity: INITIAL_DIRS_CAPACITY];
-  NSMutableArray  *files = [NSMutableArray arrayWithCapacity: INITIAL_FILES_CAPACITY];
+  NSMutableArray  *files = [[NSMutableArray alloc] initWithCapacity: INITIAL_FILES_CAPACITY];
+  NSMutableArray  *dirs = [[NSMutableArray alloc] initWithCapacity: INITIAL_DIRS_CAPACITY];
   NSString  *path = newDir.systemPath;
 
   NSLog(@"Shallow rescan of %@", path);
@@ -106,12 +100,7 @@
   [progressTracker processingFolder: newDir];
 
   // Perform shallow rescan
-  if (![self getContentsForDirectory: newDir
-                              atPath: path
-                                dirs: dirs
-                               files: files]) {
-    return NO;
-  }
+  [self getContentsForDirectory: newDir atPath: path dirs: dirs files: files];
   [progressTracker setNumSubFolders: dirs.count];
 
   // Gather the old directories
@@ -127,13 +116,9 @@
     DirectoryItem  *oldSubDir = oldSubDirs[newSubDir.label];
 
     if (oldSubDir != nil) {
-      if (![self refreshItemTree: oldSubDir into: newSubDir]) {
-        return NO;
-      }
+      [self refreshItemTree: oldSubDir into: newSubDir];
     } else {
-      if (![self scanTreeForDirectory: newSubDir atPath: newSubDir.systemPath]) {
-        return NO;
-      }
+      [self scanTreeForDirectory: newSubDir atPath: newSubDir.systemPath];
     }
   }
 
@@ -143,10 +128,12 @@
   [treeGuide emergedFromDirectory: newDir];
   [progressTracker processedFolder: newDir];
 
-  return YES;
+  // Do not polute auto-release pool
+  [dirs release];
+  [files release];
 }
 
-- (BOOL) refreshViaShallowCopyItemTree:(DirectoryItem *)oldDir
+- (void) refreshViaShallowCopyItemTree:(DirectoryItem *)oldDir
                                   into:(DirectoryItem *)newDir {
   NSMutableArray  *files = [[NSMutableArray alloc] initWithCapacity: INITIAL_FILES_CAPACITY];
   NSMutableArray  *dirs = [[NSMutableArray alloc] initWithCapacity: INITIAL_DIRS_CAPACITY];
@@ -175,9 +162,7 @@
     DirectoryItem  *oldSubDir = dirs[i];
     DirectoryItem  *newSubDir = (DirectoryItem *)[oldSubDir duplicateFileItem: newDir];
 
-    if (![self refreshItemTree: oldSubDir into: newSubDir]) {
-      return NO;
-    }
+    [self refreshItemTree: oldSubDir into: newSubDir];
 
     dirs[i] = newSubDir;
   }
@@ -188,7 +173,9 @@
   [treeGuide emergedFromDirectory: newDir];
   [progressTracker processedFolder: newDir];
 
-  return YES;
+  // Do not polute auto-release pool
+  [dirs release];
+  [files release];
 }
 
 @end // @implementation TreeRefresher (PrivateMethods)

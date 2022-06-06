@@ -120,7 +120,7 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
  * is not updated as the scan is shallow. Before the directory can be finalized, its
  * sub-directory children need to be populated first.
  */
-- (BOOL) getContentsForDirectory:(DirectoryItem *)dirItem
+- (void) getContentsForDirectory:(DirectoryItem *)dirItem
                           atPath:(NSString *)path
                             dirs:(NSMutableArray<DirectoryItem *> *)dirs
                            files:(NSMutableArray<PlainFileItem *> *)files;

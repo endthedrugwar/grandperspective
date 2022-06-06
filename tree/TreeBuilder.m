@@ -451,7 +451,7 @@ NSString  *TallyFileSizeName = @"tally";
   return YES;
 }
 
-- (BOOL) getContentsForDirectory:(DirectoryItem *)dirItem
+- (void) getContentsForDirectory:(DirectoryItem *)dirItem
                           atPath:(NSString *)path
                             dirs:(NSMutableArray<DirectoryItem *> *)dirs
                            files:(NSMutableArray<PlainFileItem *> *)files {
@@ -468,8 +468,6 @@ NSString  *TallyFileSizeName = @"tally";
   for (NSURL *fileURL in directoryEnumerator) {
     [self visitItemAtURL: fileURL parent: parent recurse: NO];
   }
-
-  return !abort;
 }
 
 @end // @implementation TreeBuilder (ProtectedMethods)
