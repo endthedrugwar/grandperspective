@@ -119,16 +119,16 @@
   [progressTracker processingFolder: oldDir];
 
   // Flatten and filter file children
-  [CompoundItem visitLeavesMaybeNil: oldDir.fileItems
-                           callback: ^(FileItem *file) {
+  [CompoundItem visitFileItemChildrenMaybeNil: oldDir.fileItems
+                                     callback: ^(FileItem *file) {
     if ( [treeGuide includeFileItem: file] ) {
       [files addObject: file];
     }
   }];
 
   // Flatten and filter directory children
-  [CompoundItem visitLeavesMaybeNil: oldDir.directoryItems
-                           callback: ^(FileItem *dir) {
+  [CompoundItem visitFileItemChildrenMaybeNil: oldDir.directoryItems
+                                     callback: ^(FileItem *dir) {
     if ([treeGuide includeFileItem: dir]) {
       [dirs addObject: dir];
     } else {

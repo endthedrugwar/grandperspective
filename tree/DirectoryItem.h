@@ -14,7 +14,6 @@ typedef NS_OPTIONS(UInt8, DirectoryRescanOptions) {
 @interface DirectoryItem : FileItem {
 }
 
-
 /* A directory item is initialized without a size. It will be set when its contents are set using
  * setFileItems:directoryItems.
  */
@@ -37,8 +36,6 @@ typedef NS_OPTIONS(UInt8, DirectoryRescanOptions) {
  */
 - (void) replaceFileItems:(Item *)newItem;
 - (void) replaceDirectoryItems:(Item *)newItem;
-
-- (DirectoryItem *)getSubDirectoryWithLabel:(NSString *)label;
 
 /* The immediate children that are files. Depending on the number of file children it returns:
  * 0 => nil

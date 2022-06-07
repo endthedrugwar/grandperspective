@@ -49,7 +49,7 @@
   [super dealloc];
 }
 
-
+// Overrides abstract method in FileItem
 - (FileItem *)duplicateFileItem:(DirectoryItem *)newParent {
   return [[[PlainFileItem allocWithZone: [newParent zone]] initWithLabel: self.label
                                                                   parent: newParent
@@ -60,6 +60,16 @@
                                                         modificationTime: self.modificationTime
                                                               accessTime: self.accessTime]
           autorelease];
+}
+
+// Overrides abstract method in Item
+- (void) visitFileItemDescendants:(void(^)(FileItem *))callback {
+  callback(self);
+}
+
+// Overrides abstract method in Item
+- (FileItem *)findFileItemDescendant:(BOOL(^)(FileItem *))predicate {
+  return predicate(self) ? self : nil;
 }
 
 @end

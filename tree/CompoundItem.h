@@ -33,12 +33,23 @@ NS_ASSUME_NONNULL_BEGIN
 // Replaces the second item. See also -replaceFirst.
 - (void) replaceSecond:(Item *)newItem;
 
-- (FileItem *)findFileItemWithLabel:(NSString *)label;
-
 /* Can handle case where either one or both are nil. If both are nil, it returns nil. If one item is
  * nil, it returns the other item. Otherwise it returns a CompoundItem containing both.
  */
 + (Item *)compoundItemWithFirst:(nullable Item *)first second:(nullable Item *)second;
+
+/* Visits FileItem leave nodes until it finds one for which the predicate applies. It then return
+ * the given item, and returns nil otherwise.
+ *
+ * It handles the case where item is a CompoundItem (the typical case), but also accepts single
+ * item trees where the root is a FileItem.
+ *
+ * Note: It does not recurse into DirectoryItem nodes. For this, use -findFileItemDescendant
+ * instead.
+ */
++ (FileItem *)findFileItemChild:(Item *)item predicate:(BOOL(^)(FileItem *))predicate;
++ (FileItem *)findFileItemChildMaybeNil:(nullable Item *)item
+                              predicate:(BOOL(^)(FileItem *))predicate;
 
 /* Visits all FileItem leave nodes in the tree with "item" at the root and applies the callback on
  * each.
@@ -46,13 +57,11 @@ NS_ASSUME_NONNULL_BEGIN
  * It handles the case where item is a CompoundItem (the typical case), but also accepts single
  * item trees where the root is a FileItem.
  *
- * Note: It does not recurse into DirectoryItem nodes.
+ * Note: It does not recurse into DirectoryItem nodes. For this, use -visitFileItemDescendants
+ * instead.
  */
-+ (void)visitLeaves:(Item *)item callback:(void(^)(FileItem *))callback;
-
-/* Sames as visitLeaves but item may be nil.
- */
-+ (void)visitLeavesMaybeNil:(nullable Item *)item callback:(void(^)(FileItem *))callback;
++ (void)visitFileItemChildren:(Item *)item callback:(void(^)(FileItem *))callback;
++ (void)visitFileItemChildrenMaybeNil:(nullable Item *)item callback:(void(^)(FileItem *))callback;
 
 @end
 

@@ -18,18 +18,39 @@
   return nil;
 }
 
-+ (void)visitLeavesMaybeNil:(Item *)item callback:(void(^)(FileItem *))callback {
-  if (item != nil) {
-    [CompoundItem visitLeaves: item callback: callback];
++ (FileItem *)findFileItemChild:(Item *)item predicate:(BOOL(^)(FileItem *))predicate {
+  FileItem  *retVal;
+
+  if (item.isVirtual) {
+    retVal = [CompoundItem findFileItemChild: ((CompoundItem *)item).second predicate: predicate];
+    if (retVal != nil) {
+      retVal = [CompoundItem findFileItemChild: ((CompoundItem *)item).first predicate: predicate];
+    }
+
+  } else {
+    retVal = predicate((FileItem *)item) ? (FileItem *)item : nil;
+  }
+
+  return retVal;
+}
+
++ (FileItem *)findFileItemChildMaybeNil:(nullable Item *)item
+                              predicate:(BOOL(^)(FileItem *))predicate {
+  return (item != nil) ? [CompoundItem findFileItemChild: item predicate: predicate] : nil;
+}
+
++ (void)visitFileItemChildren:(Item *)item callback:(void(^)(FileItem *))callback {
+  if (item.isVirtual) {
+    [CompoundItem visitFileItemChildren: ((CompoundItem *)item).first callback: callback];
+    [CompoundItem visitFileItemChildren: ((CompoundItem *)item).second callback: callback];
+  } else {
+    callback((FileItem *)item);
   }
 }
 
-+ (void)visitLeaves:(Item *)item callback:(void(^)(FileItem *))callback {
-  if (item.isVirtual) {
-    [CompoundItem visitLeaves: ((CompoundItem *)item).first callback: callback];
-    [CompoundItem visitLeaves: ((CompoundItem *)item).second callback: callback];
-  } else {
-    callback((FileItem *)item);
++ (void)visitFileItemChildrenMaybeNil:(Item *)item callback:(void(^)(FileItem *))callback {
+  if (item != nil) {
+    [CompoundItem visitFileItemChildren: item callback: callback];
   }
 }
 
@@ -86,6 +107,22 @@
     [_second release];
     _second = [newItem retain];
   }
+}
+
+// Overrides abstract method in Item
+- (void) visitFileItemDescendants:(void(^)(FileItem *))callback {
+  [_first visitFileItemDescendants: callback];
+  [_second visitFileItemDescendants: callback];
+}
+
+// Overrides abstract method in Item
+- (FileItem *)findFileItemDescendant:(BOOL(^)(FileItem *))predicate {
+  FileItem *retVal = [_first findFileItemDescendant: predicate];
+  if (retVal == nil) {
+    retVal = [_second findFileItemDescendant: predicate];
+  }
+
+  return retVal;
 }
 
 - (FileItem *)findFileItemWithLabel:(NSString *)label {

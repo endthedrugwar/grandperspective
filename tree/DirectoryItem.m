@@ -50,7 +50,7 @@
   [super dealloc];
 }
 
-
+// Overrides abstract method in FileItem
 - (FileItem *)duplicateFileItem:(DirectoryItem *)newParent {
   return [[[DirectoryItem allocWithZone: [newParent zone]] 
               initWithLabel: self.label
@@ -62,6 +62,28 @@
             ] autorelease];
 }
 
+// Overrides abstract method in Item
+- (void) visitFileItemDescendants:(void(^)(FileItem *))callback {
+  callback(self);
+  [_fileItems visitFileItemDescendants: callback];
+  [_directoryItems visitFileItemDescendants: callback];
+}
+
+// Overrides abstract method in Item
+- (FileItem *)findFileItemDescendant:(BOOL(^)(FileItem *))predicate {
+  if (predicate(self)) {
+    return self;
+  }
+
+  FileItem *retVal;
+
+  retVal = [_fileItems findFileItemDescendant: predicate];
+  if (retVal == nil) {
+    retVal = [_directoryItems findFileItemDescendant: predicate];
+  }
+
+  return retVal;
+}
 
 // Special "setter" with additional constraints
 - (void) setFileItems:(Item *)fileItems
@@ -128,18 +150,6 @@
 
 - (BOOL) isDirectory {
   return YES;
-}
-
-- (DirectoryItem *)getSubDirectoryWithLabel:(NSString *)label {
-  if (self.directoryItems.isVirtual) {
-    return (DirectoryItem *)[((CompoundItem *)self.directoryItems) findFileItemWithLabel: label];
-  }
-  else if ([((DirectoryItem *)self.directoryItems).label isEqualToString: label]) {
-    return (DirectoryItem *)self.directoryItems;
-  }
-  else {
-    return nil;
-  }
 }
 
 @end // @implementation DirectoryItem

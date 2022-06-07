@@ -50,6 +50,14 @@ static NSZone  *dedicatedSharedZone = nil;
   return self;
 }
 
+- (void) visitFileItemDescendants:(void(^)(FileItem *))callback {
+  NSAssert(NO, @"Abstract method");
+}
+
+- (FileItem *)findFileItemDescendant:(BOOL(^)(FileItem *))predicate {
+  NSAssert(NO, @"Abstract method");
+  return nil;
+}
 
 - (FILE_COUNT) numFiles {
   return 0;

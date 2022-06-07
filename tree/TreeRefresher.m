@@ -105,8 +105,8 @@
 
   // Gather the old directories
   NSMutableDictionary  *oldSubDirs = [NSMutableDictionary dictionary];
-  [CompoundItem visitLeavesMaybeNil: oldDir.directoryItems
-                           callback: ^(FileItem *dir) {
+  [CompoundItem visitFileItemChildrenMaybeNil: oldDir.directoryItems
+                                     callback: ^(FileItem *dir) {
     oldSubDirs[dir.label] = dir;
   }];
 
@@ -141,8 +141,8 @@
   [treeGuide descendIntoDirectory: newDir];
   [progressTracker processingFolder: newDir];
 
-  [CompoundItem visitLeavesMaybeNil: oldDir.fileItems
-                           callback: ^(FileItem *file) {
+  [CompoundItem visitFileItemChildrenMaybeNil: oldDir.fileItems
+                                     callback: ^(FileItem *file) {
     [files addObject: file];
   }];
   for (NSUInteger i = files.count; i-- > 0; ) {
@@ -152,8 +152,8 @@
     files[i] = newFile;
   }
 
-  [CompoundItem visitLeavesMaybeNil: oldDir.directoryItems
-                           callback: ^(FileItem *dir) {
+  [CompoundItem visitFileItemChildrenMaybeNil: oldDir.directoryItems
+                                     callback: ^(FileItem *dir) {
     [dirs addObject: dir];
   }];
   [progressTracker setNumSubFolders: dirs.count];

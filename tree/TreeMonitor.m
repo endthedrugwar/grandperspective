@@ -144,14 +144,21 @@ void eventCallback(ConstFSEventStreamRef streamRef,
   if (i == rootPathComponents.count) {
     dirItem = self.treeContext.scanTree;
     while (i < pathComponents.count) {
-      DirectoryItem *child = [dirItem getSubDirectoryWithLabel: pathComponents[i]];
+      FileItem *child = [CompoundItem findFileItemChild: dirItem predicate: ^(FileItem *file) {
+        return [file.label isEqualToString: pathComponents[i]];
+      }];
       if (child == nil) {
         // This can happen when the sub-directory was created after the scan tree was created and
         // subsequently modified.
         NSLog(@"Could not find sub-directory %@ in %@", pathComponents[i], dirItem.systemPath);
         break;
       }
-      dirItem = child;
+      else if (!child.isDirectory) {
+        NSLog(@"Found file instead of directory for %@ in %@",
+              pathComponents[i], dirItem.systemPath);
+        break;
+      }
+      dirItem = (DirectoryItem *)child;
       ++i;
     }
 
