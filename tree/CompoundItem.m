@@ -23,7 +23,7 @@
 
   if (item.isVirtual) {
     retVal = [CompoundItem findFileItemChild: ((CompoundItem *)item).second predicate: predicate];
-    if (retVal != nil) {
+    if (retVal == nil) {
       retVal = [CompoundItem findFileItemChild: ((CompoundItem *)item).first predicate: predicate];
     }
 
