@@ -1,10 +1,12 @@
 #import "TreeRefresher.h"
 
+#import "AlertMessage.h"
 #import "DirectoryItem.h"
 #import "TreeConstants.h"
 #import "TreeBalancer.h"
 #import "FilteredTreeGuide.h"
 #import "ScanProgressTracker.h"
+
 
 @interface TreeRefresher (PrivateMethods)
 
@@ -19,6 +21,9 @@
 
 - (void) refreshViaShallowCopyItemTree:(DirectoryItem *)oldDir
                                   into:(DirectoryItem *)newDir;
+
+- (BOOL) deepHardlinkCompare:(DirectoryItem *)oldDir to:(DirectoryItem *)newDir;
+- (BOOL) shallowHardlinkCompare:(DirectoryItem *)oldDir to:(DirectoryItem *)newDir;
 
 @end // @interface TreeRefresher (PrivateMethods)
 
@@ -53,9 +58,25 @@
  * Overrides method in parent class to provide refresh implementation.
  */
 - (BOOL) buildTreeForDirectory:(DirectoryItem *)dirItem atPath:(NSString *)path {
+  hardLinkMismatch = NO;
+
   [self refreshItemTree: oldTree into: dirItem];
 
   return !abort;
+}
+
+- (AlertMessage *)createAlertMessage:(DirectoryItem *)scanTree {
+  if (hardLinkMismatch) {
+    AlertMessage  *alert = [[[AlertMessage alloc] init] autorelease];
+    alert.messageText = NSLocalizedString
+      (@"There are mismatches in hard-linked folder contents", @"Alert message");
+    alert.informativeText = NSLocalizedString
+      (@"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. You should perform a rescan to ensure that each hard-linked item occurs only once.",
+       @"Alert message");
+    return alert;
+  }
+
+  return [super createAlertMessage: scanTree];
 }
 
 @end // @implementation TreeRefresher (ProtectedMethods)
@@ -85,6 +106,11 @@
 
   NSLog(@"Full rescan of %@", path);
   [self scanTreeForDirectory: newDir atPath: path];
+
+  if (!hardLinkMismatch && ![self deepHardlinkCompare: oldDir to: newDir]) {
+    NSLog(@"Deep hardlink mismatch at %@", path);
+    hardLinkMismatch = true;
+  }
 }
 
 
@@ -127,6 +153,11 @@
 
   [treeGuide emergedFromDirectory: newDir];
   [progressTracker processedFolder: newDir];
+
+  if (!hardLinkMismatch && ![self shallowHardlinkCompare: oldDir to: newDir]) {
+    NSLog(@"Shallow hardlink mismatch at %@", path);
+    hardLinkMismatch = true;
+  }
 
   // Do not polute auto-release pool
   [dirs release];
@@ -176,6 +207,60 @@
   // Do not polute auto-release pool
   [dirs release];
   [files release];
+}
+
+- (BOOL) deepHardlinkCompare:(DirectoryItem *)oldDir to:(DirectoryItem *)newDir {
+  NSMutableSet  *oldSet = [[NSMutableSet alloc] init];
+  NSMutableSet  *newSet = [[NSMutableSet alloc] init];
+
+  // Find hard-linked items in the old directory
+  [oldDir visitFileItemDescendants: ^(FileItem *file) {
+    if (file.isHardLinked) {
+      [oldSet addObject: file.label];
+    }
+  }];
+
+  // Find hard-linked items in the old directory
+  [newDir visitFileItemDescendants: ^(FileItem *file) {
+    if (file.isHardLinked) {
+      [newSet addObject: file.label];
+    }
+  }];
+
+  BOOL  equal = [oldSet isEqualToSet: newSet];
+
+  [oldSet release];
+  [newSet release];
+
+  return equal;
+}
+
+- (BOOL) shallowHardlinkCompare:(DirectoryItem *)oldDir to:(DirectoryItem *)newDir {
+  NSMutableSet  *oldSet = [[NSMutableSet alloc] init];
+  NSMutableSet  *newSet = [[NSMutableSet alloc] init];
+
+  // Find hard-linked items in the old directory
+  [CompoundItem visitFileItemChildrenMaybeNil: oldDir.childItems
+                                     callback: ^(FileItem *file) {
+    if (file.isHardLinked) {
+      [oldSet addObject: file.label];
+    }
+  }];
+
+  // Find hard-linked items in the old directory
+  [CompoundItem visitFileItemChildrenMaybeNil: newDir.childItems
+                                     callback: ^(FileItem *file) {
+    if (file.isHardLinked) {
+      [newSet addObject: file.label];
+    }
+  }];
+
+  BOOL  equal = [oldSet isEqualToSet: newSet];
+
+  [oldSet release];
+  [newSet release];
+
+  return equal;
 }
 
 @end // @implementation TreeRefresher (PrivateMethods)

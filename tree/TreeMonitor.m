@@ -144,7 +144,8 @@ void eventCallback(ConstFSEventStreamRef streamRef,
   if (i == rootPathComponents.count) {
     dirItem = self.treeContext.scanTree;
     while (i < pathComponents.count) {
-      FileItem *child = [CompoundItem findFileItemChild: dirItem predicate: ^(FileItem *file) {
+      FileItem *child = [CompoundItem findFileItemChildMaybeNil: dirItem.directoryItems
+                                                      predicate: ^(FileItem *file) {
         return [file.label isEqualToString: pathComponents[i]];
       }];
       if (child == nil) {

@@ -125,4 +125,6 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
                             dirs:(NSMutableArray<DirectoryItem *> *)dirs
                            files:(NSMutableArray<PlainFileItem *> *)files;
 
+- (AlertMessage *)createAlertMessage:(DirectoryItem *)scanTree;
+
 @end

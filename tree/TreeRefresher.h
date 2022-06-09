@@ -8,6 +8,7 @@
  */
 @interface TreeRefresher : TreeBuilder {
   DirectoryItem  *oldTree;
+  BOOL  hardLinkMismatch;
 }
 
 - (instancetype) initWithFilterSet:(FilterSet *)filterSet
@@ -22,5 +23,7 @@
  * Overrides method in parent class to provide refresh implementation.
  */
 - (BOOL) buildTreeForDirectory:(DirectoryItem *)dirItem atPath:(NSString *)path;
+
+- (AlertMessage *)createAlertMessage:(DirectoryItem *)scanTree;
 
 @end

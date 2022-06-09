@@ -114,6 +114,9 @@
   }
 }
 
+- (Item *)childItems {
+  return [CompoundItem compoundItemWithFirst: _fileItems second: _directoryItems];
+}
 
 - (FileItem *)itemWhenHidingPackageContents {
   if ([self isPackage]) {
