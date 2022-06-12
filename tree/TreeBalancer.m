@@ -4,20 +4,6 @@
 #import "CompoundItem.h"
 #import "PeekingEnumerator.h"
 
-NSInteger compareBySize(id item1, id item2, void* context) {
-  ITEM_SIZE  size1 = ((Item*)item1).itemSize;
-  ITEM_SIZE  size2 = ((Item*)item2).itemSize;
-
-  if (size1 < size2) {
-    return NSOrderedAscending;
-  }
-  if (size1 > size2) {
-    return NSOrderedDescending;
-  }
-  return NSOrderedSame;
-}
-
-
 @implementation TreeBalancer
 
 - (instancetype) init {
@@ -43,22 +29,29 @@ NSInteger compareBySize(id item1, id item2, void* context) {
     return nil;
   }
   
-  [items sortUsingFunction: compareBySize context: nil];
+  [items sortUsingComparator: ^(Item *item1, Item *item2) {
+    if (item1.itemSize < item2.itemSize) {
+      return NSOrderedAscending;
+    }
+    if (item1.itemSize > item2.itemSize) {
+      return NSOrderedDescending;
+    }
+    return NSOrderedSame;
+  }];
 
   // Not using auto-release to minimise size of auto-release pool.
   PeekingEnumerator  *sortedItems = 
-    [[PeekingEnumerator alloc] initWithEnumerator: [items objectEnumerator]];
+    [[PeekingEnumerator alloc] initWithEnumerator: items.objectEnumerator];
 
   // Exclude zero-sized items
-  while ([sortedItems peekObject] != nil && ((Item*)[sortedItems peekObject]).itemSize == 0) {
+  while (sortedItems.peekObject != nil && ((Item*)sortedItems.peekObject).itemSize == 0) {
     [sortedItems nextObject];
   }
   
-  NSMutableArray*  sortedBranches = tmpArray;
+  NSMutableArray<Item *>  *sortedBranches = tmpArray;
   NSAssert(tmpArray != nil && tmpArray.count == 0, @"Temporary array not valid." );
   
   int  branchesGetIndex = 0;
-  int  numBranches = 0;
 
   while (YES) {
     Item  *first = nil;
@@ -69,15 +62,14 @@ NSInteger compareBySize(id item1, id item2, void* context) {
 
       if (
         // Out of leafs, or
-        [sortedItems peekObject] == nil || (
+        sortedItems.peekObject == nil || (
           // orphaned branches exist, and
-          branchesGetIndex < numBranches &&
+          branchesGetIndex < sortedBranches.count &&
           // the branch is smaller.
-          compareBySize(sortedBranches[branchesGetIndex],
-                        [sortedItems peekObject], nil) == NSOrderedAscending
+          sortedBranches[branchesGetIndex].itemSize < ((Item *)sortedItems.peekObject).itemSize
         )
       ) {
-        if (branchesGetIndex < numBranches) {
+        if (branchesGetIndex < sortedBranches.count) {
           smallest = sortedBranches[branchesGetIndex++];
         }
         else {
@@ -106,12 +98,9 @@ NSInteger compareBySize(id item1, id item2, void* context) {
       }
     }
     
-    CompoundItem  *newBranch = [[CompoundItem allocWithZone: first.zone]
-                                   initWithFirst: first second: second];
-    numBranches++;
+    id  newBranch = [[CompoundItem allocWithZone: first.zone] initWithFirst: first second: second];
     [sortedBranches addObject: newBranch];
-    // Not auto-releasing to minimise size of auto-release pool.
-    [newBranch release];
+    [newBranch release]; // Not auto-releasing to minimise size of auto-release pool.
   }
 }
 

@@ -8,10 +8,10 @@
   
 }
 
+@property (nonatomic, readonly) id peekObject;
+
 - (instancetype) initWithEnumerator:(NSEnumerator *)enumerator NS_DESIGNATED_INITIALIZER;
 
 - (id) nextObject;
-
-- (id) peekObject;
 
 @end
