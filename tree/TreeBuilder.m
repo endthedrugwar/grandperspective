@@ -404,7 +404,16 @@ NSString  *TallyFileSizeName = @"tally";
     [NSFileManager.defaultManager enumeratorAtURL: [NSURL fileURLWithPath: path]
                        includingPropertiesForKeys: dirEnumKeysFullScan
                                           options: 0
-                                     errorHandler: nil];
+                                     errorHandler: ^(NSURL *path, NSError *error) {
+      if (error.code == 257 && [error.domain isEqualToString: @"NSCocoaErrorDomain"]) {
+        NSLog(@"No permissions to read %@", path);
+      }
+      else {
+        NSLog(@"Error occured for path %@: %@", path, error);
+      }
+
+      return YES;
+    }];
 
   NSAutoreleasePool  *autoreleasePool = nil;
   int  i = 0;
