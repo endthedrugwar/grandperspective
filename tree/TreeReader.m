@@ -95,6 +95,9 @@ NSString  *AttributeNameKey = @"name";
   SEL  successSelector;
 }
 
+// Overrides super's designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithElement:(NSString *)elementName
                           reader:(TreeReader *)reader
                         callback:(id) callback
@@ -298,6 +301,11 @@ NSString  *AttributeNameKey = @"name";
 
 @interface AttributeParseException : NSException {
 }
+
+// Overrides designated initialiser.
+- (instancetype) initWithName:(NSString *)name
+                       reason:(NSString *)reason
+                     userInfo:(NSDictionary *)userInfo NS_UNAVAILABLE;
 
 - (instancetype) initWithAttributeName:(NSString *)attribName
                    reason:(NSString *)reason NS_DESIGNATED_INITIALIZER;
@@ -563,11 +571,6 @@ didStartElement:(NSString *)elementName
 
 
 @implementation ElementHandler
-
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithElement:reader:callback:onSuccess: instead");
-  return [self initWithElement: nil reader: nil callback: nil onSuccess: nil];
-}
 
 - (instancetype) initWithElement:(NSString *)elementNameVal
                           reader:(TreeReader *)readerVal
@@ -1529,14 +1532,6 @@ didStartElement:(NSString *)childElement
 
 
 @implementation AttributeParseException 
-
-// Overrides designated initialiser.
-- (instancetype) initWithName:(NSString *)name
-                       reason:(NSString *)reason
-                     userInfo:(NSDictionary *)userInfo {
-  NSAssert(NO, @"Use -initWithAttributeName:reason: instead.");
-  return [self initWithAttributeName: nil reason: nil];
-}
 
 - (instancetype) initWithAttributeName:(NSString *)attribName reason:(NSString *)reason {
   NSDictionary  *userInfo = @{AttributeNameKey: attribName};

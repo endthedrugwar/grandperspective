@@ -17,16 +17,6 @@ NSString*  TaglineFormat = @"tagline-%d";
 
 @implementation StartWindowControl
 
-// Override designated initialisers
-- (instancetype) initWithWindow:(NSWindow *)window {
-  NSAssert(NO, @"Use initWithMainMenuControl: instead");
-  return [self initWithMainMenuControl: nil];
-}
-- (instancetype) initWithCoder:(NSCoder *)coder {
-  NSAssert(NO, @"Use initWithMainMenuControl: instead");
-  return [self initWithMainMenuControl: nil];
-}
-
 - (instancetype) initWithMainMenuControl:(MainMenuControl *)mainMenuControlVal {
   if (self = [super initWithWindow: nil]) {
     mainMenuControl = [mainMenuControlVal retain];

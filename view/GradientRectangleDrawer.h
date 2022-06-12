@@ -14,6 +14,8 @@
 
 }
 
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithColorPalette:(NSColorList *)colorPalette NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, strong) NSColorList *colorPalette;

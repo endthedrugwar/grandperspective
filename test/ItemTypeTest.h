@@ -6,6 +6,9 @@
 @interface ItemTypeTest : FileItemTest {
 }
 
+// Overrides designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithMatchTargets:(NSArray *)matchTargets;
 
 - (instancetype) initWithMatchTargets:(NSArray *)matchTargets

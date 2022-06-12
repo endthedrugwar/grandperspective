@@ -2,13 +2,6 @@
 
 @implementation UniformType
 
-// Overrides super's designated initialiser.
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithUniformTypeIdentifier:description:parents instead.");
-  return [self initWithUniformTypeIdentifier: nil description: nil parents: nil];
-}
-
-
 - (instancetype) initWithUniformTypeIdentifier:(NSString *)utiVal
                                    description:(NSString *)descriptionVal
                                        parents:(NSArray *)parentTypes {

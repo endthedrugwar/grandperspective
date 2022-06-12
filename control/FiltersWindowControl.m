@@ -30,16 +30,6 @@
 
 @implementation FiltersWindowControl
 
-// Override designated initialisers
-- (instancetype) initWithWindow:(NSWindow *)window {
-  NSAssert(NO, @"Use init instead");
-  return [self init];
-}
-- (instancetype) initWithCoder:(NSCoder *)coder {
-  NSAssert(NO, @"Use init instead");
-  return [self init];
-}
-
 - (instancetype) init {
   return [self initWithFilterRepository: [FilterRepository defaultInstance]];
 }

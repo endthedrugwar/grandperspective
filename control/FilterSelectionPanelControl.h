@@ -14,6 +14,10 @@
   FilterPopUpControl  *filterPopUpControl;
 }
 
+// Override designated initialisers
+- (instancetype) initWithWindow:(NSWindow *)window NS_UNAVAILABLE;
+- (instancetype) initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
+
 - (instancetype) init;
 - (instancetype) initWithFilterRepository:(FilterRepository *)filterRepository NS_DESIGNATED_INITIALIZER;
 

@@ -49,12 +49,6 @@ NSString  *FriendlySizeKey = @"friendlySize";
 }
 
 
-// Overrides super's designated initialiser.
-- (instancetype) init {
-  NSAssert(NO, @"Use -initWithTreeContext: instead.");
-  return [self initWithTreeContext: nil];
-}
-
 - (instancetype) initWithTreeContext:(TreeContext *)treeContextVal {
   if (self = [super init]) {
     treeContext = [treeContextVal retain];

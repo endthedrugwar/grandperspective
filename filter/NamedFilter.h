@@ -9,6 +9,9 @@
 + (NamedFilter *)emptyFilterWithName:(NSString *)name;
 + (NamedFilter *)namedFilter:(Filter *)filter name:(NSString *)name;
 
+// Overrides designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithFilter:(Filter *)filter
                            name:(NSString *)name NS_DESIGNATED_INITIALIZER;
 

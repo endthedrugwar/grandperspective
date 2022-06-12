@@ -56,6 +56,10 @@ extern NSString  *ViewWillCloseEvent;
 
 - (void) searchForFiles:(NSString *)searchSpec;
 
+// Override designated initialisers
+- (instancetype) initWithWindow:(NSWindow *)window NS_UNAVAILABLE;
+- (instancetype) initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
+
 - (instancetype) initWithAnnotatedTreeContext:(AnnotatedTreeContext *)treeContext;
 - (instancetype) initWithAnnotatedTreeContext:(AnnotatedTreeContext *)treeContext
                                     pathModel:(ItemPathModel *)itemPathModel

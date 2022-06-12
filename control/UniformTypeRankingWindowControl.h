@@ -34,6 +34,9 @@
 - (IBAction) moveUpAction:(id)sender;
 - (IBAction) moveDownAction:(id)sender;
 
+// Override designated initialisers
+- (instancetype) initWithWindow:(NSWindow *)window NS_UNAVAILABLE;
+- (instancetype) initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
 
 - (instancetype) initWithUniformTypeRanking:(UniformTypeRanking *)typeRanking NS_DESIGNATED_INITIALIZER;
 

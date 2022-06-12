@@ -9,6 +9,9 @@
 @interface ItemSizeTest : FileItemTest  {
 }
 
+// Overrides designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithLowerBound:(ITEM_SIZE)lowerBound;
 
 - (instancetype) initWithUpperBound:(ITEM_SIZE)upperBound;

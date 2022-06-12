@@ -6,12 +6,6 @@
 
 @implementation ItemSizeTest
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithLowerBound:upperBound: instead.");
-  return [self initWithLowerBound: 0 upperBound: 0];
-}
-
 - (instancetype) initWithLowerBound:(ITEM_SIZE)lowerBound {
   return [self initWithLowerBound: lowerBound upperBound: ULONG_LONG_MAX];
 }

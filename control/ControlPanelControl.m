@@ -47,6 +47,9 @@ NSString  *DisplaySettingsChangedEvent = @"displaySettingsChanged";
 
 @property (nonatomic) BOOL usesTallyFileSize;
 
+// Overrides super's designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithPathTextView:(NSTextView *)textView
                            titleField:(NSTextField *)titleField
                        exactSizeField:(NSTextField *)exactSizeField
@@ -90,6 +93,12 @@ NSString  *DisplaySettingsChangedEvent = @"displaySettingsChanged";
   NSTextField  *modificationTimeField;
   NSTextField  *accessTimeField;
 }
+
+// Overrides designated initialiser
+- (instancetype) initWithPathTextView:(NSTextView *)textView
+                           titleField:(NSTextField *)titleField
+                       exactSizeField:(NSTextField *)exactSizeField
+                            sizeField:(NSTextField *)sizeField NS_UNAVAILABLE;
 
 - (instancetype) initWithPathTextView:(NSTextView *)textView
                            titleField:(NSTextField *)titleField
@@ -612,12 +621,6 @@ static ControlPanelControl  *singletonInstance = nil;
 
 @implementation ItemInFocusControls
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithPathTextView:... instead");
-  return [self initWithPathTextView: nil titleField: nil exactSizeField: nil sizeField: nil];
-}
-
 - (instancetype) initWithPathTextView:(NSTextView *)pathTextViewVal
                            titleField:(NSTextField *)titleFieldVal
                        exactSizeField:(NSTextField *)exactSizeFieldVal
@@ -708,16 +711,6 @@ static ControlPanelControl  *singletonInstance = nil;
 
 
 @implementation SelectedItemFocusControls
-
-// Overrides designated initialiser
-- (instancetype) initWithPathTextView:(NSTextView *)textView
-                           titleField:(NSTextField *)titleField
-                       exactSizeField:(NSTextField *)exactSizeField
-                            sizeField:(NSTextField *)sizeField {
-  NSAssert(NO, @"Use other initialiser instead");
-  return [self initWithPathTextView: nil titleField: nil exactSizeField: nil sizeField: nil
-                  creationTimeField: nil modificationTimeField: nil accessTimeField: nil];
-}
 
 - (instancetype) initWithPathTextView:(NSTextView *)textViewVal
                            titleField:(NSTextField *)titleFieldVal

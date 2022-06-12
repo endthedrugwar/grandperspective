@@ -22,11 +22,6 @@
 
 @implementation TreeFilter
 
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithFilterSet: instead");
-  return [self initWithFilterSet: nil];
-}
-
 - (instancetype) initWithFilterSet:(FilterSet *)filterSetVal {
   if (self = [super init]) {
     filterSet = [filterSetVal retain];

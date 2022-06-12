@@ -96,6 +96,9 @@
   BOOL  enabled;
 }
 
+// Overrides designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithMatchModePopUpButton:(NSPopUpButton *)popUpButton
                                   targetsView:(NSTableView *)targetsView
                               addTargetButton:(NSButton *)addTargetButton
@@ -861,13 +864,6 @@
 
 
 @implementation MultiMatchControls
-
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithMatchModePopUpButton:... instead");
-  return [self initWithMatchModePopUpButton: nil targetsView: nil addTargetButton: nil
-                         removeTargetButton: nil];
-}
 
 - (instancetype) initWithMatchModePopUpButton:(NSPopUpButton *)popUpButton
                                   targetsView:(NSTableView *)targetsTableViewVal

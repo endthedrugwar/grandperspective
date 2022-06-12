@@ -11,6 +11,9 @@
 
 }
 
+// Overrides designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithDirectoryView:(DirectoryView *)dirView
                              tableView:(NSTableView *)tableView NS_DESIGNATED_INITIALIZER;
 

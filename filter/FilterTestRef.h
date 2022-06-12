@@ -13,6 +13,9 @@
  */
 + (FilterTestRef *)filterTestRefFromDictionary:(NSDictionary *)dict;
 
+// Overrides designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithName:(NSString *)name;
 - (instancetype) initWithName:(NSString *)name
                      inverted:(BOOL)inverted NS_DESIGNATED_INITIALIZER;

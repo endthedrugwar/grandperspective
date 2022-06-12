@@ -30,11 +30,6 @@
 
 @implementation TreeRefresher
 
-- (instancetype) initWithFilterSet:(FilterSet *)filterSetVal {
-  NSAssert(NO, @"Use initWithFilterSet:oldTree: instead");
-  return [self initWithFilterSet: nil oldTree: nil];
-}
-
 - (instancetype) initWithFilterSet:(FilterSet *)filterSetVal
                            oldTree:(DirectoryItem *)oldTreeVal {
   if (self = [super initWithFilterSet: filterSetVal]) {

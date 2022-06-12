@@ -86,6 +86,12 @@ NSString  *ToolbarSearch = @"Search";
 @interface ToolbarItemMenu : NSMenuItem {
 }
 
+// Override designated initialisers
+- (instancetype) initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
+- (instancetype) initWithTitle:(NSString *)string
+                        action:(nullable SEL)selector
+                 keyEquivalent:(NSString *)charCode NS_UNAVAILABLE;
+
 - (instancetype) initWithTitle:(NSString *)title target:(id)target NS_DESIGNATED_INITIALIZER;
 
 - (NSMenuItem *) addAction:(SEL)action withTitle:(NSString *)title;
@@ -96,6 +102,9 @@ NSString  *ToolbarSearch = @"Search";
 @interface SelectorObject : NSObject {
   SEL  selector;
 }
+
+// Overrides designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
 
 - (instancetype) initWithSelector:(SEL)selector NS_DESIGNATED_INITIALIZER;
 
@@ -108,6 +117,9 @@ NSString  *ToolbarSearch = @"Search";
   NSObject  *validator;
   SEL  validationSelector;
 }
+
+// Overrides designated initialiser
+- (instancetype) initWithItemIdentifier:(NSString *)identifier NS_UNAVAILABLE;
 
 - (instancetype) initWithItemIdentifier:(NSString *)identifier
                               validator:(NSObject *)validator
@@ -665,17 +677,6 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 
 @implementation ToolbarItemMenu
 
-// Override designated initialisers
-- (instancetype)initWithTitle:(NSString *)string action:(SEL)selector
-                keyEquivalent:(NSString *)charCode {
-  NSAssert(NO, @"Use initWithTitle: instead");
-  return [self initWithTitle: nil];
-}
-- (instancetype)initWithCoder:(NSCoder *)decoder {
-  NSAssert(NO, @"Use initWithTitle: instead");
-  return [self initWithTitle: nil];
-}
-
 - (instancetype) initWithTitle:(NSString *)title {
   return [self initWithTitle: title target: nil];
 }
@@ -708,12 +709,6 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 
 @implementation ValidatingToolbarItem
 
-// Overrides designated initialiser
-- (instancetype) initWithItemIdentifier:(NSString *)identifier {
-  NSAssert(NO, @"Use initWithItemIdentifier:validator:... instead");
-  return [self initWithItemIdentifier: nil validator: nil validationSelector: nil];
-}
-
 - (instancetype) initWithItemIdentifier:(NSString *)identifier
                               validator:(NSObject *)validatorVal
                      validationSelector:(SEL)validationSelectorVal {
@@ -741,19 +736,12 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 
 @implementation SelectorObject
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithSelector: instead");
-  return [self initWithSelector: nil];
-}
-
 - (instancetype) initWithSelector:(SEL)selectorVal {
   if (self = [super init]) {
     selector = selectorVal;
   }
   return self;
 }
-
 
 - (SEL) selector {
   return selector;

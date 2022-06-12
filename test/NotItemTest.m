@@ -5,12 +5,6 @@
 
 @implementation NotItemTest
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithSubItemTest: instead.");
-  return [self initWithSubItemTest: nil];
-}
-
 - (instancetype) initWithSubItemTest:(FileItemTest *)subItemTest {
   if (self = [super init]) {
     _subItemTest = [subItemTest retain];

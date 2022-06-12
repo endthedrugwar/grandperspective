@@ -6,6 +6,9 @@
 @interface ScanTaskOutput : NSObject {
 }
 
+// Override designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
+
 + (instancetype) scanTaskOutput:(TreeContext *)treeContext alert:(AlertMessage *)alert;
 + (instancetype) failedScanTaskOutput:(AlertMessage *)alert;
 

@@ -14,6 +14,9 @@
 
 }
 
+// Overrides super's designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithProgressPanel:(ProgressPanelControl *)panelControl NS_DESIGNATED_INITIALIZER;
 
 - (void) dispose;

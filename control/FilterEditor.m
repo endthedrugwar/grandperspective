@@ -16,6 +16,9 @@
   NSString  *allowedName;
 }
 
+// Overrides designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithExistingFilters:(NSDictionary *)allFilters;
 - (instancetype) initWithExistingFilters:(NSDictionary *)allFilters
                              allowedName:(NSString *)name NS_DESIGNATED_INITIALIZER;
@@ -174,12 +177,6 @@
 
 
 @implementation FilterNameValidator
-
-// Overrides designated initialiser.
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithExistingFilters: instead.");
-  return [self initWithExistingFilters: nil];
-}
 
 - (instancetype) initWithExistingFilters:(NSDictionary *)allFiltersVal {
   return [self initWithExistingFilters: allFiltersVal allowedName: nil];

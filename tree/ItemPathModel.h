@@ -54,6 +54,9 @@ extern NSString  *FriendlySizeKey;
 
 + (id) pathWithTreeContext:(TreeContext *)treeContext;
 
+// Overrides super's designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithTreeContext:(TreeContext *)treeContext NS_DESIGNATED_INITIALIZER;
 
 /* Initialiser used to implement copying.

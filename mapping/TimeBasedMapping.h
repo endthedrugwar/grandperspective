@@ -14,6 +14,9 @@
   CFAbsoluteTime  nowTime;
 }
 
+// Overrides designated initialiser
+- (instancetype) initWithFileItemMappingScheme:(NSObject <FileItemMappingScheme> *)schemeVal NS_UNAVAILABLE;
+
 - (instancetype) initWithFileItemMappingScheme:(NSObject <FileItemMappingScheme> *)scheme
                                           tree:(DirectoryItem *)tree NS_DESIGNATED_INITIALIZER;
 

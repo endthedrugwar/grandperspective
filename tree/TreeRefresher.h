@@ -11,6 +11,9 @@
   BOOL  hardLinkMismatch;
 }
 
+// Overrides super's designated initialiser.
+- (instancetype) initWithFilterSet:(FilterSet *)filterSet NS_UNAVAILABLE;
+
 - (instancetype) initWithFilterSet:(FilterSet *)filterSet
                            oldTree:(DirectoryItem *)oldTree NS_DESIGNATED_INITIALIZER;
 

@@ -10,11 +10,6 @@
 
 @implementation GradientRectangleDrawer
 
-- (instancetype) init {
-  NSAssert(NO, @"Use -initWithColorPalette: instead.");
-  return [self initWithColorPalette: nil];
-}
-
 - (instancetype) initWithColorPalette:(NSColorList *)colorPaletteVal {
   if (self = [super init]) {
     [self setColorPalette: colorPaletteVal];

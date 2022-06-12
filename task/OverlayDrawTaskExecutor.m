@@ -5,16 +5,6 @@
 
 @implementation OverlayDrawTaskExecutor
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithScanTree: instead");
-
-  #pragma clang diagnostic push
-  #pragma clang diagnostic ignored "-Wnonnull"
-  return [self initWithScanTree: nil];
-  #pragma clang diagnostic pop
-}
-
 - (instancetype) initWithScanTree:(DirectoryItem *)scanTree {
   if (self = [super init]) {
     overlayDrawer = [[OverlayDrawer alloc] initWithScanTree: scanTree];

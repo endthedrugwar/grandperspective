@@ -75,6 +75,9 @@ NSString  *AfterClosingLastViewDoNothing = @"do nothing";
   ReadTaskInput  *taskInput;
 }
 
+// Overrides designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithWindowManager:(WindowManager *)windowManager
                          readTaskInput:(ReadTaskInput *)taskInput NS_DESIGNATED_INITIALIZER;
 
@@ -86,6 +89,9 @@ NSString  *AfterClosingLastViewDoNothing = @"do nothing";
 @interface WriteTaskCallback : NSObject {
   WriteTaskInput  *taskInput;
 }
+
+// Overrides designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
 
 - (instancetype) initWithWriteTaskInput:(WriteTaskInput *)taskInput NS_DESIGNATED_INITIALIZER;
 
@@ -99,6 +105,9 @@ NSString  *AfterClosingLastViewDoNothing = @"do nothing";
 }
 
 @property BOOL  addToRecentScans;
+
+// Overrides designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
 
 - (instancetype) initWithWindowManager:(WindowManager *)windowManager NS_DESIGNATED_INITIALIZER;
 
@@ -1192,12 +1201,6 @@ static MainMenuControl  *singletonInstance = nil;
 
 @implementation ReadTaskCallback
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithReadTaskInput: instead.");
-  return [self initWithWindowManager: nil readTaskInput: nil];
-}
-
 - (instancetype) initWithWindowManager:(WindowManager *)windowManagerVal
                          readTaskInput:(ReadTaskInput *)taskInputVal {
   if (self = [super init]) {
@@ -1262,12 +1265,6 @@ static MainMenuControl  *singletonInstance = nil;
 
 @implementation WriteTaskCallback
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithWriteTaskInput: instead.");
-  return [self initWithWriteTaskInput: nil];
-}
-
 - (instancetype) initWithWriteTaskInput:(WriteTaskInput *)taskInputVal {
   if (self = [super init]) {
     taskInput = [taskInputVal retain];
@@ -1318,12 +1315,6 @@ static MainMenuControl  *singletonInstance = nil;
 
 
 @implementation FreshDirViewWindowCreator
-
-// Overrides designated initialiser.
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithWindowManager: instead.");
-  return [self initWithWindowManager: nil];
-}
 
 - (instancetype) initWithWindowManager:(WindowManager *)windowManagerVal {
   if (self = [super init]) {

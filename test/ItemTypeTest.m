@@ -18,12 +18,6 @@
 
 @implementation ItemTypeTest
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithMatchTargets: instead.");
-  return [self initWithMatchTargets: nil];
-}
-
 - (instancetype) initWithMatchTargets:(NSArray *)matchTargets {
   return [self initWithMatchTargets: matchTargets strict: NO];
 }

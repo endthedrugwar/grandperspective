@@ -7,6 +7,9 @@
 @interface ScanTaskInput : NSObject {
 }
 
+// Overrides designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithPath:(NSString *)path
               fileSizeMeasure:(NSString *)measure
                     filterSet:(FilterSet *)filterSet;

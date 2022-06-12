@@ -13,17 +13,6 @@
 
 @implementation SaveImageDialogControl
 
-// Override designated initialisers
-- (instancetype) initWithWindow:(NSWindow *)window {
-  NSAssert(NO, @"Use  initWithDirectoryViewControl: instead");
-  return [self initWithDirectoryViewControl: nil];
-}
-- (instancetype) initWithCoder:(NSCoder *)coder {
-  NSAssert(NO, @"Use  initWithDirectoryViewControl: instead");
-  return [self initWithDirectoryViewControl: nil];
-}
-
-
 - (instancetype) initWithDirectoryViewControl:(DirectoryViewControl *)dirViewControlVal {
          
   if (self = [super initWithWindow: nil]) {

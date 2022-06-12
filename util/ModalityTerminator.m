@@ -9,12 +9,6 @@
 }
 
 
-// Overrides designated initialiser.
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithEventSource: instead.");
-  return [self initWithEventSource: nil];
-}
-
 - (instancetype) initWithEventSource:(NSObject *)eventSource {
   if (self = [super init]) {
     NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];

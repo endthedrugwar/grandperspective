@@ -20,6 +20,8 @@
   ProgressTracker  *progressTracker;
 }
 
+// Overrides super's designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
 
 - (instancetype) initWithFilterSet:(FilterSet *)filterSet NS_DESIGNATED_INITIALIZER;
 

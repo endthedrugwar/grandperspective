@@ -15,6 +15,9 @@
 
 }
 
+// Overrides designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithFileItemMappingScheme:(NSObject <FileItemMappingScheme> *)scheme NS_DESIGNATED_INITIALIZER;
 
 @end

@@ -6,6 +6,9 @@
 @interface DrawTaskInput : NSObject {
 }
 
+// Overrides designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithVisibleTree:(FileItem *)visibleTree
                           treeInView:(FileItem *)treeInView
                        layoutBuilder:(TreeLayoutBuilder *)layoutBuilder

@@ -14,12 +14,6 @@
 }
 
 
-// Overrides designated initialiser.
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithFilter:name: instead.");
-  return [self initWithFilter: nil name: nil];
-}
-
 - (instancetype) initWithFilter:(Filter *)filter name:(NSString *)name {
   if (self = [super init]) {
     _filter = [filter retain];

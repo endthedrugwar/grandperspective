@@ -20,6 +20,9 @@ extern NSString  *SelectedFilterUpdated;
   NSNotificationCenter  *notificationCenter;
 }
 
+// Overrides designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithPopUpButton:(NSPopUpButton *)popUpButton;
 
 - (instancetype) initWithPopUpButton:(NSPopUpButton *)popUpButton

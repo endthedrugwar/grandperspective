@@ -16,6 +16,9 @@
 + (instancetype) annotatedTreeContext:(TreeContext *)treeContext
                              comments:(NSString *)comments;
 
+// Overrides designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithTreeContext:(TreeContext *)treeContext;
 - (instancetype) initWithTreeContext:(TreeContext *)treeContext
                             comments:(NSString *)comments NS_DESIGNATED_INITIALIZER;

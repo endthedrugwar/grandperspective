@@ -21,6 +21,9 @@
   SEL  nextTaskCallbackSelector; 
 }
 
+// Overrides super's designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 /* Initialises the manager with the task executor, which is responsible for carrying out the actual
  * tasks.
  */

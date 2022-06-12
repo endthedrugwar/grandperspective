@@ -3,12 +3,6 @@
 
 @implementation WriteTaskInput
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithAnnotatedTreeContext:path: instead");
-  return [self initWithAnnotatedTreeContext: nil path: nil];
-}
-
 - (instancetype) initWithAnnotatedTreeContext:(AnnotatedTreeContext *)context
                                          path:(NSString *)path {
   return [self initWithAnnotatedTreeContext: context path: path options: nil];

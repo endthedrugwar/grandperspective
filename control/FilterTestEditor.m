@@ -18,6 +18,9 @@
   NSString  *allowedName;
 }
 
+// Overrides designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithExistingTests:(NSDictionary *)allTests;
 - (instancetype) initWithExistingTests:(NSDictionary *)allTests
                            allowedName:(NSString *)name NS_DESIGNATED_INITIALIZER;
@@ -176,12 +179,6 @@
 
 
 @implementation FilterTestNameValidator
-
-// Overrides designated initialiser.
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithExistingTests: instead.");
-  return [self initWithExistingTests: nil];
-}
 
 - (instancetype) initWithExistingTests:(NSDictionary *)allTestsVal {
   return [self initWithExistingTests: allTestsVal allowedName: nil];

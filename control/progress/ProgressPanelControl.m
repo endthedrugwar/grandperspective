@@ -22,16 +22,6 @@ extern NSString  *StableFolderPathKey;
 
 @implementation ProgressPanelControl
 
-// Override designated initialisers
-- (instancetype) initWithWindow:(NSWindow *)window {
-  NSAssert(NO, @"Use initWithTaskExecutor: instead.");
-  return [self initWithTaskExecutor: nil];
-}
-- (instancetype) initWithCoder:(NSCoder *)coder {
-  NSAssert(NO, @"Use initWithTaskExecutor: instead.");
-  return [self initWithTaskExecutor: nil];
-}
-
 - (instancetype) initWithTaskExecutor:(NSObject <TaskExecutor> *)taskExecutorVal {
   if (self = [super initWithWindow: nil]) {
     taskExecutor = [taskExecutorVal retain];

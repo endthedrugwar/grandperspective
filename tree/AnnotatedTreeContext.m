@@ -21,12 +21,6 @@
              autorelease]);
 }
 
-// Override designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithTreeContext: instead");
-  return [self initWithTreeContext: nil];
-}
-
 - (instancetype) initWithTreeContext:(TreeContext *)treeContextVal {
   FileItemTest  *test = [[treeContextVal filterSet] fileItemTest];
 

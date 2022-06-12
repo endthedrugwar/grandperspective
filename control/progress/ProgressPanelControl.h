@@ -16,6 +16,10 @@
   SEL  cancelCallbackSelector;
 }
 
+// Override designated initialisers
+- (instancetype) initWithWindow:(NSWindow *)window NS_UNAVAILABLE;
+- (instancetype) initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
+
 - (instancetype) initWithTaskExecutor:(NSObject <TaskExecutor> *)taskExecutor NS_DESIGNATED_INITIALIZER;
 
 

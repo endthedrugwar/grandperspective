@@ -79,6 +79,9 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   NSArray  *pathToSelectedItem;
 }
 
+// Overrides designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithPathToSelectedItem:(NSArray *)pathToSelectedItem NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, readonly, copy) NSArray *pathToSelectedItem;
@@ -88,16 +91,6 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 
 @implementation DirectoryViewControl
-
-// Override designated initialisers
-- (instancetype) initWithWindow:(NSWindow *)window {
-  NSAssert(NO, @"Use initWithAnnotatedTreeContext: instead");
-  return [self initWithAnnotatedTreeContext: nil];
-}
-- (instancetype) initWithCoder:(NSCoder *)coder {
-  NSAssert(NO, @"Use initWithAnnotatedTreeContext: instead");
-  return [self initWithAnnotatedTreeContext: nil];
-}
 
 - (instancetype) initWithAnnotatedTreeContext:(AnnotatedTreeContext *)annTreeContext {
   ItemPathModel  *pathModel = 
@@ -902,12 +895,6 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 
 @implementation DirectoryViewPreviewItem
-
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithPathToSelectedItem: instead");
-  return [self initWithPathToSelectedItem: nil];
-}
 
 - (instancetype) initWithPathToSelectedItem:(NSArray *)pathToSelectedItemVal {
   if (self = [super init]) {

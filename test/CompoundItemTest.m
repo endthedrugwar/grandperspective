@@ -27,12 +27,6 @@
 
 @implementation CompoundItemTest
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithSubItemTests: instead.");
-  return [self initWithSubItemTests: nil];
-}
-
 - (instancetype) initWithSubItemTests:(NSArray*)subItemTests {
   if (self = [super init]) {
     NSAssert([subItemTests count] >= 2, @"Compound test should have two or more sub-tests");

@@ -6,12 +6,6 @@
 
 @implementation ItemFlagsTest
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithFlagsMask:desiredResult: instead.");
-  return [self initWithFlagsMask: 0 desiredResult: 0];
-}
-
 - (instancetype) initWithFlagsMask:(FileItemOptions)mask desiredResult:(FileItemOptions)result {
   if (self = [super init]) {
     _flagsMask = mask;

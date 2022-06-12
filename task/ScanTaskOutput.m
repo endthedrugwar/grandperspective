@@ -13,12 +13,6 @@
   return [[[ScanTaskOutput alloc] initWithTreeContext: nil alert: alert] autorelease];
 }
 
-// Override designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithTreeContext:alert instead");
-  return [self initWithTreeContext: nil alert: nil];
-}
-
 - (instancetype) initWithTreeContext:(TreeContext *)treeContext alert:(AlertMessage *)alert {
   if (self = [super init]) {
     NSAssert(treeContext != nil || alert != nil, @"treeContext or alert must be set.");

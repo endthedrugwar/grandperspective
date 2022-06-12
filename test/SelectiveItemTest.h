@@ -9,6 +9,9 @@
 @interface SelectiveItemTest : FileItemTest {
 }
 
+// Overrides designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithSubItemTest:(FileItemTest *)subTest
                            onlyFiles:(BOOL)onlyFiles NS_DESIGNATED_INITIALIZER;
 - (instancetype) initWithPropertiesFromDictionary:(NSDictionary *)dict NS_DESIGNATED_INITIALIZER;

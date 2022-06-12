@@ -55,11 +55,6 @@ void eventCallback(ConstFSEventStreamRef streamRef,
 
 @implementation TreeMonitor
 
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithTreeContext: instead");
-  return [self initWithTreeContext: nil forPath: @""];
-}
-
 - (instancetype) initWithTreeContext:(TreeContext *)treeContext
                              forPath:(NSString *)path {
   if (self = [super init]) {

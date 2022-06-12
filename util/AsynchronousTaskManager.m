@@ -26,12 +26,6 @@ enum {
 
 @implementation AsynchronousTaskManager
 
-// Overrides super's designated initialiser.
-- (instancetype) init {
-  NSAssert(NO, @"Use -initWithTaskExecutor: instead.");
-  return [self initWithTaskExecutor: nil];
-}
-
 - (instancetype) initWithTaskExecutor:(NSObject<TaskExecutor> *)executorVal {
   if (self = [super init]) {
     executor = [executorVal retain];

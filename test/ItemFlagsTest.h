@@ -7,6 +7,9 @@
 @interface ItemFlagsTest : FileItemTest {
 }
 
+// Overrides designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithFlagsMask:(FileItemOptions)mask
                      desiredResult:(FileItemOptions)result NS_DESIGNATED_INITIALIZER;
 - (instancetype) initWithPropertiesFromDictionary:(NSDictionary *)dict NS_DESIGNATED_INITIALIZER;

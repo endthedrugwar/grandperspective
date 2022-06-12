@@ -71,6 +71,10 @@
 
 - (IBAction) testDoubleClicked:(id)sender;
 
+// Override designated initialisers
+- (instancetype) initWithWindow:(NSWindow *)window NS_UNAVAILABLE;
+- (instancetype) initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
+
 - (instancetype) initWithTestRepository:(FilterTestRepository *)testRepository NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic) BOOL allowEmptyFilter;

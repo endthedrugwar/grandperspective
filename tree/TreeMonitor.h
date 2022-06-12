@@ -15,6 +15,9 @@
 @property (nonatomic, readonly, weak) TreeContext *treeContext;
 @property (nonatomic, readonly) int numChanges;
 
+// Overrides designated initializer
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithTreeContext:(TreeContext *)treeContext
                              forPath:(NSString *)path NS_DESIGNATED_INITIALIZER;
 

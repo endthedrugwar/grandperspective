@@ -6,13 +6,6 @@
 
 @implementation DrawTaskInput
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithVisibleTree:treeInView:layoutBuilder... instead");
-  return [self initWithVisibleTree: nil treeInView: nil layoutBuilder: nil
-                            bounds: NSMakeRect(0, 0, 0, 0)];
-}
-
 - (instancetype) initWithVisibleTree:(FileItem *)visibleTree
                           treeInView:(FileItem *)treeInView
                        layoutBuilder:(TreeLayoutBuilder *)layoutBuilder

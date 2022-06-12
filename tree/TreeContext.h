@@ -37,6 +37,8 @@ extern NSString  *FileItemDeletedEvent;
   int  numWaitingWriters;
 }
 
+// Overrides designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
 
 /* Creates a new tree context, with the scan time set to "now" and source monitoring enabled for
  * the given path.

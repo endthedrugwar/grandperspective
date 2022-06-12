@@ -24,11 +24,6 @@ NSString  *SelectedFilterUpdated = @"selectedFilterUpdated";
 
 @implementation FilterPopUpControl
 
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithPopUpButton: instead.");
-  return [self initWithPopUpButton: nil];
-}
-
 - (instancetype) initWithPopUpButton:(NSPopUpButton *)popUpButtonVal {
   return [self initWithPopUpButton: popUpButtonVal
                   filterRepository: [FilterRepository defaultInstance]];

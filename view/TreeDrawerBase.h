@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
   BOOL  abort;
 }
 
+// Overrides designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithScanTree:(DirectoryItem *)scanTree;
 
 - (instancetype) initWithScanTree:(DirectoryItem *)scanTree

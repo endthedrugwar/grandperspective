@@ -41,12 +41,6 @@
 
 @implementation ItemPathModelView
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithPathModel: instead");
-  return [self initWithPathModel: nil];
-}
-
 - (instancetype) initWithPathModel:(ItemPathModel *)pathModelVal {
   if (self = [super init]) {
     pathModel = [pathModelVal retain];

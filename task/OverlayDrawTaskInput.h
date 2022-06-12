@@ -6,6 +6,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface OverlayDrawTaskInput : DrawTaskInput
 
+// Override designated initializer of super.
+- (instancetype) initWithVisibleTree:(FileItem *)visibleTree
+                          treeInView:(FileItem *)treeInView
+                       layoutBuilder:(TreeLayoutBuilder *)layoutBuilder
+                              bounds:(NSRect) bounds NS_UNAVAILABLE;
+
 - (instancetype) initWithVisibleTree:(FileItem *)visibleTree
                           treeInView:(FileItem *)treeInView
                        layoutBuilder:(TreeLayoutBuilder *)layoutBuilder

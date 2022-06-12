@@ -8,6 +8,11 @@
 
 }
 
+// Overrides designated initialiser
+- (instancetype) initWithDomain:(NSString *)domain
+                           code:(NSInteger)code
+                       userInfo:(NSDictionary *)userInfo NS_UNAVAILABLE;
+
 - (instancetype) initWithLocalizedDescription:(NSString *)descr;
 - (instancetype) initWithCode:(int)code localizedDescription:(NSString *)descr;
 - (instancetype) initWithCode:(int)code userInfo:(NSDictionary *)userInfo NS_DESIGNATED_INITIALIZER;

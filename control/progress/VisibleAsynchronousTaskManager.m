@@ -12,6 +12,9 @@
   SEL  callbackSelector; 
 }
 
+// Overrides designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithProgressPanel:(ProgressPanelControl *)progressPanel
                               callback:(NSObject *)callback
                               selector:(SEL)selector NS_DESIGNATED_INITIALIZER;
@@ -22,12 +25,6 @@
 
 
 @implementation VisibleAsynchronousTaskManager
-
-// Overrides super's designated initialiser.
-- (instancetype) init {
-  NSAssert(NO, @"Use -initWithProgressPanel: instead.");
-  return [self initWithProgressPanel: nil];
-}
 
 - (instancetype) initWithProgressPanel:(ProgressPanelControl *)panelControl {
   if (self = [super init]) {
@@ -85,12 +82,6 @@
 
 
 @implementation CallbackHandler
-
-// Overrides super's designated initialiser.
-- (instancetype) init {
-  NSAssert(NO, @"Use -initWithProgressPanel:callback:selector instead.");
-  return [self initWithProgressPanel: nil callback: nil selector: nil];
-}
 
 - (instancetype) initWithProgressPanel:(ProgressPanelControl *)panelControl
                               callback:(NSObject *)callbackVal

@@ -69,6 +69,9 @@ typedef NS_ENUM(NSInteger, DirectionEnum) {
   float  keyboardNavigationDelta;
 }
 
+// Overrides designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithPathModel:(ItemPathModel *)pathModel NS_DESIGNATED_INITIALIZER;
 
 /* Returns the path model that is wrapped by this view.

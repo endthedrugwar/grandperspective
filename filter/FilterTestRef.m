@@ -19,12 +19,6 @@
 }
 
 
-// Overrides designated initialiser.
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithName: instead.");
-  return [self initWithName: nil];
-}
-
 - (instancetype) initWithName:(NSString *)nameVal {
   return [self initWithName: nameVal inverted: NO];
 }

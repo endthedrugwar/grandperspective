@@ -6,6 +6,9 @@
 @interface WriteTaskInput : NSObject {
 }
 
+// Overrides designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithAnnotatedTreeContext:(AnnotatedTreeContext *)context
                                          path:(NSString *)path;
 - (instancetype) initWithAnnotatedTreeContext:(AnnotatedTreeContext *)context

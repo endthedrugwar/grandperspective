@@ -6,12 +6,6 @@
 
 @implementation SelectiveItemTest
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithSubItemTest:onlyFiles: instead.");
-  return [self initWithSubItemTest: nil onlyFiles: YES];
-}
-
 - (instancetype) initWithSubItemTest:(FileItemTest *)subItemTest
                            onlyFiles:(BOOL)onlyFiles {
   if (self = [super init]) {

@@ -49,18 +49,6 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
 
 @implementation TreeContext
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithVolumePath:scanPath:fileSizeMeasure:... instead.");
-  return [self initWithVolumePath: nil
-                  fileSizeMeasure: nil
-                       volumeSize: 0
-                        freeSpace: 0
-                        filterSet: nil
-                      monitorPath: nil];
-}
-
-
 - (instancetype) initWithVolumePath:(NSString *)volumePath
                     fileSizeMeasure:(NSString *)fileSizeMeasure
                          volumeSize:(unsigned long long)volumeSize

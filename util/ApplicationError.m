@@ -3,14 +3,6 @@
 
 @implementation ApplicationError
 
-// Overrides designated initialiser
-- (instancetype) initWithDomain:(NSString *)domain
-                           code:(NSInteger)code
-                       userInfo:(NSDictionary *)userInfo {
-  NSAssert(NO, @"Use initWithCode:userInfo instead.");
-  return [self initWithCode: 0 userInfo: nil];
-}
-
 - (instancetype) initWithLocalizedDescription:(NSString *)descr {
   return [self initWithCode: -1 localizedDescription: descr];
 }

@@ -6,12 +6,6 @@
 
 @implementation ScanTaskInput
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithPath:fileSizeMeasure:filterSet instead");
-  return [self initWithPath: nil fileSizeMeasure: nil filterSet: nil];
-}
-
 - (instancetype) initWithPath:(NSString *)path
               fileSizeMeasure:(NSString *)fileSizeMeasureVal
                     filterSet:(FilterSet *)filterSetVal {

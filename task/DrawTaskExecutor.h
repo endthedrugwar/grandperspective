@@ -17,6 +17,9 @@
   NSLock  *settingsLock;
 }
 
+// Overrides designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithTreeContext:(TreeContext *)treeContext;
 - (instancetype) initWithTreeContext:(TreeContext *)treeContext
                      drawingSettings:(TreeDrawerSettings *)settings NS_DESIGNATED_INITIALIZER;

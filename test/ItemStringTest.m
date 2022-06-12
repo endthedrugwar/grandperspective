@@ -5,12 +5,6 @@
 
 @implementation ItemStringTest
 
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithStringTest: instead.");
-  return [self initWithStringTest: nil];
-}
-
 - (instancetype) initWithStringTest:(StringTest *)stringTestVal {
   if (self = [super init]) {
     _stringTest = [stringTestVal retain];

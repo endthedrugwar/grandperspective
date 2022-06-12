@@ -12,6 +12,9 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
   BOOL  dominated;
 }
 
+// Overrides designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithUniformType:(UniformType *)type
                            dominated:(BOOL)dominated NS_DESIGNATED_INITIALIZER;
 
@@ -41,16 +44,6 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
 
 
 @implementation UniformTypeRankingWindowControl
-
-// Override designated initialisers
-- (instancetype) initWithWindow:(NSWindow *)window {
-  NSAssert(NO, @"Use init instead");
-  return [self init];
-}
-- (instancetype) initWithCoder:(NSCoder *)coder {
-  NSAssert(NO, @"Use init instead");
-  return [self init];
-}
 
 - (instancetype) init {
   return [self initWithUniformTypeRanking: [UniformTypeRanking defaultUniformTypeRanking]];
@@ -439,12 +432,6 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
 
 
 @implementation TypeCell
-
-// Overrides designated initialiser
-- (instancetype) init {
-  NSAssert(NO, @"Use initWithUniformType:dominated: instead");
-  return [self initWithUniformType: nil dominated: NO];
-}
 
 - (instancetype) initWithUniformType:(UniformType *)typeVal dominated:(BOOL)dominatedVal {
   if (self = [super init]) {

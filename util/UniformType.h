@@ -10,6 +10,8 @@
   NSSet  *parents;
 }
 
+// Overrides super's designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
 
 - (instancetype) initWithUniformTypeIdentifier:(NSString *)uti
                                    description:(NSString *)description

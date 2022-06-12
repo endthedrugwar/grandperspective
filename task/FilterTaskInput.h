@@ -7,6 +7,9 @@
 @interface FilterTaskInput : NSObject {
 }
 
+// Overrides designated initialiser
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithTreeContext:(TreeContext *)context
                            filterSet:(FilterSet *)filterSet;
 

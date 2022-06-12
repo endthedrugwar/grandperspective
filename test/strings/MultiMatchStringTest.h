@@ -8,6 +8,9 @@
 @interface MultiMatchStringTest : StringTest {
 }
 
+// Overrides designated initialiser.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithMatchTargets:(NSArray *)matchTargets;
 - (instancetype) initWithMatchTargets:(NSArray *)matchTargets
                         caseSensitive:(BOOL)caseSensitive NS_DESIGNATED_INITIALIZER;
