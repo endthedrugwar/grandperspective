@@ -12,7 +12,6 @@
 
 NSString  *FileDeletionTargetsKey = @"fileDeletionTargets";
 NSString  *ConfirmFileDeletionKey = @"confirmFileDeletion";
-NSString  *DefaultRescanActionKey = @"defaultRescanAction";
 NSString  *RescanBehaviourKey = @"rescanBehaviour";
 NSString  *NoViewsBehaviourKey = @"noViewsBehaviour";
 NSString  *FileSizeMeasureKey = @"fileSizeMeasure";
@@ -27,6 +26,7 @@ NSString  *ShowEntireVolumeByDefaultKey = @"showEntireVolumeByDefault";
 /* Note: The preferences below cannot currently be changed from the preferences panel; they are set
  * by the application defaults and can be changed by manually editing the user preferences file.
  */
+NSString  *DefaultRescanActionKey = @"defaultRescanAction";
 NSString  *ConfirmFolderDeletionKey = @"confirmFolderDeletion";
 NSString  *DefaultColorGradient = @"defaultColorGradient";
 NSString  *MinimumTimeBoundForColorMappingKey = @"minimumTimeBoundForColorMapping";
@@ -88,15 +88,12 @@ static BOOL appHasDeletePermission;
 }
 
 - (void) windowDidLoad {
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
 
   // Configure all pop-up buttons.
   [self setupPopUp: fileDeletionPopUp
                key: FileDeletionTargetsKey
            content: [DirectoryViewControl fileDeletionTargetNames]];
-  [self setupPopUp: rescanActionPopUp
-               key: DefaultRescanActionKey
-           content: [MainMenuControl rescanActionNames]];
   [self setupPopUp: rescanBehaviourPopUp
                key: RescanBehaviourKey
            content: [MainMenuControl rescanBehaviourNames]];
@@ -111,10 +108,10 @@ static BOOL appHasDeletePermission;
            content: [FileItem fileSizeUnitSystemNames]];
   [self setupPopUp: defaultColorMappingPopUp
                key: DefaultColorMappingKey
-           content:  [[FileItemMappingCollection defaultFileItemMappingCollection] allKeys]];
+           content: [FileItemMappingCollection defaultFileItemMappingCollection].allKeys];
   [self setupPopUp: defaultColorPalettePopUp
                key: DefaultColorPaletteKey
-           content: [[ColorListCollection defaultColorListCollection] allKeys]];
+           content: [ColorListCollection defaultColorListCollection].allKeys];
 
   if (! appHasDeletePermission) {
     // Cannot delete, so fix visible setting to "DeleteNothing" and prevent changes
@@ -144,7 +141,7 @@ static BOOL appHasDeletePermission;
 
 
 - (IBAction) popUpValueChanged:(id)sender {
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
   UniqueTagsTransformer  *tagMaker = [UniqueTagsTransformer defaultUniqueTagsTransformer];
 
   NSPopUpButton  *popUp = sender;
@@ -159,7 +156,7 @@ static BOOL appHasDeletePermission;
 }
 
 - (IBAction) valueChanged:(id)sender {
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
 
   if (sender == fileDeletionConfirmationCheckBox) {
     BOOL  enabled = [sender state] == NSOnState;
@@ -190,7 +187,7 @@ static BOOL appHasDeletePermission;
                 key:(NSString *)key
             content:(NSArray *)names {
   UniqueTagsTransformer  *tagMaker = [UniqueTagsTransformer defaultUniqueTagsTransformer];
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
   
   // Associate the pop-up with its key in the preferences by their tag.
   popUp.tag = [[tagMaker transformedValue: key] intValue];
