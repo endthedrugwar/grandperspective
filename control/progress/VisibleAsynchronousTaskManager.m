@@ -31,7 +31,7 @@
     progressPanelControl = [panelControl retain];
     
     taskManager = [[AsynchronousTaskManager alloc] initWithTaskExecutor:
-                   [progressPanelControl taskExecutor]];
+                   progressPanelControl.taskExecutor];
   }
 
   return self;

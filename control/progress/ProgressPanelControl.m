@@ -60,7 +60,7 @@ extern NSString  *StableFolderPathKey;
   [self updateProgressDetails: @""];
   [self updateProgressSummary: 0];
 
-  self.window.title = [self windowTitle];
+  self.window.title = self.windowTitle;
 }
 
 
@@ -76,6 +76,9 @@ extern NSString  *StableFolderPathKey;
   
   cancelCallback = [callback retain];
   cancelCallbackSelector = selector;
+
+  // Update title. It may change depending on task input
+  self.window.title = self.windowTitle;
 
   [self.window center];
   [self.window orderFront: self];

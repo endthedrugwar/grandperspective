@@ -8,7 +8,9 @@
 @implementation ScanProgressPanelControl
 
 - (NSString *)windowTitle {
-  return NSLocalizedString(@"Scanning in progress", @"Title of progress panel.");
+  return (refreshBasedScan
+          ? NSLocalizedString(@"Refresh in progress", @"Title of progress panel.")
+          : NSLocalizedString(@"Scanning in progress", @"Title of progress panel."));
 }
 
 - (NSString *)progressDetailsFormat {
@@ -16,7 +18,11 @@
 }
 
 - (NSString *)progressSummaryFormat {
-  return NSLocalizedString(@"%d folders scanned", @"Message in progress panel while scanning");
+  return (refreshBasedScan
+          ? NSLocalizedString(@"%d folders processed",
+                              @"Message in progress panel while executing refresh-based scan")
+          : NSLocalizedString(@"%d folders scanned",
+                              @"Message in progress panel while executting a full scan"));
 }
 
 - (NSString *)pathFromTaskInput:(id)taskInput {
@@ -25,6 +31,15 @@
 
 - (NSDictionary *)progressInfo {
   return ((ScanTaskExecutor *)taskExecutor).progressInfo;
+}
+
+// Overrides method in super class
+- (void) taskStartedWithInput:(id)taskInput
+               cancelCallback:(NSObject *)callback
+                     selector:(SEL)selector {
+  refreshBasedScan = ((ScanTaskInput *)taskInput).treeSource != nil;
+
+  [super taskStartedWithInput: taskInput cancelCallback: callback selector: selector];
 }
 
 @end // @implementation ScanProgressPanelControl

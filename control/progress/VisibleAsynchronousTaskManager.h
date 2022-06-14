@@ -4,7 +4,7 @@
 @class AsynchronousTaskManager;
 @class ProgressPanelControl;
 
-/* Wraps around an AsynchronousTaskManager to show a progress panel whenever as task is run in the
+/* Wraps around an AsynchronousTaskManager to show a progress panel whenever a task is run in the
  * background.
  */
 @interface VisibleAsynchronousTaskManager : NSObject {
