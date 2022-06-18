@@ -1020,8 +1020,7 @@ didStartElement:(NSString *)childElement
                                         volumeSize: volumeSize
                                          freeSpace: freeSpace
                                          filterSet: nil
-                                          scanTime: scanTime
-                                       monitorPath: nil];
+                                          scanTime: scanTime];
   }
   @catch (AttributeParseException *ex) {
     [self handlerAttributeParseError: ex];
@@ -1098,8 +1097,7 @@ didStartElement:(NSString *)childElement
                                       volumeSize: oldTree.volumeSize
                                        freeSpace: oldTree.freeSpace
                                        filterSet: filterSet
-                                        scanTime: oldTree.scanTime
-                                     monitorPath: nil];
+                                        scanTime: oldTree.scanTime];
 
   [oldTree release];
 

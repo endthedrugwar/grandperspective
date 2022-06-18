@@ -342,6 +342,7 @@ NSString  *TallyFileSizeName = @"tally";
                                        volumeSize: volumeSize.unsignedLongLongValue
                                         freeSpace: freeSpace.unsignedLongLongValue
                                         filterSet: filterSet
+                                  packagesAsFiles: self.packagesAsFiles
                                       monitorPath: path] autorelease];
 }
 

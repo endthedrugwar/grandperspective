@@ -16,7 +16,8 @@
 
 - (instancetype) initWithTreeSource:(DirectoryItem *)treeSource
                     fileSizeMeasure:(NSString *)measure
-                          filterSet:(FilterSet *)filterSet;
+                          filterSet:(FilterSet *)filterSet
+                    packagesAsFiles:(BOOL) packagesAsFiles;
 
 - (instancetype) initWithPath:(NSString *)path
               fileSizeMeasure:(NSString *)measure

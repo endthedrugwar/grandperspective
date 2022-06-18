@@ -675,10 +675,18 @@ static MainMenuControl  *singletonInstance = nil;
                                                      targetPath: pathModel
                                                        settings: settings] autorelease];
 
-  FilterTaskInput  *input = [FilterTaskInput alloc];
-  [[input initWithTreeContext: oldControl.treeContext
-                    filterSet: filterSet
-              packagesAsFiles: !displaySettings.showPackageContents] autorelease];
+  TreeContext  *oldContext = oldControl.treeContext;
+  BOOL packagesAsFiles = (oldContext.monitorsSource && oldContext.filterSet.numFilters > 0
+                          // A filter is active on a tree that is being monitored. Preserve the
+                          // package setting to avoid inconsistencies in filter behaviour
+                          ? oldContext.packagesAsFiles
+                          // Let filter behaviour for packages depend on current display setting
+                          : !displaySettings.showPackageContents);
+
+  FilterTaskInput  *input = [[[FilterTaskInput alloc] initWithTreeContext: oldContext
+                                                                filterSet: filterSet
+                                                          packagesAsFiles: packagesAsFiles]
+                             autorelease];
 
   [filterTaskManager asynchronouslyRunTaskWithInput: input
                                            callback: windowCreator
@@ -943,19 +951,22 @@ static MainMenuControl  *singletonInstance = nil;
   TreeContext  *oldContext = oldControl.treeContext;
   ItemPathModel  *pathModel = oldControl.pathModelView.pathModel;
 
-  DerivedDirViewWindowCreator  *windowCreator = [DerivedDirViewWindowCreator alloc];
-  [[windowCreator initWithWindowManager: windowManager
-                             targetPath: pathModel
-                               settings: oldControl.directoryViewControlSettings] autorelease];
+  DirectoryViewControlSettings  *settings = oldControl.directoryViewControlSettings;
+  DerivedDirViewWindowCreator  *windowCreator = [
+    [[DerivedDirViewWindowCreator alloc] initWithWindowManager: windowManager
+                                                    targetPath: pathModel
+                                                      settings: settings]
+    autorelease];
 
-  // In constrast to the rescanItem:deriveFrom: methods, never update the filter set that is used.
+  // In contrast to the rescanItem:deriveFrom: methods, never update the filter set that is used.
   // As only parts of the tree is rescanned, any changes to the filter would only be partially
   // applied, which would result in inconsistencies.
 
-  ScanTaskInput  *input =
-    [[[ScanTaskInput alloc] initWithTreeSource: oldContext.scanTree
-                               fileSizeMeasure: oldContext.fileSizeMeasure
-                                     filterSet: oldContext.filterSet] autorelease];
+  ScanTaskInput  *input = [[[ScanTaskInput alloc] initWithTreeSource: oldContext.scanTree
+                                                     fileSizeMeasure: oldContext.fileSizeMeasure
+                                                           filterSet: oldContext.filterSet
+                                                     packagesAsFiles: oldContext.packagesAsFiles]
+                           autorelease];
 
   [scanTaskManager asynchronouslyRunTaskWithInput: input
                                          callback: windowCreator
@@ -992,10 +1003,14 @@ static MainMenuControl  *singletonInstance = nil;
 
   filterSet = [MainMenuControl updateFiltersIfNeeded: filterSet];
 
-  ScanTaskInput  *input = [[[ScanTaskInput alloc] initWithPath: item.systemPath
-                                               fileSizeMeasure: oldContext.fileSizeMeasure
-                                                     filterSet: filterSet] autorelease];
-    
+  ScanTaskInput  *input = [
+    [[ScanTaskInput alloc] initWithPath: item.systemPath
+                        fileSizeMeasure: oldContext.fileSizeMeasure
+                              filterSet: filterSet
+                        packagesAsFiles: !controlSettings.displaySettings.showPackageContents
+                             treeSource: nil]
+    autorelease];
+
   [scanTaskManager asynchronouslyRunTaskWithInput: input
                                          callback: windowCreator
                                          selector: @selector(createWindowForScanResult:)];

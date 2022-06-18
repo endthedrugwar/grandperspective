@@ -48,8 +48,19 @@ extern NSString  *FileItemDeletedEvent;
                          volumeSize:(unsigned long long)volumeSize
                           freeSpace:(unsigned long long)freeSpace
                           filterSet:(FilterSet *)filterSet
+                    packagesAsFiles:(BOOL)packagesAsFiles
                         monitorPath:(NSString *)pathToMonitor;
-         
+
+/* Creates a new tree context without the source being monitored. It should be used for trees that
+ * are not created by a fresh scan but loaded from file instead.
+ */
+- (instancetype) initWithVolumePath:(NSString *)volumePath
+                    fileSizeMeasure:(NSString *)fileSizeMeasure
+                         volumeSize:(unsigned long long)volumeSize
+                          freeSpace:(unsigned long long)freeSpace
+                          filterSet:(FilterSet *)filterSet
+                           scanTime:(NSDate *)scanTime;
+
 /* Creates a new tree context. 
  *
  * Note: The returned object is not yet fully ready. A volume-tree skeleton is created, but still
@@ -61,6 +72,7 @@ extern NSString  *FileItemDeletedEvent;
                           freeSpace:(unsigned long long)freeSpace
                           filterSet:(FilterSet *)filterSet
                            scanTime:(NSDate *)scanTime
+                    packagesAsFiles:(BOOL)packagesAsFiles
                         monitorPath:(NSString *)pathToMonitor NS_DESIGNATED_INITIALIZER;
 
 
@@ -117,6 +129,15 @@ extern NSString  *FileItemDeletedEvent;
 @property (nonatomic, readonly, copy) NSString *stringForScanTime;
 
 @property (nonatomic, readonly, strong) FilterSet *filterSet;
+
+/* Specifies if packages were treated as files when the first filter was applied.
+ *
+ * This setting is relevant when the tree is refreshed with a filter applied, as this should then
+ * happen with the same setting. This ensures that differences in the resulting tree are only caused
+ * by changes to the tree source. Otherwise, it may also include differences cause by changes in
+ * filter behaviour.
+ */
+@property (nonatomic, readonly) BOOL packagesAsFiles;
 
 - (BOOL)usesTallyFileSize;
 

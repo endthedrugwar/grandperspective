@@ -21,14 +21,12 @@
 
 - (instancetype) initWithTreeSource:(DirectoryItem *)treeSource
                     fileSizeMeasure:(NSString *)measure
-                          filterSet:(FilterSet *)filterSet {
-  BOOL  showPackageContentsByDefault =
-    [NSUserDefaults.standardUserDefaults boolForKey: ShowPackageContentsByDefaultKey];
-
+                          filterSet:(FilterSet *)filterSet
+                    packagesAsFiles:(BOOL) packagesAsFiles {
   return [self initWithPath: treeSource.systemPath
             fileSizeMeasure: measure
                   filterSet: filterSet
-            packagesAsFiles: !showPackageContentsByDefault
+            packagesAsFiles: packagesAsFiles
                  treeSource: treeSource];
 }
          

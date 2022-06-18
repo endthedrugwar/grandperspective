@@ -68,6 +68,7 @@
                                    freeSpace: oldTree.freeSpace
                                    filterSet: filterSet
                                     scanTime: oldTree.scanTime
+                             packagesAsFiles: self.packagesAsFiles
                                  monitorPath: pathToMonitor] autorelease];
 
   DirectoryItem  *scanTree = [ScanTreeRoot allocWithZone: Item.zoneForTree];
