@@ -17,7 +17,7 @@ NSString  *EstimatedProgressKey = @"estimatedProgress";
     mutex = [[NSLock alloc] init];
     directoryStack = [[NSMutableArray alloc] initWithCapacity: 16];
 
-    NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
     stableTimeInterval = [userDefaults floatForKey: ProgressPanelStableTimeKey];
     if (stableTimeInterval <= 0) {
       NSLog(@"Invalid value for stableTimeInterval");
@@ -94,7 +94,7 @@ NSString  *EstimatedProgressKey = @"estimatedProgress";
            NumFoldersSkippedKey: @(numFoldersSkipped),
            CurrentFolderPathKey: [directoryStack.lastObject path] ?: @"",
            StableFolderPathKey: [stableFolder path] ?: @"",
-           EstimatedProgressKey: @([self estimatedProgress])};
+           EstimatedProgressKey: @(self.estimatedProgress)};
   [mutex unlock];
 
   return dict;
@@ -114,7 +114,7 @@ NSString  *EstimatedProgressKey = @"estimatedProgress";
     // Find the root of the tree
     DirectoryItem  *parent;
     rootItem = dirItem;
-    while ((parent = [rootItem parentDirectory]) != nil) {
+    while ((parent = rootItem.parentDirectory) != nil) {
       rootItem = parent;
     }
 
@@ -131,7 +131,7 @@ NSString  *EstimatedProgressKey = @"estimatedProgress";
 }
 
 - (void) _processedFolder:(DirectoryItem *)dirItem {
-  NSAssert([directoryStack lastObject] == dirItem, @"Inconsistent stack.");
+  NSAssert(directoryStack.lastObject == dirItem, @"Inconsistent stack.");
   [directoryStack removeLastObject];
   numFoldersProcessed++;
 }

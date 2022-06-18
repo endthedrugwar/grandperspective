@@ -24,7 +24,7 @@
   while (path[pathIndex] != treeRoot) {
     pathIndex++;
 
-    NSAssert(pathIndex < [path count], @"treeRoot not found in path.");
+    NSAssert(pathIndex < path.count, @"treeRoot not found in path.");
   }
 
   [layoutBuilder layoutItemTree: treeRoot inRect: bounds traverser: self];

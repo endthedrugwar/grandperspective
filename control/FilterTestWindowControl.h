@@ -63,8 +63,6 @@
   StringMatchControls  *pathTestControls;
 }
 
-+ (id) defaultInstance;
-
 - (IBAction) testNameChanged:(id)sender;
 - (IBAction) sizeBoundEntered:(id)sender;
 

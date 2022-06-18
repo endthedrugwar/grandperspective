@@ -33,7 +33,7 @@ NSString*  FileSizeUnitSystemBase10 = @"base-10";
 
 + (int) bytesPerKilobyte {
   NSString*  fileSizeMeasureBase =
-    [[NSUserDefaults standardUserDefaults] stringForKey: FileSizeUnitSystemKey];
+    [NSUserDefaults.standardUserDefaults stringForKey: FileSizeUnitSystemKey];
 
   if ([fileSizeMeasureBase isEqualToString: FileSizeUnitSystemBase10]) {
     return 1000;
@@ -42,18 +42,6 @@ NSString*  FileSizeUnitSystemBase10 = @"base-10";
     return 1024;
   }
 }
-
-// Overrides super's designated initialiser.
-- (instancetype) initWithItemSize:(ITEM_SIZE) sizeVal {
-  return [self initWithLabel: @""
-                      parent: nil
-                        size: sizeVal
-                       flags: 0
-                creationTime: 0
-            modificationTime: 0
-                  accessTime: 0];
-}
-
 
 - (instancetype) initWithLabel:(NSString *)label
                         parent:(DirectoryItem *)parent
@@ -102,7 +90,7 @@ NSString*  FileSizeUnitSystemBase10 = @"base-10";
     if (fileItem == self) {
       return YES;
     }
-    fileItem = [fileItem parentDirectory];
+    fileItem = fileItem.parentDirectory;
   } while (fileItem != nil);
   
   return NO;
@@ -128,7 +116,7 @@ NSString*  FileSizeUnitSystemBase10 = @"base-10";
 
 
 - (NSString *)pathComponent {
-  if (! [self isPhysical] ) {
+  if (!self.isPhysical) {
     return nil;
   }
 
@@ -144,7 +132,7 @@ NSString*  FileSizeUnitSystemBase10 = @"base-10";
 }
 
 + (NSString *)stringForFileItemSize:(ITEM_SIZE)filesize {
-  int  bytesUnit = [FileItem bytesPerKilobyte];
+  int  bytesUnit = FileItem.bytesPerKilobyte;
   
   if (filesize < bytesUnit) {
     // Definitely don't want a decimal point here
@@ -161,7 +149,7 @@ NSString*  FileSizeUnitSystemBase10 = @"base-10";
     n /= bytesUnit; 
   }
 
-  NSMutableString*  s = [[[NSMutableString alloc] initWithCapacity:12] autorelease];
+  NSMutableString*  s = [[[NSMutableString alloc] initWithCapacity: 12] autorelease];
   [s appendFormat:@"%.2f", n];
   
   // Ensure that only the three most-significant digits are shown.
@@ -169,18 +157,16 @@ NSString*  FileSizeUnitSystemBase10 = @"base-10";
   
   NSRange  dotRange = [s rangeOfString: @"."];
   if (dotRange.location != NSNotFound) {
-    NSUInteger  delPos = (
-      (dotRange.location < 3) ?
-      4 :               // Keep one or more digits after the decimal point.
-      dotRange.location // Keep only the digits before the decimal point.
-    );
+    NSUInteger  delPos = (dotRange.location < 3
+                          ? 4                   // Keep one or more digits after the decimal point.
+                          : dotRange.location); // Keep only the digits before the decimal point.
 
-    [s deleteCharactersInRange:NSMakeRange(delPos, s.length - delPos)];
+    [s deleteCharactersInRange: NSMakeRange(delPos, s.length - delPos)];
     
     if (dotRange.location < delPos) {
       // The dot is still visible, so localize it
       
-      [s replaceCharactersInRange: dotRange withString: [FileItem decimalSeparator]];
+      [s replaceCharactersInRange: dotRange withString: FileItem.decimalSeparator];
     }
   }
   else {
@@ -198,10 +184,10 @@ NSString*  FileSizeUnitSystemBase10 = @"base-10";
   if (absTime == 0) {
     return @"";
   } else {
-    return [(NSString *)CFDateFormatterCreateStringWithAbsoluteTime(NULL,
-                                                                    [self timeFormatter],
-                                                                    absTime)
-            autorelease];
+    return [
+      (NSString *)CFDateFormatterCreateStringWithAbsoluteTime(NULL, self.timeFormatter, absTime)
+        autorelease
+    ];
   }
 }
 
@@ -234,7 +220,7 @@ NSString*  FileSizeUnitSystemBase10 = @"base-10";
 
 - (NSString *)systemPathComponent {
   // Only physical items contribute to the path.
-  return [self isPhysical] ? self.label : nil;
+  return self.isPhysical ? self.label : nil;
 }
     
 @end // @implementation FileItem (ProtectedMethods)
@@ -284,15 +270,15 @@ NSString*  FileSizeUnitSystemBase10 = @"base-10";
   NSString  *comp = useFileSystemRepresentation ? self.systemPathComponent : self.pathComponent;
   
   if (comp != nil) {
-    return ( (self.parentDirectory != nil)
-             ? [[self.parentDirectory constructPath: useFileSystemRepresentation]
-                  stringByAppendingPathComponent: comp] 
-             : comp );
+    return (self.parentDirectory != nil
+            ? [[self.parentDirectory constructPath: useFileSystemRepresentation]
+                  stringByAppendingPathComponent: comp]
+            : comp);
   }
   else {
-    return ( (self.parentDirectory != nil)
-             ? [self.parentDirectory constructPath: useFileSystemRepresentation]
-             : @"" );
+    return (self.parentDirectory != nil
+            ? [self.parentDirectory constructPath: useFileSystemRepresentation]
+            : @"");
   }
 }
 

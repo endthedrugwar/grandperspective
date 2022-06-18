@@ -6,6 +6,7 @@
 #import "DirectoryViewControl.h"
 #import "TreeDrawer.h"
 #import "ItemPathModel.h"
+#import "ItemPathModelView.h"
 #import "DirectoryItem.h"
 
 #define MINIMUM_SIZE 16
@@ -27,7 +28,7 @@
 }
 
 - (void) dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver: self];
+  [NSNotificationCenter.defaultCenter removeObserver: self];
   
   [dirViewControl release];
   
@@ -40,14 +41,14 @@
 }
 
 - (void) windowDidLoad {
-  [[NSNotificationCenter defaultCenter] addObserver: self
-                                           selector: @selector(windowWillClose:)
-                                               name: NSWindowWillCloseNotification
-                                             object: self.window];
+  [NSNotificationCenter.defaultCenter addObserver: self
+                                         selector: @selector(windowWillClose:)
+                                             name: NSWindowWillCloseNotification
+                                           object: self.window];
 
   [self.window makeKeyAndOrderFront: self];
 
-  NSRect  bounds = [dirViewControl directoryView].bounds;
+  NSRect  bounds = dirViewControl.directoryView.bounds;
   // Setting string value directly instead of using setIntValue, as the latter adds a decimal
   // separator. Even worse, the reverse operation using intValue to retrieve the integer value can
   // give a different number.
@@ -96,14 +97,14 @@
     NSURL  *destURL = savePanel.URL;
     
     // Draw the image.
-    DirectoryView  *dirView = [dirViewControl directoryView];
-    ItemPathModelView  *pathModelView = [dirView pathModelView];
-    TreeDrawer  *treeDrawer = [[[TreeDrawer alloc] initWithScanTree: [pathModelView scanTree]
-                                                 treeDrawerSettings: [dirView treeDrawerSettings]]
+    DirectoryView  *dirView = dirViewControl.directoryView;
+    ItemPathModelView  *pathModelView = dirView.pathModelView;
+    TreeDrawer  *treeDrawer = [[[TreeDrawer alloc] initWithScanTree: pathModelView.scanTree
+                                                 treeDrawerSettings: dirView.treeDrawerSettings]
                                autorelease];
-    NSImage  *image = [treeDrawer drawImageOfVisibleTree: [pathModelView visibleTree]
-                                          startingAtTree: [dirView treeInView]
-                                      usingLayoutBuilder: [dirView layoutBuilder]
+    NSImage  *image = [treeDrawer drawImageOfVisibleTree: pathModelView.visibleTree
+                                          startingAtTree: dirView.treeInView
+                                      usingLayoutBuilder: dirView.layoutBuilder
                                                   inRect: bounds];
     
     // Save the image.

@@ -36,7 +36,7 @@
 @implementation FilterEditor
 
 - (instancetype) init {
-  return [self initWithFilterRepository: [FilterRepository defaultInstance]];
+  return [self initWithFilterRepository: FilterRepository.defaultFilterRepository];
 }
 
 - (instancetype) initWithFilterRepository:(FilterRepository *)filterRepositoryVal {
@@ -50,7 +50,6 @@
 
 - (void) dealloc {
   [filterWindowControl release];
-
   [filterRepository release];
   
   [super dealloc];
@@ -61,14 +60,13 @@
   NSWindow  *editFilterWindow = [self loadEditFilterWindow];
   
   FilterNameValidator  *nameValidator = 
-    [[[FilterNameValidator alloc] initWithExistingFilters: [filterRepository filtersByName]]
+    [[[FilterNameValidator alloc] initWithExistingFilters: filterRepository.filtersByName]
      autorelease];
   
   [filterWindowControl setNameValidator: nameValidator];
   [filterWindowControl representEmptyFilter];
 
-  [ModalityTerminator 
-     modalityTerminatorForEventSource: filterWindowControl];
+  [ModalityTerminator modalityTerminatorForEventSource: filterWindowControl];
   NSInteger  status = [NSApp runModalForWindow: editFilterWindow];
   [editFilterWindow close];
 
@@ -77,10 +75,10 @@
     
     if (namedFilter != nil) {
       // The nameValidator should have ensured that this check succeeds.
-      NSAssert( [filterRepository filtersByName][namedFilter.name] == nil,
+      NSAssert( filterRepository.filtersByName[namedFilter.name] == nil,
                 @"Duplicate name check failed.");
-      [[filterRepository filtersByNameAsNotifyingDictionary]
-          addObject: namedFilter.filter forKey: namedFilter.name];
+      [filterRepository.filtersByNameAsNotifyingDictionary addObject: namedFilter.filter
+                                                              forKey: namedFilter.name];
         
       // Rest of addition handled in response to notification event.
     }
@@ -98,26 +96,25 @@
 - (NamedFilter *)editFilterNamed:(NSString *)oldName {
   NSWindow  *editFilterWindow = [self loadEditFilterWindow];
 
-  Filter  *oldFilter = [filterRepository filtersByName][oldName];
+  Filter  *oldFilter = filterRepository.filtersByName[oldName];
 
-  NamedFilter  *oldNamedFilter = 
-    [NamedFilter namedFilter: oldFilter name: oldName];
+  NamedFilter  *oldNamedFilter = [NamedFilter namedFilter: oldFilter name: oldName];
   [filterWindowControl representNamedFilter: oldNamedFilter];
 
   if ([filterRepository applicationProvidedFilterForName: oldName] != nil) {
     // The filter's name equals that of an application provided filter. Show 
     // the localized version of the name (which implicitly prevents the name
     // from being changed).  
-    NSBundle  *mainBundle = [NSBundle mainBundle];
-    NSString  *localizedName = 
+    NSBundle  *mainBundle = NSBundle.mainBundle;
+    NSString  *localizedName =
       [mainBundle localizedStringForKey: oldName value: nil table: @"Names"];
-      
+
     [filterWindowControl setVisibleName: localizedName];
   }
   
   FilterNameValidator  *testNameValidator = 
     [[[FilterNameValidator alloc]
-        initWithExistingFilters: [filterRepository filtersByName]
+        initWithExistingFilters: filterRepository.filtersByName
           allowedName: oldName] autorelease];
   [filterWindowControl setNameValidator: testNameValidator];
   
@@ -129,14 +126,14 @@
     NamedFilter  *newNamedFilter = [filterWindowControl createNamedFilter];
     
     if (newNamedFilter != nil) {
-      NSString  *newName = [newNamedFilter name];
+      NSString  *newName = newNamedFilter.name;
       NotifyingDictionary  *repositoryFiltersByName =
-        [filterRepository filtersByNameAsNotifyingDictionary];
+        filterRepository.filtersByNameAsNotifyingDictionary;
 
       // The testNameValidator should have ensured that this check succeeds.
       NSAssert( 
         [newName isEqualToString: oldName] ||
-        [filterRepository filtersByName][newName] == nil,
+        filterRepository.filtersByName[newName] == nil,
         @"Duplicate name check failed.");
 
       if (! [newName isEqualToString: oldName]) {
@@ -147,8 +144,7 @@
       }
         
       // Filter itself has changed as well.
-      Filter  *newFilter = [newNamedFilter filter];
-      [repositoryFiltersByName updateObject: newFilter forKey: newName];      
+      [repositoryFiltersByName updateObject: newNamedFilter.filter forKey: newName];
     }
     
     return newNamedFilter;

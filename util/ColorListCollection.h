@@ -3,10 +3,9 @@
 @interface ColorListCollection : NSObject {
 
   NSMutableDictionary  *colorListDictionary;
-
 }
 
-+ (ColorListCollection *)defaultColorListCollection;
+@property (class, nonatomic, readonly) ColorListCollection *defaultColorListCollection;
 
 - (void) addColorList:(NSColorList *)colorList key:(NSString *)key;
 - (void) removeColorListForKey:(NSString *)key;

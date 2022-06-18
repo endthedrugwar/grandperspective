@@ -5,7 +5,7 @@
 @implementation DirectoryViewDisplaySettings
 
 - (instancetype) init {
-  NSUserDefaults  *ud = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *ud = NSUserDefaults.standardUserDefaults;
 
   return
     [self initWithColorMappingKey: [ud stringForKey: DefaultColorMappingKey]

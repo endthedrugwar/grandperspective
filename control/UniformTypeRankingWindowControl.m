@@ -46,14 +46,13 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
 @implementation UniformTypeRankingWindowControl
 
 - (instancetype) init {
-  return [self initWithUniformTypeRanking: [UniformTypeRanking defaultUniformTypeRanking]];
+  return [self initWithUniformTypeRanking: UniformTypeRanking.defaultUniformTypeRanking];
 }
 
 - (instancetype) initWithUniformTypeRanking: (UniformTypeRanking *)typeRankingVal {
   if (self = [super initWithWindow: nil]) {
     typeRanking = [typeRankingVal retain];
-    typeCells =
-      [[NSMutableArray arrayWithCapacity: [typeRanking rankedUniformTypes].count] retain];
+    typeCells = [[NSMutableArray arrayWithCapacity: typeRanking.rankedUniformTypes.count] retain];
 
     updateTypeList = YES;
   }
@@ -193,7 +192,7 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
 
 - (id) tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)column
              row:(NSInteger)row {
-  return [[typeCells[row] uniformType] uniformTypeIdentifier];
+  return [typeCells[row] uniformType].uniformTypeIdentifier;
 }
 
 
@@ -266,14 +265,14 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
   NSAssert2(row < [typeCells count], @"%ld >= %ld", row, [typeCells count]);
 
   TypeCell  *typeCell = typeCells[row];
-  NSString  *uti = [[typeCell uniformType] uniformTypeIdentifier];
+  NSString  *uti = typeCell.uniformType.uniformTypeIdentifier;
 
   NSMutableAttributedString  *cellValue = 
     [[[NSMutableAttributedString alloc] initWithString: uti] autorelease];
 
-  if ([typeCell isDominated]) {
+  if (typeCell.isDominated) {
     [cellValue addAttribute: NSForegroundColorAttributeName
-                      value: [NSColor grayColor]
+                      value: NSColor.grayColor
                       range: NSMakeRange(0, cellValue.length)];
   }
   
@@ -304,11 +303,9 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
 - (void) fetchCurrentTypeList {
   [typeCells removeAllObjects];
   
-  NSArray  *currentRanking = [typeRanking rankedUniformTypes];
+  NSArray  *currentRanking = typeRanking.rankedUniformTypes;
   
-  NSEnumerator  *typeEnum = [currentRanking objectEnumerator];
-  UniformType  *type;
-  while (type = [typeEnum nextObject]) {
+  for (UniformType *type in [currentRanking objectEnumerator]) {
     BOOL  dominated = [typeRanking isUniformTypeDominated: type];
     TypeCell  *typeCell = [[[TypeCell alloc] initWithUniformType: type
                                                        dominated: dominated] autorelease];
@@ -325,10 +322,8 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
 - (void) commitChangedTypeList {
   NSMutableArray  *newRanking = [NSMutableArray arrayWithCapacity: typeCells.count];
     
-  NSEnumerator  *typeCellEnum = [typeCells objectEnumerator];
-  TypeCell  *typeCell;
-  while (typeCell = [typeCellEnum nextObject]) {
-    [newRanking addObject: [typeCell uniformType]];
+  for (TypeCell *typeCell in [typeCells objectEnumerator]) {
+    [newRanking addObject: typeCell.uniformType];
   }
   
   [typeRanking updateRankedUniformTypes: newRanking];
@@ -352,8 +347,8 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
   
   TypeCell  *typeCell = typeCells[i];
   
-  revealButton.enabled = [typeCell isDominated];
-  hideButton.enabled = ( ![typeCell isDominated] && (i < numCells -1) ) ;
+  revealButton.enabled = typeCell.isDominated;
+  hideButton.enabled = !typeCell.isDominated && (i < numCells - 1);
 
   moveUpButton.enabled = i > 0;
   moveToTopButton.enabled = i > 0;
@@ -371,17 +366,17 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
   [typeCells exchangeObjectAtIndex: index withObjectAtIndex: index - 1];
 
   // Check if the dominated status of upCell changed.
-  if ([upCell isDominated]) {
-    NSSet  *ancestors = [[upCell uniformType] ancestorTypes];
+  if (upCell.isDominated) {
+    NSSet  *ancestors = upCell.uniformType.ancestorTypes;
 
-    if ([ancestors containsObject: [downCell uniformType]]) {
+    if ([ancestors containsObject: downCell.uniformType]) {
       // downCell was an ancestor of upCell, so upCell may not be dominated anymore.
       
       NSUInteger  i = 0;
       NSUInteger  max_i = index - 1;
       BOOL  dominated = NO;
       while (i < max_i && !dominated) {
-        UniformType  *higherType = [typeCells[i] uniformType];
+        UniformType  *higherType = ((TypeCell *)typeCells[i]).uniformType;
         
         if ([ancestors containsObject: higherType]) {
           dominated = YES;
@@ -397,10 +392,10 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
   }
   
   // Check if the dominated status of downCell changed.
-  if (! [downCell isDominated]) {
-    NSSet  *ancestors = [[downCell uniformType] ancestorTypes];
+  if (!downCell.isDominated) {
+    NSSet  *ancestors = downCell.uniformType.ancestorTypes;
     
-    if ([ancestors containsObject: [upCell uniformType]]) {
+    if ([ancestors containsObject: upCell.uniformType]) {
       [downCell setDominated: YES];
     }
   }
@@ -463,12 +458,12 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
 - (NSString *)toolTip {
   NSMutableString  *toolTip = [NSMutableString stringWithCapacity: 64];
 
-  if ([type description]) {
-    [toolTip appendString: [type description]];
+  if (type.description) {
+    [toolTip appendString: type.description];
   }
 
   NSMutableString  *conformsTo = [NSMutableString stringWithCapacity: 64];
-  for (UniformType *parentType in [[type parentTypes] objectEnumerator]) {
+  for (UniformType *parentType in [type.parentTypes objectEnumerator]) {
     if (conformsTo.length > 0) {
       [conformsTo appendString: @", "];
     } else {
@@ -476,7 +471,7 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
                                                   @"Part of tool tip for uniform types")];
       [conformsTo appendString: @" "]; // Don't make trailing space part of translation text
     }
-    [conformsTo appendString: [parentType uniformTypeIdentifier]];
+    [conformsTo appendString: parentType.uniformTypeIdentifier];
   }
 
   if (conformsTo.length > 0) {

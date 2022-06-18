@@ -15,7 +15,7 @@
  * if  (fileItemToUse != nil) {               // The file item passed the test
  *   // Handle file item
  * 
- *   if ([fileItemToUse isDirectory]) {
+ *   if (fileItemToUse.isDirectory) {
  *     [guide descendIntoDirectory: (DirectoryItem *)fileItemToUse];
  *
  *     // Recurse over dir contents 
@@ -26,7 +26,7 @@
  *
  * On the other hand, when the tree is being constructed, the guide should be used as follows:
  *
- * if ( [fileItem isDirectory] 
+ * if ( fileItem.isDirectory
  *      && [guide shouldDescendIntoDirectory: (DirectoryItem *)fileItem]) {
  *   [guide descendIntoDirectory: (DirectoryItem *)fileItem];
  * 

@@ -182,7 +182,7 @@ NSString *escapedXML(NSString *s, CharacterOptions escapeCharMask) {
 @implementation XmlTreeWriter (PrivateMethods)
 
 - (void) appendScanDumpElement:(AnnotatedTreeContext *)annotatedTree {
-  NSString  *appVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"];
+  NSString  *appVersion = NSBundle.mainBundle.infoDictionary[@"CFBundleVersion"];
 
   [self appendString:
    [NSString stringWithFormat: @"<%@ %@=\"%@\" %@=\"%@\">\n",
@@ -197,24 +197,23 @@ NSString *escapedXML(NSString *s, CharacterOptions escapeCharMask) {
 
 
 - (void) appendScanInfoElement:(AnnotatedTreeContext *)annotatedTree {
-  TreeContext  *tree = [annotatedTree treeContext];
+  TreeContext  *tree = annotatedTree.treeContext;
 
   [self appendString:
    [NSString stringWithFormat:
     @"<%@ %@=\"%@\" %@=\"%qu\" %@=\"%qu\" %@=\"%@\" %@=\"%@\">\n",
     ScanInfoElem,
-    VolumePathAttr, escapedXML( [[tree volumeTree] systemPathComponent],
-                               ATTRIBUTE_ESCAPE_CHARS ),
-    VolumeSizeAttr, [tree volumeSize],
-    FreeSpaceAttr, ([tree freeSpace] + [tree freedSpace]),
-    ScanTimeAttr, [[TreeWriter nsTimeFormatter] stringFromDate:[tree scanTime]],
-    FileSizeMeasureAttr, [tree fileSizeMeasure]]];
+    VolumePathAttr, escapedXML(tree.volumeTree.systemPathComponent, ATTRIBUTE_ESCAPE_CHARS),
+    VolumeSizeAttr, tree.volumeSize,
+    FreeSpaceAttr, tree.freeSpace + tree.freedSpace,
+    ScanTimeAttr, [TreeWriter.nsTimeFormatter stringFromDate: tree.scanTime],
+    FileSizeMeasureAttr, tree.fileSizeMeasure]];
 
-  [self appendScanCommentsElement: [annotatedTree comments]];
-  [self appendFilterSetElement: [tree filterSet]];
+  [self appendScanCommentsElement: annotatedTree.comments];
+  [self appendFilterSetElement: tree.filterSet];
 
   [tree obtainReadLock];
-  [self appendFolderElement: [tree scanTree]];
+  [self appendFolderElement: tree.scanTree];
   [tree releaseReadLock];
 
   [self appendString: [NSString stringWithFormat: @"</%@>\n", ScanInfoElem]];
@@ -235,15 +234,13 @@ NSString *escapedXML(NSString *s, CharacterOptions escapeCharMask) {
 
 
 - (void) appendFilterSetElement:(FilterSet *)filterSet {
-  if ([filterSet numFilters] == 0) {
+  if (filterSet.numFilters == 0) {
     return;
   }
 
   [self appendString: [NSString stringWithFormat: @"<%@>\n", FilterSetElem]];
 
-  NSEnumerator  *filterEnum = [[filterSet filters] objectEnumerator];
-  NamedFilter  *namedFilter;
-  while (namedFilter = [filterEnum nextObject]) {
+  for (NamedFilter *namedFilter in [filterSet.filters objectEnumerator]) {
     [self appendFilterElement: namedFilter];
   }
 
@@ -252,20 +249,17 @@ NSString *escapedXML(NSString *s, CharacterOptions escapeCharMask) {
 
 
 - (void) appendFilterElement:(NamedFilter *)namedFilter {
-  Filter  *filter = [namedFilter filter];
-  if ([filter numFilterTests] == 0) {
+  Filter  *filter = namedFilter.filter;
+  if (filter.numFilterTests == 0) {
     return;
   }
 
-  NSString  *nameVal = escapedXML([namedFilter name], ATTRIBUTE_ESCAPE_CHARS);
   NSString  *openElem = [NSString stringWithFormat: @"<%@ %@=\"%@\">\n",
                          FilterElem,
-                         NameAttr, nameVal];
+                         NameAttr, escapedXML(namedFilter.name, ATTRIBUTE_ESCAPE_CHARS)];
   [self appendString: openElem];
 
-  NSEnumerator  *testEnum = [[filter filterTests] objectEnumerator];
-  FilterTestRef  *filterTest;
-  while (filterTest = [testEnum nextObject]) {
+  for (FilterTestRef *filterTest in [filter.filterTests objectEnumerator]) {
     [self appendFilterTestElement: filterTest];
   }
 
@@ -274,28 +268,25 @@ NSString *escapedXML(NSString *s, CharacterOptions escapeCharMask) {
 
 
 - (void) appendFilterTestElement:(FilterTestRef *)filterTest {
-  NSString  *nameVal = escapedXML([filterTest name], ATTRIBUTE_ESCAPE_CHARS);
   [self appendString:
    [NSString stringWithFormat: @"<%@ %@=\"%@\" %@=\"%@\" />\n",
     FilterTestElem,
-    NameAttr, nameVal,
+    NameAttr, escapedXML(filterTest.name, ATTRIBUTE_ESCAPE_CHARS),
     InvertedAttr,
-    ([filterTest isInverted] ? TrueValue : FalseValue) ]];
+    filterTest.isInverted ? TrueValue : FalseValue]];
 }
 
 
 - (void) appendFolderElement:(DirectoryItem *)dirItem {
   [progressTracker processingFolder: dirItem];
 
-  NSString  *nameVal = escapedXML([dirItem systemPathComponent], ATTRIBUTE_ESCAPE_CHARS);
-
-  FileItemOptions  flags = [dirItem fileItemFlags];
-  NSString  *createdVal = [TreeWriter stringForTime: [dirItem creationTime]];
-  NSString  *modifiedVal = [TreeWriter stringForTime: [dirItem modificationTime]];
-  NSString  *accessedVal = [TreeWriter stringForTime: [dirItem accessTime]];
+  FileItemOptions  flags = dirItem.fileItemFlags;
+  NSString  *createdVal = [TreeWriter stringForTime: dirItem.creationTime];
+  NSString  *modifiedVal = [TreeWriter stringForTime: dirItem.modificationTime];
+  NSString  *accessedVal = [TreeWriter stringForTime: dirItem.accessTime];
   [self appendString: [NSString stringWithFormat: @"<%@ %@=\"%@\"",
                        FolderElem,
-                       NameAttr, nameVal]];
+                       NameAttr, escapedXML(dirItem.systemPathComponent, ATTRIBUTE_ESCAPE_CHARS)]];
   if (flags != 0) {
     [self appendString: [NSString stringWithFormat: @" %@=\"%d\"", FlagsAttr, flags]];
   }
@@ -327,17 +318,15 @@ NSString *escapedXML(NSString *s, CharacterOptions escapeCharMask) {
 
 
 - (void) appendFileElement:(PlainFileItem *)fileItem {
-  NSString  *nameVal = escapedXML([fileItem systemPathComponent], ATTRIBUTE_ESCAPE_CHARS);
-  FileItemOptions  flags = [fileItem fileItemFlags];
-  NSString  *createdVal = [TreeWriter stringForTime: [fileItem creationTime]];
-  NSString  *modifiedVal = [TreeWriter stringForTime: [fileItem modificationTime]];
-  NSString  *accessedVal = [TreeWriter stringForTime: [fileItem accessTime]];
+  FileItemOptions  flags = fileItem.fileItemFlags;
+  NSString  *createdVal = [TreeWriter stringForTime: fileItem.creationTime];
+  NSString  *modifiedVal = [TreeWriter stringForTime: fileItem.modificationTime];
+  NSString  *accessedVal = [TreeWriter stringForTime: fileItem.accessTime];
 
   [self appendString: [NSString stringWithFormat: @"<%@ %@=\"%@\" %@=\"%qu\"",
                        FileElem,
-                       NameAttr, nameVal,
-                       SizeAttr, [fileItem itemSize]
-                       ]];
+                       NameAttr, escapedXML(fileItem.systemPathComponent, ATTRIBUTE_ESCAPE_CHARS),
+                       SizeAttr, fileItem.itemSize]];
   if (flags != 0) {
     [self appendString: [NSString stringWithFormat: @" %@=\"%d\"", FlagsAttr, flags]];
   }

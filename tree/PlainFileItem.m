@@ -1,5 +1,6 @@
 #import "PlainFileItem.h"
 
+#import "DirectoryItem.h"
 #import "UniformType.h"
 
 @implementation PlainFileItem
@@ -51,14 +52,14 @@
 
 // Overrides abstract method in FileItem
 - (FileItem *)duplicateFileItem:(DirectoryItem *)newParent {
-  return [[[PlainFileItem allocWithZone: [newParent zone]] initWithLabel: self.label
-                                                                  parent: newParent
-                                                                    size: self.itemSize
-                                                                    type: self.uniformType
-                                                                   flags: self.fileItemFlags
-                                                            creationTime: self.creationTime
-                                                        modificationTime: self.modificationTime
-                                                              accessTime: self.accessTime]
+  return [[[PlainFileItem allocWithZone: newParent.zone] initWithLabel: self.label
+                                                                parent: newParent
+                                                                  size: self.itemSize
+                                                                  type: self.uniformType
+                                                                 flags: self.fileItemFlags
+                                                          creationTime: self.creationTime
+                                                      modificationTime: self.modificationTime
+                                                            accessTime: self.accessTime]
           autorelease];
 }
 

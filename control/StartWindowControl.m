@@ -21,9 +21,9 @@ NSString*  TaglineFormat = @"tagline-%d";
   if (self = [super initWithWindow: nil]) {
     mainMenuControl = [mainMenuControlVal retain];
 
-    numTagLines = [[NSBundle mainBundle] localizedStringForKey: NumTaglines
-                                                         value: @"1"
-                                                         table: TaglineTable].intValue;
+    numTagLines = [NSBundle.mainBundle localizedStringForKey: NumTaglines
+                                                       value: @"1"
+                                                       table: TaglineTable].intValue;
 
     // Show a random tagline
     tagLineIndex = arc4random_uniform(numTagLines);
@@ -61,24 +61,24 @@ NSString*  TaglineFormat = @"tagline-%d";
 // NSTableSource
 
 - (NSInteger) numberOfRowsInTableView:(NSTableView *)tableView {
-  return [NSDocumentController sharedDocumentController].recentDocumentURLs.count + 1;
+  return NSDocumentController.sharedDocumentController.recentDocumentURLs.count + 1;
 }
 
 - (NSView *)tableView:(NSTableView *)tableView
    viewForTableColumn:(NSTableColumn *)tableColumn
                   row:(NSInteger)row {
   
-  RecentDocumentTableCellView *cellView =
-    [tableView makeViewWithIdentifier: @"RecentScanView" owner: self];
+  RecentDocumentTableCellView *cellView = [tableView makeViewWithIdentifier: @"RecentScanView"
+                                                                      owner: self];
 
-  NSInteger  numRecent = [NSDocumentController sharedDocumentController].recentDocumentURLs.count;
+  NSInteger  numRecent = NSDocumentController.sharedDocumentController.recentDocumentURLs.count;
 
   if (row < numRecent) {
-    NSURL *docUrl = [NSDocumentController sharedDocumentController].recentDocumentURLs[row];
+    NSURL *docUrl = NSDocumentController.sharedDocumentController.recentDocumentURLs[row];
 
     cellView.textField.stringValue =
-      [[NSFileManager defaultManager] displayNameAtPath: docUrl.path];
-    cellView.imageView.image = [[NSWorkspace sharedWorkspace] iconForFile: docUrl.path];
+      [NSFileManager.defaultManager displayNameAtPath: docUrl.path];
+    cellView.imageView.image = [NSWorkspace.sharedWorkspace iconForFile: docUrl.path];
     cellView.secondTextField.stringValue = docUrl.path;
   } else {
     NSString  *msg = ((numRecent > 0) ?
@@ -101,7 +101,7 @@ NSString*  TaglineFormat = @"tagline-%d";
   NSURL *filePathURL = [NSURL getFileURLFromPasteboard: info.draggingPasteboard];
   //NSLog(@"Drop request with %@", filePathURL);
 
-  if ([filePathURL isDirectory]) {
+  if (filePathURL.isDirectory) {
     return NSDragOperationGeneric;
   }
 
@@ -132,7 +132,7 @@ NSString*  TaglineFormat = @"tagline-%d";
 }
 
 - (IBAction) clearRecentScans:(id)sender {
-  [[NSDocumentController sharedDocumentController] clearRecentDocuments: sender];
+  [NSDocumentController.sharedDocumentController clearRecentDocuments: sender];
 
   [recentScansView reloadData];
   clearHistoryButton.enabled = false;
@@ -141,7 +141,7 @@ NSString*  TaglineFormat = @"tagline-%d";
 - (IBAction) helpAction:(id)sender {
   [self.window close];
 
-  [[NSApplication sharedApplication] showHelp: sender];
+  [NSApplication.sharedApplication showHelp: sender];
 }
 
 - (void) cancelOperation:(id)sender {
@@ -158,7 +158,7 @@ NSString*  TaglineFormat = @"tagline-%d";
   }
 
   clearHistoryButton.enabled =
-    [NSDocumentController sharedDocumentController].recentDocumentURLs.count > 0;
+    NSDocumentController.sharedDocumentController.recentDocumentURLs.count > 0;
 
   [super showWindow: sender];
 }
@@ -180,9 +180,9 @@ NSString*  TaglineFormat = @"tagline-%d";
 
 - (void) setTagLineField {
   NSString  *tagLineKey = [NSString stringWithFormat: TaglineFormat, tagLineIndex + 1];
-  NSString  *localizedTagLine = [[NSBundle mainBundle] localizedStringForKey: tagLineKey
-                                                                       value: nil
-                                                                       table: TaglineTable];
+  NSString  *localizedTagLine = [NSBundle.mainBundle localizedStringForKey: tagLineKey
+                                                                     value: nil
+                                                                     table: TaglineTable];
   // Nil-check to avoid problems if tag lines are not properly localized
   if (localizedTagLine != nil) {
     tagLine.stringValue = localizedTagLine;
@@ -192,7 +192,7 @@ NSString*  TaglineFormat = @"tagline-%d";
 - (void) startScan:(NSInteger)selectedRow sender:(id)sender {
   [self.window close];
 
-  NSDocumentController  *controller = [NSDocumentController sharedDocumentController];
+  NSDocumentController  *controller = NSDocumentController.sharedDocumentController;
 
   if (selectedRow >= 0 && selectedRow < controller.recentDocumentURLs.count) {
     // Scan selected folder
@@ -206,4 +206,3 @@ NSString*  TaglineFormat = @"tagline-%d";
 }
 
 @end // @interface StartWindowControl (PrivateMethods)
-

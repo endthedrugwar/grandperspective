@@ -12,9 +12,9 @@
        usingLayoutBuilder:(TreeLayoutBuilder *)layoutBuilder
                    bounds:(NSRect)bounds
                updatePath:(ItemPathModel *)pathModelVal {
-  NSAssert(pathModel==nil, @"Path model should be nil.");
+  NSAssert(pathModel == nil, @"Path model should be nil.");
   pathModel = pathModelVal;
-  visibleTree = [pathModel visibleTree];
+  visibleTree = pathModel.visibleTree;
   
   [pathModel clearVisiblePath];
 
@@ -34,7 +34,7 @@
            startingAtTree:(FileItem *)treeRoot
        usingLayoutBuilder:(TreeLayoutBuilder *)layoutBuilder
                    bounds:(NSRect)bounds {
-  NSAssert(foundItem==nil, @"foundItem should be nil.");
+  NSAssert(foundItem == nil, @"foundItem should be nil.");
   
   targetPoint = point;
 
@@ -61,7 +61,7 @@
     }
   }
 
-  if (! [item isVirtual]) {
+  if (!item.isVirtual) {
     foundItem = (FileItem *)item;
   }
   

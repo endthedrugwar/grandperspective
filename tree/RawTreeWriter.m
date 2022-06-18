@@ -46,11 +46,11 @@
 - (void) writeTree:(AnnotatedTreeContext *)annotatedTree options:(id)optionsVal {
   options = optionsVal;
 
-  TreeContext  *tree = [annotatedTree treeContext];
-  if ([options headersEnabled]) {
+  TreeContext  *tree = annotatedTree.treeContext;
+  if (options.headersEnabled) {
     [self appendHeaders];
   }
-  [self appendFolderElement: [tree scanTree]];
+  [self appendFolderElement: tree.scanTree];
 
   [autoreleasePool release];
   autoreleasePool = nil;
@@ -68,7 +68,7 @@
   [self dumpItemContents: dirItem.directoryItems];
 
   [progressTracker processedFolder: dirItem];
-  if ([progressTracker numFoldersProcessed] % AUTORELEASE_PERIOD == 0) {
+  if (progressTracker.numFoldersProcessed % AUTORELEASE_PERIOD == 0) {
     // Flush auto-release pool to prevent high memory usage while writing is in progress.
     [autoreleasePool release];
     autoreleasePool = [[NSAutoreleasePool alloc] init];
@@ -87,25 +87,25 @@
 
       switch (columnFlag) {
         case ColumnPath:
-          [self appendString: [fileItem path]];
+          [self appendString: fileItem.path];
           break;
         case ColumnName:
-          [self appendString: [fileItem label]];
+          [self appendString: fileItem.label];
           break;
         case ColumnSize:
-          [self appendString: [NSString stringWithFormat: @"%qu", [fileItem itemSize]]];
+          [self appendString: [NSString stringWithFormat: @"%qu", fileItem.itemSize]];
           break;
         case ColumnType:
-          [self appendString: [[fileItem uniformType] uniformTypeIdentifier]];
+          [self appendString: fileItem.uniformType.uniformTypeIdentifier];
           break;
         case ColumnCreationTime:
-          [self appendString: [TreeWriter stringForTime: [fileItem creationTime]]];
+          [self appendString: [TreeWriter stringForTime: fileItem.creationTime]];
           break;
         case ColumnModificationTime:
-          [self appendString: [TreeWriter stringForTime: [fileItem modificationTime]]];
+          [self appendString: [TreeWriter stringForTime: fileItem.modificationTime]];
           break;
         case ColumnAccessTime:
-          [self appendString: [TreeWriter stringForTime: [fileItem accessTime]]];
+          [self appendString: [TreeWriter stringForTime: fileItem.accessTime]];
           break;
       }
 

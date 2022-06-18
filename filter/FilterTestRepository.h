@@ -8,7 +8,7 @@
   NSDictionary  *applicationProvidedTests;
 }
 
-+ (id) defaultInstance;
+@property (class, nonatomic, readonly) FilterTestRepository *defaultFilterTestRepository;
 
 /* Returns the tests in a dictionary that can subsequently be modified.
  */

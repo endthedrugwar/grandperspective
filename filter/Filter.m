@@ -33,9 +33,7 @@
   NSArray  *storedFilterTests = dict[@"tests"];
   NSMutableArray  *testRefs = [NSMutableArray arrayWithCapacity: storedFilterTests.count];
     
-  NSEnumerator  *testEnum = storedFilterTests.objectEnumerator;
-  NSDictionary  *storedFilterTest;
-  while (storedFilterTest = [testEnum nextObject]) {
+  for (NSDictionary *storedFilterTest in [storedFilterTests objectEnumerator]) {
     FilterTestRef  *testRef = [FilterTestRef filterTestRefFromDictionary: storedFilterTest];
     [testRefs addObject: testRef];
   }
@@ -78,10 +76,7 @@
 }
 
 - (FilterTestRef *)filterTestWithName:(NSString *)testName {
-  NSEnumerator  *filterTestEnum = self.filterTests.objectEnumerator;
-  FilterTestRef  *filterTest;
-
-  while (filterTest = [filterTestEnum nextObject]) {
+  for (FilterTestRef *filterTest in [self.filterTests objectEnumerator]) {
     if ([filterTest.name isEqualToString: testName]) {
       return filterTest;
     }
@@ -95,7 +90,7 @@
 
 
 - (FileItemTest *)createFileItemTestUnboundTests:(NSMutableArray *)unboundTests {
-  return [self createFileItemTestFromRepository: FilterTestRepository.defaultInstance
+  return [self createFileItemTestFromRepository: FilterTestRepository.defaultFilterTestRepository
                                    unboundTests: unboundTests];
 }
 
@@ -104,10 +99,7 @@
   NSMutableArray  *positiveTests = [NSMutableArray arrayWithCapacity: self.numFilterTests];
   NSMutableArray  *negativeTests = [NSMutableArray arrayWithCapacity: self.numFilterTests];
 
-  NSEnumerator  *filterTestEnum = self.filterTests.objectEnumerator;
-  FilterTestRef  *filterTest;
-
-  while (filterTest = [filterTestEnum nextObject]) {
+  for (FilterTestRef *filterTest in [self.filterTests objectEnumerator]) {
     FileItemTest  *subTest = [repository fileItemTestForName: filterTest.name];
 
     if (subTest != nil) {
@@ -138,9 +130,8 @@
 
 - (NSDictionary *)dictionaryForObject {
   NSMutableArray  *storedTests = [NSMutableArray arrayWithCapacity: self.numFilterTests];
-  NSEnumerator  *testEnum = [self.filterTests objectEnumerator];
-  FilterTestRef  *testRef;
-  while (testRef = [testEnum nextObject]) {
+
+  for (FilterTestRef *testRef in [self.filterTests objectEnumerator]) {
     [storedTests addObject: [testRef dictionaryForObject]];
   }
   

@@ -14,6 +14,15 @@ typedef NS_OPTIONS(UInt8, DirectoryRescanOptions) {
 @interface DirectoryItem : FileItem {
 }
 
+// Overrides designated initialiser
+- (instancetype) initWithLabel:(NSString *)label
+                        parent:(DirectoryItem *)parent
+                          size:(ITEM_SIZE)size
+                         flags:(FileItemOptions)flags
+                  creationTime:(CFAbsoluteTime)creationTime
+              modificationTime:(CFAbsoluteTime)modificationTime
+                    accessTime:(CFAbsoluteTime)accessTime NS_UNAVAILABLE;
+
 /* A directory item is initialized without a size. It will be set when its contents are set using
  * setFileItems:directoryItems.
  */

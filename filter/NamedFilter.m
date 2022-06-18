@@ -30,7 +30,7 @@
 }
 
 - (NSString *)localizedName {
-  return [[NSBundle mainBundle] localizedStringForKey: self.name value: nil table: @"Names"];
+  return [NSBundle.mainBundle localizedStringForKey: self.name value: nil table: @"Names"];
 }
 
 @end

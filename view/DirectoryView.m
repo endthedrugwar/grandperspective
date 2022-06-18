@@ -108,7 +108,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 }
 
 - (void) dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver: self];
+  [NSNotificationCenter.defaultCenter removeObserver: self];
   
   [drawTaskManager dispose];
   [drawTaskManager release];
@@ -153,7 +153,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
   [self observeColorMapping];
   
-  NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];
+  NSNotificationCenter  *nc = NSNotificationCenter.defaultCenter;
 
   [nc addObserver: self
          selector: @selector(selectedItemChanged:)
@@ -971,13 +971,13 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 }
 
 - (void) postColorPaletteChanged {
-  [[NSNotificationCenter defaultCenter] postNotificationName: ColorPaletteChangedEvent
-                                                      object: self];
+  [NSNotificationCenter.defaultCenter postNotificationName: ColorPaletteChangedEvent
+                                                    object: self];
 }
 
 - (void) postColorMappingChanged {
-  [[NSNotificationCenter defaultCenter] postNotificationName: ColorMappingChangedEvent
-                                                      object: self];
+  [NSNotificationCenter.defaultCenter postNotificationName: ColorMappingChangedEvent
+                                                    object: self];
 }
 
 /* Called when selection changes in path
@@ -1038,7 +1038,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
     treeDrawerSettings.colorMapper.fileItemMappingScheme;
     
   if (colorMapping != observedColorMapping) {
-    NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];
+    NSNotificationCenter  *nc = NSNotificationCenter.defaultCenter;
     
     if (observedColorMapping != nil) {
       [nc removeObserver: self

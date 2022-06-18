@@ -252,8 +252,8 @@ NSString  *FriendlySizeKey = @"friendlySize";
    
   [path addObject: nextItem]; 
 
-  if (! [nextItem isVirtual]) {
-    NSAssert([((FileItem *)nextItem) parentDirectory] == path[lastFileItemIndex],
+  if (!nextItem.isVirtual) {
+    NSAssert(((FileItem *)nextItem).parentDirectory == path[lastFileItemIndex],
              @"Path parent inconsistency.");
   
     lastFileItemIndex = path.count - 1;
@@ -279,7 +279,7 @@ NSString  *FriendlySizeKey = @"friendlySize";
 }
 
 - (void) moveVisibleTreeUp {
-  NSAssert([self canMoveVisibleTreeUp], @"Cannot move up.");
+  NSAssert(self.canMoveVisibleTreeUp, @"Cannot move up.");
 
   do {
     visibleTreeIndex--;
@@ -290,7 +290,7 @@ NSString  *FriendlySizeKey = @"friendlySize";
 
 
 - (FileItem *)itemBelowVisibleTree {
-  NSAssert([self canMoveVisibleTreeDown], @"Cannot move down.");
+  NSAssert(self.canMoveVisibleTreeDown, @"Cannot move down.");
 
   NSUInteger  index = visibleTreeIndex;
   do {
@@ -301,7 +301,7 @@ NSString  *FriendlySizeKey = @"friendlySize";
 }
 
 - (void) moveVisibleTreeDown {
-  NSAssert([self canMoveVisibleTreeDown], @"Cannot move down.");
+  NSAssert(self.canMoveVisibleTreeDown, @"Cannot move down.");
 
   do {
     visibleTreeIndex++;
@@ -349,10 +349,10 @@ NSString  *FriendlySizeKey = @"friendlySize";
 @implementation ItemPathModel (PrivateMethods)
 
 - (void) observeEvents {
-  [[NSNotificationCenter defaultCenter] addObserver: self
-                                           selector: @selector(fileItemDeleted:)
-                                               name: FileItemDeletedEvent
-                                             object: treeContext];
+  [NSNotificationCenter.defaultCenter addObserver: self
+                                         selector: @selector(fileItemDeleted:)
+                                             name: FileItemDeletedEvent
+                                           object: treeContext];
 }
 
 - (void) fileItemDeleted:(NSNotification *)notification {

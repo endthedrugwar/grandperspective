@@ -31,7 +31,7 @@
 @implementation FiltersWindowControl
 
 - (instancetype) init {
-  return [self initWithFilterRepository: [FilterRepository defaultInstance]];
+  return [self initWithFilterRepository: FilterRepository.defaultFilterRepository];
 }
 
 - (instancetype) initWithFilterRepository:(FilterRepository *)filterRepositoryVal {
@@ -41,9 +41,9 @@
     filterEditor = [[FilterEditor alloc] initWithFilterRepository: filterRepository];
 
     NotifyingDictionary  *repositoryFiltersByName = 
-      [filterRepository filtersByNameAsNotifyingDictionary];
-    NSNotificationCenter  *nc = [repositoryFiltersByName notificationCenter];
-    
+      filterRepository.filtersByNameAsNotifyingDictionary;
+    NSNotificationCenter  *nc = repositoryFiltersByName.notificationCenter;
+
     [nc addObserver: self
            selector: @selector(filterAddedToRepository:)
                name: ObjectAddedEvent
@@ -62,8 +62,8 @@
              object: repositoryFiltersByName];
 
     filterNames =
-      [[NSMutableArray alloc] initWithCapacity: [filterRepository filtersByName].count + 8];
-    [filterNames addObjectsFromArray: [filterRepository filtersByName].allKeys];
+      [[NSMutableArray alloc] initWithCapacity: filterRepository.filtersByName.count + 8];
+    [filterNames addObjectsFromArray: filterRepository.filtersByName.allKeys];
     [filterNames sortUsingSelector: @selector(compare:)];
     
     filterNameToSelect = nil;
@@ -73,9 +73,9 @@
 
 - (void) dealloc {
   NSNotificationCenter  *nc =
-    [[filterRepository filtersByNameAsNotifyingDictionary] notificationCenter];
+    filterRepository.filtersByNameAsNotifyingDictionary.notificationCenter;
   [nc removeObserver: self];
-    
+
   [filterRepository release];
   
   [filterEditor release];
@@ -123,7 +123,7 @@
       NSLocalizedString(@"The filter will be irrevocably removed from the filter repository.",
                         @"Alert informative text");
 
-  NSBundle  *mainBundle = [NSBundle mainBundle];
+  NSBundle  *mainBundle = NSBundle.mainBundle;
   NSString  *localizedName =
     [mainBundle localizedStringForKey: filterName value: nil table: @"Names"];
   
@@ -157,7 +157,7 @@
 - (id) tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)column
              row:(NSInteger)row {
   NSString  *filterName = filterNames[row];
-  NSBundle  *mainBundle = [NSBundle mainBundle];
+  NSBundle  *mainBundle = NSBundle.mainBundle;
   return [mainBundle localizedStringForKey: filterName value: nil table: @"Names"];
 
 }

@@ -21,10 +21,10 @@
              autorelease]);
 }
 
-- (instancetype) initWithTreeContext:(TreeContext *)treeContextVal {
-  FileItemTest  *test = [[treeContextVal filterSet] fileItemTest];
+- (instancetype) initWithTreeContext:(TreeContext *)treeContext {
+  FileItemTest  *test = treeContext.filterSet.fileItemTest;
 
-  return [self initWithTreeContext: treeContextVal
+  return [self initWithTreeContext: treeContext
                           comments: ((test != nil) ? test.description : @"")];
 }
 

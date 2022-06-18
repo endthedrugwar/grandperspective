@@ -24,7 +24,7 @@
 
 }
 
-+ (UniqueTagsTransformer *)defaultUniqueTagsTransformer;
+@property (class, nonatomic, readonly) UniqueTagsTransformer *defaultUniqueTagsTransformer;
 
 
 /* Uses the transformer to add localized items to the pop-up. Each item has a tag associated with it

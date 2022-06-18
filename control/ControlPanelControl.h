@@ -76,7 +76,7 @@ extern NSString  *DisplaySettingsChangedEvent;
   DirectoryViewControl  *observedDirectoryView;
 }
 
-+ (ControlPanelControl *)singletonInstance;
+@property (class, nonatomic, readonly) ControlPanelControl *singletonInstance;
 
 // Changes to display settings that require special handling.
 - (IBAction) maskChanged:(id)sender;

@@ -43,13 +43,9 @@
 @implementation BasicFileItemTestVisitor (PrivateMethods)
 
 - (void) visitCompoundItemTest:(CompoundItemTest *)test {
-  NSEnumerator  *subItemTestEnum = [[test subItemTests] objectEnumerator];
-  FileItemTest  *subItemTest;
-  
-  while (subItemTest = [subItemTestEnum nextObject]) {
+  for (FileItemTest *subItemTest in [test.subItemTests objectEnumerator]) {
     [subItemTest acceptFileItemTestVisitor: self];
   }
 }
 
 @end
-

@@ -36,8 +36,8 @@
 + (instancetype) filterSetWithNamedFilters:(NSArray *)namedFilters
                             unboundFilters:(NSMutableArray *)unboundFilters
                               unboundTests:(NSMutableArray *)unboundTests {
-  FilterRepository  *filterRepo = FilterRepository.defaultInstance;
-  FilterTestRepository  *testRepo = FilterTestRepository.defaultInstance;
+  FilterRepository  *filterRepo = FilterRepository.defaultFilterRepository;
+  FilterTestRepository  *testRepo = FilterTestRepository.defaultFilterTestRepository;
   return [FilterSet filterSetWithNamedFilters: namedFilters
                              filterRepository: filterRepo
                                testRepository: testRepo
@@ -86,8 +86,8 @@
 
 - (FilterSet *)updatedFilterSetUnboundFilters:(NSMutableArray *)unboundFilters
                                  unboundTests:(NSMutableArray *)unboundTests {
-  return [self updatedFilterSetUsingFilterRepository: FilterRepository.defaultInstance
-                                      testRepository: FilterTestRepository.defaultInstance
+  return [self updatedFilterSetUsingFilterRepository: FilterRepository.defaultFilterRepository
+                                      testRepository: FilterTestRepository.defaultFilterTestRepository
                                       unboundFilters: unboundFilters
                                         unboundTests: unboundTests];
 }
@@ -135,10 +135,7 @@
 - (NSString *)description {
   NSMutableString  *descr = [NSMutableString stringWithCapacity: 32];
   
-  NSEnumerator  *filterEnum = self.filters.objectEnumerator;
-  NamedFilter  *namedFilter;
-
-  while (namedFilter = [filterEnum nextObject]) {
+  for (NamedFilter *namedFilter in [self.filters objectEnumerator]) {
     if (descr.length > 0) {
       [descr appendString: @", "];
     }
@@ -161,9 +158,7 @@
   // Create the file item test for the set of filters.
   NSMutableArray  *filterTests = [NSMutableArray arrayWithCapacity: namedFilters.count];
 
-  NSEnumerator  *filterEnum = namedFilters.objectEnumerator;
-  NamedFilter  *namedFilter;
-  while (namedFilter = [filterEnum nextObject]) {
+  for (NamedFilter *namedFilter in [namedFilters objectEnumerator]) {
     Filter  *filter;
 
     if (filterRepository == nil) {
@@ -199,8 +194,8 @@
     testForFilterSet = filterTests[0];
   }
   else {
-    testForFilterSet =
-      [[[CompoundAndItemTest alloc] initWithSubItemTests: filterTests] autorelease];
+    testForFilterSet = [[[CompoundAndItemTest alloc] initWithSubItemTests: filterTests]
+                        autorelease];
   }
 
   return [self initWithNamedFilters: namedFilters fileItemTest: testForFilterSet];

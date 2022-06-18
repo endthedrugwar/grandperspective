@@ -64,11 +64,8 @@ NSString  *ColorDescriptionColumnIdentifier = @"colorDescription";
     [self updateDescriptionColumnWidth];
     
     tableView.dataSource = self;
-    
-    ItemPathModelView  *pathModelView = [dirView pathModelView];
-    
-    NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];
 
+    NSNotificationCenter  *nc = NSNotificationCenter.defaultCenter;
     [nc addObserver: self
            selector: @selector(colorPaletteChanged:)
                name: ColorPaletteChangedEvent
@@ -80,18 +77,18 @@ NSString  *ColorDescriptionColumnIdentifier = @"colorDescription";
     [nc addObserver: self
            selector: @selector(selectedItemChanged:)
                name: SelectedItemChangedEvent
-             object: pathModelView];
+             object: dirView.pathModelView];
     [nc addObserver: self
            selector: @selector(visibleTreeChanged:)
                name: VisibleTreeChangedEvent
-             object: pathModelView];
+             object: dirView.pathModelView];
   }
   
   return self;
 }
 
 - (void) dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver: self];
+  [NSNotificationCenter.defaultCenter removeObserver: self];
   
   [dirView release];
   [tableView release];
@@ -132,7 +129,7 @@ NSString  *ColorDescriptionColumnIdentifier = @"colorDescription";
 - (NSString *)descriptionForRow:(NSUInteger)row {
   NSObject <FileItemMapping>  *colorMapper = [[dirView treeDrawerSettings] colorMapper];
 
-  if ([colorMapper canProvideLegend]) {
+  if (colorMapper.canProvideLegend) {
     LegendProvidingFileItemMapping  *legendProvider = (LegendProvidingFileItemMapping *)colorMapper;
   
     if (row < colorImages.count - 1) {
@@ -140,7 +137,7 @@ NSString  *ColorDescriptionColumnIdentifier = @"colorDescription";
     }
     else {
       if ([legendProvider descriptionForHash: row + 1] != nil) {
-        return [legendProvider descriptionForRemainingHashes];
+        return legendProvider.descriptionForRemainingHashes;
       }
       else {
         return [legendProvider descriptionForHash: row];
@@ -154,7 +151,7 @@ NSString  *ColorDescriptionColumnIdentifier = @"colorDescription";
 
 
 - (void) makeColorImages {
-  NSColorList  *colorPalette = [[dirView treeDrawerSettings] colorPalette];
+  NSColorList  *colorPalette = dirView.treeDrawerSettings.colorPalette;
   GradientRectangleDrawer  *drawer = 
     [[[GradientRectangleDrawer alloc] initWithColorPalette: colorPalette] autorelease];
   
@@ -215,19 +212,17 @@ NSString  *ColorDescriptionColumnIdentifier = @"colorDescription";
  * color is selected. Otherwise, the selection is cleared.
  */
 - (void) updateSelectedRow {
-  FileItem  *selectedItem = [[dirView pathModelView] selectedFileItem];
+  FileItem  *selectedItem = dirView.pathModelView.selectedFileItem;
 
   BOOL  rowSelected = NO;
 
-  if ( selectedItem != nil && 
-       [selectedItem isPhysical] &&
-       ![selectedItem isDirectory] ) {
-    NSObject <FileItemMapping>  *colorMapper = [[dirView treeDrawerSettings] colorMapper];
-       
-    if ([colorMapper canProvideLegend]) {
+  if (selectedItem != nil && selectedItem.isPhysical && !selectedItem.isDirectory) {
+    NSObject <FileItemMapping>  *colorMapper = dirView.treeDrawerSettings.colorMapper;
+
+    if (colorMapper.canProvideLegend) {
       NSUInteger  colorIndex = [colorMapper hashForFileItem: (PlainFileItem *)selectedItem
-                                                     inTree: [dirView treeInView]];
-      NSUInteger  row = MIN(colorIndex, [tableView numberOfRows] - 1);
+                                                     inTree: dirView.treeInView];
+      NSUInteger  row = MIN(colorIndex, tableView.numberOfRows - 1);
       
       [tableView selectRowIndexes: [NSIndexSet indexSetWithIndex: row]
              byExtendingSelection: NO];

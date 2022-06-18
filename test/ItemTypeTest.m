@@ -38,7 +38,7 @@
     NSArray  *utis = dict[@"matches"];
     NSUInteger  numMatchTargets = utis.count;
 
-    UniformTypeInventory  *typeInventory = [UniformTypeInventory defaultUniformTypeInventory];
+    UniformTypeInventory  *typeInventory = UniformTypeInventory.defaultUniformTypeInventory;
 
     NSMutableArray  *tmpMatches = [NSMutableArray arrayWithCapacity: numMatchTargets];
     
@@ -79,13 +79,13 @@
 
 
 - (TestResult) testFileItem:(FileItem *)item context:(id) context {
-  if ([item isDirectory]) {
+  if (item.isDirectory) {
     // Test does not apply to directories
     return TEST_NOT_APPLICABLE;
   }
   
-  UniformType  *type = [((PlainFileItem *)item) uniformType];
-  NSSet  *ancestorTypes = self.isStrict ? nil : [type ancestorTypes];
+  UniformType  *type = ((PlainFileItem *)item).uniformType;
+  NSSet  *ancestorTypes = self.isStrict ? nil : type.ancestorTypes;
     
   NSUInteger  i = self.matchTargets.count;
   while (i-- > 0) {
@@ -147,4 +147,3 @@
 }
 
 @end // @implementation ItemTypeTest (PrivateMethods)
-

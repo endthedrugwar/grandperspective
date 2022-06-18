@@ -26,8 +26,7 @@ extern NSString  *StableFolderPathKey;
   if (self = [super initWithWindow: nil]) {
     taskExecutor = [taskExecutorVal retain];
 
-    NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
-    refreshRate = [userDefaults floatForKey: ProgressPanelRefreshRateKey];
+    refreshRate = [NSUserDefaults.standardUserDefaults floatForKey: ProgressPanelRefreshRateKey];
     if (refreshRate <= 0) {
       NSLog(@"Invalid value for progressPanelRefreshRate.");
       refreshRate = 1;

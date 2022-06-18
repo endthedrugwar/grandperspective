@@ -41,11 +41,9 @@
 - (instancetype) initWithPropertiesFromDictionary:(NSDictionary *)dict {
   if (self = [super initWithPropertiesFromDictionary: dict]) {
     NSArray  *subTestDicts = dict[@"subTests"];
-    
     NSMutableArray  *tmpSubTests = [NSMutableArray arrayWithCapacity: subTestDicts.count];
-    NSEnumerator  *subTestsDictsEnum = [subTestDicts objectEnumerator];
-    NSDictionary  *subTestDict;
-    while ((subTestDict = [subTestsDictsEnum nextObject]) != nil) {
+
+    for (NSDictionary *subTestDict in [subTestDicts objectEnumerator]) {
       [tmpSubTests addObject: [FileItemTest fileItemTestFromDictionary: subTestDict]];
     }
     
@@ -67,10 +65,7 @@
   [super addPropertiesToDictionary: dict];
   
   NSMutableArray  *subTestsDicts = [NSMutableArray arrayWithCapacity: self.subItemTests.count];
-  NSEnumerator  *subTestsEnum = [self.subItemTests objectEnumerator];
-  FileItemTest  *subTest;
-
-  while ((subTest = [subTestsEnum nextObject]) != nil) {
+  for (FileItemTest *subTest in [self.subItemTests objectEnumerator]) {
     [subTestsDicts addObject: [subTest dictionaryForObject]];
   }
 

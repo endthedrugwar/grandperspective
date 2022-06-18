@@ -139,9 +139,9 @@ NSString  *DisplaySettingsChangedEvent = @"displaySettingsChanged";
   NSAssert(singletonInstance == nil, @"Can only create one ControlPanelControl.");
 
   if (self = [super initWithWindow: nil]) {
-    colorMappings = [[FileItemMappingCollection defaultFileItemMappingCollection] retain];
-    colorPalettes = [[ColorListCollection defaultColorListCollection] retain];
-    filterRepository = [[FilterRepository defaultInstance] retain];
+    colorMappings = [FileItemMappingCollection.defaultFileItemMappingCollection retain];
+    colorPalettes = [ColorListCollection.defaultColorListCollection retain];
+    filterRepository = [FilterRepository.defaultFilterRepository retain];
   }
 
   return self;
@@ -182,23 +182,23 @@ static ControlPanelControl  *singletonInstance = nil;
   //----------------------------------------------------------------
   // Configure the "Display" panel
 
-  UniqueTagsTransformer  *tagMaker = [UniqueTagsTransformer defaultUniqueTagsTransformer];
+  UniqueTagsTransformer  *tagMaker = UniqueTagsTransformer.defaultUniqueTagsTransformer;
 
   [colorMappingPopUp removeAllItems];
-  [tagMaker addLocalisedNames: [colorMappings allKeys]
+  [tagMaker addLocalisedNames: colorMappings.allKeys
                       toPopUp: colorMappingPopUp
                        select: nil // displaySettings.colorMappingKey
                         table: @"Names"];
 
   [colorPalettePopUp removeAllItems];
-  [tagMaker addLocalisedNames: [colorPalettes allKeys]
+  [tagMaker addLocalisedNames: colorPalettes.allKeys
                       toPopUp: colorPalettePopUp
                        select: nil // displaySettings.colorPaletteKey
                         table: @"Names"];
 
   maskPopUpControl = [[FilterPopUpControl alloc] initWithPopUpButton: maskPopUp
                                                     filterRepository: filterRepository];
-  NSNotificationCenter  *nc = [maskPopUpControl notificationCenter];
+  NSNotificationCenter  *nc = maskPopUpControl.notificationCenter;
   [nc addObserver: self
          selector: @selector(maskRemoved:)
              name: SelectedFilterRemoved
@@ -241,7 +241,7 @@ static ControlPanelControl  *singletonInstance = nil;
 
   //----------------------------------------------------------------
 
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
 
   [userDefaults addObserver: self
                  forKeyPath: FileSizeUnitSystemKey
@@ -259,7 +259,7 @@ static ControlPanelControl  *singletonInstance = nil;
                        ofObject:(id)object
                          change:(NSDictionary *)change
                         context:(void *)context {
-  if (object == [NSUserDefaults standardUserDefaults]) {
+  if (object == NSUserDefaults.standardUserDefaults) {
     if ([keyPath isEqualToString: FileSizeUnitSystemKey]) {
       [self fileSizeUnitSystemChanged];
     }
@@ -292,8 +292,8 @@ static ControlPanelControl  *singletonInstance = nil;
   // there's not really any gain in checking this before firing the event. In practise, key status
   // is only obtained when the user clicks inside the comments text view to start editing. When
   // it is resigned without making any changes, there's no harm in the event being fired.
-  [[NSNotificationCenter defaultCenter] postNotificationName: CommentsChangedEvent
-                                                      object: self];
+  [NSNotificationCenter.defaultCenter postNotificationName: CommentsChangedEvent
+                                                    object: self];
 }
 
 - (IBAction) displaySettingChanged:(id)sender {
@@ -320,7 +320,7 @@ static ControlPanelControl  *singletonInstance = nil;
   }
 
   DirectoryViewControl  *dirViewControl =
-    [NSApplication sharedApplication].mainWindow.windowController;
+    NSApplication.sharedApplication.mainWindow.windowController;
 
   if (dirViewControl == nil) {
     // This can happen when the application is activated again. Ignore it. Wait until it is not nil.
@@ -342,7 +342,7 @@ static ControlPanelControl  *singletonInstance = nil;
 }
 
 - (DirectoryViewDisplaySettings *)displaySettings {
-  UniqueTagsTransformer  *tagMaker = [UniqueTagsTransformer defaultUniqueTagsTransformer];
+  UniqueTagsTransformer  *tagMaker = UniqueTagsTransformer.defaultUniqueTagsTransformer;
 
   NSString  *colorMappingKey = [tagMaker nameForTag: colorMappingPopUp.selectedItem.tag];
   NSString  *colorPaletteKey = [tagMaker nameForTag: colorPalettePopUp.selectedItem.tag];
@@ -360,7 +360,7 @@ static ControlPanelControl  *singletonInstance = nil;
 
 - (TreeDrawerSettings *)instantiateDisplaySettings:(DirectoryViewDisplaySettings *)displaySettings
                                            forTree:(DirectoryItem *)tree {
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
 
   NSObject <FileItemMappingScheme>
     *mapping = [colorMappings fileItemMappingSchemeForKey: displaySettings.colorMappingKey];
@@ -371,7 +371,7 @@ static ControlPanelControl  *singletonInstance = nil;
 
   NSColorList  *palette = [colorPalettes colorListForKey: displaySettings.colorPaletteKey];
   if (palette == nil) {
-    palette = [colorPalettes fallbackColorList];
+    palette = colorPalettes.fallbackColorList;
   }
   float  gradient = [userDefaults floatForKey: DefaultColorGradient];
 
@@ -404,15 +404,15 @@ static ControlPanelControl  *singletonInstance = nil;
 }
 
 - (void)fireDisplaySettingsChanged {
-  [[NSNotificationCenter defaultCenter] postNotificationName: DisplaySettingsChangedEvent
-                                                      object: self];
+  [NSNotificationCenter.defaultCenter postNotificationName: DisplaySettingsChangedEvent
+                                                    object: self];
 }
 
 /* Update all fields that report file size values.
  */
 - (void) fileSizeUnitSystemChanged {
   DirectoryViewControl  *dirViewControl =
-    [NSApplication sharedApplication].mainWindow.windowController;
+    NSApplication.sharedApplication.mainWindow.windowController;
 
   [self updateInfoPanel: dirViewControl];
   [self updateSelectionInFocusPanel: nil];
@@ -422,7 +422,7 @@ static ControlPanelControl  *singletonInstance = nil;
 }
 
 - (void) observeDirectoryView:(DirectoryViewControl *)dirViewControl {
-  NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];
+  NSNotificationCenter  *nc = NSNotificationCenter.defaultCenter;
 
   if (observedDirectoryView != nil) {
     [nc removeObserver: self
@@ -456,9 +456,9 @@ static ControlPanelControl  *singletonInstance = nil;
 
 - (void) updateDisplayPanel:(DirectoryViewControl *)dirViewControl {
   DirectoryViewDisplaySettings  *displaySettings =
-    [dirViewControl directoryViewControlSettings].displaySettings;
+    dirViewControl.directoryViewControlSettings.displaySettings;
 
-  UniqueTagsTransformer  *tagMaker = [UniqueTagsTransformer defaultUniqueTagsTransformer];
+  UniqueTagsTransformer  *tagMaker = UniqueTagsTransformer.defaultUniqueTagsTransformer;
 
   [colorMappingPopUp selectItemWithTag: [tagMaker tagForName: displaySettings.colorMappingKey]];
   [colorPalettePopUp selectItemWithTag: [tagMaker tagForName: displaySettings.colorPaletteKey]];
@@ -471,7 +471,7 @@ static ControlPanelControl  *singletonInstance = nil;
   maskCheckBox.state = displaySettings.fileItemMaskEnabled ? NSOnState : NSOffState;
   [maskPopUpControl selectFilterNamed: displaySettings.maskName];
 
-  if ([dirViewControl.treeContext usesTallyFileSize]) {
+  if (dirViewControl.treeContext.usesTallyFileSize) {
     // Never show the entire volume when using the tally file size measure. It does not make sense.
     showEntireVolumeCheckBox.state = NSOffState;
     showEntireVolumeCheckBox.enabled = NO;
@@ -483,29 +483,29 @@ static ControlPanelControl  *singletonInstance = nil;
 }
 
 - (void) updateInfoPanel:(DirectoryViewControl *)dirViewControl {
-  NSBundle  *mainBundle = [NSBundle mainBundle];
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSBundle  *mainBundle = NSBundle.mainBundle;
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
 
   FileItem  *volumeTree = dirViewControl.pathModelView.volumeTree;
   FileItem  *scanTree = dirViewControl.pathModelView.scanTree;
 
-  NSString  *volumeName = [volumeTree systemPath];
-  NSImage  *volumeIcon = [[NSWorkspace sharedWorkspace] iconForFile: volumeName];
+  NSString  *volumeName = volumeTree.systemPath;
+  NSImage  *volumeIcon = [NSWorkspace.sharedWorkspace iconForFile: volumeName];
   volumeIconView.image = volumeIcon;
-  volumeNameField.stringValue = [[NSFileManager defaultManager] displayNameAtPath: volumeName];
+  volumeNameField.stringValue = [NSFileManager.defaultManager displayNameAtPath: volumeName];
 
-  scanPathTextView.string = [scanTree path];
+  scanPathTextView.string = scanTree.path;
   commentsTextView.string = dirViewControl.comments;
 
   TreeContext  *treeContext = dirViewControl.treeContext;
-  FilterSet  *filterSet = [treeContext filterSet];
-  filterNameField.stringValue = ( ([filterSet fileItemTest] != nil)
+  FilterSet  *filterSet = treeContext.filterSet;
+  filterNameField.stringValue = (filterSet.fileItemTest != nil
     ? filterSet.description
-    : NSLocalizedString(@"None", @"The filter name when there is no filter.") ) ;
+    : NSLocalizedString(@"None", @"The filter name when there is no filter."));
 
-  scanTimeField.stringValue = [treeContext stringForScanTime];
+  scanTimeField.stringValue = treeContext.stringForScanTime;
   fileSizeMeasureField.stringValue = [NSString stringWithFormat: @"%@ (%@)",
-    [mainBundle localizedStringForKey: [treeContext fileSizeMeasure]
+    [mainBundle localizedStringForKey: treeContext.fileSizeMeasure
                                 value: nil
                                 table: @"Names"],
     [mainBundle localizedStringForKey: [userDefaults stringForKey: FileSizeUnitSystemKey]
@@ -513,7 +513,7 @@ static ControlPanelControl  *singletonInstance = nil;
                                 table: @"Names"]];
 
   volumeSizeField.stringValue = [FileItem stringForFileItemSize: volumeTree.itemSize];
-  if ([dirViewControl.treeContext usesTallyFileSize]) {
+  if (dirViewControl.treeContext.usesTallyFileSize) {
     treeSizeField.stringValue = @"-";
     miscUsedSpaceField.stringValue = @"-";
     freeSpaceField.stringValue = @"-";
@@ -529,7 +529,7 @@ static ControlPanelControl  *singletonInstance = nil;
 }
 
 - (void) updateFocusPanel:(DirectoryViewControl *)dirViewControl {
-  BOOL usesTallyFileSize = [dirViewControl.treeContext usesTallyFileSize];
+  BOOL usesTallyFileSize = dirViewControl.treeContext.usesTallyFileSize;
 
   visibleFolderFocusControls.usesTallyFileSize = usesTallyFileSize;
   selectedItemFocusControls.usesTallyFileSize = usesTallyFileSize;
@@ -540,7 +540,7 @@ static ControlPanelControl  *singletonInstance = nil;
 
 - (void) updateSelectionInFocusPanel:(NSString *)itemSizeString {
   DirectoryViewControl  *dirViewControl =
-    [NSApplication sharedApplication].mainWindow.windowController;
+    NSApplication.sharedApplication.mainWindow.windowController;
 
   FileItem  *selectedItem = dirViewControl.pathModelView.selectedFileItem;
 
@@ -552,12 +552,12 @@ static ControlPanelControl  *singletonInstance = nil;
   if ( selectedItem != nil ) {
     NSString  *itemPath;
 
-    if (! [selectedItem isPhysical]) {
-      itemPath = [[NSBundle mainBundle] localizedStringForKey: [selectedItem label]
-                                                        value: nil table: @"Names"];
+    if (selectedItem.isPhysical) {
+      itemPath = selectedItem.path;
     }
     else {
-      itemPath = [selectedItem path];
+      itemPath = [NSBundle.mainBundle localizedStringForKey: selectedItem.label
+                                                      value: nil table: @"Names"];
     }
 
     [selectedItemFocusControls showFileItem: selectedItem
@@ -569,14 +569,12 @@ static ControlPanelControl  *singletonInstance = nil;
   }
 
   // Update the file type fields in the Focus panel
-  if ( selectedItem != nil &&
-       [selectedItem isPhysical] &&
-       ![selectedItem isDirectory] ) {
-    UniformType  *type = [ ((PlainFileItem *)selectedItem) uniformType];
+  if (selectedItem != nil && selectedItem.isPhysical && !selectedItem.isDirectory) {
+    UniformType  *type = ((PlainFileItem *)selectedItem).uniformType;
 
-    selectedItemTypeIdentifierField.stringValue = [type uniformTypeIdentifier];
+    selectedItemTypeIdentifierField.stringValue = type.uniformTypeIdentifier;
     selectedItemTypeIdentifierField.toolTip =
-      [type description] != nil ? [type description] : [type uniformTypeIdentifier];
+      type.description != nil ? type.description : type.uniformTypeIdentifier;
   }
   else {
     selectedItemTypeIdentifierField.stringValue = @"";
@@ -586,7 +584,7 @@ static ControlPanelControl  *singletonInstance = nil;
 
 - (void) visibleTreeChanged:(NSNotification *)notification {
   DirectoryViewControl  *dirViewControl =
-    [NSApplication sharedApplication].mainWindow.windowController;
+    NSApplication.sharedApplication.mainWindow.windowController;
 
   [visibleFolderFocusControls showFileItem: dirViewControl.pathModelView.visibleTree
                                treeContext: dirViewControl.treeContext];
@@ -600,11 +598,11 @@ static ControlPanelControl  *singletonInstance = nil;
 
 - (void) fileItemDeleted:(NSNotification *)notification {
   DirectoryViewControl  *dirViewControl =
-    [NSApplication sharedApplication].mainWindow.windowController;
+    NSApplication.sharedApplication.mainWindow.windowController;
   TreeContext  *treeContext = dirViewControl.treeContext;
 
-  freedSpaceField.stringValue = [FileItem stringForFileItemSize: [treeContext freedSpace]];
-  numDeletedFilesField.stringValue = [NSString stringWithFormat: @"%qu", [treeContext freedFiles]];
+  freedSpaceField.stringValue = [FileItem stringForFileItemSize: treeContext.freedSpace];
+  numDeletedFilesField.stringValue = [NSString stringWithFormat: @"%qu", treeContext.freedFiles];
 }
 
 - (void) maskRemoved:(NSNotification *)notification {
@@ -655,9 +653,9 @@ static ControlPanelControl  *singletonInstance = nil;
 - (void) showFileItem:(FileItem *)item treeContext:(TreeContext *)treeContext  {
   NSString  *sizeString = [treeContext stringForFileItemSize: item.itemSize];
   NSString  *itemPath =
-    ( [item isPhysical]
-      ? [item path]
-      : [[NSBundle mainBundle] localizedStringForKey: [item label] value: nil table: @"Names"] );
+    ( item.isPhysical
+      ? item.path
+      : [NSBundle.mainBundle localizedStringForKey: item.label value: nil table: @"Names"] );
 
   [self showFileItem: item itemPath: itemPath sizeString: sizeString];
 }
@@ -677,7 +675,7 @@ static ControlPanelControl  *singletonInstance = nil;
   }
 
   // Use the color of the size fields to show if the item is hard-linked.
-  NSColor *sizeFieldColor = [item isHardLinked] ? [NSColor darkGrayColor] : titleField.textColor;
+  NSColor *sizeFieldColor = item.isHardLinked ? NSColor.darkGrayColor : titleField.textColor;
   exactSizeField.textColor = sizeFieldColor;
   sizeField.textColor = sizeFieldColor;
 }
@@ -693,13 +691,13 @@ static ControlPanelControl  *singletonInstance = nil;
 @implementation FolderInViewFocusControls
 
 - (NSString *)titleForFileItem:(FileItem *)item {
-  if ( ! [item isPhysical] ) {
+  if (!item.isPhysical) {
     return NSLocalizedString(@"Area in view:", "Label in Focus panel");
   }
-  else if ( [item isPackage] ) {
+  else if (item.isPackage) {
     return NSLocalizedString(@"Package in view:", "Label in Focus panel");
   }
-  else if ( [item isDirectory] ) {
+  else if (item.isDirectory) {
     return NSLocalizedString(@"Folder in view:", "Label in Focus panel");
   }
   else { // Default, also used when item == nil
@@ -743,19 +741,19 @@ static ControlPanelControl  *singletonInstance = nil;
            sizeString:(NSString *)sizeString {
   [super showFileItem: item itemPath: pathString sizeString: sizeString];
 
-  creationTimeField.stringValue = [FileItem stringForTime: [item creationTime]];
-  modificationTimeField.stringValue = [FileItem stringForTime: [item modificationTime]];
-  accessTimeField.stringValue = [FileItem stringForTime: [item accessTime]];
+  creationTimeField.stringValue = [FileItem stringForTime: item.creationTime];
+  modificationTimeField.stringValue = [FileItem stringForTime: item.modificationTime];
+  accessTimeField.stringValue = [FileItem stringForTime: item.accessTime];
 }
 
 - (NSString *)titleForFileItem:(FileItem *)item {
-  if ( ! [item isPhysical] ) {
+  if (!item.isPhysical) {
     return NSLocalizedString(@"Selected area:", "Label in Focus panel");
   }
-  else if ( [item isPackage] ) {
+  else if (item.isPackage) {
     return NSLocalizedString(@"Selected package:", "Label in Focus panel");
   }
-  else if ( [item isDirectory] ) {
+  else if (item.isDirectory) {
     return NSLocalizedString(@"Selected folder:", "Label in Focus panel");
   }
   else { // Default, also used when item == nil

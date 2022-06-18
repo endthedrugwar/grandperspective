@@ -154,7 +154,6 @@
 
 
 @interface TypeMatchControls : MultiMatchControls {
-
 }
 
 - (void) updateStateBasedOnItemTypeTest:(ItemTypeTest *)test;
@@ -164,15 +163,6 @@
 
 
 @implementation FilterTestWindowControl
-
-+ (id) defaultInstance {
-  static FilterTestWindowControl  *defaultInstance = nil;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    defaultInstance = [[FilterTestWindowControl alloc] init];
-  });
-  return defaultInstance;
-}
 
 - (instancetype) init {
   if (self = [super initWithWindow: nil]) {
@@ -185,7 +175,7 @@
 
 
 - (void) dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver: self];
+  [NSNotificationCenter.defaultCenter removeObserver: self];
   
   [nameTestControls release];
   [pathTestControls release];
@@ -224,7 +214,7 @@
                                             addTargetButton: addTypeTargetButton
                                          removeTargetButton: removeTypeTargetButton];
 
-  NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];
+  NSNotificationCenter  *nc = NSNotificationCenter.defaultCenter;
   [nc addObserver: self
          selector: @selector(textEditingStarted:)
              name: NSTextDidBeginEditingNotification
@@ -269,9 +259,9 @@
   
   // Remember the original name of the test
   [testName release];
-  testName = [[filterTest name] retain];
+  testName = [filterTest.name retain];
   testNameField.stringValue = testName;
-  FileItemTest  *test = [filterTest fileItemTest];
+  FileItemTest  *test = filterTest.fileItemTest;
   
   if ([test isKindOfClass: [SelectiveItemTest class]]) {
     // It is a selective test. Update state and continue with its subtest
@@ -285,15 +275,13 @@
   
   if ([test isKindOfClass:[CompoundAndItemTest class]]) {
     // It is a compound test. Iterate over all subtests.
-    NSEnumerator  *subTests = [[((CompoundAndItemTest *)test) subItemTests] objectEnumerator];
-    FileItemTest  *subTest;
-    while (subTest = [subTests nextObject]) {
-      [self updateStateBasedOnTest:subTest];
+    for (FileItemTest *subTest in [((CompoundAndItemTest *)test).subItemTests objectEnumerator]) {
+      [self updateStateBasedOnTest: subTest];
     } 
   }
   else {
     // It is a stand-alone test.
-    [self updateStateBasedOnTest:test];
+    [self updateStateBasedOnTest: test];
   } 
 
   [self updateWindowTitle];
@@ -304,17 +292,17 @@
   NSMutableArray  *subTests = [NSMutableArray arrayWithCapacity: 4];
   FileItemTest  *subTest;
   
-  subTest = [self itemNameTestBasedOnState];
+  subTest = self.itemNameTestBasedOnState;
   if (subTest != nil) {
     [subTests addObject: subTest];
   }
   
-  subTest = [self itemPathTestBasedOnState];
+  subTest = self.itemPathTestBasedOnState;
   if (subTest != nil) {
     [subTests addObject: subTest];
   }
 
-  subTest = [self itemFlagsTestBasedOnState];
+  subTest = self.itemFlagsTestBasedOnState;
   if (subTest != nil) {
     [subTests addObject: subTest];
   }
@@ -322,12 +310,12 @@
   if ( testTargetPopUp.indexOfSelectedItem == POPUP_FILES ) {
     // Add any file-only tests
     
-    subTest = [self itemSizeTestBasedOnState];
+    subTest = self.itemSizeTestBasedOnState;
     if (subTest != nil) {
       [subTests addObject: subTest];
     }
     
-    subTest = [self itemTypeTestBasedOnState];
+    subTest = self.itemTypeTestBasedOnState;
     if (subTest != nil) {
       [subTests addObject: subTest];
     }
@@ -341,12 +329,12 @@
     test = subTests.lastObject;
   }
   else {
-    test = [[[CompoundAndItemTest alloc] initWithSubItemTests:subTests] autorelease];
+    test = [[[CompoundAndItemTest alloc] initWithSubItemTests: subTests] autorelease];
   }
   
   test = [self selectiveItemTestBasedOnState: test];
     
-  return [FilterTest filterTestWithName: [self fileItemTestName] fileItemTest: test];
+  return [FilterTest filterTestWithName: self.fileItemTestName fileItemTest: test];
 }
 
 - (void) setVisibleName:(NSString *)name {
@@ -374,7 +362,7 @@
     // means that the user is closing the window using the window's red close button.
     
     finalNotificationFired = YES;
-    [[NSNotificationCenter defaultCenter] postNotificationName: ClosePerformedEvent object: self];
+    [NSNotificationCenter.defaultCenter postNotificationName: ClosePerformedEvent object: self];
   }
 }
 
@@ -385,7 +373,7 @@
 
   if ([self tryStopFieldEditor]) {
     finalNotificationFired = YES;
-    [[NSNotificationCenter defaultCenter] postNotificationName: CancelPerformedEvent object: self];
+    [NSNotificationCenter.defaultCenter postNotificationName: CancelPerformedEvent object: self];
   }
 }
 
@@ -395,7 +383,7 @@
     // window can be closed.
 
     // Check if the name of the test is okay as well.
-    NSString  *errorMsg = [nameValidator checkNameIsValid: [self fileItemTestName]];
+    NSString  *errorMsg = [nameValidator checkNameIsValid: self.fileItemTestName];
       
     if (errorMsg != nil) {
       NSAlert *alert = [[[NSAlert alloc] init] autorelease];
@@ -405,11 +393,11 @@
       [alert beginSheetModalForWindow: self.window completionHandler: nil];
 
       [invalidName release];
-      invalidName = [[self fileItemTestName] retain];
+      invalidName = [self.fileItemTestName retain];
     }
     else {
       finalNotificationFired = YES;
-      [[NSNotificationCenter defaultCenter] postNotificationName: OkPerformedEvent object: self];
+      [NSNotificationCenter.defaultCenter postNotificationName: OkPerformedEvent object: self];
     }
   }
 }
@@ -572,17 +560,13 @@
 
 
 - (void) updateStateBasedOnItemNameTest:(ItemNameTest *)test {
-  MultiMatchStringTest  *stringTest = (MultiMatchStringTest*)[test stringTest];
-  
-  [nameTestControls updateStateBasedOnStringTest: stringTest];
+  [nameTestControls updateStateBasedOnStringTest: (MultiMatchStringTest*)test.stringTest];
   nameCheckBox.state = NSOnState;
 }
 
 
 - (void) updateStateBasedOnItemPathTest:(ItemPathTest *)test {
-  MultiMatchStringTest  *stringTest = (MultiMatchStringTest*)[test stringTest];
-  
-  [pathTestControls updateStateBasedOnStringTest: stringTest];
+  [pathTestControls updateStateBasedOnStringTest: (MultiMatchStringTest*)test.stringTest];
   pathCheckBox.state = NSOnState;
 }
 
@@ -594,10 +578,10 @@
 
 
 - (void) updateStateBasedOnItemSizeTest:(ItemSizeTest *)test {
-  int  bytesUnit = [FileItem bytesPerKilobyte];
-  
-  if ([test hasLowerBound]) {
-    ITEM_SIZE  bound = [test lowerBound];
+  int  bytesUnit = FileItem.bytesPerKilobyte;
+
+  if (test.hasLowerBound) {
+    ITEM_SIZE  bound = test.lowerBound;
     int  i = POPUP_BYTES;
     
     if (bound > 0) {
@@ -612,8 +596,8 @@
     [sizeLowerBoundUnits selectItemAtIndex: i]; 
   }
 
-  if ([test hasUpperBound]) {
-    ITEM_SIZE  bound = [test upperBound];
+  if (test.hasUpperBound) {
+    ITEM_SIZE  bound = test.upperBound;
     int  i = POPUP_BYTES;
           
     if (bound > 0) {
@@ -635,23 +619,23 @@
     hardLinkCheckBox.state = NSOnState;
     
     [hardLinkStatusPopUp selectItemAtIndex:
-      ([test desiredResult] & FileItemIsHardlinked) ? POPUP_FLAG_IS : POPUP_FLAG_IS_NOT];
+      (test.desiredResult & FileItemIsHardlinked) ? POPUP_FLAG_IS : POPUP_FLAG_IS_NOT];
   }
   
-  if ([test flagsMask] & FileItemIsPackage) {
+  if (test.flagsMask & FileItemIsPackage) {
     packageCheckBox.state = NSOnState;
     
     [packageStatusPopUp selectItemAtIndex: 
-      ([test desiredResult] & FileItemIsPackage) ? POPUP_FLAG_IS : POPUP_FLAG_IS_NOT];
+      (test.desiredResult & FileItemIsPackage) ? POPUP_FLAG_IS : POPUP_FLAG_IS_NOT];
   }
 }
 
 
 - (FileItemTest *)updateStateBasedOnSelectiveItemTest: 
                     (SelectiveItemTest *)test {
-  [testTargetPopUp selectItemAtIndex: [test applyToFilesOnly] ? POPUP_FILES : POPUP_FOLDERS];
+  [testTargetPopUp selectItemAtIndex: test.applyToFilesOnly ? POPUP_FILES : POPUP_FOLDERS];
   
-  return [test subItemTest];
+  return test.subItemTest;
 }
 
 
@@ -660,7 +644,7 @@
     return nil;
   }
   
-  MultiMatchStringTest  *stringTest = [nameTestControls stringTestBasedOnState];
+  MultiMatchStringTest  *stringTest = nameTestControls.stringTestBasedOnState;
   return ( (stringTest != nil )
            ? [[[ItemNameTest alloc] initWithStringTest: stringTest] autorelease]
            : nil );
@@ -681,12 +665,12 @@
 
 
 - (ItemTypeTest *)itemTypeTestBasedOnState {
-  return (typeCheckBox.state == NSOnState) ? [typeTestControls itemTypeTestBasedOnState] : nil;
+  return (typeCheckBox.state == NSOnState) ? typeTestControls.itemTypeTestBasedOnState : nil;
 }
 
 
 - (ItemSizeTest *)itemSizeTestBasedOnState {
-  int  bytesUnit = [FileItem bytesPerKilobyte];
+  int  bytesUnit = FileItem.bytesPerKilobyte;
 
   ITEM_SIZE  lowerBound = MAX(0, [sizeLowerBoundField intValue]);
   NSUInteger  i = sizeLowerBoundUnits.indexOfSelectedItem;
@@ -794,13 +778,13 @@
   sizeUpperBoundUnits.enabled = upperBoundTestUsed;
 
   okButton.enabled = ![self isNameKnownInvalid]
-     && ( ( nameTestUsed && [nameTestControls hasTargets] )
-          || ( pathTestUsed && [pathTestControls hasTargets] )
-          || ( typeTestUsed && [typeTestControls hasTargets] )
+     && ( (nameTestUsed && nameTestControls.hasTargets)
+          || (pathTestUsed && pathTestControls.hasTargets)
+          || (typeTestUsed && typeTestControls.hasTargets)
           || lowerBoundTestUsed 
           || upperBoundTestUsed 
           || hardLinkTestUsed
-          || packageTestUsed) ;
+          || packageTestUsed);
 }
 
 
@@ -850,8 +834,7 @@
   // still handle the Return key press that may have triggered this event.
   [okButton performSelector: @selector(setKeyEquivalent:)
                  withObject: @"\r" afterDelay: 0.1
-                    inModes: @[NSModalPanelRunLoopMode,
-                                                        NSDefaultRunLoopMode]];
+                    inModes: @[NSModalPanelRunLoopMode, NSDefaultRunLoopMode]];
 }
 
 
@@ -997,7 +980,7 @@
     
     editInProgress = NO;
     
-    NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];
+    NSNotificationCenter  *nc = NSNotificationCenter.defaultCenter;
 
     [nc addObserver: self
            selector: @selector(didBeginEditing:)
@@ -1014,7 +997,7 @@
 
 
 - (void) dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver: self];
+  [NSNotificationCenter.defaultCenter removeObserver: self];
 
   [caseInsensitiveCheckBox release];
   [windowControl release];
@@ -1080,15 +1063,15 @@
   [matchPopUpButton selectItemAtIndex: index];
   
   [matchTargets removeAllObjects];
-  [matchTargets addObjectsFromArray: [test matchTargets]];
+  [matchTargets addObjectsFromArray: test.matchTargets];
   [targetsView reloadData];
   
-  caseInsensitiveCheckBox.state = [test isCaseSensitive] ? NSOffState : NSOnState;
+  caseInsensitiveCheckBox.state = test.isCaseSensitive ? NSOffState : NSOnState;
 }
 
 
 - (MultiMatchStringTest *)stringTestBasedOnState {
-  if (! [self hasTargets]) {
+  if (!self.hasTargets) {
     return nil;
   }
   
@@ -1196,13 +1179,11 @@
                               removeTargetButton: removeButton]) {
 
     // Add all known UniformTypes to the "Add target" popup button
-    UniformTypeInventory  *typeInventory = [UniformTypeInventory defaultUniformTypeInventory];
+    UniformTypeInventory  *typeInventory = UniformTypeInventory.defaultUniformTypeInventory;
 
-    NSMutableArray  *unsortedTypes = [NSMutableArray arrayWithCapacity: [typeInventory count]];
-    NSEnumerator  *typesEnum = [typeInventory uniformTypeEnumerator];
-    UniformType  *type;
-    while (type = [typesEnum nextObject]) {
-      [unsortedTypes addObject: [type uniformTypeIdentifier]];
+    NSMutableArray  *unsortedTypes = [NSMutableArray arrayWithCapacity: typeInventory.count];
+    for (UniformType *type in [typeInventory uniformTypeEnumerator]) {
+      [unsortedTypes addObject: type.uniformTypeIdentifier];
     }
     
     NSArray  *sortedTypes = [unsortedTypes sortedArrayUsingSelector: @selector(compare:)];
@@ -1228,7 +1209,7 @@
     return;
   }
 
-  UniformTypeInventory  *typeInventory = [UniformTypeInventory defaultUniformTypeInventory];
+  UniformTypeInventory  *typeInventory = UniformTypeInventory.defaultUniformTypeInventory;
 
   UniformType  *type = [typeInventory uniformTypeForIdentifier: popUp.titleOfSelectedItem];
   // Restore popup state
@@ -1246,16 +1227,15 @@
 
 
 - (void) updateStateBasedOnItemTypeTest:(ItemTypeTest *)test {
-  [matchPopUpButton selectItemAtIndex:
-    [test isStrict] ? POPUP_TYPE_EQUALS : POPUP_TYPE_CONFORMS_TO];
+  [matchPopUpButton selectItemAtIndex: test.isStrict ? POPUP_TYPE_EQUALS : POPUP_TYPE_CONFORMS_TO];
   
   [matchTargets removeAllObjects];
-  [matchTargets addObjectsFromArray: [test matchTargets]];
+  [matchTargets addObjectsFromArray: test.matchTargets];
   [targetsView reloadData];
 }
 
 - (ItemTypeTest *)itemTypeTestBasedOnState {
-  if (! [self hasTargets]) {
+  if (!self.hasTargets) {
     return nil;
   }
   

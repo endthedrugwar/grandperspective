@@ -6,7 +6,7 @@
 
 @interface TreeDrawerSettings (PrivateMethods)
 
-+ (NSColorList *)defaultColorPalette;
+@property (class, nonatomic, readonly) NSColorList *defaultColorPalette;
 
 @end
 
@@ -15,11 +15,11 @@
 
 // Creates default settings.
 - (instancetype) init {
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
   
   return 
     [self initWithColorMapper: [[[StatelessFileItemMapping alloc] init] autorelease]
-                 colorPalette: [TreeDrawerSettings defaultColorPalette]
+                 colorPalette: TreeDrawerSettings.defaultColorPalette
                 colorGradient: [userDefaults floatForKey: DefaultColorGradient]
                      maskTest: nil
           showPackageContents: YES];
@@ -119,17 +119,17 @@ NSColorList  *defaultColorPalette = nil;
 @implementation TreeDrawerSettings (PrivateMethods)
 
 + (NSColorList *)defaultColorPalette {
-  if (defaultColorPalette==nil) {
+  if (defaultColorPalette == nil) {
     NSColorList  *colorList = [[NSColorList alloc] initWithName: @"DefaultTreeDrawerPalette"];
 
-    [colorList insertColor: [NSColor blueColor]    key: @"blue"    atIndex: 0];
-    [colorList insertColor: [NSColor redColor]     key: @"red"     atIndex: 1];
-    [colorList insertColor: [NSColor greenColor]   key: @"green"   atIndex: 2];
-    [colorList insertColor: [NSColor cyanColor]    key: @"cyan"    atIndex: 3];
-    [colorList insertColor: [NSColor magentaColor] key: @"magenta" atIndex: 4];
-    [colorList insertColor: [NSColor orangeColor]  key: @"orange"  atIndex: 5];
-    [colorList insertColor: [NSColor yellowColor]  key: @"yellow"  atIndex: 6];
-    [colorList insertColor: [NSColor purpleColor]  key: @"purple"  atIndex: 7];
+    [colorList insertColor: NSColor.blueColor    key: @"blue"    atIndex: 0];
+    [colorList insertColor: NSColor.redColor     key: @"red"     atIndex: 1];
+    [colorList insertColor: NSColor.greenColor   key: @"green"   atIndex: 2];
+    [colorList insertColor: NSColor.cyanColor    key: @"cyan"    atIndex: 3];
+    [colorList insertColor: NSColor.magentaColor key: @"magenta" atIndex: 4];
+    [colorList insertColor: NSColor.orangeColor  key: @"orange"  atIndex: 5];
+    [colorList insertColor: NSColor.yellowColor  key: @"yellow"  atIndex: 6];
+    [colorList insertColor: NSColor.purpleColor  key: @"purple"  atIndex: 7];
 
     defaultColorPalette = colorList;
   }

@@ -22,7 +22,7 @@ NSString  *ScanTaskAbortedEvent = @"scanTaskAborted";
 - (void) dealloc {
   [taskLock release];
   
-  NSAssert(treeBuilder==nil, @"treeBuilder should be nil.");
+  NSAssert(treeBuilder == nil, @"treeBuilder should be nil.");
   
   [super dealloc];
 }
@@ -33,7 +33,7 @@ NSString  *ScanTaskAbortedEvent = @"scanTaskAborted";
 }
 
 - (id) runTaskWithInput:(id)input {
-  NSAssert( treeBuilder==nil, @"treeBuilder already set.");
+  NSAssert(treeBuilder == nil, @"treeBuilder already set.");
 
   ScanTaskInput  *myInput = input;
 
@@ -67,8 +67,8 @@ NSString  *ScanTaskAbortedEvent = @"scanTaskAborted";
       scanResult = [ScanTaskOutput failedScanTaskOutput: treeBuilder.alertMessage];
     } else {
       NSLog(@"Scanning aborted.");
-      [[NSNotificationCenter defaultCenter] postNotificationName: ScanTaskAbortedEvent
-                                                          object: self];
+      [NSNotificationCenter.defaultCenter postNotificationName: ScanTaskAbortedEvent
+                                                        object: self];
     }
   }
 

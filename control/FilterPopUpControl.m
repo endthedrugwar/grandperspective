@@ -26,7 +26,7 @@ NSString  *SelectedFilterUpdated = @"selectedFilterUpdated";
 
 - (instancetype) initWithPopUpButton:(NSPopUpButton *)popUpButtonVal {
   return [self initWithPopUpButton: popUpButtonVal
-                  filterRepository: [FilterRepository defaultInstance]];
+                  filterRepository: FilterRepository.defaultFilterRepository];
 }
 
 - (instancetype) initWithPopUpButton:(NSPopUpButton *)popUpButtonVal
@@ -34,12 +34,12 @@ NSString  *SelectedFilterUpdated = @"selectedFilterUpdated";
   if (self = [super init]) {
     popUpButton = [popUpButtonVal retain];
     filterRepository = [filterRepositoryVal retain];
-    tagMaker = [[UniqueTagsTransformer defaultUniqueTagsTransformer] retain];
-    notificationCenter = [[NSNotificationCenter defaultCenter] retain]; 
+    tagMaker = [UniqueTagsTransformer.defaultUniqueTagsTransformer retain];
+    notificationCenter = [NSNotificationCenter.defaultCenter retain];
     
     NotifyingDictionary  *repositoryFiltersByName = 
-      [filterRepository filtersByNameAsNotifyingDictionary];
-    NSNotificationCenter  *nc = [repositoryFiltersByName notificationCenter];
+      filterRepository.filtersByNameAsNotifyingDictionary;
+    NSNotificationCenter  *nc = repositoryFiltersByName.notificationCenter;
     
     [nc addObserver: self
            selector: @selector(filterAddedToRepository:)
@@ -58,10 +58,10 @@ NSString  *SelectedFilterUpdated = @"selectedFilterUpdated";
                name: ObjectRenamedEvent
              object: repositoryFiltersByName];
           
-    NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];  
+    NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
 
     [popUpButton removeAllItems];
-    [tagMaker addLocalisedNames: [filterRepository filtersByName].allKeys
+    [tagMaker addLocalisedNames: filterRepository.filtersByName.allKeys
                         toPopUp: popUpButton
                          select: [userDefaults stringForKey: DefaultFilterName]
                           table: @"Names"];
@@ -71,7 +71,7 @@ NSString  *SelectedFilterUpdated = @"selectedFilterUpdated";
 
 - (void) dealloc {
   NSNotificationCenter  *nc =
-    [[filterRepository filtersByNameAsNotifyingDictionary] notificationCenter];
+    filterRepository.filtersByNameAsNotifyingDictionary.notificationCenter;
   [nc removeObserver: self];
 
   [popUpButton release];
@@ -155,4 +155,3 @@ NSString  *SelectedFilterUpdated = @"selectedFilterUpdated";
 }
 
 @end // @implementation FilterPopUpControl (PrivateMethods)
-

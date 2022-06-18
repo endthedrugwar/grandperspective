@@ -24,12 +24,15 @@ typedef NS_OPTIONS(UInt8, FileItemOptions) {
 /* The supported values for the fileSizeUnitSystem preference. These affect how the file size
  * strings are constructed.
  */
-+ (NSArray *) fileSizeUnitSystemNames;
+@property (class, nonatomic, readonly) NSArray *fileSizeUnitSystemNames;
 
 /* Returns the number of bytes per kilobyte. It can be either 1024 or 1000 based on the 
  * fileSizeMeasurePreference.
  */
-+ (int) bytesPerKilobyte;
+@property (class, nonatomic, readonly) int bytesPerKilobyte;
+
+// Overrides super's designated initialiser.
+- (instancetype) initWithItemSize:(ITEM_SIZE) sizeVal NS_UNAVAILABLE;
 
 - (instancetype) initWithLabel:(NSString *)label
                         parent:(DirectoryItem *)parent

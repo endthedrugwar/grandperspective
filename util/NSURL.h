@@ -13,7 +13,7 @@
 
 - (void) getParentURL:(out NSURL* _Nullable *_Nonnull)parentURL;
 
-+ (NSArray *_Nonnull)supportedPasteboardTypes;
+@property (class, nonatomic, readonly) NSArray *_Nonnull supportedPasteboardTypes;
 + (NSURL *_Nullable)getFileURLFromPasteboard:(NSPasteboard *_Nonnull)pboard;
 
 @end

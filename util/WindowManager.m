@@ -65,7 +65,7 @@
 
 - (NSString *)stripTitle:(NSString *)title {
   NSUInteger  pos = title.length;
-  NSCharacterSet*  digitSet = [NSCharacterSet decimalDigitCharacterSet]; 
+  NSCharacterSet*  digitSet = NSCharacterSet.decimalDigitCharacterSet;
 
   if ( pos-- == 0 ||
        [title characterAtIndex: pos] != ']' ||

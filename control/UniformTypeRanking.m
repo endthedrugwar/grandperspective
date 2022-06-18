@@ -37,7 +37,7 @@ NSString  *UniformTypesRankingKey = @"uniformTypesRanking";
 }
 
 - (void) dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver: self];
+  [NSNotificationCenter.defaultCenter removeObserver: self];
 
   [rankedTypes release];
   
@@ -46,14 +46,11 @@ NSString  *UniformTypesRankingKey = @"uniformTypesRanking";
 
 
 - (void) loadRanking:(UniformTypeInventory *)typeInventory {
-  NSAssert([rankedTypes count] == 0, @"List must be empty before load.");
+  NSAssert(rankedTypes.count == 0, @"List must be empty before load.");
   
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults]; 
-  NSArray  *rankedUTIs = [userDefaults arrayForKey: UniformTypesRankingKey];
-  
-  NSEnumerator  *utiEnum = [rankedUTIs objectEnumerator];
-  NSString  *uti;
-  while (uti = [utiEnum nextObject]) {
+  NSArray  *rankedUTIs = [NSUserDefaults.standardUserDefaults arrayForKey: UniformTypesRankingKey];
+
+  for (NSString *uti in [rankedUTIs objectEnumerator]) {
     UniformType  *type = [typeInventory uniformTypeForIdentifier: uti];
     
     if (type != nil) {
@@ -65,13 +62,10 @@ NSString  *UniformTypesRankingKey = @"uniformTypesRanking";
 
 - (void) storeRanking {
   NSMutableArray  *rankedUTIs = [NSMutableArray arrayWithCapacity: rankedTypes.count];
-    
   NSMutableSet  *encountered = [NSMutableSet setWithCapacity: rankedUTIs.count];
-    
-  NSEnumerator  *typeEnum = [rankedTypes objectEnumerator];
-  UniformType  *type;
-  while (type = [typeEnum nextObject]) {
-    NSString  *uti = [type uniformTypeIdentifier];
+
+  for (UniformType *type in [rankedTypes objectEnumerator]) {
+    NSString  *uti = type.uniformTypeIdentifier;
     
     if (! [encountered containsObject: uti]) {
       // Should the ranked list contain duplicate UTIs, only add the first.
@@ -80,30 +74,24 @@ NSString  *UniformTypesRankingKey = @"uniformTypesRanking";
       [rankedUTIs addObject: uti];
     }
   }
-  
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
-  
-  [userDefaults setObject: rankedUTIs forKey: UniformTypesRankingKey];
+
+  [NSUserDefaults.standardUserDefaults setObject: rankedUTIs forKey: UniformTypesRankingKey];
 }
 
 
 - (void) observeUniformTypeInventory:(UniformTypeInventory *)typeInventory {
-  NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];
-
   // Observe the inventory to for newly added types so that these can be added
   // to (the end of) the ranked list. 
-  [nc addObserver: self
-         selector: @selector(uniformTypeAdded:)
-             name: UniformTypeAddedEvent
-           object: typeInventory];
+  [NSNotificationCenter.defaultCenter addObserver: self
+                                         selector: @selector(uniformTypeAdded:)
+                                             name: UniformTypeAddedEvent
+                                           object: typeInventory];
         
   // Also add any types in the inventory that are not yet in the ranking
   NSMutableSet  *typesInRanking = [NSMutableSet setWithCapacity: (rankedTypes.count + 16)];
-
   [typesInRanking addObjectsFromArray: rankedTypes];
-  NSEnumerator  *typesEnum = [typeInventory uniformTypeEnumerator];
-  UniformType  *type;
-  while (type = [typesEnum nextObject]) {
+
+  for (UniformType *type in [typeInventory uniformTypeEnumerator]) {
     if (! [typesInRanking containsObject: type]) {
       [rankedTypes addObject: type];
       [typesInRanking addObject: type]; 
@@ -123,8 +111,8 @@ NSString  *UniformTypesRankingKey = @"uniformTypesRanking";
                 withObjectsFromArray: ranking];
   
   // Notify any observers.
-  NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter]; 
-  [nc postNotificationName: UniformTypeRankingChangedEvent object: self];
+  [NSNotificationCenter.defaultCenter postNotificationName: UniformTypeRankingChangedEvent
+                                                    object: self];
 }
 
 
@@ -132,7 +120,7 @@ NSString  *UniformTypesRankingKey = @"uniformTypesRanking";
   NSUInteger  i = 0;
   NSUInteger  i_max = rankedTypes.count;
   
-  NSSet  *ancestors = [type ancestorTypes];
+  NSSet  *ancestors = type.ancestorTypes;
   
   while (i < i_max) {
     UniformType  *higherType = rankedTypes[i];

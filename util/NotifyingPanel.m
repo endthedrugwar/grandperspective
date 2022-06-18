@@ -22,10 +22,10 @@ NSString  *FirstResponderChangedEvent = @"firstResponderChanged";
                               styleMask: styleMask
                                 backing: backingType
                                   defer: flag]) {
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(windowFirstResponderChanged_:)
-                                                 name: FirstResponderChangedEvent
-                                               object: self];
+    [NSNotificationCenter.defaultCenter addObserver: self
+                                           selector: @selector(windowFirstResponderChanged_:)
+                                               name: FirstResponderChangedEvent
+                                             object: self];
   }
   return self;
 }
@@ -49,11 +49,11 @@ NSString  *FirstResponderChangedEvent = @"firstResponderChanged";
   NSNotification  *notification = [NSNotification notificationWithName: FirstResponderChangedEvent
                                                                 object: self];
 
-  [[NSNotificationQueue defaultQueue] enqueueNotification: notification
-                                             postingStyle: NSPostASAP
-                                             coalesceMask: (NSNotificationCoalescingOnName |
-                                                            NSNotificationCoalescingOnSender)
-                                                 forModes: nil];
+  [NSNotificationQueue.defaultQueue enqueueNotification: notification
+                                           postingStyle: NSPostASAP
+                                           coalesceMask: (NSNotificationCoalescingOnName |
+                                                          NSNotificationCoalescingOnSender)
+                                               forModes: nil];
 
   return retVal;
 }

@@ -12,8 +12,7 @@ NSString  *DedicatedPrivateZone = @"dedicated private";
 static NSZone  *dedicatedSharedZone = nil;
 
 + (NSZone *)zoneForTree {
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
-  NSString  *memoryZone = [userDefaults stringForKey: TreeMemoryZoneKey];
+  NSString  *memoryZone = [NSUserDefaults.standardUserDefaults stringForKey: TreeMemoryZoneKey];
   NSLog(@"Allocating tree in %@ memory zone.", memoryZone);
   if ([memoryZone isEqualToString: DefaultZone]) {
     return NSDefaultMallocZone();
@@ -68,11 +67,9 @@ static NSZone  *dedicatedSharedZone = nil;
   _itemSize = itemSize;
 }
 
-
 - (BOOL) isVirtual {
   return NO;
 }
-
 
 - (NSString *)description {
   return [NSString stringWithFormat:@"Item(size=%qu)", self.itemSize];

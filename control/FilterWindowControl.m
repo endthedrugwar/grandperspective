@@ -59,7 +59,7 @@ NSString  *MatchColumn = @"match";
 @implementation FilterWindowControl
 
 - (instancetype) init {
-  return [self initWithTestRepository: [FilterTestRepository defaultInstance]];
+  return [self initWithTestRepository: FilterTestRepository.defaultFilterTestRepository];
 }
 
 - (instancetype) initWithTestRepository:(FilterTestRepository *)testRepositoryVal {
@@ -68,7 +68,7 @@ NSString  *MatchColumn = @"match";
     NotifyingDictionary  *repositoryTestsByName = 
       [testRepository testsByNameAsNotifyingDictionary];
 
-    NSNotificationCenter  *nc = [repositoryTestsByName notificationCenter];
+    NSNotificationCenter  *nc = repositoryTestsByName.notificationCenter;
     
     [nc addObserver: self
            selector: @selector(testAddedToRepository:)
@@ -85,10 +85,10 @@ NSString  *MatchColumn = @"match";
 
     filterName = nil;
     filterTests = [[NSMutableArray alloc] initWithCapacity: 8];
-    
+
     availableTests =
-      [[NSMutableArray alloc] initWithCapacity: [testRepository testsByName].count + 8];
-    [availableTests addObjectsFromArray: [testRepository testsByName].allKeys];
+      [[NSMutableArray alloc] initWithCapacity: testRepository.testsByName.count + 8];
+    [availableTests addObjectsFromArray: testRepository.testsByName.allKeys];
     [availableTests sortUsingSelector: @selector(compare:)];
 
     testEditor = [[FilterTestEditor alloc] initWithFilterTestRepository: testRepository];
@@ -102,10 +102,10 @@ NSString  *MatchColumn = @"match";
 }
 
 - (void) dealloc {
-  [[[testRepository testsByNameAsNotifyingDictionary] notificationCenter] removeObserver: self];
+  [testRepository.testsByNameAsNotifyingDictionary.notificationCenter removeObserver: self];
   [testRepository release];
   
-  [[NSNotificationCenter defaultCenter] removeObserver: self];
+  [NSNotificationCenter.defaultCenter removeObserver: self];
 
   [testEditor release];
 
@@ -138,7 +138,7 @@ NSString  *MatchColumn = @"match";
     
   [self updateWindowState: nil];
   
-  NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];
+  NSNotificationCenter  *nc = NSNotificationCenter.defaultCenter;
   [nc addObserver: self
          selector: @selector(textEditingStarted:)
              name: NSTextDidBeginEditingNotification
@@ -168,11 +168,11 @@ NSString  *MatchColumn = @"match";
   finalNotificationFired = NO;
 
   NSResponder  *initialFirstResponder = nil;
-  if ([self isNameKnownInvalid]) {
+  if (self.isNameKnownInvalid) {
     initialFirstResponder = filterNameField;
   }
   else if (filterTestsView.selectedRow != -1) {
-    initialFirstResponder =  filterTestsView;
+    initialFirstResponder = filterTestsView;
   }
   else {
     initialFirstResponder = availableTestsView;
@@ -185,7 +185,7 @@ NSString  *MatchColumn = @"match";
     // The window is closing while no "okPerformed" or "cancelPerformed" has been fired yet. This
     // means that the user is closing the window using the window's red close button.
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: ClosePerformedEvent object: self];
+    [NSNotificationCenter.defaultCenter postNotificationName: ClosePerformedEvent object: self];
   }
 }
 
@@ -194,15 +194,15 @@ NSString  *MatchColumn = @"match";
   NSAssert( !finalNotificationFired, @"Final notification already fired." );
 
   finalNotificationFired = YES;
-  [[NSNotificationCenter defaultCenter] postNotificationName: CancelPerformedEvent object: self];
+  [NSNotificationCenter.defaultCenter postNotificationName: CancelPerformedEvent object: self];
 }
 
 - (IBAction) okAction:(id)sender {
   NSAssert( !finalNotificationFired, @"Final notification already fired." );
 
   // Check if the name of the test is okay.
-  NSString  *errorMsg = [nameValidator checkNameIsValid: [self filterName]];
-      
+  NSString  *errorMsg = [nameValidator checkNameIsValid: self.filterName];
+
   if (errorMsg != nil) {
     NSAlert *alert = [[[NSAlert alloc] init] autorelease];
   
@@ -211,11 +211,11 @@ NSString  *MatchColumn = @"match";
     [alert beginSheetModalForWindow: self.window completionHandler: nil];
 
     [invalidName release];
-    invalidName = [[self filterName] retain];
+    invalidName = [self.filterName retain];
   }
   else {
     finalNotificationFired = YES;
-    [[NSNotificationCenter defaultCenter] postNotificationName: OkPerformedEvent object: self];
+    [NSNotificationCenter.defaultCenter postNotificationName: OkPerformedEvent object: self];
   }
 }
 
@@ -239,9 +239,8 @@ NSString  *MatchColumn = @"match";
     : NSLocalizedString(@"The test will be irrevocably removed from the test repository.",
                         @"Alert informative text");
 
-  NSBundle  *mainBundle = [NSBundle mainBundle];
   NSString  *localizedName =
-    [mainBundle localizedStringForKey: testName value: nil table: @"Names"];
+    [NSBundle.mainBundle localizedStringForKey: testName value: nil table: @"Names"];
   
   [alert addButtonWithTitle: REMOVE_BUTTON_TITLE];
   [alert addButtonWithTitle: CANCEL_BUTTON_TITLE];
@@ -260,7 +259,7 @@ NSString  *MatchColumn = @"match";
   FilterTest  *newTest = [testEditor createFilterTest];
 
   if (newTest != nil) {
-    NSUInteger  index = [availableTests indexOfObject: [newTest name]];
+    NSUInteger  index = [availableTests indexOfObject: newTest.name];
     [availableTestsView selectRowIndexes: [NSIndexSet indexSetWithIndex: index]
                     byExtendingSelection: NO];
     [self.window makeFirstResponder: availableTestsView];
@@ -270,14 +269,13 @@ NSString  *MatchColumn = @"match";
 
 
 - (IBAction) editTestInRepository:(id)sender {
-  NSString  *oldName = [self selectedAvailableTestName];
-  [testEditor editFilterTestNamed: oldName];
+  [testEditor editFilterTestNamed: self.selectedAvailableTestName];
 }
 
 
 - (IBAction) addTestToFilter:(id)sender {
-  NSString  *testName = [self selectedAvailableTestName];
-  
+  NSString  *testName = self.selectedAvailableTestName;
+
   if (testName != nil) {
     FilterTestRef  *filterTest = [self filterTestForTestNamed: testName];
     NSAssert(filterTest != nil, @"Test not found in repository.");
@@ -356,16 +354,16 @@ NSString  *MatchColumn = @"match";
 
 - (id) tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)column
              row:(NSInteger)row {
-  NSBundle  *mainBundle = [NSBundle mainBundle];
-  
+  NSBundle  *mainBundle = NSBundle.mainBundle;
+
   if (tableView == filterTestsView) {
     FilterTestRef  *filterTest = filterTests[row];
 
     if ([column.identifier isEqualToString: NameColumn]) {
-      return [mainBundle localizedStringForKey: [filterTest name] value: nil table: @"Names"];
+      return [mainBundle localizedStringForKey: filterTest.name value: nil table: @"Names"];
     }
     else if ([column.identifier isEqualToString: MatchColumn]) {
-      return [NSImage imageNamed: [filterTest isInverted] ? @"Cross" : @"Checkmark"];
+      return [NSImage imageNamed: filterTest.isInverted ? @"Cross" : @"Checkmark"];
     }
     else {
       NSAssert(NO, @"Unknown column.");
@@ -409,7 +407,7 @@ NSString  *MatchColumn = @"match";
   }
 
   if (name != nil) {
-    FileItemTest  *selectedTest = [testRepository testsByName][name];
+    FileItemTest  *selectedTest = testRepository.testsByName[name];
     return selectedTest.description;
   }
   else {
@@ -451,20 +449,20 @@ NSString  *MatchColumn = @"match";
 // Configures the window to represent the given filter.
 - (void) representNamedFilter:(NamedFilter *)namedFilter {
   NSAssert(namedFilter != nil, @"Filter should not be nil.");
-  
-  Filter  *filter = [namedFilter filter];
+
+  Filter  *filter = namedFilter.filter;
   [filterTests removeAllObjects];
   
   NSUInteger  i = 0;
-  NSUInteger  max = [filter numFilterTests];
+  NSUInteger  max = filter.numFilterTests;
   while (i < max) {
     FilterTestRef  *orgFilterTest = [filter filterTestAtIndex: i];
-    NSString  *name = [orgFilterTest name];
+    NSString  *name = orgFilterTest.name;
     
     MutableFilterTestRef  *newFilterTest = [self filterTestForTestNamed: name];
     if (newFilterTest != nil) {
-      if ( [newFilterTest canToggleInverted] &&
-           [newFilterTest isInverted] != [orgFilterTest isInverted] ) {
+      if ( newFilterTest.canToggleInverted &&
+           newFilterTest.isInverted != orgFilterTest.isInverted ) {
         [newFilterTest toggleInverted];
       }
     
@@ -482,9 +480,9 @@ NSString  *MatchColumn = @"match";
   [filterTestsView reloadData];
   [availableTestsView reloadData];
   
-  if (filterName != [namedFilter name]) {
+  if (filterName != namedFilter.name) {
     [filterName release];
-    filterName = [[namedFilter name] retain];
+    filterName = [namedFilter.name retain];
   }
   filterNameField.stringValue = filterName;
   [filterNameField setEnabled: YES];
@@ -500,7 +498,7 @@ NSString  *MatchColumn = @"match";
 // Returns the filter that represents the current window state.
 - (NamedFilter *)createNamedFilter {
   Filter  *filter = [Filter filterWithFilterTests: filterTests];
-  return [NamedFilter namedFilter: filter name: [self filterName]];
+  return [NamedFilter namedFilter: filter name: self.filterName];
 }
 
 
@@ -547,7 +545,7 @@ NSString  *MatchColumn = @"match";
 
 
 - (MutableFilterTestRef *)filterTestForTestNamed:(NSString *)name {
-  FileItemTest  *test = [testRepository testsByName][name];
+  FileItemTest  *test = testRepository.testsByName[name];
 
   if (test == nil) {
     return nil;
@@ -556,7 +554,7 @@ NSString  *MatchColumn = @"match";
   MutableFilterTestRef  *filterTest =
     [[[MutableFilterTestRef alloc] initWithName: name] autorelease];
 
-  if ([test appliesToDirectories]) {
+  if (test.appliesToDirectories) {
     // Fix "inverted" state of the filter test. 
     
     if (! [filterTest isInverted]) {
@@ -572,7 +570,7 @@ NSString  *MatchColumn = @"match";
 
 - (void) testAddedToRepository:(NSNotification *)notification { 
   NSString  *testName = notification.userInfo[@"key"];
-  NSString  *selectedName = [self selectedAvailableTestName];
+  NSString  *selectedName = self.selectedAvailableTestName;
 
   [availableTests addObject: testName];
   // Ensure that the tests remain sorted.
@@ -592,7 +590,7 @@ NSString  *MatchColumn = @"match";
 
 - (void) testRemovedFromRepository:(NSNotification *)notification {
   NSString  *testName = notification.userInfo[@"key"];
-  NSString  *selectedName = [self selectedAvailableTestName];
+  NSString  *selectedName = self.selectedAvailableTestName;
 
   NSUInteger  index = [availableTests indexOfObject: testName];
   NSAssert(index != NSNotFound, @"Test not found in available tests.");
@@ -611,7 +609,7 @@ NSString  *MatchColumn = @"match";
                     byExtendingSelection: NO];
   }
 
-  [self updateWindowState:nil];
+  [self updateWindowState: nil];
 }
 
 
@@ -643,8 +641,8 @@ NSString  *MatchColumn = @"match";
 
 
 - (void) updateWindowState:(NSNotification *)notification {
-  FilterTestRef  *selectedFilterTest = [self selectedFilterTest];
-  NSString  *selectedAvailableTestName = [self selectedAvailableTestName];
+  FilterTestRef  *selectedFilterTest = self.selectedFilterTest;
+  NSString  *selectedAvailableTestName = self.selectedAvailableTestName;
 
   if (selectedAvailableTestName != nil) {
     NSUInteger  index = [self indexOfTestInFilterNamed: selectedAvailableTestName];
@@ -680,13 +678,13 @@ NSString  *MatchColumn = @"match";
   NSString  *selectedTestName = nil;
 
   if (filterTestsHighlighted) {
-    selectedTestName = [selectedFilterTest name];
+    selectedTestName = selectedFilterTest.name;
   }
   else if (availableTestsHighlighted) {
     selectedTestName = selectedAvailableTestName;
   }
   
-  FileItemTest  *selectedTest = [testRepository testsByName][selectedTestName];
+  FileItemTest  *selectedTest = testRepository.testsByName[selectedTestName];
 
   // Update enabled status of buttons with context-dependent actions.
   BOOL  availableTestHighlighted = selectedAvailableTestName != nil && availableTestsHighlighted;
@@ -704,13 +702,13 @@ NSString  *MatchColumn = @"match";
   BOOL  nonEmptyFilter = filterTests.count > 0;
 
   removeAllTestsFromFilterButton.enabled = nonEmptyFilter;
-  okButton.enabled = (nonEmptyFilter || allowEmptyFilter) && ![self isNameKnownInvalid];
+  okButton.enabled = (nonEmptyFilter || allowEmptyFilter) && !self.isNameKnownInvalid;
 }
 
 - (void) updateWindowTitle {
   NSString  *name = filterNameField.stringValue;
   NSString  *title;
-  if (name == nil || name.length==0) {
+  if (name == nil || name.length == 0) {
     title = NSLocalizedString(@"Unnamed filter", @"Window title");
   }
   else {
@@ -742,8 +740,7 @@ NSString  *MatchColumn = @"match";
   [okButton performSelector: @selector(setKeyEquivalent:)
                  withObject: @"\r"
                  afterDelay: 0.1
-                    inModes: @[NSModalPanelRunLoopMode,
-                                                        NSDefaultRunLoopMode]];
+                    inModes: @[NSModalPanelRunLoopMode, NSDefaultRunLoopMode]];
 }
 
 
@@ -765,7 +762,7 @@ NSString  *MatchColumn = @"match";
 
 - (void) deleteTest:(NSString *)testName {
   FileItemTest  *defaultTest = [testRepository applicationProvidedTestForName: testName];
-  NotifyingDictionary  *repositoryTestsByName = [testRepository testsByNameAsNotifyingDictionary];
+  NotifyingDictionary  *repositoryTestsByName = testRepository.testsByNameAsNotifyingDictionary;
 
   if (defaultTest == nil) {
     [repositoryTestsByName removeObjectForKey: testName];

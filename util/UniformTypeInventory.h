@@ -37,7 +37,7 @@ extern NSString  *UniformTypeKey;
   NSMutableDictionary  *childrenForUTI;
 }
 
-+ (UniformTypeInventory *)defaultUniformTypeInventory;
+@property (class, nonatomic, readonly) UniformTypeInventory *defaultUniformTypeInventory;
 
 @property (nonatomic, readonly) NSUInteger count;
 

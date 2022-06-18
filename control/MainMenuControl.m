@@ -194,19 +194,15 @@ NSString  *AfterClosingLastViewDoNothing = @"do nothing";
 @implementation MainMenuControl
 
 + (void) initialize {
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
   // Load application-defaults from the information properties file.
-  NSBundle  *bundle = [NSBundle mainBundle];
-      
+  NSBundle  *bundle = NSBundle.mainBundle;
   NSDictionary  *appDefaults = [bundle objectForInfoDictionaryKey: @"GPApplicationDefaults"];
-
-  [defaults registerDefaults: appDefaults];
+  [NSUserDefaults.standardUserDefaults registerDefaults: appDefaults];
   
   // Load the ranked list of uniform types and observe the inventory to ensure that it will be
   // extended when new types are encountered (as a result of scanning).
-  UniformTypeRanking  *uniformTypeRanking = [UniformTypeRanking defaultUniformTypeRanking];
-  UniformTypeInventory  *uniformTypeInventory = [UniformTypeInventory defaultUniformTypeInventory];
+  UniformTypeRanking  *uniformTypeRanking = UniformTypeRanking.defaultUniformTypeRanking;
+  UniformTypeInventory  *uniformTypeInventory = UniformTypeInventory.defaultUniformTypeInventory;
     
   [uniformTypeRanking loadRanking: uniformTypeInventory];
 
@@ -313,22 +309,24 @@ static MainMenuControl  *singletonInstance = nil;
     exportAsTextDialogControl = nil;
 
     viewCount = 0;
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(viewWillOpen:)
-                                                 name: ViewWillOpenEvent
-                                               object: nil];
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(viewWillClose:)
-                                                 name: ViewWillCloseEvent
-                                               object: nil];
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(readTaskAborted:)
-                                                 name: ReadTaskAbortedEvent
-                                               object: nil];
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(scanTaskAborted:)
-                                                 name: ScanTaskAbortedEvent
-                                               object: nil];
+
+    NSNotificationCenter  *nc = NSNotificationCenter.defaultCenter;
+    [nc addObserver: self
+           selector: @selector(viewWillOpen:)
+               name: ViewWillOpenEvent
+             object: nil];
+    [nc addObserver: self
+           selector: @selector(viewWillClose:)
+               name: ViewWillCloseEvent
+             object: nil];
+    [nc addObserver: self
+           selector: @selector(readTaskAborted:)
+               name: ReadTaskAbortedEvent
+             object: nil];
+    [nc addObserver: self
+           selector: @selector(scanTaskAborted:)
+               name: ScanTaskAbortedEvent
+             object: nil];
 
     showWelcomeWindow = YES; // Default
   }
@@ -367,8 +365,8 @@ static MainMenuControl  *singletonInstance = nil;
 
 - (BOOL) application:(NSApplication *)theApplication openFile:(NSString *)filename {
   BOOL isDirectory;
-  BOOL targetExists =
-    [[NSFileManager defaultManager] fileExistsAtPath: filename isDirectory: &isDirectory];
+  BOOL targetExists = [NSFileManager.defaultManager fileExistsAtPath: filename
+                                                         isDirectory: &isDirectory];
   
   if (targetExists) {
     if (isDirectory) {
@@ -408,17 +406,17 @@ static MainMenuControl  *singletonInstance = nil;
   NSApp.servicesProvider = self;
   
   if (showWelcomeWindow) {
-    NSTimeInterval delay = [[NSUserDefaults standardUserDefaults] 
-                              floatForKey: DelayBeforeWelcomeWindowAfterStartupKey];
+    NSTimeInterval delay = [NSUserDefaults.standardUserDefaults
+                            floatForKey: DelayBeforeWelcomeWindowAfterStartupKey];
     [self showWelcomeWindowAfterDelay: delay];
   }
 }
 
 - (void) applicationWillTerminate:(NSNotification *)notification {
-  [[FilterRepository defaultInstance] storeUserCreatedFilters];
-  [[FilterTestRepository defaultInstance] storeUserCreatedTests];
+  [FilterRepository.defaultFilterRepository storeUserCreatedFilters];
+  [FilterTestRepository.defaultFilterTestRepository storeUserCreatedTests];
        
-  [[UniformTypeRanking defaultUniformTypeRanking] storeRanking];
+  [UniformTypeRanking.defaultUniformTypeRanking storeRanking];
        
   [self release];
 }
@@ -436,7 +434,7 @@ static MainMenuControl  *singletonInstance = nil;
     return;
   }
   
-  if (! [fileUrl isDirectory]) {
+  if (!fileUrl.isDirectory) {
     *error = NSLocalizedString(@"Expected a folder.", @"Error message");
     NSLog(@"%@", *error); // Also logging. Setting *error does not seem to work?
     return;
@@ -561,8 +559,8 @@ static MainMenuControl  *singletonInstance = nil;
 }
 
 - (IBAction) rescan:(id)sender {
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
-  NSString  *rescanAction = [userDefaults stringForKey: DefaultRescanActionKey];
+  NSString  *rescanAction = [NSUserDefaults.standardUserDefaults
+                             stringForKey: DefaultRescanActionKey];
   if ([rescanAction isEqualToString: RescanAll]) {
     [self rescanAll: sender];
   }
@@ -580,13 +578,13 @@ static MainMenuControl  *singletonInstance = nil;
     return;
   }
 
-  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
-  NSString  *rescanBehaviour = [userDefaults stringForKey: RescanBehaviourKey];
+  NSString  *rescanBehaviour = [NSUserDefaults.standardUserDefaults
+                                stringForKey: RescanBehaviourKey];
   if ([rescanBehaviour isEqualToString: RescanClosesOldWindow]) {
     [oldControl.window close];
   }
   
-  TreeContext  *oldContext = [oldControl treeContext];
+  TreeContext  *oldContext = oldControl.treeContext;
   [self rescanItem: oldContext.scanTree deriveFrom: oldControl];
 }
 
@@ -596,7 +594,7 @@ static MainMenuControl  *singletonInstance = nil;
     return;
   }
   
-  ItemPathModelView  *pathModelView = [oldControl pathModelView];
+  ItemPathModelView  *pathModelView = oldControl.pathModelView;
   [self rescanItem: pathModelView.visibleTree deriveFrom: oldControl];
 }
 
@@ -606,7 +604,7 @@ static MainMenuControl  *singletonInstance = nil;
     return;
   }
   
-  ItemPathModelView  *pathModelView = [oldControl pathModelView];
+  ItemPathModelView  *pathModelView = oldControl.pathModelView;
   [self rescanItem: pathModelView.selectedFileItem deriveFrom: oldControl];
 }
 
@@ -616,8 +614,8 @@ static MainMenuControl  *singletonInstance = nil;
     return;
   }
 
-  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
-  NSString  *rescanBehaviour = [userDefaults stringForKey: RescanBehaviourKey];
+  NSString  *rescanBehaviour = [NSUserDefaults.standardUserDefaults
+                                stringForKey: RescanBehaviourKey];
   if ([rescanBehaviour isEqualToString: RescanClosesOldWindow]) {
     [oldControl.window close];
   }
@@ -626,7 +624,7 @@ static MainMenuControl  *singletonInstance = nil;
   DirectoryViewDisplaySettings  *displaySettings = controlSettings.displaySettings;
 
   NSString  *maskName = displaySettings.maskName;
-  Filter  *filterForMask = [FilterRepository.defaultInstance filterForName: maskName];
+  Filter  *filterForMask = [FilterRepository.defaultFilterRepository filterForName: maskName];
   NamedFilter  *namedFilter = [NamedFilter namedFilter: filterForMask name: maskName];
 
   // Unset the mask
@@ -639,7 +637,7 @@ static MainMenuControl  *singletonInstance = nil;
                                                        unboundTests: unboundTests];
   [MainMenuControl reportUnboundTests: unboundTests];
 
-  TreeContext  *oldContext = [oldControl treeContext];
+  TreeContext  *oldContext = oldControl.treeContext;
   [self rescanItem: oldContext.scanTree
         deriveFrom: oldControl
           settings: controlSettings
@@ -678,7 +676,7 @@ static MainMenuControl  *singletonInstance = nil;
                                                        settings: settings] autorelease];
 
   FilterTaskInput  *input = [FilterTaskInput alloc];
-  [[input initWithTreeContext: [oldControl treeContext]
+  [[input initWithTreeContext: oldControl.treeContext
                     filterSet: filterSet
               packagesAsFiles: !displaySettings.showPackageContents] autorelease];
 
@@ -748,7 +746,7 @@ static MainMenuControl  *singletonInstance = nil;
 
 - (IBAction) saveDirectoryViewImage:(id)sender {
   DirectoryViewControl  *dirViewControl = 
-    [NSApplication sharedApplication].mainWindow.windowController;
+    NSApplication.sharedApplication.mainWindow.windowController;
 
   [[[SaveImageDialogControl alloc] initWithDirectoryViewControl: dirViewControl] autorelease];
 }
@@ -788,11 +786,11 @@ static MainMenuControl  *singletonInstance = nil;
 
 
 - (IBAction) toggleToolbarShown:(id)sender {
-  [[NSApplication sharedApplication].mainWindow toggleToolbarShown: sender];
+  [NSApplication.sharedApplication.mainWindow toggleToolbarShown: sender];
 }
 
 - (IBAction) customizeToolbar:(id)sender {
-  [[NSApplication sharedApplication].mainWindow runToolbarCustomizationPalette: sender];
+  [NSApplication.sharedApplication.mainWindow runToolbarCustomizationPalette: sender];
 }
 
 - (IBAction) toggleControlPanelShown:(id)sender {
@@ -806,11 +804,9 @@ static MainMenuControl  *singletonInstance = nil;
 }
 
 - (IBAction) openWebsite:(id)sender {
-  NSBundle  *bundle = [NSBundle mainBundle];
-
+  NSBundle  *bundle = NSBundle.mainBundle;
   NSURL  *url = [NSURL URLWithString: [bundle objectForInfoDictionaryKey: @"GPWebsiteURL"]];
-
-  [[NSWorkspace sharedWorkspace] openURL: url];
+  [NSWorkspace.sharedWorkspace openURL: url];
 }
 
 - (void) scanFolder:(NSString *)path {
@@ -877,8 +873,8 @@ static MainMenuControl  *singletonInstance = nil;
   [openPanel setCanChooseDirectories: YES];
   [openPanel setAllowsMultipleSelection: NO];
   
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
-  openPanel.treatsFilePackagesAsDirectories = [userDefaults boolForKey: ShowPackageContentsByDefaultKey];
+  openPanel.treatsFilePackagesAsDirectories = [NSUserDefaults.standardUserDefaults
+                                               boolForKey: ShowPackageContentsByDefaultKey];
   
   [openPanel setTitle: NSLocalizedString(@"Scan folder", @"Title of open panel")];
   [openPanel setPrompt: NSLocalizedString(@"Scan", @"Prompt in open panel")];
@@ -891,7 +887,7 @@ static MainMenuControl  *singletonInstance = nil;
   } 
 
   NSURL  *targetURL = openPanel.URL;
-  if (! targetURL.fileURL) {
+  if (!targetURL.fileURL) {
     NSLog(@"URL '%@' is not a file?", targetURL);
     return;
   }
@@ -927,8 +923,8 @@ static MainMenuControl  *singletonInstance = nil;
 - (void) scanFolder:(NSString *)path filterSet:(FilterSet *)filterSet {
   [self hideWelcomeWindow]; // Auto-close window if it was showing
 
-  NSString  *fileSizeMeasure =
-    [[NSUserDefaults standardUserDefaults] stringForKey: FileSizeMeasureKey];
+  NSString  *fileSizeMeasure = [NSUserDefaults.standardUserDefaults
+                                stringForKey: FileSizeMeasureKey];
 
   FreshDirViewWindowCreator  *windowCreator =
     [[[FreshDirViewWindowCreator alloc] initWithWindowManager: windowManager] autorelease];
@@ -1024,7 +1020,7 @@ static MainMenuControl  *singletonInstance = nil;
            usingTaskManager:(VisibleAsynchronousTaskManager *)taskManager
                     options:(id)options {
   DirectoryViewControl  *dirViewControl =
-    [NSApplication sharedApplication].mainWindow.windowController;
+    NSApplication.sharedApplication.mainWindow.windowController;
 
   if ([savePanel runModal] == NSModalResponseOK) {
     NSURL  *destURL = savePanel.URL;
@@ -1051,10 +1047,10 @@ static MainMenuControl  *singletonInstance = nil;
 
 - (void) duplicateCurrentWindowSharingPath:(BOOL)sharePathModel {
   DirectoryViewControl  *oldControl = 
-    [NSApplication sharedApplication].mainWindow.windowController;
+    NSApplication.sharedApplication.mainWindow.windowController;
 
   // Share or clone the path model.
-  ItemPathModel  *pathModel = [[oldControl pathModelView] pathModel];
+  ItemPathModel  *pathModel = oldControl.pathModelView.pathModel;
 
   if (!sharePathModel) {
     pathModel = [[pathModel copy] autorelease];
@@ -1084,7 +1080,7 @@ static MainMenuControl  *singletonInstance = nil;
   [selectFilterWindow close];
   
   if (status == NSModalResponseStop) {
-    return [filterSelectionPanelControl selectedNamedFilter];
+    return filterSelectionPanelControl.selectedNamedFilter;
   }
   return nil;
 }
@@ -1116,9 +1112,7 @@ static MainMenuControl  *singletonInstance = nil;
 
   // Quote the names
   NSMutableArray  *quotedNames = [NSMutableArray arrayWithCapacity: unboundNames.count];
-  NSEnumerator  *nameEnum = [unboundNames objectEnumerator];
-  NSString  *name;
-  while (name = [nameEnum nextObject]) {
+  for (NSString *name in [unboundNames objectEnumerator]) {
     [quotedNames addObject: [NSString stringWithFormat: @"\"%@\"", name]];
   }
     
@@ -1133,13 +1127,13 @@ static MainMenuControl  *singletonInstance = nil;
 
 
 + (NSString *)windowTitleForDirectoryView:(DirectoryViewControl *)control {
-  TreeContext  *treeContext = [control treeContext];
-  NSString  *scanPath = [[treeContext scanTree] path];
+  TreeContext  *treeContext = control.treeContext;
+  NSString  *scanPath = treeContext.scanTree.path;
 
-  NSString  *scanTime = [treeContext stringForScanTime];
-  FilterSet  *filterSet = [treeContext filterSet];
+  NSString  *scanTime = treeContext.stringForScanTime;
+  FilterSet  *filterSet = treeContext.filterSet;
 
-  if ([filterSet numFilters] == 0) {
+  if (filterSet.numFilters == 0) {
     return [NSString stringWithFormat: @"%@ - %@", scanPath, scanTime];
   }
   return [NSString stringWithFormat: @"%@ - %@ - %@", scanPath, scanTime, filterSet.description];
@@ -1174,13 +1168,13 @@ static MainMenuControl  *singletonInstance = nil;
                          withObject: nil
                       waitUntilDone: NO];
 
-  NSString  *action = [[NSUserDefaults standardUserDefaults] stringForKey: NoViewsBehaviourKey];
+  NSString  *action = [NSUserDefaults.standardUserDefaults stringForKey: NoViewsBehaviourKey];
   if ([action isEqualToString: AfterClosingLastViewQuit]) {
     if (allowAutoQuit) {
       NSLog(@"Auto-quitting application after last view has closed");
-      [[NSApplication sharedApplication] performSelectorOnMainThread: @selector(terminate:)
-                                                          withObject: nil
-                                                       waitUntilDone: NO];
+      [NSApplication.sharedApplication performSelectorOnMainThread: @selector(terminate:)
+                                                        withObject: nil
+                                                     waitUntilDone: NO];
     }
   }
   else if ([action isEqualToString: AfterClosingLastViewShowWelcome]) {
@@ -1220,11 +1214,11 @@ static MainMenuControl  *singletonInstance = nil;
 
 
 - (void) readTaskCompleted:(TreeReader *)treeReader {
-  if ([treeReader aborted]) {
+  if (treeReader.aborted) {
     // Reading was aborted. Silently ignore.
     return;
   }
-  else if ([treeReader error]) {
+  else if (treeReader.error) {
     NSAlert *alert = [[[NSAlert alloc] init] autorelease];
 
     NSString  *format = 
@@ -1232,13 +1226,13 @@ static MainMenuControl  *singletonInstance = nil;
                         @"Alert message (with filename arg)");
 
     [alert addButtonWithTitle: OK_BUTTON_TITLE];
-    alert.messageText = [NSString stringWithFormat: format, [taskInput path].lastPathComponent];
-    alert.informativeText = [treeReader error].localizedDescription;
+    alert.messageText = [NSString stringWithFormat: format, taskInput.path.lastPathComponent];
+    alert.informativeText = treeReader.error.localizedDescription;
 
     [alert runModal];
   }
   else {
-    AnnotatedTreeContext  *tree = [treeReader annotatedTreeContext];
+    AnnotatedTreeContext  *tree = treeReader.annotatedTreeContext;
     NSAssert(tree != nil, @"Unexpected state.");
 
     // Do not report unbound tests as there is no direct impact. Firstly, the state of the read scan
@@ -1305,7 +1299,7 @@ static MainMenuControl  *singletonInstance = nil;
     alert.informativeText = ((NSError *)result).localizedDescription;
   }
 
-  alert.messageText = [NSString stringWithFormat: msgFormat, [taskInput path].lastPathComponent];
+  alert.messageText = [NSString stringWithFormat: msgFormat, taskInput.path.lastPathComponent];
   
   [alert addButtonWithTitle: OK_BUTTON_TITLE];
   [alert runModal];
@@ -1332,7 +1326,7 @@ static MainMenuControl  *singletonInstance = nil;
 
 
 - (DirectoryViewControl *)createWindowForScanResult:(ScanTaskOutput *)scanResult {
-  DirectoryViewControl *control = [self createWindowForTree: [scanResult treeContext]];
+  DirectoryViewControl *control = [self createWindowForTree: scanResult.treeContext];
 
   if (scanResult.alert) {
     NSAlert  *alert = [[[NSAlert alloc] init] autorelease];
@@ -1363,8 +1357,8 @@ static MainMenuControl  *singletonInstance = nil;
   
   if (self.addToRecentScans) {
     // The scan was successful, so add it to the "Recent Scans" list
-    NSString  *scanPath = [[[annTreeContext treeContext] scanTree] systemPath];
-    [[NSDocumentController sharedDocumentController]
+    NSString  *scanPath = annTreeContext.treeContext.scanTree.systemPath;
+    [NSDocumentController.sharedDocumentController
       noteNewRecentDocumentURL: [NSURL fileURLWithPath: scanPath]];
   }
 
@@ -1421,12 +1415,10 @@ static MainMenuControl  *singletonInstance = nil;
 - (DirectoryViewControl *)createDirectoryViewControlForAnnotatedTree:
                             (AnnotatedTreeContext *)annTreeContext {
   // Try to match the subjectPath to the targetPath
-  ItemPathModel  *subjectPath = [ItemPathModel pathWithTreeContext: [annTreeContext treeContext]];
+  ItemPathModel  *subjectPath = [ItemPathModel pathWithTreeContext: annTreeContext.treeContext];
 
   [subjectPath suppressVisibleTreeChangedNotifications: YES];
 
-  NSEnumerator  *fileItemEnum = [[targetPath fileItemPath] objectEnumerator];
-  FileItem  *targetItem;
   FileItem  *itemToSelect = nil;
 
   BOOL  insideTargetScanTree = NO;
@@ -1434,15 +1426,15 @@ static MainMenuControl  *singletonInstance = nil;
   BOOL  insideVisibleTree = NO;
   BOOL  hasVisibleItems = NO;
   
-  NSString  *subjectScanTreePath = [[subjectPath scanTree] path];
+  NSString  *subjectScanTreePath = subjectPath.scanTree.path;
   
-  while (targetItem = [fileItemEnum nextObject]) {
+  for (FileItem *targetItem in [targetPath.fileItemPath objectEnumerator]) {
     if (insideSubjectScanTree) {
       // Only try to extend the visible path once we are inside the subject's scan tree, as this is
       // where the path starts. (Also, we need to be in the target's scan tree as well, but this is
       // implied).
-      if ( [subjectPath extendVisiblePathToSimilarFileItem: targetItem] ) {
-        if (! insideVisibleTree) {
+      if ([subjectPath extendVisiblePathToSimilarFileItem: targetItem]) {
+        if (!insideVisibleTree) {
           [subjectPath moveVisibleTreeDown];
         }
         else {
@@ -1454,19 +1446,18 @@ static MainMenuControl  *singletonInstance = nil;
         break;
       }
     }
-    if (itemToSelect == nil && targetItem == [targetPath selectedFileItem]) {
+    if (itemToSelect == nil && targetItem == targetPath.selectedFileItem) {
       // Found the selected item. It is the path's current end point. 
-      itemToSelect = [subjectPath lastFileItem];
+      itemToSelect = subjectPath.lastFileItem;
     }
-    if (!insideVisibleTree && targetItem == [targetPath visibleTree]) {
+    if (!insideVisibleTree && targetItem == targetPath.visibleTree) {
       // The remainder of this path can remain visible.
       insideVisibleTree = YES;
     }
-    if (!insideTargetScanTree && targetItem == [targetPath scanTree]) {
+    if (!insideTargetScanTree && targetItem == targetPath.scanTree) {
       insideTargetScanTree = YES;
     }
-    if (insideTargetScanTree && 
-        [[targetItem path] isEqualToString: subjectScanTreePath]) {
+    if (insideTargetScanTree && [targetItem.path isEqualToString: subjectScanTreePath]) {
       // We can now start extending "subjectPath" to match "targetPath". 
       insideSubjectScanTree = YES;
     }
@@ -1484,7 +1475,7 @@ static MainMenuControl  *singletonInstance = nil;
     // Did not manage to match the new path all the way up to the selected item in the original
     // path. The selected item of the new path can therefore be set to the path endpoint (as that is
     // the closest it can come to matching the old selection).
-    [subjectPath selectFileItem: [subjectPath lastFileItem]];
+    [subjectPath selectFileItem: subjectPath.lastFileItem];
   }
         
   [subjectPath suppressVisibleTreeChangedNotifications: NO];

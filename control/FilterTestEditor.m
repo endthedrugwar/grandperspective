@@ -40,7 +40,7 @@
 @implementation FilterTestEditor
 
 - (instancetype) init {
-  return [self initWithFilterTestRepository: [FilterTestRepository defaultInstance]];
+  return [self initWithFilterTestRepository: FilterTestRepository.defaultFilterTestRepository];
 }
 
 - (instancetype) initWithFilterTestRepository:(FilterTestRepository *)repository {
@@ -65,7 +65,7 @@
   NSWindow  *editTestWindow = [self loadEditFilterTestWindow];
   
   FilterTestNameValidator  *testNameValidator = 
-    [[[FilterTestNameValidator alloc] initWithExistingTests: [testRepository testsByName]]
+    [[[FilterTestNameValidator alloc] initWithExistingTests: testRepository.testsByName]
      autorelease];
   
   [filterTestWindowControl setNameValidator: testNameValidator];
@@ -80,7 +80,7 @@
     
     if (filterTest != nil) {
       // The nameValidator should have ensured that this check succeeds.
-      NSAssert([testRepository testsByName][filterTest.name] == nil,
+      NSAssert(testRepository.testsByName[filterTest.name] == nil,
                @"Duplicate name check failed.");
 
       [[testRepository testsByNameAsNotifyingDictionary] addObject: filterTest.fileItemTest
@@ -101,7 +101,7 @@
 - (FilterTest *)editFilterTestNamed:(NSString *)oldName {
   NSWindow  *editTestWindow = [self loadEditFilterTestWindow];
 
-  FileItemTest  *oldTest = [testRepository testsByName][oldName];
+  FileItemTest  *oldTest = testRepository.testsByName[oldName];
 
   [filterTestWindowControl representFilterTest: 
      [FilterTest filterTestWithName: oldName fileItemTest: oldTest]];
@@ -110,7 +110,7 @@
     // The test's name equals that of an application provided test. Show the localized version of
     // the name (which implicitly prevents the name from being changed).
   
-    NSBundle  *mainBundle = [NSBundle mainBundle];
+    NSBundle  *mainBundle = NSBundle.mainBundle;
     NSString  *localizedName =
       [mainBundle localizedStringForKey: oldName value: nil table: @"Names"];
       
@@ -118,7 +118,7 @@
   }
   
   FilterTestNameValidator  *testNameValidator =
-    [[[FilterTestNameValidator alloc] initWithExistingTests: [testRepository testsByName]
+    [[[FilterTestNameValidator alloc] initWithExistingTests: testRepository.testsByName
                                                 allowedName: oldName] autorelease];
   
   [filterTestWindowControl setNameValidator: testNameValidator];
@@ -135,20 +135,20 @@
 
       // The terminationControl should have ensured that this check succeeds.
       NSAssert([newName isEqualToString: oldName] ||
-               [testRepository testsByName][newName] == nil,
+               testRepository.testsByName[newName] == nil,
                @"Duplicate name check failed.");
 
       if (! [newName isEqualToString: oldName]) {
         // Handle name change.
-        [[testRepository testsByNameAsNotifyingDictionary] moveObjectFromKey: oldName
-                                                                       toKey: newName];
+        [testRepository.testsByNameAsNotifyingDictionary moveObjectFromKey: oldName
+                                                                     toKey: newName];
           
         // Rest of rename handled in response to update notification event.
       }
         
       // Test itself has changed as well.
-      [[testRepository testsByNameAsNotifyingDictionary] updateObject: [newFilterTest fileItemTest]
-                                                               forKey: newName];
+      [testRepository.testsByNameAsNotifyingDictionary updateObject: newFilterTest.fileItemTest
+                                                             forKey: newName];
 
       // Rest of update handled in response to update notification event.
     }
@@ -206,8 +206,7 @@
   if ([name isEqualToString:@""]) {
     return NSLocalizedString(@"The test must have a name.", @"Alert message");
   }
-  else if ( ![allowedName isEqualToString: name] &&
-            allTests[name] != nil) {
+  else if (![allowedName isEqualToString: name] && allTests[name] != nil) {
     NSString  *fmt = NSLocalizedString(@"A test named \"%@\" already exists.", @"Alert message");
     return [NSString stringWithFormat: fmt, name];
   }

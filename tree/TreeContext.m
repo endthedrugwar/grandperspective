@@ -105,10 +105,10 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
     _filterSet = [(filterSet ?: [FilterSet filterSet]) retain];
 
     // Listen to self
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(fileItemDeletedHandled:)
-                                                 name: FileItemDeletedHandledEvent
-                                               object: self];
+    [NSNotificationCenter.defaultCenter addObserver: self
+                                           selector: @selector(fileItemDeletedHandled:)
+                                               name: FileItemDeletedHandledEvent
+                                             object: self];
         
     mutex = [[NSLock alloc] init];
     lock = [[NSConditionLock alloc] initWithCondition: ConditionIdle];
@@ -122,7 +122,7 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
 
 
 - (void) dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver: self];
+  [NSNotificationCenter.defaultCenter removeObserver: self];
 
   [_volumeTree release];
   [usedSpaceItem release];
@@ -152,8 +152,8 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
   ITEM_SIZE  miscUsedSize = self.volumeSize;
   ITEM_SIZE  actualFreeSpace = self.freeSpace;
   BOOL  miscUsedSizeAnomaly = FALSE;
-  if ([scanTree itemSize] <= self.volumeSize) {
-    miscUsedSize -= [scanTree itemSize];
+  if (scanTree.itemSize <= self.volumeSize) {
+    miscUsedSize -= scanTree.itemSize;
 
     if (self.freeSpace <= miscUsedSize) {
       miscUsedSize -= self.freeSpace;
@@ -181,7 +181,7 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
     NSLog(@"Volume size=%qu (%@), Free space=%qu (%@), Scanned size=%qu (%@)",
           self.volumeSize, [FileItem stringForFileItemSize: self.volumeSize],
           self.freeSpace, [FileItem stringForFileItemSize: self.freeSpace],
-          [scanTree itemSize], [FileItem stringForFileItemSize: [scanTree itemSize]]);
+          scanTree.itemSize, [FileItem stringForFileItemSize: scanTree.itemSize]);
   }
 
   FileItem  *freeSpaceItem = [[[FileItem alloc] initWithLabel: FreeSpace
@@ -217,7 +217,7 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
 }
 
 - (unsigned long long) miscUsedSpace {
-  return [miscUsedSpaceItem itemSize];
+  return miscUsedSpaceItem.itemSize;
 }
 
 - (BOOL) monitorsSource {
@@ -243,7 +243,7 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
 }
 
 - (NSString *)stringForFileItemSize:(ITEM_SIZE)size {
-  if ([self usesTallyFileSize]) {
+  if (self.usesTallyFileSize) {
     if (size == 1) {
       return @"";
     }
@@ -259,10 +259,10 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
   NSAssert(replacedItem == nil, @"Replaced item not nil.");
   NSAssert(replacingItem == nil, @"Replacing item not nil.");
   
-  replacedItem = [[pathModelView selectedFileItemInTree] retain]; 
+  replacedItem = [pathModelView.selectedFileItemInTree retain];
   replacingItem = [[FileItem alloc] initWithLabel: FreedSpace
-                                           parent: [replacedItem parentDirectory]
-                                             size: [replacedItem itemSize]
+                                           parent: replacedItem.parentDirectory
+                                             size: replacedItem.itemSize
                                             flags: FileItemIsNotPhysical
                                      creationTime: 0
                                  modificationTime: 0
@@ -271,7 +271,7 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
   Item  *containingItem = [self itemContainingSelectedFileItem: pathModelView];
 
   [self obtainWriteLock];
-  if ([containingItem isVirtual]) {
+  if (containingItem.isVirtual) {
     CompoundItem  *compoundItem = (CompoundItem *)containingItem;
     
     if (compoundItem.first == replacedItem) {
@@ -430,10 +430,10 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
 @implementation TreeContext (PrivateMethods)
 
 - (Item *)itemContainingSelectedFileItem:(ItemPathModelView *)pathModelView {
-  FileItem  *selectedItem = [pathModelView selectedFileItemInTree];
+  FileItem  *selectedItem = pathModelView.selectedFileItemInTree;
   
   // Get the items in the path (from the underlying path model). 
-  NSArray  *itemsInPath = [[pathModelView pathModel] itemPath];
+  NSArray  *itemsInPath = pathModelView.pathModel.itemPath;
   NSUInteger  i = itemsInPath.count - 1;
   while (itemsInPath[i] != selectedItem) {
     NSAssert(i > 0, @"Item not found.");
@@ -446,7 +446,7 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
 
 
 - (void) postFileItemDeleted {
-  NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];
+  NSNotificationCenter  *nc = NSNotificationCenter.defaultCenter;
 
   [nc postNotificationName: FileItemDeletedEvent object: self];
   [nc postNotificationName: FileItemDeletedHandledEvent object: self];
@@ -494,4 +494,3 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
 }
 
 @end // TreeContext (PrivateMethods)
-

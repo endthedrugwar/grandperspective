@@ -93,25 +93,25 @@ static BOOL appHasDeletePermission;
   // Configure all pop-up buttons.
   [self setupPopUp: fileDeletionPopUp
                key: FileDeletionTargetsKey
-           content: [DirectoryViewControl fileDeletionTargetNames]];
+           content: DirectoryViewControl.fileDeletionTargetNames];
   [self setupPopUp: rescanBehaviourPopUp
                key: RescanBehaviourKey
-           content: [MainMenuControl rescanBehaviourNames]];
+           content: MainMenuControl.rescanBehaviourNames];
   [self setupPopUp: noViewsBehaviourPopUp
                key: NoViewsBehaviourKey
-           content: [MainMenuControl noViewsBehaviourNames]];
+           content: MainMenuControl.noViewsBehaviourNames];
   [self setupPopUp: fileSizeMeasurePopUp
                key: FileSizeMeasureKey
            content: [TreeBuilder fileSizeMeasureNames]];
   [self setupPopUp: fileSizeUnitSystemPopUp
                key: FileSizeUnitSystemKey
-           content: [FileItem fileSizeUnitSystemNames]];
+           content: FileItem.fileSizeUnitSystemNames];
   [self setupPopUp: defaultColorMappingPopUp
                key: DefaultColorMappingKey
-           content: [FileItemMappingCollection defaultFileItemMappingCollection].allKeys];
+           content: FileItemMappingCollection.defaultFileItemMappingCollection.allKeys];
   [self setupPopUp: defaultColorPalettePopUp
                key: DefaultColorPaletteKey
-           content: [ColorListCollection defaultColorListCollection].allKeys];
+           content: ColorListCollection.defaultColorListCollection.allKeys];
 
   if (! appHasDeletePermission) {
     // Cannot delete, so fix visible setting to "DeleteNothing" and prevent changes
@@ -124,7 +124,7 @@ static BOOL appHasDeletePermission;
   filterPopUpControl = [[FilterPopUpControl alloc] initWithPopUpButton: defaultFilterPopUp];
   [filterPopUpControl selectFilterNamed: [userDefaults stringForKey: DefaultFilterName]];
 
-  UniqueTagsTransformer  *tagMaker = [UniqueTagsTransformer defaultUniqueTagsTransformer];
+  UniqueTagsTransformer  *tagMaker = UniqueTagsTransformer.defaultUniqueTagsTransformer;
   defaultFilterPopUp.tag = [[tagMaker transformedValue: DefaultFilterName] intValue];
   
   fileDeletionConfirmationCheckBox.state =
@@ -142,7 +142,7 @@ static BOOL appHasDeletePermission;
 
 - (IBAction) popUpValueChanged:(id)sender {
   NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
-  UniqueTagsTransformer  *tagMaker = [UniqueTagsTransformer defaultUniqueTagsTransformer];
+  UniqueTagsTransformer  *tagMaker = UniqueTagsTransformer.defaultUniqueTagsTransformer;
 
   NSPopUpButton  *popUp = sender;
   NSString  *name = [tagMaker nameForTag: popUp.selectedItem.tag];
@@ -186,7 +186,7 @@ static BOOL appHasDeletePermission;
 - (void) setupPopUp:(NSPopUpButton *)popUp
                 key:(NSString *)key
             content:(NSArray *)names {
-  UniqueTagsTransformer  *tagMaker = [UniqueTagsTransformer defaultUniqueTagsTransformer];
+  UniqueTagsTransformer  *tagMaker = UniqueTagsTransformer.defaultUniqueTagsTransformer;
   NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
   
   // Associate the pop-up with its key in the preferences by their tag.
@@ -201,14 +201,14 @@ static BOOL appHasDeletePermission;
 }
 
 - (void) setPopUp: (NSPopUpButton *)popUp toValue:(NSString *)value {
-  UniqueTagsTransformer  *tagMaker = [UniqueTagsTransformer defaultUniqueTagsTransformer];
+  UniqueTagsTransformer  *tagMaker = UniqueTagsTransformer.defaultUniqueTagsTransformer;
 
   NSUInteger  tag = [tagMaker tagForName: value];
   [popUp selectItemAtIndex: [popUp indexOfItemWithTag: tag]];
 }
 
 - (void) updateButtonState {
-  UniqueTagsTransformer  *tagMaker = [UniqueTagsTransformer defaultUniqueTagsTransformer];
+  UniqueTagsTransformer  *tagMaker = UniqueTagsTransformer.defaultUniqueTagsTransformer;
   NSString  *name = [tagMaker nameForTag: fileDeletionPopUp.selectedItem.tag];
 
   fileDeletionConfirmationCheckBox.enabled = ![name isEqualToString: DeleteNothing];

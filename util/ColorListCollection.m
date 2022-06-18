@@ -67,11 +67,9 @@ NSColorList* createGrandPerspectivePalette(void) {
   if (defaultColorListCollectionInstance == nil) {
     ColorListCollection  *instance = [[[ColorListCollection alloc] init] autorelease];
     
-    NSBundle  *bundle = [NSBundle mainBundle];
+    NSBundle  *bundle = NSBundle.mainBundle;
     NSArray  *colorListPaths = [bundle pathsForResourcesOfType: @".clr" inDirectory: @"Palettes"];
-    NSEnumerator  *pathEnum = [colorListPaths objectEnumerator];
-    NSString  *path;
-    while (path = [pathEnum nextObject]) {
+    for (NSString *path in [colorListPaths objectEnumerator]) {
       NSString  *name = path.lastPathComponent.stringByDeletingPathExtension;
 
       NSColorList  *colorList = [[[NSColorList alloc] initWithName: name
@@ -135,8 +133,8 @@ NSColorList* createGrandPerspectivePalette(void) {
   NSColorList  *fallback = nil;
 
   // First try the preferred default as specified by the user
-  NSUserDefaults  *ud = [NSUserDefaults standardUserDefaults];
-  fallback = [self colorListForKey: [ud stringForKey: DefaultColorPaletteKey]];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
+  fallback = [self colorListForKey: [userDefaults stringForKey: DefaultColorPaletteKey]];
 
   // Otherwise try a hardcoded default
   if (fallback == nil) {

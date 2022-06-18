@@ -51,7 +51,7 @@
   [visibleTree release];
   visibleTree = nil;
 
-  if ( !abort ) {
+  if (!abort) {
     return [rectangleDrawer createImageFromBitmap];
   }
   else {
@@ -71,13 +71,13 @@
 
 
 - (BOOL) descendIntoItem:(Item *)item atRect:(NSRect)rect depth:(int)depth {
-  if ( [item isVirtual] ) {
+  if (item.isVirtual) {
     return YES;
   }
 
   FileItem  *file = (FileItem *)item;
 
-  if ( file == visibleTree ) {
+  if (file == visibleTree) {
     insideVisibleTree = YES;
 
     [self drawVisibleTreeAtRect: rect];
@@ -92,16 +92,16 @@
     }
   }
 
-  if ( !insideVisibleTree ) {
+  if (!insideVisibleTree) {
     // Not yet inside the visible tree (implying that the entire volume is shown). Ensure that the
     // special "volume" items are drawn, and only descend towards the visible tree.
 
-    if ( file.isDirectory ) {
-      if ( !file.isPhysical && [file.label isEqualToString: UsedSpace] ) {
+    if (file.isDirectory) {
+      if (!file.isPhysical && [file.label isEqualToString: UsedSpace]) {
         [self drawUsedSpaceAtRect: rect];
       }
 
-      if ( [file isAncestorOfFileItem: visibleTree] ) {
+      if ([file isAncestorOfFileItem: visibleTree]) {
         [treeGuide descendIntoDirectory: (DirectoryItem *)file];
         return YES;
       }
@@ -110,7 +110,7 @@
       }
     }
     else {
-      if ( !file.isPhysical && [file.label isEqualToString: FreeSpace] ) {
+      if (!file.isPhysical && [file.label isEqualToString: FreeSpace]) {
         [self drawFreeSpaceAtRect: rect];
       }
 
@@ -124,10 +124,10 @@
     return NO;
   }
 
-  if ( file.isDirectory ) {
+  if (file.isDirectory) {
     // Descend unless drawing has been aborted
 
-    if ( !abort ) {
+    if (!abort) {
       [treeGuide descendIntoDirectory: (DirectoryItem *)file];
       return YES;
     }
@@ -137,11 +137,11 @@
   }
 
   // It's a plain file
-  if ( file.isPhysical ) {
+  if (file.isPhysical) {
     [self drawFile:(PlainFileItem *)file atRect: rect depth: depth];
   }
   else {
-    if ( [file.label isEqualToString: FreedSpace] ) {
+    if ([file.label isEqualToString: FreedSpace]) {
       [self drawFreedSpaceAtRect: rect];
     }
   }
@@ -160,12 +160,12 @@
 }
 
 - (void) emergedFromItem:(Item *)item {
-  if ( !item.isVirtual ) {
+  if (!item.isVirtual) {
     if (item == visibleTree) {
       insideVisibleTree = NO;
     }
 
-    if ( ((FileItem *)item).isDirectory ) {
+    if (((FileItem *)item).isDirectory) {
       [treeGuide emergedFromDirectory: (DirectoryItem *)item];
     }
   }

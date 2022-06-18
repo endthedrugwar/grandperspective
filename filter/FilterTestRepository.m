@@ -25,7 +25,7 @@ NSString  *AppTestsKey = @"GPDefaultFilterTests";
 
 @implementation FilterTestRepository
 
-+ (id) defaultInstance {
++ (FilterTestRepository *)defaultFilterTestRepository {
   static FilterTestRepository  *defaultInstance = nil;
 
   if (defaultInstance == nil) {
@@ -41,14 +41,14 @@ NSString  *AppTestsKey = @"GPDefaultFilterTests";
     NSMutableDictionary  *initialTestDictionary = [NSMutableDictionary dictionaryWithCapacity: 16];
     
     // Load application-provided tests from the information properties file.
-    NSBundle  *bundle = [NSBundle mainBundle];
+    NSBundle  *bundle = NSBundle.mainBundle;
       
     [self addStoredTestsFromDictionary: [bundle objectForInfoDictionaryKey: AppTestsKey]
                            toLiveTests: initialTestDictionary];
     applicationProvidedTests = [[NSDictionary alloc] initWithDictionary: initialTestDictionary];
 
     // Load additional user-created tests from preferences.
-    NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
     [self addStoredTestsFromDictionary: [userDefaults dictionaryForKey: UserTestsKey]
                            toLiveTests: initialTestDictionary];
 
@@ -84,24 +84,19 @@ NSString  *AppTestsKey = @"GPDefaultFilterTests";
 
 
 - (void) storeUserCreatedTests {
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
-  
   NSMutableDictionary  *testsDict = 
     [NSMutableDictionary dictionaryWithCapacity: self.testsByName.count];
 
-  NSString  *name;
-  NSEnumerator  *nameEnum = [self.testsByName keyEnumerator];
-
-  while ((name = [nameEnum nextObject]) != nil) {
+  for (NSString *name in [self.testsByName keyEnumerator]) {
     FileItemTest  *fileItemTest = self.testsByName[name];
 
     if (fileItemTest != applicationProvidedTests[name]) {
       testsDict[name] = [fileItemTest dictionaryForObject];
     }
   }
-    
-  [userDefaults setObject: testsDict forKey: UserTestsKey];
 
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
+  [userDefaults setObject: testsDict forKey: UserTestsKey];
   [userDefaults synchronize];
 }
 
@@ -112,10 +107,7 @@ NSString  *AppTestsKey = @"GPDefaultFilterTests";
 
 - (void) addStoredTestsFromDictionary:(NSDictionary *)testDicts
                           toLiveTests:(NSMutableDictionary *)testsByNameVal {
-  NSString  *name;
-  NSEnumerator  *nameEnum = [testDicts keyEnumerator];
-
-  while (name = [nameEnum nextObject]) {
+  for (NSString *name in [testDicts keyEnumerator]) {
     NSDictionary  *filterTestDict = testDicts[name];
     FileItemTest  *fileItemTest = [FileItemTest fileItemTestFromDictionary: filterTestDict];
     
@@ -126,12 +118,9 @@ NSString  *AppTestsKey = @"GPDefaultFilterTests";
 
 - (void) addStoredTestsFromArray:(NSArray *)testDicts
                      toLiveTests:(NSMutableDictionary *)testsByNameVal {
-  NSDictionary  *fileItemTestDict;
-  NSEnumerator  *fileItemTestDictEnum = [testDicts objectEnumerator];
-  
   ItemSizeTestFinder  *sizeTestFinder = [[[ItemSizeTestFinder alloc] init] autorelease];
 
-  while ((fileItemTestDict = [fileItemTestDictEnum nextObject]) != nil) {
+  for (NSDictionary *fileItemTestDict in [testDicts objectEnumerator]) {
     FileItemTest  *fileItemTest = [FileItemTest fileItemTestFromDictionary: fileItemTestDict];
     NSString  *name = fileItemTestDict[@"name"];
     

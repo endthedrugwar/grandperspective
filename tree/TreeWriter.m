@@ -116,7 +116,7 @@ NSLocalizedString(@"Failed to write entire buffer.", @"Error message")
   if (time == 0) {
     return nil;
   } else {
-    return [[self nsTimeFormatter] stringFromDate:
+    return [self.nsTimeFormatter stringFromDate:
             [NSDate dateWithTimeIntervalSinceReferenceDate: time]];
   }
 }
@@ -167,17 +167,17 @@ NSLocalizedString(@"Failed to write entire buffer.", @"Error message")
     return;
   }
 
-  if ([item isVirtual]) {
+  if (item.isVirtual) {
     [self dumpItemContents: ((CompoundItem *)item).first];
     [self dumpItemContents: ((CompoundItem *)item).second];
   }
   else {
     FileItem  *fileItem = (FileItem *)item;
 
-    if ([fileItem isPhysical]) {
+    if (fileItem.isPhysical) {
       // Only include actual files.
 
-      if ([fileItem isDirectory]) {
+      if (fileItem.isDirectory) {
         [self appendFolderElement: (DirectoryItem *)fileItem];
       }
       else {

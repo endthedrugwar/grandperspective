@@ -308,10 +308,10 @@ NSString  *AttributeNameKey = @"name";
                      userInfo:(NSDictionary *)userInfo NS_UNAVAILABLE;
 
 - (instancetype) initWithAttributeName:(NSString *)attribName
-                   reason:(NSString *)reason NS_DESIGNATED_INITIALIZER;
+                                reason:(NSString *)reason NS_DESIGNATED_INITIALIZER;
          
 + (instancetype) exceptionWithAttributeName:(NSString *)attribName
-         reason:(NSString *)reason;
+                                     reason:(NSString *)reason;
 
 @end // @interface AttributeParseException
 
@@ -319,7 +319,7 @@ NSString  *AttributeNameKey = @"name";
 @implementation TreeReader
 
 - (instancetype) init {
-  return [self initWithFilterTestRepository: [FilterTestRepository defaultInstance]];
+  return [self initWithFilterTestRepository: FilterTestRepository.defaultFilterTestRepository];
 }
 
 - (instancetype) initWithFilterTestRepository:(FilterTestRepository *)repository {
@@ -435,7 +435,7 @@ NSString  *AttributeNameKey = @"name";
   // Only return progress info while task has not been aborted. When task is aborted, handlers are
   // released, as are the objects they were constructing. This can trigger a memory access violation
   // when trying to construct the path for the current folder being scanned.
-  return abort ? nil : [progressTracker progressInfo];
+  return abort ? nil : progressTracker.progressInfo;
 }
 
 - (void) setFormatVersion:(int)version {
@@ -585,7 +585,7 @@ didStartElement:(NSString *)elementName
 
     successSelector = successSelectorVal;
     
-    [reader parser].delegate = self;
+    reader.parser.delegate = self;
   }
   
   return self;
@@ -606,7 +606,7 @@ didStartElement:(NSString *)childElement
    namespaceURI:(NSString *)namespaceURI
   qualifiedName:(NSString *)qName
      attributes:(NSDictionary *)attribs {
-  if ([reader aborted]) {
+  if (reader.aborted) {
     // Although the TreeReader actually ignores it, given that the error callback
     // is used for consistency providing a properly initialised error object.
     NSError  *error = [ApplicationError errorWithLocalizedDescription: PARSING_ABORTED_MSG];
@@ -637,7 +637,7 @@ didStartElement:(NSString *)childElement
 // Handler callback methods
 
 - (void) handler:(ElementHandler *)handler failedParsingElement:(NSError *)parseError {
-  [reader parser].delegate = self;
+  reader.parser.delegate = self;
   
   [callback handler: self failedParsingElement: parseError];
 
@@ -645,7 +645,7 @@ didStartElement:(NSString *)childElement
 }
 
 - (void) handler:(ElementHandler *)handler finishedParsingElement:(id)result {
-  [reader parser].delegate = self;
+  reader.parser.delegate = self;
 
   [handler release];
 }
@@ -687,10 +687,9 @@ didStartElement:(NSString *)childElement
 }
 
 - (void) handlerAttributeParseError:(NSException *)ex {
-  NSString  *details = 
-    [NSString stringWithFormat: ATTR_PARSE_ERROR_MSG,
-     ex.userInfo[AttributeNameKey], ex.reason];
-       
+  NSString  *details = [NSString stringWithFormat: ATTR_PARSE_ERROR_MSG,
+                        ex.userInfo[AttributeNameKey], ex.reason];
+
   [self handlerError: details];
 }
 
@@ -705,9 +704,8 @@ didStartElement:(NSString *)childElement
     return value;
   } 
 
-  NSException  *ex = [[[AttributeParseException alloc]
-                       initWithAttributeName: name reason: ATTR_NOT_FOUND_MSG] autorelease];
-  @throw ex;
+  @throw [AttributeParseException exceptionWithAttributeName: name
+                                                      reason: ATTR_NOT_FOUND_MSG];
 }
 
 - (NSString *)getStringAttributeValue:(NSString *)name
@@ -807,9 +805,8 @@ didStartElement:(NSString *)childElement
     unichar  ch = [stringValue characterAtIndex: i++];
     
     if (ch < '0' || ch > '9') {
-      NSException  *ex =
-        [AttributeParseException exceptionWithAttributeName: name reason: EXPECTED_UINT_VALUE_MSG];
-      @throw ex;
+      @throw [AttributeParseException exceptionWithAttributeName: name
+                                                          reason: EXPECTED_UINT_VALUE_MSG];
     }
     
     size = size * 10 + (ch - '0');
@@ -820,7 +817,7 @@ didStartElement:(NSString *)childElement
 
 - (NSDate *)parseDateAttribute:(NSString *)name value:(NSString *)stringValue {
   // Try to parse format used by writer
-  NSDate  *dateValue = [[TreeWriter nsTimeFormatter] dateFromString: stringValue];
+  NSDate  *dateValue = [TreeWriter.nsTimeFormatter dateFromString: stringValue];
 
   // Try to parse format formerly used for <ScanInfo>: -(NSString*)description
   if (dateValue == nil) {
@@ -834,9 +831,8 @@ didStartElement:(NSString *)childElement
   }
   
   if (dateValue == nil) {
-    NSException  *ex =
-      [AttributeParseException exceptionWithAttributeName: name reason: EXPECTED_DATE_VALUE_MSG];
-    @throw ex;
+    @throw [AttributeParseException exceptionWithAttributeName: name
+                                                        reason: EXPECTED_DATE_VALUE_MSG];
   }
 
   return dateValue;
@@ -850,9 +846,8 @@ didStartElement:(NSString *)childElement
   [scanner release];
      
   if (! ok) {
-    NSException  *ex =
-      [AttributeParseException exceptionWithAttributeName: name reason: EXPECTED_INT_VALUE_MSG];
-    @throw ex;
+    @throw [AttributeParseException exceptionWithAttributeName: name
+                                                        reason: EXPECTED_INT_VALUE_MSG];
   }
   
   return intValue;
@@ -870,14 +865,13 @@ didStartElement:(NSString *)childElement
     return NO;
   }
   
-  NSException  *ex =
-    [AttributeParseException exceptionWithAttributeName: name reason: EXPECTED_BOOL_VALUE_MSG];
-  @throw ex;
+  @throw [AttributeParseException exceptionWithAttributeName: name
+                                                      reason: EXPECTED_BOOL_VALUE_MSG];
 }
           
 - (CFAbsoluteTime) parseTimeAttribute:(NSString *)name value:(NSString *)stringValue {
   // Try to parse format used by writer
-  NSDate  *timeValue = [[TreeWriter nsTimeFormatter] dateFromString:stringValue];
+  NSDate  *timeValue = [TreeWriter.nsTimeFormatter dateFromString: stringValue];
 
   // Try to parse format formerly used for <File>s and <Folder>s: en_GB
   if (timeValue == nil) {
@@ -898,13 +892,12 @@ didStartElement:(NSString *)childElement
       enGBCommaFormat.locale = [NSLocale localeWithLocaleIdentifier: @"en_US_POSIX"];
       enGBCommaFormat.dateFormat = @"dd/MM/yyyy, HH:mm";
     }
-    timeValue = [enGBCommaFormat dateFromString:stringValue];
+    timeValue = [enGBCommaFormat dateFromString: stringValue];
   }
 
   if (timeValue == nil) {
-    NSException  *ex =
-      [AttributeParseException exceptionWithAttributeName: name reason: EXPECTED_TIME_VALUE_MSG];
-    @throw ex;
+    @throw [AttributeParseException exceptionWithAttributeName: name
+                                                        reason: EXPECTED_TIME_VALUE_MSG];
   }
 
   return CFDateGetAbsoluteTime((CFDateRef)timeValue);
@@ -1018,10 +1011,8 @@ didStartElement:(NSString *)childElement
     if (! ([sizeMeasure isEqualToString: LogicalFileSizeName] ||
            [sizeMeasure isEqualToString: PhysicalFileSizeName] ||
            [sizeMeasure isEqualToString: TallyFileSizeName]) ) {
-      NSException  *ex = 
-        [AttributeParseException exceptionWithAttributeName: FileSizeMeasureAttr
-                                                     reason: UNRECOGNIZED_VALUE_MSG];
-      @throw ex;
+      @throw [AttributeParseException exceptionWithAttributeName: FileSizeMeasureAttr
+                                                          reason: UNRECOGNIZED_VALUE_MSG];
     }
   
     tree = [[TreeContext alloc] initWithVolumePath: volumePath
@@ -1201,7 +1192,7 @@ didStartElement:(NSString *)childElement
   // Note: Setting "nil" filterRepository to ensure that filter definition as read is retained.
   return [FilterSet filterSetWithNamedFilters: namedFilters
                              filterRepository: nil
-                               testRepository: [reader filterTestRepository]
+                               testRepository: reader.filterTestRepository
                                unboundFilters: nil
                                  unboundTests: unboundTests];
 }
@@ -1343,8 +1334,8 @@ didStartElement:(NSString *)childElement
                           onSuccess: successSelectorVal]) {
     parentItem = [parentVal retain];
 
-    files = [[[reader filesArrayPool] borrowObject] retain];
-    dirs = [[[reader dirsArrayPool] borrowObject] retain];
+    files = [[reader.filesArrayPool borrowObject] retain];
+    dirs = [[reader.dirsArrayPool borrowObject] retain];
   }
   
   return self;
@@ -1354,10 +1345,10 @@ didStartElement:(NSString *)childElement
   [parentItem release];
   [dirItem release];
   
-  [[reader filesArrayPool] returnObject: files];
+  [reader.filesArrayPool returnObject: files];
   [files release];
 
-  [[reader dirsArrayPool] returnObject: dirs];
+  [reader.dirsArrayPool returnObject: dirs];
   [dirs release];
   
   [super dealloc];
@@ -1418,7 +1409,7 @@ didStartElement:(NSString *)childElement
 }
 
 - (id) objectForElement {
-  TreeBalancer  *treeBalancer = [reader treeBalancer];
+  TreeBalancer  *treeBalancer = reader.treeBalancer;
 
   [dirItem setFileItems: [treeBalancer createTreeForItems: files]
          directoryItems: [treeBalancer createTreeForItems: dirs]];
@@ -1502,7 +1493,7 @@ didStartElement:(NSString *)childElement
     int  flags = [self getIntegerAttributeValue: FlagsAttr from: attribs defaultValue: 0];
     ITEM_SIZE  size = [self getItemSizeAttributeValue: SizeAttr from: attribs];
     
-    UniformTypeInventory  *typeInventory = [UniformTypeInventory defaultUniformTypeInventory];
+    UniformTypeInventory  *typeInventory = UniformTypeInventory.defaultUniformTypeInventory;
     UniformType  *fileType = [typeInventory uniformTypeForExtension: name.pathExtension];
 
     CFAbsoluteTime  creationTime = [self getTimeAttributeValue: CreatedAttr from: attribs];

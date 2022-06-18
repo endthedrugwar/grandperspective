@@ -21,7 +21,7 @@ extern NSString  *UniformTypesRankingKey;
 
 }
 
-+ (UniformTypeRanking *)defaultUniformTypeRanking;
+@property (class, nonatomic, readonly) UniformTypeRanking *defaultUniformTypeRanking;
 
 /* Loads the ranking from the user preferences. It adds new types to the type inventory as needed.
  * This method should therefore not be invoked while another thread may also be using/modifying the

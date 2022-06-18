@@ -73,11 +73,8 @@
                    toPopUp:(NSPopUpButton *)popUp
                     select:(NSString *)selectName
                      table:(NSString *)tableName {
-  NSEnumerator  *nameEnum = [names objectEnumerator];
-  NSString  *name;
-  
-  while (name = [nameEnum nextObject]) {
-    [self addLocalisedName: name 
+  for (NSString *name in [names objectEnumerator]) {
+    [self addLocalisedName: name
                    toPopUp: popUp
                     select: [name isEqualToString: selectName]
                      table: tableName];
@@ -88,8 +85,9 @@
                   toPopUp:(NSPopUpButton *)popUp
                    select:(BOOL) select
                     table:(NSString *)tableName {
-  NSBundle  *mainBundle = [NSBundle mainBundle];
-  NSString  *localizedName = [mainBundle localizedStringForKey: name value: nil table: tableName];
+  NSString  *localizedName = [NSBundle.mainBundle localizedStringForKey: name
+                                                                  value: nil
+                                                                  table: tableName];
 
   int  tag = [[self transformedValue: name] intValue];
   

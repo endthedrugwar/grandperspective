@@ -5,7 +5,6 @@
 @class FilteredTreeGuide;
 @class TreeBalancer;
 @class TreeContext;
-@class DirectoryItem;
 @class ProgressTracker;
 
 

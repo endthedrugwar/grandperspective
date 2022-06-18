@@ -127,25 +127,25 @@ NSString  *UnknownTypeUTI = @"unknown";
 }
 
 - (UniformType *)uniformTypeForIdentifier:(NSString *)uti {
-  id  type = typeForUTI[uti];
+  id  typeOrSelf = typeForUTI[uti];
 
-  if (type == self) {
+  if (typeOrSelf == self) {
     // Encountered cycle in the type conformance relationships. Breaking the loop to avoid infinite
     // recursion.
 
     return nil;
   }
 
-  if (type != nil) {
+  if (typeOrSelf != nil) {
     // It has already been registered
-    return type;
+    return typeOrSelf;
   }
 
   // Temporarily associate "self" with the UTI to mark that the type is currently being created.
   // This is done to guard against infinite recursion should there be a cycle in the
   // type-conformance relationsships.
   typeForUTI[uti] = self;
-  type = [self createUniformTypeForIdentifier: uti];
+  UniformType  *type = [self createUniformTypeForIdentifier: uti];
 
   if (type == nil) {
     // No uniform type could be created for the UTI
@@ -158,9 +158,7 @@ NSString  *UnknownTypeUTI = @"unknown";
   childrenForUTI[uti] = @[];
   
   // Register it as a child for each parent
-  NSEnumerator  *parentEnum = [[type parentTypes] objectEnumerator];
-  UniformType  *parentType;
-  while (parentType = [parentEnum nextObject]) {
+  for (UniformType *parentType in [type.parentTypes objectEnumerator]) {
     NSString  *parentUTI = [parentType uniformTypeIdentifier];
     NSArray  *children = childrenForUTI[parentUTI];
     
@@ -186,23 +184,18 @@ NSString  *UnknownTypeUTI = @"unknown";
 
 
 - (void) dumpTypesToLog {
-  NSEnumerator  *typesEnum = [self uniformTypeEnumerator];
-  UniformType  *type;
-  while (type = [typesEnum nextObject]) {
+  for (UniformType *type in [self uniformTypeEnumerator]) {
     NSLog(@"Type: %@", [type uniformTypeIdentifier]);
     NSLog(@"  Description: %@", [type description]);
 
     NSMutableString  *s = [NSMutableString stringWithCapacity: 64];
-    NSEnumerator  *typesEnum2 = [[type parentTypes] objectEnumerator];
-    UniformType  *type2;
-    while (type2 = [typesEnum2 nextObject]) {
+    for (UniformType *type2 in [type.parentTypes objectEnumerator]) {
       [s appendFormat: @" %@", [type2 uniformTypeIdentifier]];
     }
     NSLog(@"  Parents:%@", s);
     
     [s deleteCharactersInRange: NSMakeRange(0, s.length)];
-    typesEnum2 = [[self childrenOfUniformType: type] objectEnumerator];
-    while (type2 = [typesEnum2 nextObject]) {
+    for (UniformType *type2 in [[self childrenOfUniformType: type] objectEnumerator]) {
       [s appendFormat: @" %@", [type2 uniformTypeIdentifier]];
     }
     NSLog(@"  Children:%@", s);
@@ -215,7 +208,7 @@ NSString  *UnknownTypeUTI = @"unknown";
 @implementation UniformTypeInventory (PrivateMethods)
 
 - (void) postNotification:(NSNotification *)notification {
-  [[NSNotificationCenter defaultCenter] postNotification: notification];
+  [NSNotificationCenter.defaultCenter postNotification: notification];
 }
 
 - (UniformType *)createUniformTypeForIdentifier:(NSString *)uti {
@@ -238,9 +231,7 @@ NSString  *UnknownTypeUTI = @"unknown";
     // Create the corresponding array of type objects.
     NSMutableArray *temp = [NSMutableArray arrayWithCapacity: utiArray.count];
 
-    NSEnumerator  *utiEnum = [utiArray objectEnumerator];
-    NSString  *parentUti;
-    while (parentUti = [utiEnum nextObject]) {
+    for (NSString *parentUti in [utiArray objectEnumerator]) {
       UniformType  *parentType = [self uniformTypeForIdentifier: (NSString *)parentUti];
          
       if (parentType != nil) {
@@ -263,5 +254,3 @@ NSString  *UnknownTypeUTI = @"unknown";
 }
 
 @end // @implementation UniformTypeInventory (PrivateMethods)
-
-

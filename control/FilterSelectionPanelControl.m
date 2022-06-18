@@ -16,7 +16,7 @@
 @implementation FilterSelectionPanelControl
 
 - (instancetype) init {
-  return [self initWithFilterRepository: [FilterRepository defaultInstance]];
+  return [self initWithFilterRepository: FilterRepository.defaultFilterRepository];
 }
 
 - (instancetype) initWithFilterRepository:(FilterRepository *)filterRepositoryVal {
@@ -49,7 +49,7 @@
 
 - (IBAction) editFilter:(id)sender {
   [self filterEditor];
-  NSString  *oldName = [filterPopUpControl selectedFilterName];
+  NSString  *oldName = filterPopUpControl.selectedFilterName;
   [filterEditor editFilterNamed: oldName];
 }
 
@@ -73,9 +73,9 @@
 }
 
 - (NamedFilter *)selectedNamedFilter {
-  NSString  *name = [filterPopUpControl selectedFilterName];
+  NSString  *name = filterPopUpControl.selectedFilterName;
 
-  Filter  *filter = [filterRepository filtersByName][name];
+  Filter  *filter = filterRepository.filtersByName[name];
   // Filter should always exist, as pop-up control is observing the filter repository.
   NSAssert(filter != nil, @"Unexpected nil filter");
 

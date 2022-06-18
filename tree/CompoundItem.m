@@ -91,7 +91,7 @@
 
 // Custom "setter", which enforces that size remains the same
 - (void) replaceFirst:(Item *)newItem {
-  NSAssert([newItem itemSize] == [_first itemSize], @"Sizes must be equal.");
+  NSAssert(newItem.itemSize == _first.itemSize, @"Sizes must be equal.");
   
   if (_first != newItem) {
     [_first release];
@@ -101,7 +101,7 @@
 
 // Custom "setter", which enforces that size remains the same
 - (void) replaceSecond:(Item *)newItem {
-  NSAssert([newItem itemSize] == [_second itemSize], @"Sizes must be equal.");
+  NSAssert(newItem.itemSize == _second.itemSize, @"Sizes must be equal.");
   
   if (_second != newItem) {
     [_second release];

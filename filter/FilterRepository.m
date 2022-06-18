@@ -24,7 +24,7 @@ NSString  *AppFiltersKey = @"GPDefaultFilters";
 
 @implementation FilterRepository
 
-+ (id) defaultInstance {
++ (FilterRepository *)defaultFilterRepository {
   static FilterRepository  *defaultInstance = nil;
 
   if (defaultInstance == nil) {
@@ -41,15 +41,12 @@ NSString  *AppFiltersKey = @"GPDefaultFilters";
       [NSMutableDictionary dictionaryWithCapacity: 16];
     
     // Load application-provided filters from the information properties file.
-    NSBundle  *bundle = [NSBundle mainBundle];
-      
-    [self addStoredFilters: [bundle objectForInfoDictionaryKey: AppFiltersKey]
+    [self addStoredFilters: [NSBundle.mainBundle objectForInfoDictionaryKey: AppFiltersKey]
              toLiveFilters: initialFilterDictionary];
     applicationProvidedFilters = [[NSDictionary alloc] initWithDictionary: initialFilterDictionary];
 
     // Load additional user-created tests from preferences.
-    NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
-    [self addStoredFilters: [userDefaults dictionaryForKey: UserFiltersKey]
+    [self addStoredFilters: [NSUserDefaults.standardUserDefaults dictionaryForKey: UserFiltersKey]
              toLiveFilters: initialFilterDictionary];
 
     // Store filters in a NotifyingDictionary
@@ -84,15 +81,13 @@ NSString  *AppFiltersKey = @"GPDefaultFilters";
 
 
 - (void) storeUserCreatedFilters {
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
   
   NSMutableDictionary  *filtersDict = 
     [NSMutableDictionary dictionaryWithCapacity: self.filtersByName.count];
 
-  NSString  *name;
-  NSEnumerator  *nameEnum = [self.filtersByName keyEnumerator];
-  
-  while ((name = [nameEnum nextObject]) != nil) {
+
+  for (NSString *name in [self.filtersByName keyEnumerator]) {
     Filter  *filter = self.filtersByName[name];
 
     if (filter != applicationProvidedFilters[name]) {
@@ -112,10 +107,7 @@ NSString  *AppFiltersKey = @"GPDefaultFilters";
 
 - (void) addStoredFilters:(NSDictionary *)storedFilters
             toLiveFilters:(NSMutableDictionary *)liveFilters {
-  NSString  *name;
-  NSEnumerator  *nameEnum = [storedFilters keyEnumerator];
-
-  while (name = [nameEnum nextObject]) {
+  for (NSString *name in [storedFilters keyEnumerator]) {
     NSDictionary  *storedFilter = storedFilters[name];
     Filter  *filter = [Filter filterFromDictionary: storedFilter];
     

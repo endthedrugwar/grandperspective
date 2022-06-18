@@ -48,7 +48,7 @@
     itemLocator = [[ItemLocator alloc] init];
     fileItemPath =
       (NSMutableArray *)[[pathModel fileItemPath: [NSMutableArray arrayWithCapacity: 16]] retain];
-    scanTreeIndex = [self indexCorrespondingToItem: [pathModel scanTree] startingAt: 0];
+    scanTreeIndex = [self indexCorrespondingToItem: pathModel.scanTree startingAt: 0];
     
     invisibleSelectedItem = nil;
     showPackageContents = YES;
@@ -56,7 +56,7 @@
     [self updatePath];
     
     automaticallyStickToEndPoint = YES;
-    if (automaticallyStickToEndPoint && ![self canMoveSelectionDown]) {
+    if (automaticallyStickToEndPoint && !self.canMoveSelectionDown) {
       // We're at the end-point. Make depth stick to end-point. 
       preferredSelectionDepth = STICK_TO_ENDPOINT;
     }
@@ -64,15 +64,14 @@
       preferredSelectionDepth = selectedItemIndex - visibleTreeIndex; 
     }
 
-    keyboardNavigationDelta = [[NSUserDefaults standardUserDefaults]
+    keyboardNavigationDelta = [NSUserDefaults.standardUserDefaults
                                floatForKey: KeyboardNavigationDeltaKey];
     if (keyboardNavigationDelta <= 0) {
       NSLog(@"Invalid value for keyboardNavigationDelta.");
       keyboardNavigationDelta = 5;
     }
     
-    NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];
-
+    NSNotificationCenter  *nc = NSNotificationCenter.defaultCenter;
     [nc addObserver: self
            selector: @selector(selectedItemChanged:)
                name: SelectedItemChangedEvent
@@ -87,7 +86,7 @@
 }
 
 - (void) dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver: self];
+  [NSNotificationCenter.defaultCenter removeObserver: self];
   
   [pathBuilder release];
   [pathModel release];
@@ -139,7 +138,7 @@
   
   [pathModel suppressSelectedItemChangedNotifications: NO]; 
 
-  if ([[self visibleTree] isAncestorOfFileItem: itemAtPoint]) {
+  if ([self.visibleTree isAncestorOfFileItem: itemAtPoint]) {
     // The item is inside the visible tree. The selection can therefore be managed using the
     // fileItemPath array.
     [invisibleSelectedItem release]; 
@@ -149,7 +148,7 @@
     // The item is outside the visible tree. The fileItemPath array can therefore not be used to
     // manage its selection, so this needs to be done explicitly.
     
-    NSAssert([pathModel selectedFileItem] == [pathModel visibleTree],
+    NSAssert(pathModel.selectedFileItem == pathModel.visibleTree,
              @"Unexpected pathModel state.");
     
     [invisibleSelectedItem release];
@@ -216,11 +215,11 @@
 
 
 - (DirectoryItem *)volumeTree {
-  return [pathModel volumeTree];
+  return pathModel.volumeTree;
 }
 
 - (DirectoryItem *)scanTree {
-  return [pathModel scanTree];
+  return pathModel.scanTree;
 }
 
 - (FileItem *)visibleTree {
@@ -229,10 +228,10 @@
 
 
 - (FileItem *)selectedFileItem {
-  FileItem  *selectedItem = [self selectedFileItemInTree];
+  FileItem  *selectedItem = self.selectedFileItemInTree;
   
-  return (!showPackageContents && [selectedItem isDirectory])
-         ? [((DirectoryItem *)selectedItem) itemWhenHidingPackageContents]
+  return (!showPackageContents && selectedItem.isDirectory)
+         ? ((DirectoryItem *)selectedItem).itemWhenHidingPackageContents
          : selectedItem;
 }
 
@@ -257,7 +256,7 @@
 }
 
 - (void) moveVisibleTreeUp {
-  NSAssert([self canMoveVisibleTreeUp], @"Cannot move visible tree up.");
+  NSAssert(self.canMoveVisibleTreeUp, @"Cannot move visible tree up.");
 
   // May require multiple moves in the wrapped model, as the visible tree there could be inside a
   // package.
@@ -266,12 +265,12 @@
   [pathModel suppressVisibleTreeChangedNotifications: YES];
   do {
     [pathModel moveVisibleTreeUp];
-  } while ([pathModel visibleTree] != newVisibleTree);
+  } while (pathModel.visibleTree != newVisibleTree);
   [pathModel suppressVisibleTreeChangedNotifications: NO];
 }
 
 - (void) moveVisibleTreeDown {
-  NSAssert([self canMoveVisibleTreeDown], @"Cannot move visible tree down.");
+  NSAssert(self.canMoveVisibleTreeDown, @"Cannot move visible tree down.");
   
   [pathModel moveVisibleTreeDown];
 }
@@ -313,7 +312,7 @@
 }
 
 - (void) moveSelectionUp {
-  NSAssert([self canMoveSelectionUp], @"Cannot move selection up");
+  NSAssert(self.canMoveSelectionUp, @"Cannot move selection up");
   
   // If preferred depth was sticky, it is not anymore.
   preferredSelectionDepth = selectedItemIndex - 1 - visibleTreeIndex;
@@ -322,11 +321,11 @@
 }
 
 - (void) moveSelectionDown {
-  NSAssert([self canMoveSelectionDown], @"Cannot move selection down.");
+  NSAssert(self.canMoveSelectionDown, @"Cannot move selection down.");
   
   [pathModel selectFileItem: fileItemPath[selectedItemIndex + 1]];
     
-  if (automaticallyStickToEndPoint && ![self canMoveSelectionDown]) {
+  if (automaticallyStickToEndPoint && !self.canMoveSelectionDown) {
     // End-point reached. Make depth stick to end-point automatically 
     preferredSelectionDepth = STICK_TO_ENDPOINT;
   }
@@ -338,7 +337,6 @@
 @end
 
 
-
 @implementation ItemPathModelView (PrivateMethods)
 
 - (void) updatePath {
@@ -346,11 +344,11 @@
   NSAssert(updatedPath == fileItemPath, @"Arrays differ unexpectedly.");
     
   // Set the visible item
-  visibleTreeIndex = [self indexCorrespondingToItem: [pathModel visibleTree]
+  visibleTreeIndex = [self indexCorrespondingToItem: pathModel.visibleTree
                                          startingAt: scanTreeIndex];
   
   // Set the selected item
-  selectedItemIndex = [self indexCorrespondingToItem: [pathModel selectedFileItem]
+  selectedItemIndex = [self indexCorrespondingToItem: pathModel.selectedFileItem
                                           startingAt: visibleTreeIndex];
 
   // Find the last item that can be selected
@@ -364,7 +362,7 @@
   NSAssert(updatedPath == fileItemPath, @"Arrays differ unexpectedly.");
   
   // Set the visible item
-  visibleTreeIndex = [self indexCorrespondingToItem: [pathModel visibleTree]
+  visibleTreeIndex = [self indexCorrespondingToItem: pathModel.visibleTree
                                          startingAt: scanTreeIndex];
             
   // Find the last item that can be selected
@@ -394,8 +392,8 @@
     }
 
     if (!showPackageContents &&
-        [fileItem isDirectory] &&
-        [((DirectoryItem *)fileItem) isPackage]) {
+        fileItem.isDirectory &&
+        ((DirectoryItem *)fileItem).isPackage) {
       // Got to a package whose contents should remain hidden
       break;
     }
@@ -412,14 +410,14 @@
 }
 
 - (void) postSelectedItemChanged:(NSNotification *)origNotification {
-  [[NSNotificationCenter defaultCenter] postNotificationName: SelectedItemChangedEvent
-                                                      object: self
-                                                    userInfo: origNotification.userInfo];
+  [NSNotificationCenter.defaultCenter postNotificationName: SelectedItemChangedEvent
+                                                    object: self
+                                                  userInfo: origNotification.userInfo];
 }
 
 - (void) postVisibleTreeChanged {
-  [[NSNotificationCenter defaultCenter] postNotificationName: VisibleTreeChangedEvent
-                                                      object: self];
+  [NSNotificationCenter.defaultCenter postNotificationName: VisibleTreeChangedEvent
+                                                    object: self];
 }
 
 

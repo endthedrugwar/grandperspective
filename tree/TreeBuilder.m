@@ -168,7 +168,7 @@ NSString  *TallyFileSizeName = @"tally";
     treeGuide = [[FilteredTreeGuide alloc] initWithFileItemTest: filterSet.fileItemTest];
 
     treeBalancer = [[TreeBalancer alloc] init];
-    typeInventory = [[UniformTypeInventory defaultUniformTypeInventory] retain];
+    typeInventory = [UniformTypeInventory.defaultUniformTypeInventory retain];
 
     dirEnumKeysFullScan = [@[
       NSURLNameKey,
@@ -194,7 +194,7 @@ NSString  *TallyFileSizeName = @"tally";
     
     [self setFileSizeMeasure: LogicalFileSizeName];
     
-    NSUserDefaults *args = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *args = NSUserDefaults.standardUserDefaults;
     debugLogEnabled = [args boolForKey: @"logAll"] || [args boolForKey: @"logScanning"];
 
     _alertMessage = nil;

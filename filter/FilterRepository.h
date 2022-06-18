@@ -8,7 +8,7 @@
   NSDictionary  *applicationProvidedFilters;
 }
 
-+ (id) defaultInstance;
+@property (class, nonatomic, readonly) FilterRepository *defaultFilterRepository;
 
 /* Returns dictionary which can subsequently be modified.
  */

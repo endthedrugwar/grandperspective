@@ -11,7 +11,7 @@
 
 - (instancetype) initWithEventSource:(NSObject *)eventSource {
   if (self = [super init]) {
-    NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];
+    NSNotificationCenter  *nc = NSNotificationCenter.defaultCenter;
     [nc addObserver: self
            selector: @selector(abortModalAction:)
                name: CancelPerformedEvent
@@ -37,12 +37,12 @@
 }
 
 - (void) abortModalAction:(NSNotification *)notification {
-  [[NSNotificationCenter defaultCenter] removeObserver: self];
+  [NSNotificationCenter.defaultCenter removeObserver: self];
   [NSApp abortModal];
 }
 
 - (void) stopModalAction:(NSNotification *)notification {
-  [[NSNotificationCenter defaultCenter] removeObserver: self];
+  [NSNotificationCenter.defaultCenter removeObserver: self];
   [NSApp stopModal];
 }
 

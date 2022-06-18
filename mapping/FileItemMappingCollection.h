@@ -10,7 +10,7 @@
 
 }
 
-+ (FileItemMappingCollection *)defaultFileItemMappingCollection;
+@property (class, nonatomic, readonly) FileItemMappingCollection *defaultFileItemMappingCollection;
 
 - (instancetype) initWithDictionary:(NSMutableDictionary *)dictionary NS_DESIGNATED_INITIALIZER;
 

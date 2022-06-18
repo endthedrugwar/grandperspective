@@ -19,7 +19,7 @@ NSString  *ReadTaskAbortedEvent = @"readTaskAborted";
 - (void) dealloc {
   [taskLock release];
   
-  NSAssert(treeReader==nil, @"treeReader should be nil.");
+  NSAssert(treeReader == nil, @"treeReader should be nil.");
   
   [super dealloc];
 }
@@ -30,7 +30,7 @@ NSString  *ReadTaskAbortedEvent = @"readTaskAborted";
 }
 
 - (id) runTaskWithInput:(id)input {
-  NSAssert( treeReader==nil, @"treeReader already set.");
+  NSAssert(treeReader == nil, @"treeReader already set.");
 
   ReadTaskInput  *myInput = input;
 
@@ -38,11 +38,11 @@ NSString  *ReadTaskAbortedEvent = @"readTaskAborted";
   treeReader = [[TreeReader alloc] init];
   [taskLock unlock];
 
-  [treeReader readTreeFromFile: [myInput path]];
+  [treeReader readTreeFromFile: myInput.path];
   TreeReader  *retVal = [[treeReader retain] autorelease];
 
-  if ([treeReader aborted]) {
-    [[NSNotificationCenter defaultCenter] postNotificationName: ReadTaskAbortedEvent object: self];
+  if (treeReader.aborted) {
+    [NSNotificationCenter.defaultCenter postNotificationName: ReadTaskAbortedEvent object: self];
   }
 
   [taskLock lock];
@@ -66,7 +66,7 @@ NSString  *ReadTaskAbortedEvent = @"readTaskAborted";
   [taskLock lock];
   // The "taskLock" ensures that when treeReader is not nil, the object will always be valid when it
   // is used (i.e. it won't be deallocated).
-  dict = [treeReader progressInfo];
+  dict = treeReader.progressInfo;
   [taskLock unlock];
   
   return dict;

@@ -42,7 +42,7 @@
 
 
 - (NSString *)pathStringForFileItem:(FileItem *)item {
-  DirectoryItem  *parentDirectory = [item parentDirectory];
+  DirectoryItem  *parentDirectory = item.parentDirectory;
 
   while (cachedFileItems.count) {
     DirectoryItem  *lastFileItem = cachedFileItems.lastObject;
@@ -60,8 +60,8 @@
   }
 
   NSString  *pathString;
-  NSString  *comp = [item pathComponent];
-  
+  NSString  *comp = item.pathComponent;
+
   if (parentDirectory == nil) {
     pathString = (comp != nil) ? comp : @"";
   }
@@ -79,7 +79,7 @@
                                : cachedPathStrings.lastObject;
   }
   
-  if ( [item isDirectory] ) {
+  if (item.isDirectory) {
     pathString = [self finishDirectoryPath: pathString pathComponent: comp];
     
     // Only cache path names for directories.
@@ -121,17 +121,17 @@
   NSAssert(item != nil, @"Item must be non-nil.");
   
   NSString  *pathString;
-  NSString  *comp = [item pathComponent];
+  NSString  *comp = item.pathComponent;
   
-  if ([item parentDirectory] != nil) {
-    [self fillCacheToItem: [item parentDirectory]];
-    pathString = ( (comp != nil) ? [cachedPathStrings.lastObject 
-                                       stringByAppendingPathComponent: comp]
-                                 : cachedPathStrings.lastObject );
+  if (item.parentDirectory != nil) {
+    [self fillCacheToItem: item.parentDirectory];
+    pathString = (comp != nil)
+      ? [cachedPathStrings.lastObject stringByAppendingPathComponent: comp]
+      : cachedPathStrings.lastObject;
   }
   else {
     pathString = (comp != nil) ? comp : @"";
-    NSAssert([cachedPathStrings count] == 0, @"Cache should be empty.");
+    NSAssert(cachedPathStrings.count == 0, @"Cache should be empty.");
   }
   
   pathString = [self finishDirectoryPath: pathString pathComponent: comp];

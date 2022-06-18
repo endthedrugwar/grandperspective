@@ -36,7 +36,7 @@ static NSDictionary  *immutableDict = nil;
       [dict addEntriesFromDictionary: contents];
     }
     
-    notificationCenter = [[NSNotificationCenter defaultCenter] retain]; 
+    notificationCenter = [NSNotificationCenter.defaultCenter retain];
   }
   
   return self;
@@ -110,8 +110,7 @@ static NSDictionary  *immutableDict = nil;
 
 - (BOOL) moveObjectFromKey:(id)oldKey toKey:(id)newKey {
   id  object = dict[oldKey];
-  if (object == nil ||
-      dict[newKey] != nil) {
+  if (object == nil || dict[newKey] != nil) {
     return NO;
   }
   else {

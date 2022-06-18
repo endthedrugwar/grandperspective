@@ -93,7 +93,7 @@ extern NSString  *ViewWillCloseEvent;
  */
 @property (nonatomic, getter=isSelectedFileLocked, readonly) BOOL selectedFileLocked;
 
-+ (NSArray *)fileDeletionTargetNames;
+@property (class, nonatomic, readonly) NSArray *fileDeletionTargetNames;
 
 - (void) showInformativeAlert:(NSAlert *)alert;
 

@@ -6,7 +6,7 @@
 @implementation DirectoryViewControlSettings
 
 - (instancetype) init {
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
 
   return 
     [self initWithDisplaySettings: [DirectoryViewDisplaySettings defaultSettings]

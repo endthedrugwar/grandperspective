@@ -1,5 +1,7 @@
 #import "TreeVisitingProgressTracker.h"
 
+#import "DirectoryItem.h"
+
 @interface TreeVisitingProgressTracker (PrivateMethods)
 
 - (void) processedOrSkippedFolder:(DirectoryItem *)dirItem;
@@ -13,7 +15,7 @@
 
   NSUInteger level = self.level;
   if (level <= NUM_PROGRESS_ESTIMATE_LEVELS) {
-    numFiles[level - 1] = [dirItem numFiles];
+    numFiles[level - 1] = dirItem.numFiles;
     numFilesProcessed[level - 1] = 0;
   }
 }
@@ -57,7 +59,7 @@
 - (void) processedOrSkippedFolder:(DirectoryItem *)dirItem {
   NSUInteger level = self.level;
   if (level > 0 && level <= NUM_PROGRESS_ESTIMATE_LEVELS) {
-    numFilesProcessed[level - 1] += [dirItem numFiles];
+    numFilesProcessed[level - 1] += dirItem.numFiles;
 
     NSAssert(numFilesProcessed[level - 1] <= numFiles[level - 1],
              @"More files processed than expected.");

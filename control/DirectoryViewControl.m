@@ -94,7 +94,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 - (instancetype) initWithAnnotatedTreeContext:(AnnotatedTreeContext *)annTreeContext {
   ItemPathModel  *pathModel = 
-    [[[ItemPathModel alloc] initWithTreeContext: [annTreeContext treeContext]] autorelease];
+    [[[ItemPathModel alloc] initWithTreeContext: annTreeContext.treeContext] autorelease];
 
   // Default settings
   DirectoryViewControlSettings  *defaultSettings =
@@ -110,15 +110,15 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
                                     pathModel:(ItemPathModel *)pathModel
                                      settings:(DirectoryViewControlSettings *)settings {
   if (self = [super initWithWindow: nil]) {
-    treeContext = [[annTreeContext treeContext] retain];
-    NSAssert([pathModel volumeTree] == [treeContext volumeTree], @"Tree mismatch");
-    _comments = [[annTreeContext comments] retain];
+    treeContext = [annTreeContext.treeContext retain];
+    NSAssert(pathModel.volumeTree == treeContext.volumeTree, @"Tree mismatch");
+    _comments = [annTreeContext.comments retain];
     
     pathModelView = [[ItemPathModelView alloc] initWithPathModel: pathModel];
     initialSettings = [settings retain];
     displaySettings = [initialSettings.displaySettings retain];
     
-    scanPathName = [[[treeContext scanTree] path] retain];
+    scanPathName = [treeContext.scanTree.path retain];
     
     invisiblePathName = nil;
   }
@@ -129,9 +129,9 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 
 - (void) dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver: self];
+  [NSNotificationCenter.defaultCenter removeObserver: self];
   
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
   [userDefaults removeObserver: self forKeyPath: FileDeletionTargetsKey];
   [userDefaults removeObserver: self forKeyPath: ConfirmFileDeletionKey];
   [userDefaults removeObserver: self forKeyPath: FileSizeUnitSystemKey];
@@ -186,19 +186,18 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   
   [self updateFileDeletionSupport];
 
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
   
   //---------------------------------------------------------------- 
   // Miscellaneous initialisation
-  
-  FileItem  *visibleTree = [pathModelView visibleTree];
-  
+
   [super windowDidLoad];
   
   NSAssert(invisiblePathName == nil, @"invisiblePathName unexpectedly set.");
-  invisiblePathName = [[visibleTree path] retain];
+  FileItem  *visibleTree = pathModelView.visibleTree;
+  invisiblePathName = [visibleTree.path retain];
 
-  NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];
+  NSNotificationCenter  *nc = NSNotificationCenter.defaultCenter;
 
   [nc addObserver: self
          selector: @selector(selectedItemChanged:)
@@ -211,15 +210,15 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   [nc addObserver: self
          selector: @selector(visiblePathLockingChanged:)
              name: VisiblePathLockingChangedEvent 
-           object: [pathModelView pathModel]];
+           object: pathModelView.pathModel];
   [nc addObserver: self
          selector: @selector(commentsChanged:)
              name: CommentsChangedEvent
-           object: [ControlPanelControl singletonInstance]];
+           object: ControlPanelControl.singletonInstance];
   [nc addObserver: self
          selector: @selector(displaySettingsChanged:)
              name: DisplaySettingsChangedEvent
-           object: [ControlPanelControl singletonInstance]];
+           object: ControlPanelControl.singletonInstance];
 
   [userDefaults addObserver: self 
                  forKeyPath: FileDeletionTargetsKey
@@ -238,7 +237,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   [self visibleTreeChanged: nil];
 
   // Set the window's initial size
-  unzoomedViewSize = [initialSettings unzoomedViewSize];
+  unzoomedViewSize = initialSettings.unzoomedViewSize;
   NSRect  frame = self.window.frame;
   frame.size = unzoomedViewSize;
   [self.window setFrame: frame display: NO];
@@ -258,8 +257,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   [itemSizeField setTextColor: NSColor.labelColor];
   [itemPathField setTextColor: NSColor.labelColor];
 
-  ControlPanelControl  *controlPanel = [ControlPanelControl singletonInstance];
-  [controlPanel mainWindowChanged: self];
+  [ControlPanelControl.singletonInstance mainWindowChanged: self];
 }
 
 - (void) windowDidResignMain:(NSNotification *)notification {
@@ -270,8 +268,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 // Invoked because the controller is the delegate for the window.
 - (void) windowWillClose:(NSNotification *)notification {
-  [[NSNotificationCenter defaultCenter]
-   postNotificationName: ViewWillCloseEvent object: self];
+  [NSNotificationCenter.defaultCenter postNotificationName: ViewWillCloseEvent object: self];
   [self autorelease];
 }
 
@@ -289,7 +286,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
                        ofObject:(id)object
                          change:(NSDictionary *)change
                         context:(void *)context {
-  if (object == [NSUserDefaults standardUserDefaults]) {
+  if (object == NSUserDefaults.standardUserDefaults) {
     if ([keyPath isEqualToString: FileDeletionTargetsKey] ||
         [keyPath isEqualToString: ConfirmFileDeletionKey]) {
       [self updateFileDeletionSupport];
@@ -301,12 +298,12 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 
 - (IBAction) openFile:(id)sender {
-  FileItem  *file = [pathModelView selectedFileItem];
-  NSString  *filePath = [file systemPath];
+  FileItem  *file = pathModelView.selectedFileItem;
+  NSString  *filePath = file.systemPath;
 
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
   NSString  *customApp = [userDefaults stringForKey: CustomFileOpenApplication];
-  NSWorkspace  *workspace = [NSWorkspace sharedWorkspace];
+  NSWorkspace  *workspace = NSWorkspace.sharedWorkspace;
 
   if (customApp.length > 0) {
     NSLog(@"Opening using customApp");
@@ -340,24 +337,21 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 }
 
 - (IBAction) previewFile:(id)sender {
-  if (
-    [QLPreviewPanel sharedPreviewPanelExists] &&
-    [QLPreviewPanel sharedPreviewPanel].visible
-  ) {
-    [[QLPreviewPanel sharedPreviewPanel] orderOut: nil];
+  if (QLPreviewPanel.sharedPreviewPanelExists && QLPreviewPanel.sharedPreviewPanel.visible) {
+    [QLPreviewPanel.sharedPreviewPanel orderOut: nil];
   }
   else {
-    [[QLPreviewPanel sharedPreviewPanel] makeKeyAndOrderFront: nil];
+    [QLPreviewPanel.sharedPreviewPanel makeKeyAndOrderFront: nil];
   }
 }
 
 - (IBAction) revealFileInFinder:(id)sender {
-  FileItem  *file = [pathModelView selectedFileItem];
-  NSString  *filePath = [file systemPath];
+  FileItem  *file = pathModelView.selectedFileItem;
+  NSString  *filePath = file.systemPath;
   
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
   NSString  *customApp = [userDefaults stringForKey: CustomFileRevealApplication];
-  NSWorkspace  *workspace = [NSWorkspace sharedWorkspace];
+  NSWorkspace  *workspace = NSWorkspace.sharedWorkspace;
 
   if (customApp.length > 0) {
     NSLog(@"Revealing using customApp %@.", customApp);
@@ -369,11 +363,11 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
     // Work-around for bug/limitation of NSWorkSpace. It apparently cannot select files that are
     // inside a package, unless the package is the root path. So check if the selected file is
     // inside a package. If so, use it as a root path.
-    DirectoryItem  *ancestor = [file parentDirectory];
+    DirectoryItem  *ancestor = file.parentDirectory;
     DirectoryItem  *package = nil;
  
     while (ancestor != nil) {
-      if ( [ancestor isPackage] ) {
+      if (ancestor.isPackage) {
         if (package != nil) {
           // The package in which the selected item resides is inside a package itself. Open this
           // inner package instead (as opening the selected file will not succeed).
@@ -381,12 +375,12 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
         }
         package = ancestor;
       }
-      ancestor = [ancestor parentDirectory];
+      ancestor = ancestor.parentDirectory;
     }
 
-    NSString  *rootPath = (package != nil) ? [package systemPath] : invisiblePathName;
+    NSString  *rootPath = (package != nil) ? package.systemPath : invisiblePathName;
 
-    if ( [[NSWorkspace sharedWorkspace] selectFile: filePath inFileViewerRootedAtPath: rootPath] ) {
+    if ([workspace selectFile: filePath inFileViewerRootedAtPath: rootPath]) {
       return; // All went okay
     }
   }
@@ -394,13 +388,15 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   NSAlert *alert = [[[NSAlert alloc] init] autorelease];
 
   NSString  *msgFmt = 
-    ( [file isPackage]
+    ( file.isPackage
       ? NSLocalizedString(@"Failed to reveal the package \"%@\"", @"Alert message")
-      : ( [file isDirectory] 
+      : ( file.isDirectory
           ? NSLocalizedString(@"Failed to reveal the folder \"%@\"", @"Alert message")
-          : NSLocalizedString(@"Failed to reveal the file \"%@\"", @"Alert message") ) );
-  NSString  *msg = [NSString stringWithFormat: msgFmt, [file pathComponent]];
-         
+          : NSLocalizedString(@"Failed to reveal the file \"%@\"", @"Alert message")
+         )
+     );
+  NSString  *msg = [NSString stringWithFormat: msgFmt, file.pathComponent];
+
   [alert addButtonWithTitle: OK_BUTTON_TITLE];
   alert.messageText = msg;
   [alert setInformativeText: NOTE_IT_MAY_NOT_EXIST_ANYMORE];
@@ -410,9 +406,9 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 
 - (IBAction) deleteFile:(id)sender {
-  FileItem  *selectedFile = [pathModelView selectedFileItem];
-  BOOL  isDir = [selectedFile isDirectory];
-  BOOL  isPackage = [selectedFile isPackage];
+  FileItem  *selectedFile = pathModelView.selectedFileItem;
+  BOOL  isDir = selectedFile.isDirectory;
+  BOOL  isPackage = selectedFile.isPackage;
 
   // Packages whose contents are hidden (i.e. who are not represented as directories) are treated
   // schizophrenically for deletion: For deciding if a confirmation message needs to be shown, they
@@ -458,13 +454,13 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
       @"Alert additional informative text");
   }
   
-  if ( [selectedFile isHardLinked] ) {
+  if (selectedFile.isHardLinked) {
     infoMsg = [NSString stringWithFormat: @"%@\n\n%@", infoMsg, hardLinkMsg];
   }
 
   [alert addButtonWithTitle: DELETE_BUTTON_TITLE];
   [alert addButtonWithTitle: CANCEL_BUTTON_TITLE];
-  alert.messageText = [NSString stringWithFormat: mainMsg, [selectedFile pathComponent]];
+  alert.messageText = [NSString stringWithFormat: mainMsg, selectedFile.pathComponent];
   alert.informativeText = infoMsg;
 
   [alert beginSheetModalForWindow: self.window completionHandler:^(NSModalResponse returnCode) {
@@ -483,20 +479,16 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 // Copies the path of selected file item to the pasteboard. Invoked via first responder.
 - (IBAction) copy:(id)sender {
-  FileItem  *selectedFile = [pathModelView selectedFileItem];
-  NSPasteboard *pb = [NSPasteboard generalPasteboard];
-  
-  NSArray *pbTypes = @[NSStringPboardType];
-  [pb declareTypes: pbTypes owner: nil];
-  
-  [pb setString: [selectedFile path] forType: NSStringPboardType];
+  FileItem  *selectedFile = pathModelView.selectedFileItem;
+  NSPasteboard *pb = NSPasteboard.generalPasteboard;
+
+  [pb declareTypes: @[NSStringPboardType] owner: nil];
+  [pb setString: selectedFile.path forType: NSStringPboardType];
 }
 
 
 - (IBAction) showInfo:(id)sender {
-  ControlPanelControl  *controlPanel = [ControlPanelControl singletonInstance];
-
-  [controlPanel showInfoPanel];
+  [ControlPanelControl.singletonInstance showInfoPanel];
 }
 
 
@@ -519,19 +511,19 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 - (BOOL) validateAction:(SEL)action {
   if ( action == @selector(openFile:) ) {
-    return [self canOpenSelectedFile];
+    return self.canOpenSelectedFile;
   }
   else if ( action == @selector(previewFile:) ) {
-    return [self canPreviewSelectedFile];
+    return self.canPreviewSelectedFile;
   }
   else if ( action == @selector(revealFileInFinder:) ) {
-    return [self canRevealSelectedFile];
+    return self.canRevealSelectedFile;
   }
   else if ( action == @selector(deleteFile:) ) {
-    return [self canDeleteSelectedFile];
+    return self.canDeleteSelectedFile;
   }
   else if ( action == @selector(copy:) ) {
-    return [self canCopySelectedPathToPasteboard];
+    return self.canCopySelectedPathToPasteboard;
   }
   
   NSLog(@"Unsupported action");
@@ -540,7 +532,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 
 - (BOOL) isSelectedFileLocked {
-  return [[pathModelView pathModel] isVisiblePathLocked];
+  return pathModelView.pathModel.isVisiblePathLocked;
 }
 
 
@@ -548,8 +540,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   static NSArray  *fileDeletionTargetNames = nil;
   
   if (fileDeletionTargetNames == nil) {
-    fileDeletionTargetNames =
-      [@[DeleteNothing, OnlyDeleteFiles, DeleteFilesAndFolders] retain];
+    fileDeletionTargetNames = [@[DeleteNothing, OnlyDeleteFiles, DeleteFilesAndFolders] retain];
   }
   
   return fileDeletionTargetNames;
@@ -587,7 +578,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 - (id <QLPreviewItem>)previewPanel:(QLPreviewPanel *)panel
                 previewItemAtIndex:(NSInteger)index {
-  NSArray  *pathToSelectedItem = [[pathModelView pathModel] itemPathToSelectedFileItem];
+  NSArray  *pathToSelectedItem = pathModelView.pathModel.itemPathToSelectedFileItem;
   return [[[DirectoryViewPreviewItem alloc] initWithPathToSelectedItem: pathToSelectedItem]
           autorelease];
 }
@@ -603,7 +594,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 - (NSRect) previewPanel:(QLPreviewPanel *)panel
   sourceFrameOnScreenForPreviewItem:(id <QLPreviewItem>)item {
 
-  NSArray  *path = [((DirectoryViewPreviewItem *)item) pathToSelectedItem];
+  NSArray  *path = ((DirectoryViewPreviewItem *)item).pathToSelectedItem;
   NSRect selectedItemRect = [mainView locationInViewForItemAtEndOfPath: path];
 
   // Check that the rect is visible on screen
@@ -629,7 +620,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 - (id)previewPanel:(QLPreviewPanel *)panel
   transitionImageForPreviewItem:(id <QLPreviewItem>)item contentRect:(NSRect *)contentRect {
 
-  NSArray  *path = [((DirectoryViewPreviewItem *)item) pathToSelectedItem];
+  NSArray  *path = ((DirectoryViewPreviewItem *)item).pathToSelectedItem;
   return [mainView imageInViewForItemAtEndOfPath: path];
 }
 
@@ -647,41 +638,40 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 }
 
 - (BOOL) canOpenSelectedFile {
-  FileItem  *selectedFile = [pathModelView selectedFileItem];
+  FileItem  *selectedFile = pathModelView.selectedFileItem;
 
   return
     ( // Can only open actual files
-      [selectedFile isPhysical]
+      selectedFile.isPhysical
       
       // Can only open plain files and packages
-      && ( ! [selectedFile isDirectory]
-           || [selectedFile isPackage] )
+      && ( !selectedFile.isDirectory || selectedFile.isPackage )
     );
 }
 
 - (BOOL) canPreviewSelectedFile {
-  return [[pathModelView selectedFileItem] isPhysical];
+  return pathModelView.selectedFileItem.isPhysical;
 }
 
 - (BOOL) canRevealSelectedFile {
-  return [[pathModelView selectedFileItem] isPhysical];
+  return pathModelView.selectedFileItem.isPhysical;
 }
 
 - (BOOL) canDeleteSelectedFile {
-  FileItem  *selectedFile = [pathModelView selectedFileItem];
+  FileItem  *selectedFile = pathModelView.selectedFileItem;
 
   return 
     ( // Can only delete actual files.
-      [selectedFile isPhysical] 
+      selectedFile.isPhysical
 
       // Can this type of item be deleted (according to the preferences)?
-      && ( (canDeleteFiles && ![selectedFile isDirectory])
-           || (canDeleteFolders && [selectedFile isDirectory]) ) 
+      && ( (canDeleteFiles && !selectedFile.isDirectory)
+           || (canDeleteFolders && selectedFile.isDirectory) )
 
       // Can only delete the entire scan tree when it is an actual folder 
       // within the volume. You cannot delete the root folder.
-      && ! ( (selectedFile == [pathModelView scanTree])
-             && [[[pathModelView scanTree] systemPathComponent] isEqualToString: @""])
+      && ! ( (selectedFile == pathModelView.scanTree)
+             && [pathModelView.scanTree.systemPathComponent isEqualToString: @""])
 
       // Don't enable Click-through for deletion. The window needs to be 
       // active for the file deletion controls to be enabled.
@@ -695,10 +685,10 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 
 - (void) deleteSelectedFile {
-  FileItem  *selectedFile = [pathModelView selectedFileItem];
+  FileItem  *selectedFile = pathModelView.selectedFileItem;
 
-  NSWorkspace  *workspace = [NSWorkspace sharedWorkspace];
-  NSString  *sourceDir = [[selectedFile parentDirectory] systemPath];
+  NSWorkspace  *workspace = NSWorkspace.sharedWorkspace;
+  NSString  *sourceDir = selectedFile.parentDirectory.systemPath;
     // Note: Can always obtain the encompassing directory this way. The volume tree cannot be
     // deleted so there is always a valid parent directory.
 
@@ -706,7 +696,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   if ([workspace performFileOperation: NSWorkspaceRecycleOperation
                                source: sourceDir
                           destination: @""
-                                files: @[[selectedFile systemPathComponent]]
+                                files: @[selectedFile.systemPathComponent]
                                   tag: &tag]) {
     [treeContext deleteSelectedFileItem: pathModelView];
     
@@ -719,7 +709,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
     ( [selectedFile isDirectory] 
       ? NSLocalizedString(@"Failed to delete the folder \"%@\"", @"Alert message")
       : NSLocalizedString( @"Failed to delete the file \"%@\"", @"Alert message") );
-  NSString  *msg = [NSString stringWithFormat: msgFmt, [selectedFile pathComponent]];
+  NSString  *msg = [NSString stringWithFormat: msgFmt, selectedFile.pathComponent];
   NSString  *info =
     NSLocalizedString(@"Possible reasons are that it does not exist anymore (it may have been moved, renamed, or deleted by other means) or that you lack the required permissions.", 
                       @"Alert message"); 
@@ -733,10 +723,10 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 
 - (void) visibleTreeChanged:(NSNotification *)notification {
-  FileItem  *visibleTree = [pathModelView visibleTree];
-  
+  FileItem  *visibleTree = pathModelView.visibleTree;
+
   [invisiblePathName release];
-  invisiblePathName = [[visibleTree path] retain];
+  invisiblePathName = [visibleTree.path retain];
 
   [self validateControls];
 
@@ -754,7 +744,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
   [self updateSelectionInStatusbar: itemSizeString];
 
-  if ([[pathModelView pathModel] isVisiblePathLocked]) {
+  if (pathModelView.pathModel.isVisiblePathLocked) {
     // Only when the visible path is locked can a change of selected item
     // affect the state of the controls.
     [self validateControls];
@@ -763,24 +753,22 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 - (void) commentsChanged:(NSNotification *)notification {
   if (self.window.isMainWindow) {
-    _comments = [[[ControlPanelControl singletonInstance] comments] retain];
+    _comments = [ControlPanelControl.singletonInstance.comments retain];
   }
 }
 
 
 - (void) displaySettingsChanged:(NSNotification *)notification {
   if (self.window.isMainWindow) {
-    ControlPanelControl  *controlPanel = [ControlPanelControl singletonInstance];
-
     [displaySettings release];
-    displaySettings = [[controlPanel displaySettings] retain];
+    displaySettings = [ControlPanelControl.singletonInstance.displaySettings retain];
 
     [self propagateDisplaySettings];
   }
 }
 
 - (void) propagateDisplaySettings {
-  ControlPanelControl  *controlPanel = [ControlPanelControl singletonInstance];
+  ControlPanelControl  *controlPanel = ControlPanelControl.singletonInstance;
 
   mainView.treeDrawerSettings = [controlPanel instantiateDisplaySettings: displaySettings
                                                                  forTree: treeContext.scanTree];
@@ -792,9 +780,9 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 
 - (void) updateSelectionInStatusbar:(NSString *)itemSizeString {
-  FileItem  *selectedItem = [pathModelView selectedFileItem];
+  FileItem  *selectedItem = pathModelView.selectedFileItem;
 
-  if ( selectedItem == nil ) {
+  if (selectedItem == nil) {
     itemSizeField.stringValue = @"";
     itemPathField.stringValue = @"";
   
@@ -809,13 +797,13 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   NSString  *itemPath;
   NSString  *relativeItemPath;
 
-  if (! [selectedItem isPhysical]) {
-    itemPath = [[NSBundle mainBundle] localizedStringForKey: [selectedItem label]
-                                                      value: nil table: @"Names"];
+  if (!selectedItem.isPhysical) {
+    itemPath = [NSBundle.mainBundle localizedStringForKey: selectedItem.label
+                                                    value: nil table: @"Names"];
     relativeItemPath = itemPath;
   }
   else {
-    itemPath = [selectedItem path];
+    itemPath = selectedItem.path;
       
     NSAssert([itemPath hasPrefix: scanPathName], @"Invalid path prefix.");
     relativeItemPath = [itemPath substringFromIndex: scanPathName.length];
@@ -864,7 +852,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 
 - (void) updateFileDeletionSupport {
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
   
   NSString  *fileDeletionTargets = [userDefaults stringForKey: FileDeletionTargetsKey];
 
@@ -879,10 +867,8 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
     [fileDeletionTargets isEqualToString: DeleteFilesAndFolders] &&
     [PreferencesPanelControl appHasDeletePermission]
   );
-  confirmFileDeletion = 
-    [[userDefaults objectForKey: ConfirmFileDeletionKey] boolValue];
-  confirmFolderDeletion = 
-    [[userDefaults objectForKey: ConfirmFolderDeletionKey] boolValue];
+  confirmFileDeletion = [[userDefaults objectForKey: ConfirmFileDeletionKey] boolValue];
+  confirmFolderDeletion = [[userDefaults objectForKey: ConfirmFolderDeletionKey] boolValue];
 
   [self validateControls];
 }
@@ -911,7 +897,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 }
 
 - (NSURL *)previewItemURL {
-  return [NSURL fileURLWithPath: [[self selectedItem] systemPath]];
+  return [NSURL fileURLWithPath: self.selectedItem.systemPath];
 }
 
 - (NSArray *)pathToSelectedItem {

@@ -18,7 +18,7 @@
   if (self = [super init]) {
     treeContext = [treeContextVal retain];
   
-    treeDrawer = [[TreeDrawer alloc] initWithScanTree: [treeContext scanTree]
+    treeDrawer = [[TreeDrawer alloc] initWithScanTree: treeContext.scanTree
                                    treeDrawerSettings: settings];
     treeDrawerSettings = [settings retain];
     
@@ -68,10 +68,10 @@
     
   [treeContext obtainReadLock];
     
-  NSImage  *image = [treeDrawer drawImageOfVisibleTree: [drawingInput visibleTree]
-                                        startingAtTree: [drawingInput treeInView]
-                                    usingLayoutBuilder: [drawingInput layoutBuilder]
-                                                inRect: [drawingInput bounds]];
+  NSImage  *image = [treeDrawer drawImageOfVisibleTree: drawingInput.visibleTree
+                                        startingAtTree: drawingInput.treeInView
+                                    usingLayoutBuilder: drawingInput.layoutBuilder
+                                                inRect: drawingInput.bounds];
 
   [treeContext releaseReadLock];
 

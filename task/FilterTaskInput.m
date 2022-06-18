@@ -8,7 +8,7 @@
 
 - (instancetype) initWithTreeContext:(TreeContext *)treeContextVal
                            filterSet:(FilterSet *)filterSetVal {
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
   
   BOOL  showPackageContentsByDefault =
     [userDefaults boolForKey: ShowPackageContentsByDefaultKey] ? NSOnState : NSOffState;

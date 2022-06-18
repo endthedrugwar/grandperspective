@@ -16,7 +16,6 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
 @class FilteredTreeGuide;
 @class TreeBalancer;
 @class UniformTypeInventory;
-@class FileItem;
 @class PlainFileItem;
 @class DirectoryItem;
 @class ScanTreeRoot;

@@ -27,7 +27,7 @@
 @implementation UniformTypeMappingScheme
 
 - (instancetype) init {
-  return [self initWithUniformTypeRanking: [UniformTypeRanking defaultUniformTypeRanking]];
+  return [self initWithUniformTypeRanking: UniformTypeRanking.defaultUniformTypeRanking];
 
 }
 
@@ -35,7 +35,7 @@
   if (self = [super init]) {
     _uniformTypeRanking = [typeRanking retain];
     
-    NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];
+    NSNotificationCenter  *nc = NSNotificationCenter.defaultCenter;
 
     [nc addObserver: self
            selector: @selector(typeRankingChanged:)
@@ -47,7 +47,7 @@
 }
 
 - (void) dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver: self];
+  [NSNotificationCenter.defaultCenter removeObserver: self];
   
   [_uniformTypeRanking release];
   
@@ -68,7 +68,7 @@
 @implementation UniformTypeMappingScheme (PrivateMethods)
 
 - (void) typeRankingChanged: (NSNotification *)notification {
-  NSNotificationCenter  *nc = [NSNotificationCenter defaultCenter];
+  NSNotificationCenter  *nc = NSNotificationCenter.defaultCenter;
   
   [nc postNotificationName: MappingSchemeChangedEvent object: self];
 }
@@ -83,9 +83,9 @@
   if (self = [super initWithFileItemMappingScheme: schemeVal]) {
     hashForUTICache = [[NSMutableDictionary dictionaryWithCapacity: 16] retain];
     
-    UniformTypeRanking  *typeRanking = [((UniformTypeMappingScheme *)schemeVal) uniformTypeRanking];
+    UniformTypeRanking  *typeRanking = ((UniformTypeMappingScheme *)schemeVal).uniformTypeRanking;
     
-    orderedTypes = [[typeRanking undominatedRankedUniformTypes] retain];
+    orderedTypes = [typeRanking.undominatedRankedUniformTypes retain];
   }
   
   return self;
@@ -111,13 +111,13 @@
     return NSIntegerMax;
   }
   
-  NSString  *uti = [type uniformTypeIdentifier];
+  NSString  *uti = type.uniformTypeIdentifier;
   NSNumber  *hash = hashForUTICache[uti];
   if (hash != nil) {
     return hash.intValue;
   }
     
-  NSSet  *ancestorTypes = [type ancestorTypes];
+  NSSet  *ancestorTypes = type.ancestorTypes;
   NSUInteger  utiIndex = 0;
   
   while (utiIndex < orderedTypes.count) {
@@ -153,9 +153,9 @@
   
   UniformType  *type = orderedTypes[hash];
   
-  NSString  *descr = [type description];
+  NSString  *descr = type.description;
    
-  return (descr != nil) ? descr : [type uniformTypeIdentifier];
+  return (descr != nil) ? descr : type.uniformTypeIdentifier;
 }
 
 - (NSString *)descriptionForRemainingHashes {

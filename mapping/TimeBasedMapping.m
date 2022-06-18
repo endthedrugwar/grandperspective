@@ -110,7 +110,7 @@ const int  minTimeDelta = 60;
   }
   
   // Check if the preferences override the minimum.
-  NSUserDefaults  *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
   NSString  *minTimeBoundString = [userDefaults stringForKey: MinimumTimeBoundForColorMappingKey];
   CFAbsoluteTime minTimeBound;
     

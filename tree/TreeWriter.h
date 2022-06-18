@@ -62,7 +62,7 @@ extern NSString  *DateTimeFormat;
 /* Formatter used to create (locale-independent) string reprentations for time values. Has same
  * format as timeFormatter.
  */
-+ (NSDateFormatter *)nsTimeFormatter;
+@property (class, nonatomic, readonly) NSDateFormatter *nsTimeFormatter;
 
 + (nullable NSString *)stringForTime:(CFAbsoluteTime)time;
 

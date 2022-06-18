@@ -98,7 +98,7 @@
   // To be safe, do not return info when aborted. Auto-releasing parts of constructed tree could
   // invalidate path construction done by progressTracker. Even though it does not look that could
   // happen with current code, it could after some refactoring.
-  return abort ? nil : [progressTracker progressInfo];
+  return abort ? nil : progressTracker.progressInfo;
 }
 
 @end

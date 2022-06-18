@@ -30,11 +30,11 @@
   int  viewCount;
 }
 
-+ (MainMenuControl *)singletonInstance;
+@property (class, nonatomic, readonly) MainMenuControl *singletonInstance;
 
-+ (NSArray *)rescanActionNames;
-+ (NSArray *)rescanBehaviourNames;
-+ (NSArray *)noViewsBehaviourNames;
+@property (class, nonatomic, readonly) NSArray *rescanActionNames;
+@property (class, nonatomic, readonly) NSArray *rescanBehaviourNames;
+@property (class, nonatomic, readonly) NSArray *noViewsBehaviourNames;
 
 + (void) reportUnboundFilters:(NSArray *)unboundFilters;
 + (void) reportUnboundTests:(NSArray *)unboundTests;

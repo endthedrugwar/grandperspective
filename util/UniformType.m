@@ -51,9 +51,7 @@
     [toVisit removeLastObject];
   
     // Add parents that have not yet been encountered to list of nodes to visit.
-    NSEnumerator  *parentsEnum = [[current parentTypes] objectEnumerator];
-    UniformType  *parentType;
-    while (parentType = [parentsEnum nextObject]) {
+    for (UniformType *parentType in [current.parentTypes objectEnumerator]) {
       if (! [ancestors containsObject: parentType]) {
         // Only visit ancestor types that have not yet been encountered. This ensures that the
         // search time is linear in the number of ancestors (despite there possibly being multiple

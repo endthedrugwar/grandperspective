@@ -19,7 +19,7 @@
                   bounds:(NSRect)bounds {
 
   NSAssert(drawPath == nil, @"drawPath should be nil.");
-  drawPath = [[pathModelView pathModel] itemPath];
+  drawPath = pathModelView.pathModel.itemPath;
     // Not retaining it. It is only needed during this method.
 
   // Align the path with the tree, as the path may contain invisible items not part of the tree.
@@ -27,13 +27,13 @@
   while (drawPath[drawPathIndex] != treeRoot) {
     drawPathIndex++;
     
-    NSAssert(drawPathIndex < [drawPath count], @"treeRoot not found in path.");
+    NSAssert(drawPathIndex < drawPath.count, @"treeRoot not found in path.");
   }
   
-  targetItem = [pathModelView selectedFileItemInTree];
+  targetItem = pathModelView.selectedFileItemInTree;
   
   NSAssert(visibleTree == nil, @"visibleTree should be nil.");
-  visibleTree = [pathModelView visibleTree]; 
+  visibleTree = pathModelView.visibleTree;
   insideVisibleTree = NO;
 
   prevRect.size.width = -1; // Indicate that it is not yet valid
@@ -74,8 +74,8 @@
   }
   drawPathIndex++;
 
-  if (! [item isVirtual]) {
-    if (item==visibleTree) {
+  if (!item.isVirtual) {
+    if (item == visibleTree) {
       insideVisibleTree = YES;
     }
   
@@ -114,4 +114,3 @@
 }
 
 @end // @implementation ItemPathDrawer
-
