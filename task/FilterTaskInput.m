@@ -1,31 +1,12 @@
 #import "FilterTaskInput.h"
 
-#import "TreeContext.h"
-#import "PreferencesPanelControl.h"
-
-
 @implementation FilterTaskInput
 
-- (instancetype) initWithTreeContext:(TreeContext *)treeContextVal
-                           filterSet:(FilterSet *)filterSetVal {
-  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
-  
-  BOOL  showPackageContentsByDefault =
-    [userDefaults boolForKey: ShowPackageContentsByDefaultKey] ? NSOnState : NSOffState;
-
-  return [self initWithTreeContext: treeContextVal
-                         filterSet: filterSetVal
-                   packagesAsFiles: !showPackageContentsByDefault];
-}
-
 - (instancetype) initWithTreeContext:(TreeContext *)treeContext
-                           filterSet:(FilterSet *)filterSet
-                     packagesAsFiles:(BOOL) packagesAsFiles {
+                           filterSet:(FilterSet *)filterSet {
   if (self = [super init]) {
     _treeContext = [treeContext retain];
     _filterSet = [filterSet retain];
-    
-    packagesAsFiles = packagesAsFiles;
   }
   return self;
 }

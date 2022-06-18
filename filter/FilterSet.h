@@ -19,6 +19,7 @@
  * The default filter and filter test repositories are used.
  */
 + (instancetype) filterSetWithNamedFilter:(NamedFilter *)namedFilter
+                          packagesAsFiles:(BOOL)packagesAsFiles
                            unboundFilters:(NSMutableArray *)unboundFilters
                              unboundTests:(NSMutableArray *)unboundTests;
 
@@ -27,6 +28,7 @@
  * The default filter and filter test repositories are used.
  */
 + (instancetype) filterSetWithNamedFilters:(NSArray *)namedFilters
+                           packagesAsFiles:(BOOL)packagesAsFiles
                             unboundFilters:(NSMutableArray *)unboundFilters
                               unboundTests:(NSMutableArray *)unboundTests;
 
@@ -40,6 +42,7 @@
  * as much as possible).
  */
 + (instancetype) filterSetWithNamedFilters:(NSArray *)namedFilters
+                           packagesAsFiles:(BOOL)packagesAsFiles
                           filterRepository:(FilterRepository *)filterRepository
                             testRepository:(FilterTestRepository *)testRepository
                             unboundFilters:(NSMutableArray *)unboundFilters
@@ -56,6 +59,7 @@
  * The "filters" array is assumed to be immutable. This is the caller's responsibility.
  */
 - (instancetype) initWithNamedFilters:(NSArray *)filters
+                      packagesAsFiles:(BOOL)packagesAsFiles
                          fileItemTest:(FileItemTest *)fileItemTest NS_DESIGNATED_INITIALIZER;
 
 
@@ -86,6 +90,7 @@
  * created.
  */
 - (FilterSet *)filterSetWithAddedNamedFilter:(NamedFilter *)filter
+                             packagesAsFiles:(BOOL)packagesAsFiles
                                 unboundTests:(NSMutableArray *)unboundTests;
 
 @property (nonatomic, readonly) NSUInteger numFilters;
@@ -98,5 +103,9 @@
  * immutable. It is not affected by any subsequent changes to filters and filter tests.
  */
 @property (nonatomic, readonly, strong) FileItemTest *fileItemTest;
+
+/* Specifies how packages should be treated when applying the filter.
+ */
+@property (nonatomic, readonly) BOOL packagesAsFiles;
 
 @end // @interface FilterSet

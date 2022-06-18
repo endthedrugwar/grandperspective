@@ -24,8 +24,6 @@
 
 - (instancetype) initWithFilterSet:(FilterSet *)filterSet NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic) BOOL packagesAsFiles;
-
 
 /* Filters the tree. Omits all items from the old tree that should not be descended into according
  * to the filtered tree guide.

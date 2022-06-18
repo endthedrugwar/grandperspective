@@ -27,6 +27,8 @@
     filterSet = [filterSetVal retain];
 
     treeGuide = [[FilteredTreeGuide alloc] initWithFileItemTest: filterSet.fileItemTest];
+    [treeGuide setPackagesAsFiles: filterSet.packagesAsFiles];
+
     treeBalancer = [[TreeBalancer alloc] init];
     
     abort = NO;
@@ -48,15 +50,6 @@
 }
 
 
-- (BOOL) packagesAsFiles {
-  return [treeGuide packagesAsFiles];
-}
-
-- (void) setPackagesAsFiles:(BOOL) flag {
-  [treeGuide setPackagesAsFiles: flag];
-}
-
-
 - (TreeContext *)filterTree: (TreeContext *)oldTree {
   DirectoryItem  *oldScanTree = oldTree.scanTree;
   NSString  *pathToMonitor = oldTree.monitorsSource ? oldScanTree.systemPath : nil;
@@ -68,7 +61,6 @@
                                    freeSpace: oldTree.freeSpace
                                    filterSet: filterSet
                                     scanTime: oldTree.scanTime
-                             packagesAsFiles: self.packagesAsFiles
                                  monitorPath: pathToMonitor] autorelease];
 
   DirectoryItem  *scanTree = [ScanTreeRoot allocWithZone: Item.zoneForTree];

@@ -39,14 +39,13 @@ NSString  *ScanTaskAbortedEvent = @"scanTaskAborted";
 
   [taskLock lock];
   if (myInput.treeSource != nil) {
-    // The scan is only a partial
+    // The scan is only partial
     treeBuilder = [[TreeRefresher alloc] initWithFilterSet: myInput.filterSet
                                                    oldTree: myInput.treeSource];
   } else {
     treeBuilder = [[TreeBuilder alloc] initWithFilterSet: myInput.filterSet];
   }
   [treeBuilder setFileSizeMeasure: myInput.fileSizeMeasure];
-  [treeBuilder setPackagesAsFiles: myInput.packagesAsFiles];
   [taskLock unlock];
   
   NSDate  *startTime = [NSDate date];

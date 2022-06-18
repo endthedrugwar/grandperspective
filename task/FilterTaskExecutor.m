@@ -3,6 +3,7 @@
 #import "TreeFilter.h"
 #import "FilterTaskInput.h"
 #import "TreeContext.h"
+#import "FilterSet.h"
 
 
 @implementation FilterTaskExecutor
@@ -33,7 +34,6 @@
   
   [taskLock lock];
   treeFilter = [[TreeFilter alloc] initWithFilterSet: filterInput.filterSet];
-  [treeFilter setPackagesAsFiles: filterInput.packagesAsFiles];
   [taskLock unlock];
     
   TreeContext  *originalTree = filterInput.treeContext;

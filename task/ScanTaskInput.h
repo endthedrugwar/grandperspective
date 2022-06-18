@@ -16,19 +16,16 @@
 
 - (instancetype) initWithTreeSource:(DirectoryItem *)treeSource
                     fileSizeMeasure:(NSString *)measure
-                          filterSet:(FilterSet *)filterSet
-                    packagesAsFiles:(BOOL) packagesAsFiles;
+                          filterSet:(FilterSet *)filterSet;
 
 - (instancetype) initWithPath:(NSString *)path
               fileSizeMeasure:(NSString *)measure
                     filterSet:(FilterSet *)filterSet
-              packagesAsFiles:(BOOL) packagesAsFiles
                    treeSource:(DirectoryItem *)treeSource NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, readonly, copy) NSString *path;
 @property (nonatomic, readonly, copy) NSString *fileSizeMeasure;
 @property (nonatomic, readonly, strong) FilterSet *filterSet;
-@property (nonatomic, readonly) BOOL packagesAsFiles;
 
 // Optional: When not nil, the scan should use this as source and only scan/refresh the outdated
 // directories, as indicated by their rescanFlags.

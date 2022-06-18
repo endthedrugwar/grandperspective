@@ -64,8 +64,6 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
 - (instancetype) init;
 - (instancetype) initWithFilterSet:(FilterSet *)filterSet NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic) BOOL packagesAsFiles;
-
 @property (nonatomic, copy) NSString *fileSizeMeasure;
 
 /* Construct a full tree for the given folder.

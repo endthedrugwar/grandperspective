@@ -166,6 +166,7 @@ NSString  *TallyFileSizeName = @"tally";
     filterSet = [filterSetVal retain];
 
     treeGuide = [[FilteredTreeGuide alloc] initWithFileItemTest: filterSet.fileItemTest];
+    [treeGuide setPackagesAsFiles: filterSet.packagesAsFiles];
 
     treeBalancer = [[TreeBalancer alloc] init];
     typeInventory = [UniformTypeInventory.defaultUniformTypeInventory retain];
@@ -223,15 +224,6 @@ NSString  *TallyFileSizeName = @"tally";
   [_alertMessage release];
   
   [super dealloc];
-}
-
-
-- (BOOL) packagesAsFiles {
-  return [treeGuide packagesAsFiles];
-}
-
-- (void) setPackagesAsFiles:(BOOL)flag {
-  [treeGuide setPackagesAsFiles: flag];
 }
 
 
@@ -342,7 +334,6 @@ NSString  *TallyFileSizeName = @"tally";
                                        volumeSize: volumeSize.unsignedLongLongValue
                                         freeSpace: freeSpace.unsignedLongLongValue
                                         filterSet: filterSet
-                                  packagesAsFiles: self.packagesAsFiles
                                       monitorPath: path] autorelease];
 }
 

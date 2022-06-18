@@ -1185,10 +1185,11 @@ didStartElement:(NSString *)childElement
 }
 
 - (id) objectForElement {
-  NSMutableArray  *unboundTests = [reader mutableUnboundFilterTests];
+  NSMutableArray  *unboundTests = reader.mutableUnboundFilterTests;
 
   // Note: Setting "nil" filterRepository to ensure that filter definition as read is retained.
   return [FilterSet filterSetWithNamedFilters: namedFilters
+                              packagesAsFiles: NO // TODO: Set correctly
                              filterRepository: nil
                                testRepository: reader.filterTestRepository
                                unboundFilters: nil

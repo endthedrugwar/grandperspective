@@ -10,6 +10,7 @@
 @interface FilterSet (PrivateMethods)
 
 - (instancetype) initWithNamedFilters:(NSArray *)filters
+                      packagesAsFiles:(BOOL)packagesAsFiles
                      filterRepository:(FilterRepository *)filterRepository
                        testRepository:(FilterTestRepository *)testRepository
                        unboundFilters:(NSMutableArray *)unboundFilters
@@ -25,20 +26,24 @@
 }
 
 + (instancetype) filterSetWithNamedFilter:(NamedFilter *)namedFilter
+                          packagesAsFiles:(BOOL)packagesAsFiles
                            unboundFilters:(NSMutableArray *)unboundFilters
                              unboundTests:(NSMutableArray *)unboundTests {
   NSArray  *namedFilters = @[namedFilter];
   return [FilterSet filterSetWithNamedFilters: namedFilters
+                              packagesAsFiles: packagesAsFiles
                                unboundFilters: unboundFilters
                                  unboundTests: unboundTests];
 }
 
 + (instancetype) filterSetWithNamedFilters:(NSArray *)namedFilters
+                           packagesAsFiles:(BOOL)packagesAsFiles
                             unboundFilters:(NSMutableArray *)unboundFilters
                               unboundTests:(NSMutableArray *)unboundTests {
   FilterRepository  *filterRepo = FilterRepository.defaultFilterRepository;
   FilterTestRepository  *testRepo = FilterTestRepository.defaultFilterTestRepository;
   return [FilterSet filterSetWithNamedFilters: namedFilters
+                              packagesAsFiles: packagesAsFiles
                              filterRepository: filterRepo
                                testRepository: testRepo
                                unboundFilters: unboundFilters
@@ -46,11 +51,13 @@
 }
 
 + (instancetype) filterSetWithNamedFilters:(NSArray *)namedFilters
+                           packagesAsFiles:(BOOL)packagesAsFiles
                           filterRepository:(FilterRepository *)filterRepository
                             testRepository:(FilterTestRepository *)testRepository
                             unboundFilters:(NSMutableArray *)unboundFilters
                               unboundTests:(NSMutableArray *)unboundTests {
   return [[[FilterSet alloc] initWithNamedFilters: namedFilters
+                                  packagesAsFiles: packagesAsFiles
                                  filterRepository: filterRepository
                                    testRepository: testRepository
                                    unboundFilters: unboundFilters
@@ -61,17 +68,19 @@
 
 // Overrides parent's designated initialiser.
 - (instancetype) init {
-  return [self initWithNamedFilters: @[] fileItemTest: nil];
+  return [self initWithNamedFilters: @[] packagesAsFiles: NO fileItemTest: nil];
 }
 
 /* Designated initialiser.
  */
 - (instancetype) initWithNamedFilters:(NSArray *)filters
+                      packagesAsFiles:(BOOL)packagesAsFiles
                          fileItemTest:(FileItemTest *)fileItemTest {
   if (self = [super init]) {
     // Copy to ensure immutability
     _filters = [[filters copy] retain];
     _fileItemTest = [fileItemTest retain];
+    _packagesAsFiles = packagesAsFiles;
   }
   return self;
 }
@@ -97,6 +106,7 @@
                                       unboundFilters:(NSMutableArray *)unboundFilters
                                         unboundTests:(NSMutableArray *)unboundTests {
   return [[[FilterSet alloc] initWithNamedFilters: self.filters
+                                  packagesAsFiles: self.packagesAsFiles
                                  filterRepository: filterRepository
                                    testRepository: testRepository
                                    unboundFilters: unboundFilters
@@ -104,6 +114,7 @@
 }
 
 - (FilterSet *)filterSetWithAddedNamedFilter:(NamedFilter *)filter
+                             packagesAsFiles:(BOOL)packagesAsFiles
                                 unboundTests:(NSMutableArray *)unboundTests {
   NSMutableArray  *newFilters = [NSMutableArray arrayWithCapacity: self.numFilters + 1];
     
@@ -124,6 +135,7 @@
   }
 
   return [[[FilterSet alloc] initWithNamedFilters: newFilters
+                                  packagesAsFiles: packagesAsFiles
                                      fileItemTest: newFileItemTest] autorelease];
 }
 
@@ -139,7 +151,7 @@
     if (descr.length > 0) {
       [descr appendString: @", "];
     }
-    [descr appendString: [namedFilter localizedName]];
+    [descr appendString: namedFilter.localizedName];
   }
   
   return descr;
@@ -151,6 +163,7 @@
 @implementation FilterSet (PrivateMethods)
 
 - (instancetype) initWithNamedFilters:(NSArray *)namedFilters
+                      packagesAsFiles:(BOOL)packagesAsFiles
                      filterRepository:(FilterRepository *)filterRepository
                        testRepository:(FilterTestRepository *)testRepository
                        unboundFilters:(NSMutableArray *)unboundFilters
@@ -198,7 +211,9 @@
                         autorelease];
   }
 
-  return [self initWithNamedFilters: namedFilters fileItemTest: testForFilterSet];
+  return [self initWithNamedFilters: namedFilters
+                    packagesAsFiles: packagesAsFiles
+                       fileItemTest: testForFilterSet];
 }
 
 @end // @implementation FilterSet (PrivateMethods)

@@ -18,8 +18,9 @@
 
 /* Changes
  * v6: Use system path component for name of physical files and directories
+ * v7: Add packageAsFiles attribute to FilterSet
  */
-NSString  *TreeWriterFormatVersion = @"6";
+NSString  *TreeWriterFormatVersion = @"7";
 
 // XML elements
 NSString  *ScanDumpElem = @"GrandPerspectiveScanDump";
@@ -41,6 +42,9 @@ NSString  *VolumeSizeAttr = @"volumeSize";
 NSString  *FreeSpaceAttr = @"freeSpace";
 NSString  *ScanTimeAttr = @"scanTime";
 NSString  *FileSizeMeasureAttr = @"fileSizeMeasure";
+
+// XML attributes of FilterSet
+NSString  *PackagesAsFilesAttr = @"packagesAsFiles";
 
 // XML attributes of FilterTest
 NSString  *InvertedAttr = @"inverted";
@@ -238,7 +242,10 @@ NSString *escapedXML(NSString *s, CharacterOptions escapeCharMask) {
     return;
   }
 
-  [self appendString: [NSString stringWithFormat: @"<%@>\n", FilterSetElem]];
+  [self appendString: [NSString stringWithFormat: @"<%@ %@=\"%@\">\n",
+                       FilterSetElem,
+                       PackagesAsFilesAttr,
+                       filterSet.packagesAsFiles ? TrueValue : FalseValue]];
 
   for (NamedFilter *namedFilter in [filterSet.filters objectEnumerator]) {
     [self appendFilterElement: namedFilter];

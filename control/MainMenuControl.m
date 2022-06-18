@@ -631,13 +631,14 @@ static MainMenuControl  *singletonInstance = nil;
   displaySettings.maskName = nil;
   displaySettings.fileItemMaskEnabled = false;
 
+  TreeContext  *oldContext = oldControl.treeContext;
   NSMutableArray  *unboundTests = [NSMutableArray arrayWithCapacity: 8];
   FilterSet  *filterSet =
-    [oldControl.treeContext.filterSet filterSetWithAddedNamedFilter: namedFilter
-                                                       unboundTests: unboundTests];
+    [oldContext.filterSet filterSetWithAddedNamedFilter: namedFilter
+                                        packagesAsFiles: !displaySettings.showPackageContents
+                                           unboundTests: unboundTests];
   [MainMenuControl reportUnboundTests: unboundTests];
 
-  TreeContext  *oldContext = oldControl.treeContext;
   [self rescanItem: oldContext.scanTree
         deriveFrom: oldControl
           settings: controlSettings
@@ -647,6 +648,8 @@ static MainMenuControl  *singletonInstance = nil;
 
 - (IBAction) filterDirectoryView:(id)sender {
   DirectoryViewControl  *oldControl = NSApplication.sharedApplication.mainWindow.windowController;
+  DirectoryViewControlSettings  *settings = oldControl.directoryViewControlSettings;
+  DirectoryViewDisplaySettings  *displaySettings = settings.displaySettings;
 
   NamedFilter  *namedFilter = [self selectFilter: oldControl.nameOfActiveMask];
   if (namedFilter == nil) {
@@ -654,15 +657,20 @@ static MainMenuControl  *singletonInstance = nil;
     return;
   }
 
+  TreeContext  *oldContext = oldControl.treeContext;
+  BOOL  packagesAsFiles = (oldContext.filterSet.numFilters > 0
+                           // A filter is already active on the tree. Preserve the package setting
+                           // to avoid inconsistencies in filter behaviour
+                           ? oldContext.filterSet.packagesAsFiles
+                           // Let filter behaviour for packages depend on current display setting
+                           : !displaySettings.showPackageContents);
   NSMutableArray  *unboundTests = [NSMutableArray arrayWithCapacity: 8];
   FilterSet  *filterSet =
-    [oldControl.treeContext.filterSet filterSetWithAddedNamedFilter: namedFilter
-                                                       unboundTests: unboundTests];
+    [oldContext.filterSet filterSetWithAddedNamedFilter: namedFilter
+                                        packagesAsFiles: packagesAsFiles
+                                           unboundTests: unboundTests];
   [MainMenuControl reportUnboundTests: unboundTests];
 
-  ItemPathModel  *pathModel = oldControl.pathModelView.pathModel;
-  DirectoryViewControlSettings  *settings = oldControl.directoryViewControlSettings;
-  DirectoryViewDisplaySettings  *displaySettings = settings.displaySettings;
   if ([namedFilter.name isEqualToString: displaySettings.maskName]) {
     // Don't retain the mask if the filter has the same name. It is likely that the filter is the
     // same as the mask, or if not, is at least a modified version of it. It therefore does not make
@@ -670,22 +678,15 @@ static MainMenuControl  *singletonInstance = nil;
     displaySettings.maskName = nil;
   }
 
+  ItemPathModel  *pathModel = oldControl.pathModelView.pathModel;
   DerivedDirViewWindowCreator  *windowCreator =
     [[[DerivedDirViewWindowCreator alloc] initWithWindowManager: windowManager
                                                      targetPath: pathModel
                                                        settings: settings] autorelease];
 
-  TreeContext  *oldContext = oldControl.treeContext;
-  BOOL packagesAsFiles = (oldContext.monitorsSource && oldContext.filterSet.numFilters > 0
-                          // A filter is active on a tree that is being monitored. Preserve the
-                          // package setting to avoid inconsistencies in filter behaviour
-                          ? oldContext.packagesAsFiles
-                          // Let filter behaviour for packages depend on current display setting
-                          : !displaySettings.showPackageContents);
 
   FilterTaskInput  *input = [[[FilterTaskInput alloc] initWithTreeContext: oldContext
-                                                                filterSet: filterSet
-                                                          packagesAsFiles: packagesAsFiles]
+                                                                filterSet: filterSet]
                              autorelease];
 
   [filterTaskManager asynchronouslyRunTaskWithInput: input
@@ -916,9 +917,13 @@ static MainMenuControl  *singletonInstance = nil;
   FilterSet  *filterSet = nil;
 
   if (namedFilter != nil) {
+    BOOL  showPackageContentsByDefault =
+      [NSUserDefaults.standardUserDefaults boolForKey: ShowPackageContentsByDefaultKey];
+
     NSMutableArray  *unboundFilters = [NSMutableArray arrayWithCapacity: 8];
     NSMutableArray  *unboundTests = [NSMutableArray arrayWithCapacity: 8];
     filterSet = [FilterSet filterSetWithNamedFilter: namedFilter
+                                    packagesAsFiles: !showPackageContentsByDefault
                                      unboundFilters: unboundFilters
                                        unboundTests: unboundTests];
     [MainMenuControl reportUnboundFilters: unboundFilters];
@@ -964,8 +969,7 @@ static MainMenuControl  *singletonInstance = nil;
 
   ScanTaskInput  *input = [[[ScanTaskInput alloc] initWithTreeSource: oldContext.scanTree
                                                      fileSizeMeasure: oldContext.fileSizeMeasure
-                                                           filterSet: oldContext.filterSet
-                                                     packagesAsFiles: oldContext.packagesAsFiles]
+                                                           filterSet: oldContext.filterSet]
                            autorelease];
 
   [scanTaskManager asynchronouslyRunTaskWithInput: input
@@ -1007,7 +1011,6 @@ static MainMenuControl  *singletonInstance = nil;
     [[ScanTaskInput alloc] initWithPath: item.systemPath
                         fileSizeMeasure: oldContext.fileSizeMeasure
                               filterSet: filterSet
-                        packagesAsFiles: !controlSettings.displaySettings.showPackageContents
                              treeSource: nil]
     autorelease];
 
@@ -1101,9 +1104,7 @@ static MainMenuControl  *singletonInstance = nil;
 }
 
 + (FilterSet *)updateFiltersIfNeeded:(FilterSet *)filterSet {
-  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
-
-  if ([userDefaults boolForKey: UpdateFiltersBeforeUse]) {
+  if ([NSUserDefaults.standardUserDefaults boolForKey: UpdateFiltersBeforeUse]) {
     NSMutableArray  *unboundFilters = [NSMutableArray arrayWithCapacity: 8];
     NSMutableArray  *unboundTests = [NSMutableArray arrayWithCapacity: 8];
     filterSet = [filterSet updatedFilterSetUnboundFilters: unboundFilters
