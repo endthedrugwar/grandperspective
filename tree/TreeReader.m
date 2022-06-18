@@ -229,6 +229,7 @@ NSString  *AttributeNameKey = @"name";
 
 @interface FilterSetElementHandler : ElementHandler {
   NSMutableArray  *namedFilters;
+  BOOL  packagesAsFiles;
 }
 
 - (void) handler: (ElementHandler *)handler 
@@ -1158,6 +1159,7 @@ didStartElement:(NSString *)childElement
                            callback: callbackVal
                           onSuccess: successSelectorVal]) {
     namedFilters = [[NSMutableArray alloc] initWithCapacity: 8];
+    packagesAsFiles = YES;
   }
   
   return self;
@@ -1169,6 +1171,16 @@ didStartElement:(NSString *)childElement
   [super dealloc];
 }
 
+- (void) handleAttributes:(NSDictionary *)attribs {
+  @try {
+    packagesAsFiles = [self getBooleanAttributeValue: PackagesAsFilesAttr
+                                                from: attribs
+                                        defaultValue: YES];
+  }
+  @catch (AttributeParseException *ex) {
+    [self handlerAttributeParseError: ex];
+  }
+}
 
 - (void) handleChildElement:(NSString *)childElement attributes:(NSDictionary *)attribs {
  if ([childElement isEqualToString: FilterElem]) {
@@ -1189,7 +1201,7 @@ didStartElement:(NSString *)childElement
 
   // Note: Setting "nil" filterRepository to ensure that filter definition as read is retained.
   return [FilterSet filterSetWithNamedFilters: namedFilters
-                              packagesAsFiles: NO // TODO: Set correctly
+                              packagesAsFiles: packagesAsFiles
                              filterRepository: nil
                                testRepository: reader.filterTestRepository
                                unboundFilters: nil

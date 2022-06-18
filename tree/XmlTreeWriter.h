@@ -23,6 +23,9 @@ extern NSString  *FreeSpaceAttr;
 extern NSString  *ScanTimeAttr;
 extern NSString  *FileSizeMeasureAttr;
 
+// XML attributes of FilterSet
+extern NSString  *PackagesAsFilesAttr;
+
 // XML attributes of FilterTest
 extern NSString  *InvertedAttr;
 
