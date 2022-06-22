@@ -19,10 +19,11 @@ NSString  *UniformTypesRankingKey = @"uniformTypesRanking";
 
 + (UniformTypeRanking *)defaultUniformTypeRanking {
   static UniformTypeRanking  *defaultUniformTypeRankingInstance = nil;
+  static dispatch_once_t  onceToken;
 
-  if (defaultUniformTypeRankingInstance==nil) {
+  dispatch_once(&onceToken, ^{
     defaultUniformTypeRankingInstance = [[UniformTypeRanking alloc] init];
-  }
+  });
   
   return defaultUniformTypeRankingInstance;
 }

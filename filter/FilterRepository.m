@@ -26,10 +26,11 @@ NSString  *AppFiltersKey = @"GPDefaultFilters";
 
 + (FilterRepository *)defaultFilterRepository {
   static FilterRepository  *defaultInstance = nil;
+  static dispatch_once_t  onceToken;
 
-  if (defaultInstance == nil) {
+  dispatch_once(&onceToken, ^{
     defaultInstance = [[FilterRepository alloc] init];
-  }
+  });
   
   return defaultInstance;
 }

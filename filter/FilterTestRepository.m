@@ -27,10 +27,11 @@ NSString  *AppTestsKey = @"GPDefaultFilterTests";
 
 + (FilterTestRepository *)defaultFilterTestRepository {
   static FilterTestRepository  *defaultInstance = nil;
+  static dispatch_once_t  onceToken;
 
-  if (defaultInstance == nil) {
+  dispatch_once(&onceToken, ^{
     defaultInstance = [[FilterTestRepository alloc] init];
-  }
+  });
   
   return defaultInstance;
 }

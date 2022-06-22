@@ -150,9 +150,10 @@
 @implementation FileItemMappingCollection
 
 + (FileItemMappingCollection*) defaultFileItemMappingCollection {
-  static  FileItemMappingCollection  *defaultFileItemMappingCollectionInstance = nil;
+  static FileItemMappingCollection  *defaultFileItemMappingCollectionInstance = nil;
+  static dispatch_once_t  onceToken;
 
-  if (defaultFileItemMappingCollectionInstance==nil) {
+  dispatch_once(&onceToken, ^{
     FileItemMappingCollection  *instance = [[[FileItemMappingCollection alloc] init] autorelease];
     
     [instance addFileItemMappingScheme: [[[MappingByTopDirectoryName alloc] init] autorelease]
@@ -176,7 +177,7 @@
     [instance addFileItemMappingScheme: [[[AccessMappingScheme alloc] init] autorelease]
                                    key: @"access"];
     defaultFileItemMappingCollectionInstance = [instance retain];
-  }
+  });
   
   return defaultFileItemMappingCollectionInstance;
 }

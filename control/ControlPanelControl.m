@@ -136,8 +136,6 @@ NSString  *DisplaySettingsChangedEvent = @"displaySettingsChanged";
 @implementation ControlPanelControl
 
 - (id)init {
-  NSAssert(singletonInstance == nil, @"Can only create one ControlPanelControl.");
-
   if (self = [super initWithWindow: nil]) {
     colorMappings = [FileItemMappingCollection.defaultFileItemMappingCollection retain];
     colorPalettes = [ColorListCollection.defaultColorListCollection retain];
@@ -162,13 +160,14 @@ NSString  *DisplaySettingsChangedEvent = @"displaySettingsChanged";
   [super dealloc];
 }
 
-static ControlPanelControl  *singletonInstance = nil;
-
 + (ControlPanelControl *)singletonInstance {
-  static dispatch_once_t onceToken;
+  static ControlPanelControl  *singletonInstance = nil;
+  static dispatch_once_t  onceToken;
+
   dispatch_once(&onceToken, ^{
     singletonInstance = [[self alloc] init];
   });
+
   return singletonInstance;
 }
 

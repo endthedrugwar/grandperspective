@@ -217,6 +217,7 @@ NSString  *AfterClosingLastViewDoNothing = @"do nothing";
 }
 
 static MainMenuControl  *singletonInstance = nil;
+static dispatch_once_t  singletonOnceToken;
 
 + (MainMenuControl *)singletonInstance {
   return singletonInstance;
@@ -257,8 +258,11 @@ static MainMenuControl  *singletonInstance = nil;
 - (instancetype) init {
   NSAssert(singletonInstance == nil, @"Can only create one MainMenuControl.");
 
-  if (self = [super init]) {
-    windowManager = [[WindowManager alloc] init]; 
+  dispatch_once(&singletonOnceToken, ^{
+    id  initResult = [super init];
+    NSAssert(self == initResult, @"Self unexpectedly changed");
+
+    windowManager = [[WindowManager alloc] init];
 
     ProgressPanelControl  *scanProgressPanelControl = 
       [[[ScanProgressPanelControl alloc]
@@ -329,10 +333,12 @@ static MainMenuControl  *singletonInstance = nil;
              object: nil];
 
     showWelcomeWindow = YES; // Default
-  }
-  
-  singletonInstance = self;
-  
+
+    singletonInstance = self;
+  });
+
+  NSAssert(self == singletonInstance, @"init should only be invoked once");
+
   return self;
 }
 

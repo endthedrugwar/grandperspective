@@ -26,10 +26,11 @@ NSString  *UnknownTypeUTI = @"unknown";
 
 + (UniformTypeInventory *)defaultUniformTypeInventory {
   static UniformTypeInventory  *defaultUniformTypeInventoryInstance = nil;
+  static dispatch_once_t onceToken;
 
-  if (defaultUniformTypeInventoryInstance==nil) {
+  dispatch_once(&onceToken, ^{
     defaultUniformTypeInventoryInstance = [[UniformTypeInventory alloc] init];
-  }
+  });
   
   return defaultUniformTypeInventoryInstance;
 }

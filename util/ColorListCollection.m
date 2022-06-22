@@ -56,15 +56,18 @@ NSColorList* createGrandPerspectivePalette(void) {
 #endif
 
 @interface ColorListCollection (PrivateMethods)
-- (bool) isEmpty;
+
+@property (nonatomic, readonly) bool isEmpty;
+
 @end
 
 @implementation ColorListCollection
 
 + (ColorListCollection *)defaultColorListCollection {
   static ColorListCollection  *defaultColorListCollectionInstance = nil;
+  static dispatch_once_t  onceToken;
 
-  if (defaultColorListCollectionInstance == nil) {
+  dispatch_once(&onceToken, ^{
     ColorListCollection  *instance = [[[ColorListCollection alloc] init] autorelease];
     
     NSBundle  *bundle = NSBundle.mainBundle;
@@ -79,7 +82,7 @@ NSColorList* createGrandPerspectivePalette(void) {
       }
     }
 
-    if ([instance isEmpty]) {
+    if (instance.isEmpty) {
       // Should not happen, but on old versions of OS X reading can fail (see Bug #81)
       NSLog(@"Failed to load any palette. Adding fallback palette");
       [instance addColorList: createFallbackPalette() key: fallbackColorListKey];
@@ -90,7 +93,7 @@ NSColorList* createGrandPerspectivePalette(void) {
 #endif
 
     defaultColorListCollectionInstance = [instance retain];
-  }
+  });
   
   return defaultColorListCollectionInstance;
 }
