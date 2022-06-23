@@ -64,9 +64,9 @@
   if (hardLinkMismatch) {
     AlertMessage  *alert = [[[AlertMessage alloc] init] autorelease];
     alert.messageText = NSLocalizedString
-      (@"There are mismatches in hard-linked folder contents", @"Alert message");
+      (@"Inaccuracies in hard-linked folder contents", @"Alert message");
     alert.informativeText = NSLocalizedString
-      (@"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. You should perform a rescan to ensure that each hard-linked item occurs only once.",
+      (@"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once.",
        @"Alert message");
     return alert;
   }
