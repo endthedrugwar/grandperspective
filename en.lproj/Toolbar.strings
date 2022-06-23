@@ -35,16 +35,13 @@
 "Quick Look" = "Quick Look";
 
 /* Toolbar action */
+"Refresh" = "Refresh";
+
+/* Tooltip */
+"Refresh view data" = "Refresh view data";
+
+/* Toolbar action */
 "Rescan" = "Rescan";
-
-/* Toolbar action */
-"Rescan all" = "Rescan all";
-
-/* Toolbar action */
-"Rescan folder in view" = "Rescan folder in view";
-
-/* Toolbar action */
-"Rescan selected" = "Rescan selected";
 
 /* Tooltip */
 "Rescan view data" = "Rescan view data";

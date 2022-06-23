@@ -40,20 +40,8 @@
 /* Toolbar action */
 "Rescan" = "重新扫描";
 
-/* Toolbar action */
-"Rescan all" = "重新扫描全部";
-
-/* Toolbar action */
-"Rescan folder in view" = "重新扫描视图里的文件夹";
-
-/* Toolbar action */
-"Rescan selected" = "重新扫描选择";
-
 /* Tooltip */
 "Rescan view data" = "重新扫描视图里的数据";
-
-/* Toolbar action */
-"Rescan with mask as filter" = "以掩码作为过滤器重新扫描";
 
 /* Toolbar action */
 "Reset focus" = "复位焦点";

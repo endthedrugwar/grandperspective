@@ -40,20 +40,8 @@
 /* Toolbar action */
 "Rescan" = "Riscansiona";
 
-/* Toolbar action */
-"Rescan all" = "Riscansiona tutto";
-
-/* Toolbar action */
-"Rescan folder in view" = "Riscansiona la cartella visualizzata";
-
-/* Toolbar action */
-"Rescan selected" = "Riscansiona selezione";
-
 /* Tooltip */
 "Rescan view data" = "Riscansiona dati visualizzati";
-
-/* Toolbar action */
-"Rescan with mask as filter" = "Riscansiona con la maschera come filtro";
 
 /* Toolbar action */
 "Reset focus" = "Reset focus";

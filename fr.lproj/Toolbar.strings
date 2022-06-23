@@ -40,20 +40,8 @@
 /* Toolbar action */
 "Rescan" = "Réanalyser";
 
-/* Toolbar action */
-"Rescan all" = "Réanalyser tout";
-
-/* Toolbar action */
-"Rescan folder in view" = "Réanalyser le dossier affiché";
-
-/* Toolbar action */
-"Rescan selected" = "Réanalyser la sélection";
-
 /* Tooltip */
 "Rescan view data" = "Réanalyser les données d'affichage";
-
-/* Toolbar action */
-"Rescan with mask as filter" = "Réanalyser avec un masque comme filtre";
 
 /* Toolbar action */
 "Reset focus" = "Réinitialiser le focus";

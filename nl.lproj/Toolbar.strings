@@ -40,20 +40,8 @@
 /* Toolbar action */
 "Rescan" = "Herlezen";
 
-/* Toolbar action */
-"Rescan all" = "Alles herlezen";
-
-/* Toolbar action */
-"Rescan folder in view" = "Map in venster herlezen";
-
-/* Toolbar action */
-"Rescan selected" = "Selectie herlezen";
-
 /* Tooltip */
 "Rescan view data" = "Ingelezen data herlezen";
-
-/* Toolbar action */
-"Rescan with mask as filter" = "Data herlezen met masker als filter";
 
 /* Toolbar action */
 "Reset focus" = "Herstel standaard focus";

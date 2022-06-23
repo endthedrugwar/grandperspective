@@ -40,20 +40,8 @@
 /* Toolbar action */
 "Rescan" = "Skannaa uudelleen";
 
-/* Toolbar action */
-"Rescan all" = "Skannaa kaikki uudelleen";
-
-/* Toolbar action */
-"Rescan folder in view" = "Skannaa näkyvä hakemisto uudelleen";
-
-/* Toolbar action */
-"Rescan selected" = "Skannaa valittu uudelleen";
-
 /* Tooltip */
 "Rescan view data" = "Skannaa näkyvissä oleva data uudelleen";
-
-/* Toolbar action */
-"Rescan with mask as filter" = "Skannaa uudelleen käyttäen maskia suotimena";
 
 /* Toolbar action */
 "Reset focus" = "Nollaa kohdistus";
