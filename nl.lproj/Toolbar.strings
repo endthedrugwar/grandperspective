@@ -38,6 +38,12 @@
 "Quick Look" = "Geef snel weer";
 
 /* Toolbar action */
+"Refresh" = "Ververs";
+
+/* Tooltip */
+"Refresh view data" = "Ingelezen data verversen";
+
+/* Toolbar action */
 "Rescan" = "Herlezen";
 
 /* Tooltip */

@@ -25,6 +25,9 @@
 /* Message in progress panel while filtering */
 "%d folders filtered" = "%d mappen gefilterd";
 
+/* Message in progress panel while executing refresh-based scan */
+"%d folders processed" = "%d mappen verwerkt";
+
 /* Message in progress panel while loading data */
 "%d folders read" = "%d mappen geladen";
 
@@ -274,6 +277,9 @@
 /* Message in progress panel while loading data */
 "Reading %@" = "Laden van %@";
 
+/* Title of progress panel. */
+"Refresh in progress" = "Bezig met verversen";
+
 /* Alert panel button */
 "Remove" = "Verwijder";
 
@@ -356,6 +362,9 @@
 "The path %@ does not exist or is not a folder" = "De padnaam %@ bestaat niet of is geen map";
 
 /* Alert message */
+"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. You should perform a rescan to ensure that each hard-linked item occurs only once." = "De ververste inhoud is mogelijk niet volledig correct. Harde links komen mogelijk meer dan eens voor of kunnen ontbreken. Herlees alles om zeker te zijn dat harde links maar één keer voorkomen.";
+
+/* Alert message */
 "The reported size of some files is larger than their actual size on disk" = "De geraporteerde grootte van sommige bestanden is groter dan de werkelijke benodigde opslagruimte";
 
 /* Alert message */
@@ -384,6 +393,9 @@
 
 /* Alert informative text */
 "The unbound tests have been omitted from the filter." = "De niet-geinitialiseerde filtertesten zijn uit het filter verwijderd.";
+
+/* Alert message */
+"There are mismatches in hard-linked folder contents" = "Onnauwkeurigheden in mappen met harde links";
 
 /* Alert informative text */
 "These filters do not exist anymore. Their old definition is used instead." = "Deze filters bestaan niet meer. Hun oorspronkelijke definitie zal daarom gebruikt worden.";
