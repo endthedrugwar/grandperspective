@@ -101,9 +101,9 @@
                                     <action selector="scanFilteredDirectoryView:" target="222" id="337"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Refresh" keyEquivalent="N" id="326">
+                            <menuItem title="Refresh" keyEquivalent="N" id="9aB-S3-Sb7">
                                 <connections>
-                                    <action selector="refresh:" target="222" id="DOe-QX-ifE"/>
+                                    <action selector="refresh:" target="222" id="zWW-vk-Lez"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Rescan" id="gUG-Nh-FTx">
