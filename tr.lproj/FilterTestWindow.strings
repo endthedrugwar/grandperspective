@@ -134,7 +134,7 @@
 "514.title" = "Tamam";
 
 /* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "515"; */
-"515.title" = "İptal";
+"515.title" = "Vazgeç";
 
 /* Class = "NSTextFieldCell"; title = "Apply to:"; ObjectID = "517"; */
 "517.title" = "Uygula:";

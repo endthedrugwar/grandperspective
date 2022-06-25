@@ -2,7 +2,7 @@
 "0Yh-UN-zmZ.title" = "Yol";
 
 /* Class = "NSButtonCell"; title = "Add headers"; ObjectID = "1St-Xy-2b2"; */
-"1St-Xy-2b2.title" = "Başlıkları ekle";
+"1St-Xy-2b2.title" = "Üstbilgiyi ekle";
 
 /* Class = "NSButtonCell"; title = "Last access time"; ObjectID = "aFG-JK-wpH"; */
 "aFG-JK-wpH.title" = "Son erişilme zamanı";
@@ -11,7 +11,7 @@
 "F0z-JX-Cv5.title" = "Metin Olarak Dışa Aktar";
 
 /* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "gTS-re-YU5"; */
-"gTS-re-YU5.title" = "İptal";
+"gTS-re-YU5.title" = "Vazgeç";
 
 /* Class = "NSButtonCell"; title = "Size"; ObjectID = "Hdn-NZ-wDs"; */
 "Hdn-NZ-wDs.title" = "Boyut";

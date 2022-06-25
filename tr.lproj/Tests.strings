@@ -14,16 +14,16 @@
 "%@ and %@" = "%1$@ ve %2$@";
 
 /* String test with 1: subject, and 2: match targets */
-"%@ contains %@" = "%1$@ içerir %2$@";
+"%@ contains %@" = "%1$@, %2$@ içerir";
 
 /* Case-sensitive string test with 1: subject, and 2: match targets */
-"%@ conTains %@" = "%1$@ içerir %2$@";
+"%@ conTains %@" = "%1$@, %2$@ içerir";
 
 /* String test with 1: subject, and 2: match targets */
-"%@ ends with %@" = "%1$@ %2$@ ile biter";
+"%@ ends with %@" = "%1$@, %2$@ ile biter";
 
 /* Case-sensitive string test with 1: subject, and 2: match targets */
-"%@ enDs with %@" = "%1$@ %2$@ ile biter";
+"%@ enDs with %@" = "%1$@, %2$@ ile biter";
 
 /* String test with 1: subject, and 2: match targets */
 "%@ equals %@" = "%1$@ eşittir %2$@";
@@ -35,10 +35,10 @@
 "%@ or %@" = "%1$@ veya %2$@";
 
 /* String test with 1: subject, and 2: match targets */
-"%@ starts with %@" = "%1$@ %2$@ ile başlar";
+"%@ starts with %@" = "%1$@, %2$@ ile başlar";
 
 /* Case-sensitive string test with 1: subject, and 2: match targets */
-"%@ starTs with %@" = "%1$@ %2$@ ile başlar";
+"%@ starTs with %@" = "%1$@, %2$@ ile başlar";
 
 /* Three or more match targets with 1: a target match, and 2: two or more other target matches */
 "%@, %@" = "%1$@, %2$@";

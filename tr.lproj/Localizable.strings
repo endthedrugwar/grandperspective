@@ -8,10 +8,10 @@
 "%@, %@" = "%1$@, %2$@";
 
 /* Enumeration of three or more items with 1: two or more items, 2: last item */
-"%@, and %@" = "%1$@, ve %2$@";
+"%@, and %@" = "%1$@ ve %2$@";
 
 /* Enumeration of three or more items with 1: two or more items, 2: last item */
-"%@, or %@" = "%1$@, veya %2$@";
+"%@, or %@" = "%1$@ veya %2$@";
 
 /* Legend for Time-based mapping schemes. */
 "%d - %d days ago" = "%1$d - %2$d gün önce";
@@ -20,10 +20,13 @@
 "%d days ago" = "%d gün önce";
 
 /* Legend for Time-based mapping schemes. */
-"%d days ago or more" = "%d gün önce veya daha önce";
+"%d days ago or more" = "%d gün veya daha önce";
 
 /* Message in progress panel while filtering */
 "%d folders filtered" = "%d klasör süzüldü";
+
+/* Message in progress panel while executing refresh-based scan */
+"%d folders processed" = "%d klasör işlendi";
 
 /* Message in progress panel while loading data */
 "%d folders read" = "%d klasör okundu";
@@ -44,7 +47,7 @@
 "A filter named \"%@\" already exists." = "\"%@\" adlı bir süzgeç zaten var.";
 
 /* Alert message (Note: 'it' can refer to a file or a folder) */
-"A possible reason is that it does not exist anymore." = "Olası bir neden artık mevcut olmaması olabilir.";
+"A possible reason is that it does not exist anymore." = "Olası bir neden artık var olmaması olabilir.";
 
 /* Alert message */
 "A test named \"%@\" already exists." = "\"%@\" adlı bir sınama zaten var.";
@@ -65,7 +68,7 @@
 "B" = "B";
 
 /* Alert panel button */
-"Cancel" = "İptal";
+"Cancel" = "Vazgeç";
 
 /* Part of tool tip for uniform types */
 "Conforms to:" = "İle uyumludur:";
@@ -89,13 +92,13 @@
 "Encountered filter after folder." = "Klasörden sonra süzgeç bulundu.";
 
 /* Parse error */
-"Encountered more than one root element." = "Birden fazla kök ögesi bulundu.";
+"Encountered more than one root element." = "Birden fazla kök öge bulundu.";
 
 /* Parse error */
-"Encountered more than one root folder." = "Birden fazla kök klasörü bulundu.";
+"Encountered more than one root folder." = "Birden fazla kök klasör bulundu.";
 
 /* Parse error */
-"Encountered multiple %@ elements." = "Birden çok %@ ögesi bulundu";
+"Encountered multiple %@ elements." = "Birden çok %@ öge bulundu";
 
 /* Parse error */
 "Error parsing \"%@\" attribute: %@" = "\"%1$@\" özniteliği ayrıştırılırken hata: %2$@";
@@ -122,7 +125,7 @@
 "Expected time value." = "Zaman değeri bekleniyordu.";
 
 /* Parse error */
-"Expected unsigned integer value." = "İşaretsiz tamsayı değeri bekleniyordu.";
+"Expected unsigned integer value." = "İmzalanmamış tamsayı değeri bekleniyordu.";
 
 /* Title of save panel */
 "Export image" = "Görseli dışa aktar";
@@ -197,7 +200,7 @@
 "Filtering in progress" = "Süzme işlemi sürüyor";
 
 /* Label in Focus panel */
-"Folder in view:" = "Görünümdeki klasör:";
+"Folder in view:" = "Görüntüdeki klasör:";
 
 /* Alert message */
 "For %d files the reported (logical) size is larger than their actual (physical) size. Consider rescanning using the Physical file size measure" = "%d dosyaları için raporlanan (mantıksal) boyut onların gerçek (fiziksel) boyutlarından daha büyüktür. Fiziksel dosya boyutu seçeneğini kullanarak yeniden taramayı deneyin.";
@@ -207,6 +210,9 @@
 
 /* Menu item */
 "Hide Control Panel" = "Denetim Panelini Gizle";
+
+/* Alert message */
+"Inaccuracies in hard-linked folder contents" = "Sabit bağlantılı klasör içeriğinde tutarsızlıklar";
 
 /* File size unit for kilobytes. */
 "kB" = "kB";
@@ -239,13 +245,13 @@
 "None" = "Yok";
 
 /* Alert additional informative text */
-"Note: The file is hard-linked. It will take up space until all links to it are deleted." = "Not: Dosya sabit bağlantılı. Buna olan tüm bağlantılar silinene kadar yer işgal etmeye devam edecektir.";
+"Note: The file is hard-linked. It will take up space until all links to it are deleted." = "Not: Dosya sabit bağlantılı. Buna olan tüm bağlantılar silinene kadar yer işgal etmeyi sürdürecektir.";
 
 /* Alert additional informative text */
-"Note: The folder is hard-linked. It will take up space until all links to it are deleted." = "Not: Klasör sabit bağlantılı. Buna olan tüm bağlantılar silinene kadar yer işgal etmeye devam edecektir.";
+"Note: The folder is hard-linked. It will take up space until all links to it are deleted." = "Not: Klasör sabit bağlantılı. Buna olan tüm bağlantılar silinene kadar yer işgal etmeyi sürdürecektir.";
 
 /* Alert additional informative text */
-"Note: The package is hard-linked. It will take up space until all links to it are deleted." = "Not: Paket sabit bağlantılı. Buna olan tüm bağlantılar silinene kadar yer işgal etmeye devam edecektir.";
+"Note: The package is hard-linked. It will take up space until all links to it are deleted." = "Not: Paket sabit bağlantılı. Buna olan tüm bağlantılar silinene kadar yer işgal etmeyi sürdürecektir.";
 
 /* Alert panel button */
 "OK" = "Tamam";
@@ -257,7 +263,7 @@
 "Outermost level" = "En dış düzey";
 
 /* Label in Focus panel */
-"Package in view:" = "Görünümdeki paket:";
+"Package in view:" = "Görüntüdeki paket:";
 
 /* Parse error */
 "Parse error (line %d): %@" = "Ayrıştırma hatası (%1$d. satır): %2$@";
@@ -269,10 +275,13 @@
 "Path" = "Yol";
 
 /* Alert message */
-"Possible reasons are that it does not exist anymore (it may have been moved, renamed, or deleted by other means) or that you lack the required permissions." = "Olası bir neden artık mevcut olmaması olabilir (başka yollardan taşınmış, adı değiştirilmiş veya silinmiş olabilir), veya gerekli izinlere sahip olmayabilirsiniz.";
+"Possible reasons are that it does not exist anymore (it may have been moved, renamed, or deleted by other means) or that you lack the required permissions." = "Olası bir neden artık var olmaması olabilir (başka yollardan taşınmış, adı değiştirilmiş veya silinmiş olabilir) veya gerekli izinlere sahip olmayabilirsiniz.";
 
 /* Message in progress panel while loading data */
 "Reading %@" = "%@ okunuyor";
+
+/* Title of progress panel. */
+"Refresh in progress" = "Yenileme sürüyor";
 
 /* Alert panel button */
 "Remove" = "Kaldır";
@@ -356,22 +365,25 @@
 "The path %@ does not exist or is not a folder" = "%@ yolu yok veya bir klasör değil";
 
 /* Alert message */
-"The reported size of some files is larger than their actual size on disk" = "Bazı dosyaların raporlanan boyutu, onların kendi geçreç boyutlarından daha büyüktür.";
+"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once." = "Yenilenmiş içerik tümüyle doğru olmayabilir. Sabit bağlantılı ögeler birden çok veya kaybolmuş olabilir. Her bir sabit bağlantılı ögenin yalnızca bir kez göründüğünden emin olmak için bir yeniden tarama gerçekleştirin.";
+
+/* Alert message */
+"The reported size of some files is larger than their actual size on disk" = "Bazı dosyaların raporlanan boyutu, onların kendi gerçek boyutlarından daha büyüktür.";
 
 /* Alert message */
 "The reported total size is larger than the actual size on disk" = "Raporlanan toplam boyut, diskteki gerçek boyuttan daha büyük.";
 
 /* Alert informative text */
-"The resulting file is valid but incomplete." = "Ortaya çıkan dosya geçerli ancak tam değil.";
+"The resulting file is valid but incomplete." = "Ortaya çıkan dosya geçerli; ancak tam değil.";
 
 /* Alert informative text */
 "The selected file will be moved to Trash." = "Seçilen dosya Çöp Sepeti'ne taşınacaktır.";
 
 /* Alert informative text */
-"The selected folder, with all its contents, will be moved to Trash. Beware, any files in the folder that are not shown in the view will also be deleted." = "Seçilen klasör, tüm içeriği ile birlikte, Çöp Sepeti'ne taşınacaktır. Dikkat! Bu klasörde olan ve görüntülenmeyen tüm dosyalar da silinecektir.";
+"The selected folder, with all its contents, will be moved to Trash. Beware, any files in the folder that are not shown in the view will also be deleted." = "Seçilen klasör, tüm içeriği ile birlikte Çöp Sepeti'ne taşınacaktır. Dikkat! Bu klasörde olan ve görüntülenmeyen tüm dosyalar da silinecektir.";
 
 /* Alert informative text */
-"The selected package will be moved to Trash." = "Seçilen paket Çöp Sepeti'ne taşınacaktır.";
+"The selected package will be moved to Trash." = "Seçili paket Çöp Sepeti'ne taşınacaktır.";
 
 /* Alert message */
 "The test must have a name." = "Sınamanın bir adı olmalı.";
@@ -383,10 +395,10 @@
 "The test will be replaced by the default test with this name." = "Sınama bu ada sahip varsayılan sınama ile değiştirilecektir.";
 
 /* Alert informative text */
-"The unbound tests have been omitted from the filter." = "Bağlanmamış sınamalar süzgeçten çıkartılmıştır.";
+"The unbound tests have been omitted from the filter." = "Bağlanmamış sınamalar süzgeçten çıkarılmıştır.";
 
 /* Alert informative text */
-"These filters do not exist anymore. Their old definition is used instead." = "Süzgeçler artık mevcut değil. Bunun yerine eski tanımlar kullanılacak.";
+"These filters do not exist anymore. Their old definition is used instead." = "Süzgeçler artık yok. Bunun yerine eski tanımlar kullanılacak.";
 
 /* Part of tool tip for uniform types */
 "Top-level type" = "Üst düzey tür";
@@ -401,7 +413,7 @@
 "Unnamed filter" = "Adsız süzgeç";
 
 /* Window title */
-"Unnamed filter test" = "Adsız süzgeç denemesi";
+"Unnamed filter test" = "Adsız süzgeç sınaması";
 
 /* Parse error */
 "Unrecognized value." = "Tanımlanamayan değer.";

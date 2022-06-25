@@ -26,7 +26,7 @@
 "916.title" = "Süzgeç1";
 
 /* Class = "NSTextFieldCell"; title = "Volume size:"; ObjectID = "918"; */
-"918.title" = "Disk boyutu:";
+"918.title" = "Bölüm boyutu:";
 
 /* Class = "NSTextFieldCell"; title = "Miscellaneous used space:"; ObjectID = "921"; */
 "921.title" = "Diğer kullanılan alan:";
@@ -35,7 +35,7 @@
 "923.title" = "Boşaltılan alan:";
 
 /* Class = "NSTextFieldCell"; title = "Volume name"; ObjectID = "925"; */
-"925.title" = "Disk adı";
+"925.title" = "Bölüm adı";
 
 /* Class = "NSTextFieldCell"; title = "Filter:"; ObjectID = "926"; */
 "926.title" = "Süzgeç:";
@@ -53,22 +53,22 @@
 "933.title" = "Maskeyi etkinleştir";
 
 /* Class = "NSTextFieldCell"; title = "Color by:"; ObjectID = "935"; */
-"935.title" = "Renklendirme kıstası:";
+"935.title" = "Renklendirme ölçütü:";
 
 /* Class = "NSTextFieldCell"; title = "Palette:"; ObjectID = "937"; */
 "937.title" = "Palet:";
 
 /* Class = "NSButtonCell"; title = "Show entire volume"; ObjectID = "938"; */
-"938.title" = "Tüm diski göster";
+"938.title" = "Tüm bölümü göster";
 
 /* Class = "NSButtonCell"; title = "Show package contents"; ObjectID = "939"; */
-"939.title" = "Tüm paket içeriğini göster";
+"939.title" = "Paket içeriğini göster";
 
 /* Class = "NSTextFieldCell"; title = "File type:"; ObjectID = "946"; */
 "946.title" = "Dosya türü:";
 
 /* Class = "NSTextFieldCell"; title = "File type identifier"; ObjectID = "947"; */
-"947.title" = "Dosya türü tanımlayıcısı";
+"947.title" = "Dosya türü tanımlayıcı";
 
 /* Class = "NSTextFieldCell"; title = "Created:"; ObjectID = "974"; */
 "974.title" = "Oluşturulma:";

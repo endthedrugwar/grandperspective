@@ -38,10 +38,16 @@
 "Quick Look" = "Göz At";
 
 /* Toolbar action */
+"Refresh" = "Yenile";
+
+/* Tooltip */
+"Refresh view data" = "Görüntü verisini yenile";
+
+/* Toolbar action */
 "Rescan" = "Yeniden Tara";
 
 /* Tooltip */
-"Rescan view data" = "Görünüm verisini yeniden tara";
+"Rescan view data" = "Görüntü verisini yeniden tara";
 
 /* Toolbar action */
 "Reset focus" = "Odağı sıfırla";

@@ -4,6 +4,9 @@
 /* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5"; */
 "5.title" = "Hepsini Öne Getir";
 
+/* Class = "NSMenuItem"; title = "Refresh"; ObjectID = "9aB-S3-Sb7"; */
+"9aB-S3-Sb7.title" = "Yenile";
+
 /* Class = "NSMenuItem"; title = "Show/Hide Control Panel"; ObjectID = "9Ho-ON-BCj"; */
 "9Ho-ON-BCj.title" = "Denetim Panelini Göster/Gizle";
 
@@ -17,7 +20,7 @@
 "24.title" = "Pencere";
 
 /* Class = "NSMenu"; title = "MainMenu"; ObjectID = "29"; */
-"29.title" = "AnaMenü";
+"29.title" = "Ana Menü";
 
 /* Class = "NSMenuItem"; title = "About GrandPerspective"; ObjectID = "58"; */
 "58.title" = "GrandPerspective Hakkında";
@@ -68,22 +71,19 @@
 "321.title" = "Kopyala ve Bağdaştır";
 
 /* Class = "NSMenuItem"; title = "Export As Image..."; ObjectID = "324"; */
-"324.title" = "Görsel Olarak Dışarı Aktar...";
-
-/* Class = "NSMenuItem"; title = "Rescan"; ObjectID = "326"; */
-"326.title" = "Yeniden Tara";
+"324.title" = "Görsel Olarak Dışa Aktar...";
 
 /* Class = "NSMenuItem"; title = "Filter..."; ObjectID = "331"; */
 "331.title" = "Süz...";
 
 /* Class = "NSMenuItem"; title = "Filtered Scan..."; ObjectID = "335"; */
-"335.title" = "Süzgeçli Tarama...";
+"335.title" = "Süzülmüş Tarama...";
 
 /* Class = "NSMenuItem"; title = "Save Scan Data..."; ObjectID = "339"; */
-"339.title" = "Tarama Verilerini Kaydet...";
+"339.title" = "Tarama Verisini Kaydet...";
 
 /* Class = "NSMenuItem"; title = "Load Scan Data..."; ObjectID = "340"; */
-"340.title" = "Tarama Verilerini Yükle...";
+"340.title" = "Tarama Verisini Yükle...";
 
 /* Class = "NSMenuItem"; title = "GrandPerspective Website"; ObjectID = "345"; */
 "345.title" = "GrandPerspective Web Sitesi";
@@ -133,6 +133,15 @@
 /* Class = "NSMenu"; title = "Services"; ObjectID = "426"; */
 "426.title" = "Hizmetler";
 
+/* Class = "NSMenuItem"; title = "Rescan with mask as filter"; ObjectID = "BMK-MQ-DB3"; */
+"BMK-MQ-DB3.title" = "Maskeyi süzgeç yaparak yeniden tara";
+
+/* Class = "NSMenuItem"; title = "Rescan folder in view"; ObjectID = "CV5-Fw-5D7"; */
+"CV5-Fw-5D7.title" = "Görüntüdeki klasörü yeniden tara";
+
+/* Class = "NSMenuItem"; title = "Rescan"; ObjectID = "gUG-Nh-FTx"; */
+"gUG-Nh-FTx.title" = "Yeniden Tara";
+
 /* Class = "NSMenuItem"; title = "Export As Text..."; ObjectID = "hJw-Fc-daG"; */
 "hJw-Fc-daG.title" = "Metin Olarak Dışa Aktar...";
 
@@ -141,4 +150,13 @@
 
 /* Class = "NSMenu"; title = "Scan Recent"; ObjectID = "HXb-90-KwJ"; */
 "HXb-90-KwJ.title" = "Son Taramalar";
+
+/* Class = "NSMenuItem"; title = "Rescan selected"; ObjectID = "Lsx-9H-7TJ"; */
+"Lsx-9H-7TJ.title" = "Seçiliyi yeniden tara";
+
+/* Class = "NSMenuItem"; title = "Rescan all"; ObjectID = "nFT-y9-xF4"; */
+"nFT-y9-xF4.title" = "Tümünü Yeniden Tara";
+
+/* Class = "NSMenu"; title = "Rescan"; ObjectID = "rfs-HZ-ODE"; */
+"rfs-HZ-ODE.title" = "Yeniden Tara";
 

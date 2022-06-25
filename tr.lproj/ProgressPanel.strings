@@ -2,8 +2,5 @@
 "6.title" = "Görev sürüyor";
 
 /* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "29"; */
-"29.title" = "İptal";
-
-/* Class = "NSTextFieldCell"; title = "Execution summary"; ObjectID = "30"; */
-"30.title" = "Çalıştırma özeti";
+"29.title" = "Vazgeç";
 
