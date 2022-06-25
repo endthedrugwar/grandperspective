@@ -56,13 +56,13 @@
 "item is a package" = "on paketti";
 
 /* File/folder flags sub test */
-"item is hard-linked" = "on kova-linkitetty";
+"item is hard-linked" = "on linkitetty (hard)";
 
 /* File/folder flags sub test */
 "item is not a package" = "ei ole paketti";
 
 /* File/folder flags sub test */
-"item is not hard-linked" = "ei ole kova-linkitetty";
+"item is not hard-linked" = "ei ole linkitetty (hard)";
 
 /* A filename as the subject of a string test */
 "name" = "nimi";

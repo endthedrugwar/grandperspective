@@ -25,6 +25,9 @@
 /* Message in progress panel while filtering */
 "%d folders filtered" = "%d hakemistoa suodatettu";
 
+/* Message in progress panel while executing refresh-based scan */
+"%d folders processed" = "%d hakemistoa käsitelty";
+
 /* Message in progress panel while loading data */
 "%d folders read" = "%d hakemistoa luettu";
 
@@ -208,6 +211,9 @@
 /* Menu item */
 "Hide Control Panel" = "Piilota hallintapaneeli";
 
+/* Alert message */
+"Inaccuracies in hard-linked folder contents" = "Linkitettyjen (hard) hakemistojen sisällössä on epätarkkuutta";
+
 /* File size unit for kilobytes. */
 "kB" = "Kt";
 
@@ -273,6 +279,9 @@
 
 /* Message in progress panel while loading data */
 "Reading %@" = "Luetaan %@";
+
+/* Title of progress panel. */
+"Refresh in progress" = "Virkistys käynnissä";
 
 /* Alert panel button */
 "Remove" = "Poista";
@@ -354,6 +363,9 @@
 
 /* Alert message */
 "The path %@ does not exist or is not a folder" = "Polkua %@ ei ole tai se ei ole hakemisto";
+
+/* Alert message */
+"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once." = "Virkistetty sisältö ei ehkä ole täysin tarkka. Linkit (hard) saattavat puuttua tai esiintyä useamman kerran. Suorita uudelleenskannaus varmistuaksesi että jokainen linkki (hard) esiintyy vain yhden kerran.";
 
 /* Alert message */
 "The reported size of some files is larger than their actual size on disk" = "Joidenkin tiedostojen koko on suurempi kuin niiden varsinainen koko levyllä";

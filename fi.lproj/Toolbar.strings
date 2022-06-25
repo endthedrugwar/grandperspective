@@ -38,6 +38,12 @@
 "Quick Look" = "Pikakurkistus";
 
 /* Toolbar action */
+"Refresh" = "Virkistä";
+
+/* Tooltip */
+"Refresh view data" = "Virkistä näkymän tiedot";
+
+/* Toolbar action */
 "Rescan" = "Skannaa uudelleen";
 
 /* Tooltip */

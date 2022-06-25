@@ -4,6 +4,9 @@
 /* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5"; */
 "5.title" = "Tuo kaikki eteen";
 
+/* Class = "NSMenuItem"; title = "Refresh"; ObjectID = "9aB-S3-Sb7"; */
+"9aB-S3-Sb7.title" = "Virkistä";
+
 /* Class = "NSMenuItem"; title = "Show/Hide Control Panel"; ObjectID = "9Ho-ON-BCj"; */
 "9Ho-ON-BCj.title" = "Näytä/Kätke hallintapaneeli";
 
@@ -70,9 +73,6 @@
 /* Class = "NSMenuItem"; title = "Export As Image..."; ObjectID = "324"; */
 "324.title" = "Vie kuvana...";
 
-/* Class = "NSMenuItem"; title = "Rescan"; ObjectID = "326"; */
-"326.title" = "Skannaa uudelleen";
-
 /* Class = "NSMenuItem"; title = "Filter..."; ObjectID = "331"; */
 "331.title" = "Suodata...";
 
@@ -133,6 +133,15 @@
 /* Class = "NSMenu"; title = "Services"; ObjectID = "426"; */
 "426.title" = "Palvelut";
 
+/* Class = "NSMenuItem"; title = "Rescan with mask as filter"; ObjectID = "BMK-MQ-DB3"; */
+"BMK-MQ-DB3.title" = "Skannaa uudelleen käyttäen maskia suotimena";
+
+/* Class = "NSMenuItem"; title = "Rescan folder in view"; ObjectID = "CV5-Fw-5D7"; */
+"CV5-Fw-5D7.title" = "Skannaa näkyvä hakemisto uudelleen";
+
+/* Class = "NSMenuItem"; title = "Rescan"; ObjectID = "gUG-Nh-FTx"; */
+"gUG-Nh-FTx.title" = "Skannaa uudelleen";
+
 /* Class = "NSMenuItem"; title = "Export As Text..."; ObjectID = "hJw-Fc-daG"; */
 "hJw-Fc-daG.title" = "Vie tekstinä";
 
@@ -141,4 +150,13 @@
 
 /* Class = "NSMenu"; title = "Scan Recent"; ObjectID = "HXb-90-KwJ"; */
 "HXb-90-KwJ.title" = "Hae viimeisin";
+
+/* Class = "NSMenuItem"; title = "Rescan selected"; ObjectID = "Lsx-9H-7TJ"; */
+"Lsx-9H-7TJ.title" = "Skannaa valittu uudelleen";
+
+/* Class = "NSMenuItem"; title = "Rescan all"; ObjectID = "nFT-y9-xF4"; */
+"nFT-y9-xF4.title" = "Skannaa kaikki uudelleen";
+
+/* Class = "NSMenu"; title = "Rescan"; ObjectID = "rfs-HZ-ODE"; */
+"rfs-HZ-ODE.title" = "Skannaa uudelleen";
 

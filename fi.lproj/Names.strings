@@ -59,7 +59,7 @@
 "GreenEggs" = "Vihreät kananmunat";
 
 /* Filter test */
-"Hard-linked items" = "Kova-linkitetyt";
+"Hard-linked items" = "Linkitetyt (hard)";
 
 /* Color palette */
 "Heatmap-12" = "Kuumuuskartta 12";
@@ -107,7 +107,7 @@
 "name" = "Nimi";
 
 /* Filter name */
-"No hard-links" = "Ei kova-linkitettyjä";
+"No hard-links" = "Ei linkitettyjä (hard)";
 
 /* Filter name */
 "No version control" = "Ei versiohallintaa";
