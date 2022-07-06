@@ -40,12 +40,6 @@
 /* Class = "NSTextFieldCell"; title = "Filter:"; ObjectID = "181"; */
 "181.title" = "Filtro:";
 
-/* Class = "NSTextFieldCell"; title = "Rescan action:"; ObjectID = "189"; */
-"189.title" = "Azione di riscansione:";
-
-/* Class = "NSMenuItem"; title = "Rescan folder in view"; ObjectID = "193"; */
-"193.title" = "Riscansiona cartella nella vista";
-
 /* Class = "NSButtonCell"; title = "Show entire volume"; ObjectID = "199"; */
 "199.title" = "Visualizza volume intero";
 
