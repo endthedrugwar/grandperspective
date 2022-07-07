@@ -81,10 +81,10 @@ It simply shows the contents of your hard-drive at the time of the scan (minus t
 So let's exclude it from the view.
 Start by creating a new <a href="MasksAndFilters.html">filter</a>.
 You need to create a new <a href="EditingFilterTests.html">filter test</a>.
-Name it "Main back-up", apply it to "files and folders", and let it include the Path sub-test, matching paths that start with "/Volumes/<em>Backup Volume</em>/Backups.backupdb/<em>My Computer</em>/<em>2008-08-08-888888</em>". 
-The parts in italics will be different in your case. 
+Name it "Main back-up", apply it to "files and folders", and let it include the Path sub-test, matching paths that start with "/Volumes/<em>Backup Volume</em>/Backups.backupdb/<em>My Computer</em>/<em>2008-08-08-888888</em>".
+The parts in italics will be different in your case.
 You can get the path string you need from the <a href="ViewFocusPanel.html">Focus tab</a>.
-First in the view select any file from the largest back-up folder, 
+First in the view select any file from the largest back-up folder,
 <a href="NavigatingViews.html">zoom in</a> one level, copy the path from the "Folder in view" text box, and zoom out again.
 </p>
 
@@ -92,14 +92,14 @@ First in the view select any file from the largest back-up folder,
 Add the newly created "Main back-up" test to your new filter.
 The test will automatically be inverted (as it should).
 After having created the filter, you can select it as a mask from the <a href="ViewDisplayPanel.html">Display tab</a>.
-You should see that the main back-up is now masked. 
+You should see that the main back-up is now masked.
 If this is not the case, you did not specify the filter correctly.
 Edit it again until it works.
 </p>
 
 <p>
 When the mask works correctly, you should filter the view.
-Use the <b>Filter</b> command. 
+Use the <b>Filter</b> command.
 It should by default be configured the same as the mask, so simply click "OK".
 A new view window is created, only showing the other back-ups.
 This new view gives a much better idea of the size required by each incremental back-up.
@@ -129,10 +129,9 @@ The view excludes all files that appeared in earlier back-ups.
 <p>
 Note: You can apply the same filter to other back-up folders.
 However, you should then interpret the data in the view differently.
-In this case, each file that is shown does not appear in earlier back-ups <em>and the contents of the folder that the file appears in has not changed in later back-ups for as long as the file has existed (unchanged)</em>. 
+In this case, each file that is shown does not appear in earlier back-ups <em>and the contents of the folder that the file appears in has not changed in later back-ups for as long as the file has existed (unchanged)</em>.
 Indeed, that's a bit harder to get your head around, and slightly less useful as a result.
 <p>
 
 </body>
 </html>
-
