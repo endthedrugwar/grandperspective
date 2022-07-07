@@ -31,7 +31,7 @@ void eventCallback(ConstFSEventStreamRef streamRef,
     unsigned long eventFlag = eventFlags[i];
     NSString  *path = [NSString stringWithUTF8String: paths[i]];
 
-    printf("Change %llu in %s, flags %lu\n", eventIds[i], paths[i], eventFlag);
+    // printf("Change %llu in %s, flags %lu\n", eventIds[i], paths[i], eventFlag);
 
     if (eventFlag & kFSEventStreamEventFlagEventIdsWrapped) {
       NSLog(@"Warning: FSEvent IDs wrapped");
@@ -83,6 +83,9 @@ void eventCallback(ConstFSEventStreamRef streamRef,
     FSEventStreamSetDispatchQueue(eventStream, dispatch_get_main_queue());
 
     rootPathComponents = [[[NSURL fileURLWithPath: path] pathComponents] retain];
+
+    NSUserDefaults *args = NSUserDefaults.standardUserDefaults;
+    debugLogEnabled = [args boolForKey: @"logAll"] || [args boolForKey: @"logMonitor"];
   }
 
   return self;
@@ -122,12 +125,10 @@ void eventCallback(ConstFSEventStreamRef streamRef,
   NSURL *url = [NSURL fileURLWithPath: path];
   NSArray<NSString *> *pathComponents = url.pathComponents;
 
-  NSLog(@"invalidatePath: %@ mustScanSubDirs: %d", path, mustScanSubDirs);
-
   int i = 0;
   while (i < rootPathComponents.count) {
     if (![pathComponents[i] isEqualToString: rootPathComponents[i]]) {
-      NSLog(@"Failed to match path %@ with root path", path);
+      NSLog(@"Warning: Failed to match path %@ with root path", path);
       break;
     }
     ++i;
@@ -144,13 +145,17 @@ void eventCallback(ConstFSEventStreamRef streamRef,
         return [file.label isEqualToString: pathComponents[i]];
       }];
       if (child == nil) {
-        // This can happen when the sub-directory was created after the scan tree was created and
-        // subsequently modified.
-        NSLog(@"Could not find sub-directory %@ in %@", pathComponents[i], dirItem.systemPath);
+        // This typically happens when the user does not have permission to read the given
+        // sub-directory, e.g. ~/Library/Cookies. It may also happen when the sub-directory was
+        // created after the scan tree was created and subsequently modified.
+        if (debugLogEnabled) {
+          NSLog(@"Could not find sub-directory %@ in %@",
+                pathComponents[i], dirItem.systemPath);
+        }
         break;
       }
       else if (!child.isDirectory) {
-        NSLog(@"Found file instead of directory for %@ in %@",
+        NSLog(@"Warning: Found file instead of directory for %@ in %@",
               pathComponents[i], dirItem.systemPath);
         break;
       }
@@ -160,7 +165,7 @@ void eventCallback(ConstFSEventStreamRef streamRef,
 
     flag = mustScanSubDirs ? DirectoryNeedsFullRescan : DirectoryNeedsShallowRescan;
   } else {
-    NSLog(@"Warning: file item not found for %@", path);
+    NSLog(@"Warning: Path not found %@. Invalidating entire tree", path);
 
     dirItem = self.treeContext.scanTree;
     flag = DirectoryNeedsFullRescan;
@@ -170,7 +175,8 @@ void eventCallback(ConstFSEventStreamRef streamRef,
     dirItem.rescanFlags |= flag;
 
     ++_numChanges;
-    NSLog(@"Updated rescanFlags for %@", dirItem.path);
+    NSLog(@"Updated rescanFlags for %@ to %d in response to event for %@",
+          dirItem.path, dirItem.rescanFlags, path);
   }
 }
 

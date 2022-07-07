@@ -10,6 +10,8 @@
   FSEventStreamRef eventStream;
 
   NSArray<NSString *> *rootPathComponents;
+
+  BOOL debugLogEnabled;
 }
 
 @property (nonatomic, readonly, weak) TreeContext *treeContext;
