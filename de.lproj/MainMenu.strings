@@ -4,6 +4,9 @@
 /* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5"; */
 "5.title" = "Alles nach vorne bringen";
 
+/* Class = "NSMenuItem"; title = "Refresh"; ObjectID = "9aB-S3-Sb7"; */
+"9aB-S3-Sb7.title" = "Aktualisieren";
+
 /* Class = "NSMenuItem"; title = "Show/Hide Control Panel"; ObjectID = "9Ho-ON-BCj"; */
 "9Ho-ON-BCj.title" = "Zeige/Verberge Steuerung";
 
@@ -70,9 +73,6 @@
 /* Class = "NSMenuItem"; title = "Export As Image..."; ObjectID = "324"; */
 "324.title" = "Als Bilddatei exportieren...";
 
-/* Class = "NSMenuItem"; title = "Rescan"; ObjectID = "326"; */
-"326.title" = "Neu scannen";
-
 /* Class = "NSMenuItem"; title = "Filter..."; ObjectID = "331"; */
 "331.title" = "Filter...";
 
@@ -133,6 +133,15 @@
 /* Class = "NSMenu"; title = "Services"; ObjectID = "426"; */
 "426.title" = "Services";
 
+/* Class = "NSMenuItem"; title = "Rescan with mask as filter"; ObjectID = "BMK-MQ-DB3"; */
+"BMK-MQ-DB3.title" = "Wiederhole mit Maskierung als Filter";
+
+/* Class = "NSMenuItem"; title = "Rescan folder in view"; ObjectID = "CV5-Fw-5D7"; */
+"CV5-Fw-5D7.title" = "Wiederhole Scan in aktueller Ansicht";
+
+/* Class = "NSMenuItem"; title = "Rescan"; ObjectID = "gUG-Nh-FTx"; */
+"gUG-Nh-FTx.title" = "Wiederhole Scan";
+
 /* Class = "NSMenuItem"; title = "Export As Text..."; ObjectID = "hJw-Fc-daG"; */
 "hJw-Fc-daG.title" = "Als Text exportieren...";
 
@@ -141,4 +150,13 @@
 
 /* Class = "NSMenu"; title = "Scan Recent"; ObjectID = "HXb-90-KwJ"; */
 "HXb-90-KwJ.title" = "Letzte ausgeführte Scans";
+
+/* Class = "NSMenuItem"; title = "Rescan selected"; ObjectID = "Lsx-9H-7TJ"; */
+"Lsx-9H-7TJ.title" = "Wiederhole ausgewählten Scan";
+
+/* Class = "NSMenuItem"; title = "Rescan all"; ObjectID = "nFT-y9-xF4"; */
+"nFT-y9-xF4.title" = "Wiederhole alle Scans";
+
+/* Class = "NSMenu"; title = "Rescan"; ObjectID = "rfs-HZ-ODE"; */
+"rfs-HZ-ODE.title" = "Wiederhole Scan";
 

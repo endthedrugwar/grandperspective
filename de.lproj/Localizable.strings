@@ -25,6 +25,9 @@
 /* Message in progress panel while filtering */
 "%d folders filtered" = "%d Verzeichnisse gefiltert";
 
+/* Message in progress panel while executing refresh-based scan */
+"%d folders processed" = "%d Ordner verarbeitet";
+
 /* Message in progress panel while loading data */
 "%d folders read" = "%d Verzeichnisse gelesen";
 
@@ -208,6 +211,9 @@
 /* Menu item */
 "Hide Control Panel" = "Steuerung verbergen";
 
+/* Alert message */
+"Inaccuracies in hard-linked folder contents" = "Ungenauigkeiten in hart-verlinkten Ordnerinhalten";
+
 /* File size unit for kilobytes. */
 "kB" = "kB";
 
@@ -273,6 +279,9 @@
 
 /* Message in progress panel while loading data */
 "Reading %@" = "Lese %@";
+
+/* Title of progress panel. */
+"Refresh in progress" = "Aktualisierung läuft";
 
 /* Alert panel button */
 "Remove" = "Entferne";
@@ -354,6 +363,9 @@
 
 /* Alert message */
 "The path %@ does not exist or is not a folder" = "Der Pfad %@ existiert nicht oder ist kein Verzeichnis";
+
+/* Alert message */
+"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once." = "Der aktualisierte Inhalt ist möglichweise nicht vollständig oder nicht eindeutig, hart-verlinkte Elemente können mehr als einmal erscheinen oder fehlen. Führen Sie einen neuen Suchlauf durch, um sicher zu sein, dass jedes hart-verlinkte Element nur einmal erscheint.";
 
 /* Alert message */
 "The reported size of some files is larger than their actual size on disk" = "Die gemeldete Größe einiger Dateien ist größer als die tatsächliche Größe auf dem Laufwerk";

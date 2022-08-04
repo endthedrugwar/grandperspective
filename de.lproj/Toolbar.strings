@@ -38,6 +38,12 @@
 "Quick Look" = "Schnellvorschau";
 
 /* Toolbar action */
+"Refresh" = "Aktualisieren";
+
+/* Tooltip */
+"Refresh view data" = "Aktualisiere Datenansicht";
+
+/* Toolbar action */
 "Rescan" = "Wiederhole Scan";
 
 /* Tooltip */
