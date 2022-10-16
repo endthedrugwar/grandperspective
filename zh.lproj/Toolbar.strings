@@ -38,6 +38,12 @@
 "Quick Look" = "快速查看";
 
 /* Toolbar action */
+"Refresh" = "刷新";
+
+/* Tooltip */
+"Refresh view data" = "刷新视图里的数据";
+
+/* Toolbar action */
 "Rescan" = "重新扫描";
 
 /* Tooltip */

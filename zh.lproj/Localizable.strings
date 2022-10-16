@@ -25,6 +25,9 @@
 /* Message in progress panel while filtering */
 "%d folders filtered" = "%d 文件夹被过滤";
 
+/* Message in progress panel while executing refresh-based scan */
+"%d folders processed" = "已處理 %d 文件夹";
+
 /* Message in progress panel while loading data */
 "%d folders read" = "%d 文件夹被读";
 
@@ -208,6 +211,9 @@
 /* Menu item */
 "Hide Control Panel" = "屏蔽控制面板";
 
+/* Alert message */
+"Inaccuracies in hard-linked folder contents" = "硬链接文件夹的内容不准确";
+
 /* File size unit for kilobytes. */
 "kB" = "kB";
 
@@ -273,6 +279,9 @@
 
 /* Message in progress panel while loading data */
 "Reading %@" = "读取 %@";
+
+/* Title of progress panel. */
+"Refresh in progress" = "刷新中";
 
 /* Alert panel button */
 "Remove" = "去掉";
@@ -354,6 +363,9 @@
 
 /* Alert message */
 "The path %@ does not exist or is not a folder" = "路径％@不存在或不是文件夹";
+
+/* Alert message */
+"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once." = "刷新的内容可能不准确。硬链接项目可能重複或丢失。請重新扫描以确保每个硬链接项目只出现一次。";
 
 /* Alert message */
 "The reported size of some files is larger than their actual size on disk" = "有些文档的报告大小大于它们的实质大小";

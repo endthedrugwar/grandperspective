@@ -4,6 +4,9 @@
 /* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5"; */
 "5.title" = "把全部带到前面";
 
+/* Class = "NSMenuItem"; title = "Refresh"; ObjectID = "9aB-S3-Sb7"; */
+"9aB-S3-Sb7.title" = "刷新";
+
 /* Class = "NSMenuItem"; title = "Show/Hide Control Panel"; ObjectID = "9Ho-ON-BCj"; */
 "9Ho-ON-BCj.title" = "显示/屏蔽控制面板";
 
@@ -70,9 +73,6 @@
 /* Class = "NSMenuItem"; title = "Export As Image..."; ObjectID = "324"; */
 "324.title" = "保存视图的图片";
 
-/* Class = "NSMenuItem"; title = "Rescan"; ObjectID = "326"; */
-"326.title" = "重复扫描";
-
 /* Class = "NSMenuItem"; title = "Filter..."; ObjectID = "331"; */
 "331.title" = "过滤...";
 
@@ -133,6 +133,15 @@
 /* Class = "NSMenu"; title = "Services"; ObjectID = "426"; */
 "426.title" = "服务";
 
+/* Class = "NSMenuItem"; title = "Rescan with mask as filter"; ObjectID = "BMK-MQ-DB3"; */
+"BMK-MQ-DB3.title" = "使用掩码过滤重新扫描";
+
+/* Class = "NSMenuItem"; title = "Rescan folder in view"; ObjectID = "CV5-Fw-5D7"; */
+"CV5-Fw-5D7.title" = "重新扫描视图的文件夹";
+
+/* Class = "NSMenuItem"; title = "Rescan"; ObjectID = "gUG-Nh-FTx"; */
+"gUG-Nh-FTx.title" = "重新扫描";
+
 /* Class = "NSMenuItem"; title = "Export As Text..."; ObjectID = "hJw-Fc-daG"; */
 "hJw-Fc-daG.title" = "输出为文本";
 
@@ -141,4 +150,13 @@
 
 /* Class = "NSMenu"; title = "Scan Recent"; ObjectID = "HXb-90-KwJ"; */
 "HXb-90-KwJ.title" = "扫描最近";
+
+/* Class = "NSMenuItem"; title = "Rescan selected"; ObjectID = "Lsx-9H-7TJ"; */
+"Lsx-9H-7TJ.title" = "重新扫描已选择的";
+
+/* Class = "NSMenuItem"; title = "Rescan all"; ObjectID = "nFT-y9-xF4"; */
+"nFT-y9-xF4.title" = "重新扫描所有";
+
+/* Class = "NSMenu"; title = "Rescan"; ObjectID = "rfs-HZ-ODE"; */
+"rfs-HZ-ODE.title" = "重新扫描";
 

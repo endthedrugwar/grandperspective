@@ -40,12 +40,6 @@
 /* Class = "NSTextFieldCell"; title = "Filter:"; ObjectID = "181"; */
 "181.title" = "过滤:";
 
-/* Class = "NSTextFieldCell"; title = "Rescan action:"; ObjectID = "189"; */
-"189.title" = "重新扫描的动作:";
-
-/* Class = "NSMenuItem"; title = "Rescan folder in view"; ObjectID = "193"; */
-"193.title" = "重新扫描在视图里的文件夹";
-
 /* Class = "NSButtonCell"; title = "Show entire volume"; ObjectID = "199"; */
 "199.title" = "显示整个磁盘";
 
