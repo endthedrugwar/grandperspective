@@ -11,7 +11,7 @@
 "NSDownloadsFolderUsageDescription" = "程式检查您的下载用多少磁盘空间";
 
 /* (No Comment) */
-"NSHumanReadableCopyright" = "版权© Eriban Software, 2005-2020";
+"NSHumanReadableCopyright" = "版权© Eriban Software, 2005-2023";
 
 /* Privacy - Reminders Usage Description */
 "NSRemindersUsageDescription" = "程式检查您的提醒用多少磁盘空间";

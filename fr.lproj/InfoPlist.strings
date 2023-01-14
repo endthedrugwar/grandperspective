@@ -1,13 +1,4 @@
 /* (No Comment) */
-"CFBundleDisplayName" = "GrandPerspective";
-
-/* (No Comment) */
-"CFBundleGetInfoString" = "21 Nov 2020";
-
-/* Localized versions of Info.plist keys */
-"CFBundleName" = "GrandPerspective";
-
-/* (No Comment) */
 "GrandPerspective scan results" = "Résultats d’analyse GrandPerspective";
 
 /* Privacy - Desktop Folder Usage Description */
@@ -20,7 +11,7 @@
 "NSDownloadsFolderUsageDescription" = "L’application vérifie l’espace disque utilisé par vos Téléchargements";
 
 /* (No Comment) */
-"NSHumanReadableCopyright" = "Copyright © Eriban Software, 2005-2020";
+"NSHumanReadableCopyright" = "Copyright © Eriban Software, 2005-2023";
 
 /* Privacy - Reminders Usage Description */
 "NSRemindersUsageDescription" = "L’application vérifie l’espace disque utilisé par vos Rappels";
