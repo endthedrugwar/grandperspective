@@ -1,6 +1,6 @@
 #import "ReadProgressTracker.h"
 
-#define READ_BUFFER_SIZE  4096
+#define READ_BUFFER_SIZE  16384
 
 
 @implementation ReadProgressTracker
@@ -17,14 +17,14 @@
 - (void) startingTaskOnInputData:(NSData *)inputData {
   // Determine the total number of lines in the input data
   char  buffer[READ_BUFFER_SIZE];
-  unsigned  pos = 0;
 
   // For better performance on large input data, read only complete blocks in the main loop.
   NSUInteger  numBlocks = inputData.length / READ_BUFFER_SIZE;
   NSUInteger  maxpos = numBlocks * READ_BUFFER_SIZE;
+  NSUInteger  pos = 0;
   while (pos < maxpos) {
     [inputData getBytes: (void *)buffer range: NSMakeRange(pos, READ_BUFFER_SIZE)];
-    NSUInteger  i = READ_BUFFER_SIZE;
+    int  i = READ_BUFFER_SIZE;
     while (i--) {
       // Note: Even though input is in UTF-8, which can contain multi-byte
       // characters, the nature of the encoding ensures that each byte
