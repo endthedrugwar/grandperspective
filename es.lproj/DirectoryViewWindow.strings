@@ -1,0 +1,9 @@
+
+/* Class = "NSWindow"; title = "Window"; ObjectID = "82"; */
+"82.title" = "Window";
+
+/* Class = "NSTextFieldCell"; placeholderString = "No item selected"; ObjectID = "948"; */
+"948.placeholderString" = "No item selected";
+
+/* Class = "NSTextFieldCell"; placeholderString = "888.8 MB"; ObjectID = "949"; */
+"949.placeholderString" = "888.8 MB";
