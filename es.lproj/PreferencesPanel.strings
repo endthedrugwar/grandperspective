@@ -1,90 +1,69 @@
-
 /* Class = "NSWindow"; title = "Preferences"; ObjectID = "6"; */
-"6.title" = "Preferences";
+"6.title" = "Preferencias";
 
 /* Class = "NSBox"; title = "Display"; ObjectID = "29"; */
-"29.title" = "Display";
-
-/* Class = "NSMenu"; title = "OtherViews"; ObjectID = "45"; */
-"45.title" = "OtherViews";
-
-/* Class = "NSMenuItem"; title = "Item1"; ObjectID = "46"; */
-"46.title" = "Item1";
-
-/* Class = "NSMenuItem"; title = "Item1"; ObjectID = "51"; */
-"51.title" = "Item1";
+"29.title" = "Pantalla";
 
 /* Class = "NSMenu"; title = "OtherViews"; ObjectID = "53"; */
 "53.title" = "OtherViews";
 
 /* Class = "NSBox"; title = "Info"; ObjectID = "57"; */
-"57.title" = "Info";
+"57.title" = "Información";
 
 /* Class = "NSMenuItem"; title = "Item1"; ObjectID = "61"; */
-"61.title" = "Item1";
+"61.title" = "OtrasVistas";
 
 /* Class = "NSMenu"; title = "OtherViews"; ObjectID = "62"; */
 "62.title" = "OtherViews";
 
 /* Class = "NSBox"; title = "Actions"; ObjectID = "72"; */
-"72.title" = "Actions";
+"72.title" = "Acciones";
 
 /* Class = "NSMenu"; title = "OtherViews"; ObjectID = "74"; */
 "74.title" = "OtherViews";
 
 /* Class = "NSMenuItem"; title = "Files and folders"; ObjectID = "78"; */
-"78.title" = "Files and folders";
+"78.title" = "Archivos y carpetas";
 
 /* Class = "NSMenu"; title = "OtherViews"; ObjectID = "152"; */
 "152.title" = "OtherViews";
 
 /* Class = "NSMenuItem"; title = "Close old window"; ObjectID = "153"; */
-"153.title" = "Close old window";
+"153.title" = "Cerrar ventana antigua";
 
 /* Class = "NSTextFieldCell"; title = "Palette:"; ObjectID = "167"; */
-"167.title" = "Palette:";
+"167.title" = "Paleta:";
 
 /* Class = "NSButtonCell"; title = "Show package contents"; ObjectID = "171"; */
-"171.title" = "Show package contents";
+"171.title" = "Mostar el contenido del contenedor";
 
 /* Class = "NSTextFieldCell"; title = "Color by:"; ObjectID = "172"; */
-"172.title" = "Color by:";
+"172.title" = "Color por:";
 
 /* Class = "NSTextFieldCell"; title = "File size measure:"; ObjectID = "174"; */
-"174.title" = "File size measure:";
+"174.title" = "Medida del tamaño del archivo:";
 
 /* Class = "NSButtonCell"; title = "Always require confirmation"; ObjectID = "176"; */
-"176.title" = "Always require confirmation";
+"176.title" = "Siempre precisa confirmación";
 
 /* Class = "NSTextFieldCell"; title = "Enable deletion of:"; ObjectID = "177"; */
-"177.title" = "Enable deletion of:";
+"177.title" = "Habilitar el borrado de:";
 
 /* Class = "NSTextFieldCell"; title = "After full rescan:"; ObjectID = "178"; */
-"178.title" = "After full rescan:";
+"178.title" = "Después del resecanedo completo:";
 
 /* Class = "NSTextFieldCell"; title = "Filter:"; ObjectID = "181"; */
-"181.title" = "Filter:";
-
-/* Class = "NSMenu"; title = "OtherViews"; ObjectID = "184"; */
-"184.title" = "OtherViews";
-
-/* Class = "NSMenuItem"; title = "Item1"; ObjectID = "185"; */
-"185.title" = "Item1";
+"181.title" = "Filtro:";
 
 /* Class = "NSButtonCell"; title = "Show entire volume"; ObjectID = "199"; */
-"199.title" = "Show entire volume";
-
-/* Class = "NSMenu"; title = "OtherViews"; ObjectID = "206"; */
-"206.title" = "OtherViews";
-
-/* Class = "NSMenuItem"; title = "Item1"; ObjectID = "207"; */
-"207.title" = "Item1";
+"199.title" = "Mostrar la unidad completa";
 
 /* Class = "NSTextFieldCell"; title = "File size unit system:"; ObjectID = "214"; */
-"214.title" = "File size unit system:";
+"214.title" = "Tamaño de la unidad del sistema:";
 
 /* Class = "NSTextFieldCell"; title = "After closing last view:"; ObjectID = "KFu-2k-t7Z"; */
-"KFu-2k-t7Z.title" = "After closing last view:";
+"KFu-2k-t7Z.title" = "Tras cerrar la última vista:";
 
 /* Class = "NSMenuItem"; title = "Terminate application"; ObjectID = "Rrr-CG-7lo"; */
-"Rrr-CG-7lo.title" = "Terminate application";
+"Rrr-CG-7lo.title" = "Terminar la aplicación";
+

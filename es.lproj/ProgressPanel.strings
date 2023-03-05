@@ -1,12 +1,6 @@
-
 /* Class = "NSWindow"; title = "Task in progress"; ObjectID = "6"; */
-"6.title" = "Task in progress";
+"6.title" = "Tarea en progreso";
 
 /* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "29"; */
-"29.title" = "Cancel";
+"29.title" = "Cancelar";
 
-/* Class = "NSTextFieldCell"; placeholderString = "Progress summary (NO_LOC)"; ObjectID = "30"; */
-"30.placeholderString" = "Progress summary (NO_LOC)";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Progress details (NO_LOC)"; ObjectID = "bUh-pg-NlQ"; */
-"bUh-pg-NlQ.placeholderString" = "Progress details (NO_LOC)";

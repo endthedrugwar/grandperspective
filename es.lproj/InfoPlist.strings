@@ -1,6 +1,15 @@
-/* Localized versions of Info.plist keys */
+/* (No Comment) */
+"GrandPerspective scan results" = "Resultados del escaneo de GrandPrespective";
 
-CFBundleName = "GrandPerspective";
-CFBundleDisplayName = "GrandPerspective";
-NSHumanReadableCopyright = "Copyright © Eriban Software, 2005-2023";
-CFBundleGetInfoString = "14 Jan 2023";
+/* Privacy - Desktop Folder Usage Description */
+"NSDesktopFolderUsageDescription" = "La aplicación comprueba cuanto espacio de disco utiliza Escritorio";
+
+/* Privacy - Documents Folder Usage Description */
+"NSDocumentsFolderUsageDescription" = "La aplicación comprueba cuanto espacio de disco utiliza Documentos";
+
+/* Privacy - Downloads Folder Usage Description */
+"NSDownloadsFolderUsageDescription" = "La aplicación comprueba cuanto espacio de disco utiliza Descargas";
+
+/* Privacy - Reminders Usage Description */
+"NSRemindersUsageDescription" = "La aplicación comprueba cuanto espacio de disco utiliza Recordatorios";
+
