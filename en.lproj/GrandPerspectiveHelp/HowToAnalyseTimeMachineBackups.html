@@ -11,8 +11,9 @@
 <div id="caticon">
 <img src="images/GrandPerspectiveIcon32.png" alt="GrandPerspective icon" height="32" width="32">
 </div>
+
 <div id="pagetitle">
-<h1>How to analyse Time Machine back-ups</h1>
+<h1>How to analyse Time Machine back-ups (on HFS+ volumes)</h1>
 </div>
 
 <p>
@@ -21,11 +22,14 @@ This can help you to optimise your Time Machine back-up scheme, for example, by 
 </p>
 
 <p>
-First of all, it is important to understand how Time Machine back-ups are stored.
-Time Machine makes extensive use of <a href="HardLinks.html">hard links</a>.
+It is important to understand how Time Machine back-ups are stored.
 Each back-up appears to store a copy of the entire drive that is backed up.
 Yet the amount of disk space needed for a back-up is limited by the files that have changed since the preceding back-up.
-All files and folders that have not changed, are represented by hard links to these items in the preceding back-up.
+Files and folders that have not changed are not duplicated but shared between back-ups.
+On HFS+ volumes Time Machine uses <a href="HardLinks.html">hard links</a> for this.
+On AFPS volumes Time Machine shares common content at the lower, file-block layer.
+Re-use via hard links is visible to GrandPerspective, but re-use at the file-block layer not.
+Some of the suggestions on this page therefore only apply when back-ups are stored on an HFS+ volume.
 </p>
 
 <p>
@@ -37,7 +41,7 @@ You are of course free to experiment with other approaches.
 <h2>Comparing back-ups</h2>
 
 <p>
-You compare two back-ups to see what has changed on your hard drive.
+You can compare two back-ups to see what has changed on your hard drive.
 Doing so is very straightforward.
 First, you execute <b>Scan Folder</b> on an old back-up, e.g. "<em>Backup Volume</em>/Backups.backupdb/<em>My Computer</em>/<em>2008-08-08-888888</em>".
 Next, you can scan in the contents of the latest back-up, i.e. "<em>Backup Volume</em>/Backups.backupdb/<em>My Computer</em>/Latest".
@@ -66,8 +70,10 @@ Recent files are shown in red, old files in blue.
 <p><b>Several years of Time Machine back-ups</b>. Together they contain four million files in one million folders. Files are colored by their creation date.</p>
 </center>
 
+<h2>Analyzing all back-ups (HFS+ volumes only)</h2>
+
 <p>
-You will probably see that one back-up is much larger than the rest.
+After scanning all back-ups you will probably see that one back-up is much larger than the rest.
 This is likely the earliest back-up folder.
 The back-ups are scanned in the order they have been created <a href="#footnote1">[footnote 1]</a>.
 So the folder containing the earliest back-up is scanned first.
@@ -116,7 +122,7 @@ However, there is no guarantee that this happens on every system nor that this b
 If the scanning order changes then the back-up folder in which a hard-linked file appears may change.
 </p>
 
-<h2>Check which files have been backed up during the latest back-up</h2>
+<h2>Check which files have been backed up during the latest back-up (HFS+ volumes only)</h2>
 
 <p>
 Initiate a <b>Filtered Scan</b>.
