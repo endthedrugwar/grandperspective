@@ -154,6 +154,30 @@
 				<false/>
 			</dict>
 		</dict>
+		<key>Cloud folders</key>
+		<dict>
+			<key>class</key>
+			<string>SelectiveItemTest</string>
+			<key>onlyFiles</key>
+			<false/>
+			<key>subTest</key>
+			<dict>
+				<key>class</key>
+				<string>ItemNameTest</string>
+				<key>stringTest</key>
+				<dict>
+					<key>caseSensitive</key>
+					<true/>
+					<key>class</key>
+					<string>StringEqualityTest</string>
+					<key>matches</key>
+					<array>
+						<string>CloudStorage</string>
+						<string>Mobile Documents</string>
+					</array>
+				</dict>
+			</dict>
+		</dict>
 		<key>Hard-linked items</key>
 		<dict>
 			<key>class</key>
@@ -296,6 +320,18 @@
 	</dict>
 	<key>GPDefaultFilters</key>
 	<dict>
+		<key>No cloud files</key>
+		<dict>
+			<key>tests</key>
+			<array>
+				<dict>
+					<key>inverted</key>
+					<true/>
+					<key>name</key>
+					<string>Cloud folders</string>
+				</dict>
+			</array>
+		</dict>
 		<key>No hard-links</key>
 		<dict>
 			<key>tests</key>
