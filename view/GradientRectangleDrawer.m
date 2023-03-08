@@ -110,7 +110,7 @@
 }
 
 - (UInt32) intValueForColor: (NSColor *)color {
-  color = [color colorUsingColorSpaceName: NSDeviceRGBColorSpace];
+  color = [color colorUsingColorSpace: NSColorSpace.deviceRGBColorSpace];
   return CFSwapInt32BigToHost(((UInt32)(color.redComponent * 255) & 0xFF) << 24 |
                               ((UInt32)(color.greenComponent * 255) & 0xFF) << 16 |
                               ((UInt32)(color.blueComponent * 255) & 0xFF) << 8);
@@ -213,7 +213,7 @@
     
     // Maybe not needed, but there is no harm. It guarantees that getHue:saturation:brightness:alpha
     // can be invoked.
-    color = [color colorUsingColorSpaceName: NSDeviceRGBColorSpace];
+    color = [color colorUsingColorSpace: NSColorSpace.deviceRGBColorSpace];
     
     CGFloat  hue, saturation, brightness, alpha;
     [color getHue: &hue saturation: &saturation brightness: &brightness alpha: &alpha];
