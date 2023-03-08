@@ -31,17 +31,17 @@
 	NSPoint menuPosition = [self menuPositionForFrame:cellFrame inView:controlView];
 	
 	// Create event for pop up menu with adjusted mouse position
-	NSEvent *menuEvent = [NSEvent mouseEventWithType: theEvent.type
-							                    				location: menuPosition
-									                   modifierFlags: theEvent.modifierFlags
-										                     timestamp: theEvent.timestamp
-							                  			windowNumber: theEvent.windowNumber
-									                    		 context: theEvent.context
-									                  	 eventNumber: theEvent.eventNumber
-										                    clickCount: theEvent.clickCount
-                                        	pressure: theEvent.pressure];
-	
-	[NSMenu popUpContextMenu:self.menu withEvent:menuEvent forView:controlView];
+  NSEvent *menuEvent = [NSEvent mouseEventWithType: theEvent.type
+                                          location: menuPosition
+                                     modifierFlags: theEvent.modifierFlags
+                                         timestamp: theEvent.timestamp
+                                      windowNumber: theEvent.windowNumber
+                                           context: nil
+                                       eventNumber: theEvent.eventNumber
+                                        clickCount: theEvent.clickCount
+                                          pressure: theEvent.pressure];
+
+  [NSMenu popUpContextMenu:self.menu withEvent:menuEvent forView:controlView];
 }
 
 - (BOOL)trackMouse:(NSEvent *)theEvent inRect:(NSRect)cellFrame ofView:(NSView *)controlView untilMouseUp:(BOOL)untilMouseUp
@@ -66,10 +66,10 @@
 		else
 			endDate = [NSDate distantFuture];
 		
-		event = [NSApp nextEventMatchingMask:(NSLeftMouseUpMask|NSLeftMouseDraggedMask)
-								   untilDate:endDate
-									  inMode:NSEventTrackingRunLoopMode
-									 dequeue:YES];
+    event = [NSApp nextEventMatchingMask:(NSEventMaskLeftMouseUp|NSEventMaskLeftMouseDragged)
+                               untilDate:endDate
+                                  inMode:NSEventTrackingRunLoopMode
+                                 dequeue:YES];
 		
 		if (event)	// Mouse event
 		{
@@ -89,8 +89,8 @@
 				}
 			}
 			
-			mouseIsUp = (event.type == NSLeftMouseUp);
-			done = done || mouseIsUp;
+      mouseIsUp = (event.type == NSEventTypeLeftMouseUp);
+      done = done || mouseIsUp;
 			
 			if (untilMouseUp)
 			{
@@ -131,10 +131,10 @@
 	{
 		if (![self.cell isKindOfClass:[KBDelayedPopUpButtonCell class]])
 		{
-			NSString *title = self.title;
-			if (title == nil) title = @"";			
-			self.cell = [[[KBDelayedPopUpButtonCell alloc] initTextCell:title] autorelease];
-			self.cell.controlSize = NSRegularControlSize;
+      NSString *title = self.title;
+      if (title == nil) title = @"";
+      self.cell = [[[KBDelayedPopUpButtonCell alloc] initTextCell:title] autorelease];
+      self.cell.controlSize = NSControlSizeRegular;
 		}
 	}
 	return self;
@@ -149,10 +149,10 @@
 {
 	if (self = [super initWithItemIdentifier:ident])
 	{
-		button = [[KBDelayedPopUpButton alloc] initWithFrame:NSMakeRect(0,0,32,32)];
-		[button setButtonType:NSMomentaryChangeButton];
-		[button setBordered:NO];
-		self.view = button;
+    button = [[KBDelayedPopUpButton alloc] initWithFrame:NSMakeRect(0,0,32,32)];
+    [button setButtonType:NSButtonTypeMomentaryChange];
+    [button setBordered:NO];
+    self.view = button;
 	}
 	return self;
 }

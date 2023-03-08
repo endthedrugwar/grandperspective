@@ -75,7 +75,7 @@
   NSInteger  status = [NSApp runModalForWindow: editTestWindow];
   [editTestWindow close];
 
-  if (status == NSRunStoppedResponse) {
+  if (status == NSModalResponseStop) {
     FilterTest  *filterTest = [filterTestWindowControl createFilterTest];
     
     if (filterTest != nil) {
@@ -92,7 +92,7 @@
     return filterTest;
   }
   else {
-    NSAssert(status == NSRunAbortedResponse, @"Unexpected status.");
+    NSAssert(status == NSModalResponseAbort, @"Unexpected status.");
   
     return nil;
   }
@@ -127,7 +127,7 @@
   NSInteger  status = [NSApp runModalForWindow: editTestWindow];
   [editTestWindow close];
     
-  if (status == NSRunStoppedResponse) {
+  if (status == NSModalResponseStop) {
     FilterTest  *newFilterTest = [filterTestWindowControl createFilterTest];
     
     if (newFilterTest != nil) {
@@ -156,7 +156,7 @@
     return newFilterTest;
   }
   else {
-    NSAssert(status == NSRunAbortedResponse, @"Unexpected status.");
+    NSAssert(status == NSModalResponseAbort, @"Unexpected status.");
     
     return nil;
   }

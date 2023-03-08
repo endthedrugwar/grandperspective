@@ -301,7 +301,7 @@ NSString  *DisplaySettingsChangedEvent = @"displaySettingsChanged";
 
 - (IBAction) maskChanged:(id)sender {
   // Automatically enable the mask
-  maskCheckBox.state = NSOnState;
+  maskCheckBox.state = NSControlStateValueOn;
 
   [self fireDisplaySettingsChanged];
 }
@@ -352,9 +352,10 @@ NSString  *DisplaySettingsChangedEvent = @"displaySettingsChanged";
   return [[ds initWithColorMappingKey: colorMappingKey
                       colorPaletteKey: colorPaletteKey
                              maskName: maskName
-                          maskEnabled: maskCheckBox.state==NSOnState
-                     showEntireVolume: showEntireVolumeCheckBox.state==NSOnState
-                  showPackageContents: showPackageContentsCheckBox.state==NSOnState] autorelease];
+                          maskEnabled: maskCheckBox.state==NSControlStateValueOn
+                     showEntireVolume: showEntireVolumeCheckBox.state==NSControlStateValueOn
+                  showPackageContents: showPackageContentsCheckBox.state==NSControlStateValueOn]
+          autorelease];
 }
 
 - (TreeDrawerSettings *)instantiateDisplaySettings:(DirectoryViewDisplaySettings *)displaySettings
@@ -467,18 +468,21 @@ NSString  *DisplaySettingsChangedEvent = @"displaySettingsChanged";
     [[ColorLegendTableViewControl alloc] initWithDirectoryView: dirViewControl.directoryView
                                                      tableView: colorLegendTable];
 
-  maskCheckBox.state = displaySettings.fileItemMaskEnabled ? NSOnState : NSOffState;
+  maskCheckBox.state =
+    displaySettings.fileItemMaskEnabled ? NSControlStateValueOn : NSControlStateValueOff;
   [maskPopUpControl selectFilterNamed: displaySettings.maskName];
 
   if (dirViewControl.treeContext.usesTallyFileSize) {
     // Never show the entire volume when using the tally file size measure. It does not make sense.
-    showEntireVolumeCheckBox.state = NSOffState;
+    showEntireVolumeCheckBox.state = NSControlStateValueOff;
     showEntireVolumeCheckBox.enabled = NO;
   } else {
-    showEntireVolumeCheckBox.state = displaySettings.showEntireVolume ? NSOnState : NSOffState;
+    showEntireVolumeCheckBox.state =
+      displaySettings.showEntireVolume ? NSControlStateValueOn : NSControlStateValueOff;
   }
 
-  showPackageContentsCheckBox.state = displaySettings.showPackageContents ? NSOnState : NSOffState;
+  showPackageContentsCheckBox.state =
+    displaySettings.showPackageContents ? NSControlStateValueOn : NSControlStateValueOff;
 }
 
 - (void) updateInfoPanel:(DirectoryViewControl *)dirViewControl {
@@ -605,7 +609,7 @@ NSString  *DisplaySettingsChangedEvent = @"displaySettingsChanged";
 }
 
 - (void) maskRemoved:(NSNotification *)notification {
-  maskCheckBox.state = NSOffState;
+  maskCheckBox.state = NSControlStateValueOff;
 
   [self fireDisplaySettingsChanged];
 }

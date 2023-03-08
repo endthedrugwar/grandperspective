@@ -1301,7 +1301,7 @@ static dispatch_once_t  singletonOnceToken;
   NSString  *msgFormat = nil;
 
   if (result == SuccessfulVoidResult) {
-    alert.alertStyle = NSInformationalAlertStyle;
+    alert.alertStyle = NSAlertStyleInformational;
     
     msgFormat = NSLocalizedString(@"Successfully saved the scan data to \"%@\"",
                                   @"Alert message (with filename arg)");

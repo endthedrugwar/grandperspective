@@ -128,11 +128,14 @@ static BOOL appHasDeletePermission;
   defaultFilterPopUp.tag = [[tagMaker transformedValue: DefaultFilterName] intValue];
   
   fileDeletionConfirmationCheckBox.state =
-    [userDefaults boolForKey: ConfirmFileDeletionKey] ? NSOnState : NSOffState;
+    [userDefaults boolForKey: ConfirmFileDeletionKey]
+    ? NSControlStateValueOn : NSControlStateValueOff;
   showPackageContentsByDefaultCheckBox.state =
-    [userDefaults boolForKey: ShowPackageContentsByDefaultKey] ? NSOnState : NSOffState;
+    [userDefaults boolForKey: ShowPackageContentsByDefaultKey]
+    ? NSControlStateValueOn : NSControlStateValueOff;
   showEntireVolumeByDefaultCheckBox.state =
-    [userDefaults boolForKey: ShowEntireVolumeByDefaultKey] ? NSOnState : NSOffState;
+    [userDefaults boolForKey: ShowEntireVolumeByDefaultKey]
+    ? NSControlStateValueOn : NSControlStateValueOff;
 
   [self updateButtonState];
   
@@ -159,17 +162,17 @@ static BOOL appHasDeletePermission;
   NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
 
   if (sender == fileDeletionConfirmationCheckBox) {
-    BOOL  enabled = [sender state] == NSOnState;
+    BOOL  enabled = [sender state] == NSControlStateValueOn;
 
     [userDefaults setBool: enabled forKey: ConfirmFileDeletionKey];
   }
   else if (sender == showPackageContentsByDefaultCheckBox) {
-    BOOL  enabled = [sender state] == NSOnState;
+    BOOL  enabled = [sender state] == NSControlStateValueOn;
     
     [userDefaults setBool: enabled forKey: ShowPackageContentsByDefaultKey];
   }
   else if (sender == showEntireVolumeByDefaultCheckBox) {
-    BOOL  enabled = [sender state] == NSOnState;
+    BOOL  enabled = [sender state] == NSControlStateValueOn;
     
     [userDefaults setBool: enabled forKey: ShowEntireVolumeByDefaultKey];
   }

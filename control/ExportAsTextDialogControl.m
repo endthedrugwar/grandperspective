@@ -28,7 +28,7 @@
   [self updateButton: addModificationTimeColumn basedOnOptions: initialOptions];
   [self updateButton: addLastAccessTimeColumn basedOnOptions: initialOptions];
 
-  addHeaders.state = [initialOptions headersEnabled] ? NSOnState : NSOffState;
+  addHeaders.state = initialOptions.headersEnabled ? NSControlStateValueOn : NSControlStateValueOff;
 
   [self.window makeKeyAndOrderFront: self];
 }
@@ -52,7 +52,7 @@
   [self updateOptions: options basedOnButton: addModificationTimeColumn];
   [self updateOptions: options basedOnButton: addLastAccessTimeColumn];
 
-  [options setHeadersEnabled: addHeaders.state == NSOnState];
+  [options setHeadersEnabled: addHeaders.state == NSControlStateValueOn];
 
   return options;
 }
@@ -62,11 +62,12 @@
 @implementation ExportAsTextDialogControl (PrivateMethods)
 
 - (void) updateButton:(NSButton *)button basedOnOptions:(RawTreeWriterOptions *)options {
-  button.state = [options isColumnShown: button.tag] ? NSOnState : NSOffState;
+  button.state =
+    [options isColumnShown: button.tag] ? NSControlStateValueOn : NSControlStateValueOff;
 }
 
 - (void) updateOptions:(RawTreeWriterOptions *)options basedOnButton:(NSButton *)button {
-  if (button.state == NSOnState) {
+  if (button.state == NSControlStateValueOn) {
     [options showColumn: button.tag];
   } else {
     [options hideColumn: button.tag];

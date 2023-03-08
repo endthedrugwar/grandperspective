@@ -105,7 +105,7 @@
 }
 
 + (NSArray *_Nonnull)supportedPasteboardTypes {
-  return @[NSURLPboardType, NSFilenamesPboardType, NSStringPboardType];
+  return @[NSPasteboardTypeURL, NSFilenamesPboardType, NSPasteboardTypeString];
 }
 
 + (NSURL *)getFileURLFromPasteboard:(NSPasteboard *)pboard {
@@ -114,7 +114,7 @@
     return nil;
   }
 
-  if ([bestType isEqualToString: NSURLPboardType]) {
+  if ([bestType isEqualToString: NSPasteboardTypeURL]) {
     NSURL *fileURL = [NSURL URLFromPasteboard: pboard];
 
     return [fileURL filePathURL];
@@ -125,8 +125,8 @@
       return [NSURL fileURLWithPath: files[0]];
     }
   }
-  else if ([bestType isEqualToString: NSStringPboardType]) {
-    return [NSURL fileURLWithPath: [pboard stringForType: NSStringPboardType]];
+  else if ([bestType isEqualToString: NSPasteboardTypeString]) {
+    return [NSURL fileURLWithPath: [pboard stringForType: NSPasteboardTypeString]];
   }
 
   return nil;

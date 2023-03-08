@@ -482,8 +482,8 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   FileItem  *selectedFile = pathModelView.selectedFileItem;
   NSPasteboard *pb = NSPasteboard.generalPasteboard;
 
-  [pb declareTypes: @[NSStringPboardType] owner: nil];
-  [pb setString: selectedFile.path forType: NSStringPboardType];
+  [pb declareTypes: @[NSPasteboardTypeString] owner: nil];
+  [pb setString: selectedFile.path forType: NSPasteboardTypeString];
 }
 
 

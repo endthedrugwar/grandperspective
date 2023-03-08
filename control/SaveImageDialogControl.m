@@ -109,7 +109,7 @@
     
     // Save the image.
     NSBitmapImageRep  *imageBitmap = (NSBitmapImageRep *)image.representations[0];
-    NSData  *imageData = [imageBitmap representationUsingType: NSTIFFFileType
+    NSData  *imageData = [imageBitmap representationUsingType: NSBitmapImageFileTypeTIFF
                                                    properties: @{}];
 
     if (! [imageData  writeToURL: destURL atomically: NO] ) {

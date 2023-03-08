@@ -70,7 +70,7 @@
   NSInteger  status = [NSApp runModalForWindow: editFilterWindow];
   [editFilterWindow close];
 
-  if (status == NSRunStoppedResponse) {
+  if (status == NSModalResponseStop) {
     NamedFilter  *namedFilter = [filterWindowControl createNamedFilter];
     
     if (namedFilter != nil) {
@@ -86,7 +86,7 @@
     return namedFilter;
   }
   else {
-    NSAssert(status == NSRunAbortedResponse, @"Unexpected status.");
+    NSAssert(status == NSModalResponseAbort, @"Unexpected status.");
     
     return nil;
   }    
@@ -122,7 +122,7 @@
   NSInteger  status = [NSApp runModalForWindow: editFilterWindow];
   [editFilterWindow close];
     
-  if (status == NSRunStoppedResponse) {
+  if (status == NSModalResponseStop) {
     NamedFilter  *newNamedFilter = [filterWindowControl createNamedFilter];
     
     if (newNamedFilter != nil) {
@@ -150,7 +150,7 @@
     return newNamedFilter;
   }
   else {
-    NSAssert(status == NSRunAbortedResponse, @"Unexpected status.");
+    NSAssert(status == NSModalResponseAbort, @"Unexpected status.");
     
     return nil;
   }

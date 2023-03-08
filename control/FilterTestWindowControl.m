@@ -448,7 +448,7 @@
 - (IBAction) lowerBoundCheckBoxChanged:(id)sender {
   [self updateEnabledState: sender];
   
-  if ([sender state]==NSOnState) {
+  if ([sender state]==NSControlStateValueOn) {
     [self.window makeFirstResponder: sizeLowerBoundField];
   }
 }
@@ -456,7 +456,7 @@
 - (IBAction) upperBoundCheckBoxChanged:(id)sender {
   [self updateEnabledState: sender];
   
-  if ([sender state]==NSOnState) {
+  if ([sender state]==NSControlStateValueOn) {
     [self.window makeFirstResponder: sizeUpperBoundField];
   }
 }
@@ -508,27 +508,27 @@
   
   [testTargetPopUp selectItemAtIndex: POPUP_FILES];
 
-  nameCheckBox.state = NSOffState;
+  nameCheckBox.state = NSControlStateValueOff;
   [nameTestControls resetState];
   
-  pathCheckBox.state = NSOffState;
+  pathCheckBox.state = NSControlStateValueOff;
   [pathTestControls resetState];
 
-  typeCheckBox.state = NSOffState;
+  typeCheckBox.state = NSControlStateValueOff;
   [typeTestControls resetState];
 
-  sizeLowerBoundCheckBox.state = NSOffState;
+  sizeLowerBoundCheckBox.state = NSControlStateValueOff;
   sizeLowerBoundField.intValue = 0;
   [sizeLowerBoundUnits selectItemAtIndex: POPUP_BYTES];
   
-  sizeUpperBoundCheckBox.state = NSOffState;
+  sizeUpperBoundCheckBox.state = NSControlStateValueOff;
   sizeUpperBoundField.intValue = 0;
   [sizeUpperBoundUnits selectItemAtIndex: POPUP_BYTES];
   
-  hardLinkCheckBox.state = NSOffState;
+  hardLinkCheckBox.state = NSControlStateValueOff;
   [hardLinkStatusPopUp selectItemAtIndex: POPUP_FLAG_IS];
 
-  packageCheckBox.state = NSOffState;
+  packageCheckBox.state = NSControlStateValueOff;
   [packageStatusPopUp selectItemAtIndex: POPUP_FLAG_IS];
   
   [self updateWindowTitle];
@@ -561,19 +561,19 @@
 
 - (void) updateStateBasedOnItemNameTest:(ItemNameTest *)test {
   [nameTestControls updateStateBasedOnStringTest: (MultiMatchStringTest*)test.stringTest];
-  nameCheckBox.state = NSOnState;
+  nameCheckBox.state = NSControlStateValueOn;
 }
 
 
 - (void) updateStateBasedOnItemPathTest:(ItemPathTest *)test {
   [pathTestControls updateStateBasedOnStringTest: (MultiMatchStringTest*)test.stringTest];
-  pathCheckBox.state = NSOnState;
+  pathCheckBox.state = NSControlStateValueOn;
 }
 
 
 - (void) updateStateBasedOnItemTypeTest:(ItemTypeTest *)test {
   [typeTestControls updateStateBasedOnItemTypeTest: test];
-  typeCheckBox.state = NSOnState;
+  typeCheckBox.state = NSControlStateValueOn;
 }
 
 
@@ -591,7 +591,7 @@
       }
     }
     
-    sizeLowerBoundCheckBox.state = NSOnState;
+    sizeLowerBoundCheckBox.state = NSControlStateValueOn;
     sizeLowerBoundField.integerValue = bound;
     [sizeLowerBoundUnits selectItemAtIndex: i]; 
   }
@@ -607,7 +607,7 @@
       }
     }
     
-    sizeUpperBoundCheckBox.state = NSOnState;
+    sizeUpperBoundCheckBox.state = NSControlStateValueOn;
     sizeUpperBoundField.integerValue = bound;
     [sizeUpperBoundUnits selectItemAtIndex: i];
   }
@@ -616,14 +616,14 @@
 
 - (void) updateStateBasedOnItemFlagsTest:(ItemFlagsTest *)test {
   if ([test flagsMask] & FileItemIsHardlinked) {
-    hardLinkCheckBox.state = NSOnState;
+    hardLinkCheckBox.state = NSControlStateValueOn;
     
     [hardLinkStatusPopUp selectItemAtIndex:
       (test.desiredResult & FileItemIsHardlinked) ? POPUP_FLAG_IS : POPUP_FLAG_IS_NOT];
   }
   
   if (test.flagsMask & FileItemIsPackage) {
-    packageCheckBox.state = NSOnState;
+    packageCheckBox.state = NSControlStateValueOn;
     
     [packageStatusPopUp selectItemAtIndex: 
       (test.desiredResult & FileItemIsPackage) ? POPUP_FLAG_IS : POPUP_FLAG_IS_NOT];
@@ -640,7 +640,7 @@
 
 
 - (ItemNameTest *)itemNameTestBasedOnState {
-  if (nameCheckBox.state != NSOnState) {
+  if (nameCheckBox.state != NSControlStateValueOn) {
     return nil;
   }
   
@@ -652,7 +652,7 @@
 
 
 - (ItemPathTest *)itemPathTestBasedOnState {
-  if (pathCheckBox.state != NSOnState) {
+  if (pathCheckBox.state != NSControlStateValueOn) {
     return nil;
   }
   
@@ -665,7 +665,9 @@
 
 
 - (ItemTypeTest *)itemTypeTestBasedOnState {
-  return (typeCheckBox.state == NSOnState) ? typeTestControls.itemTypeTestBasedOnState : nil;
+  return ( (typeCheckBox.state == NSControlStateValueOn)
+           ? typeTestControls.itemTypeTestBasedOnState
+           : nil );
 }
 
 
@@ -684,8 +686,8 @@
     upperBound *= bytesUnit;
   }
   
-  if (sizeLowerBoundCheckBox.state==NSOnState && lowerBound>0) {
-    if (sizeUpperBoundCheckBox.state==NSOnState) {
+  if (sizeLowerBoundCheckBox.state==NSControlStateValueOn && lowerBound>0) {
+    if (sizeUpperBoundCheckBox.state==NSControlStateValueOn) {
       return [[[ItemSizeTest alloc] initWithLowerBound: lowerBound upperBound: upperBound]
                autorelease];
     }
@@ -694,7 +696,7 @@
     }
   }
   else {
-    if (sizeUpperBoundCheckBox.state==NSOnState) {
+    if (sizeUpperBoundCheckBox.state==NSControlStateValueOn) {
       return [[[ItemSizeTest alloc] initWithUpperBound: upperBound] autorelease];
     }
     else {
@@ -708,14 +710,14 @@
   FileItemOptions  flagsMask = 0;
   FileItemOptions  desiredResult = 0;
   
-  if (hardLinkCheckBox.state == NSOnState) {
+  if (hardLinkCheckBox.state == NSControlStateValueOn) {
     flagsMask |= FileItemIsHardlinked;
     if (hardLinkStatusPopUp.indexOfSelectedItem == POPUP_FLAG_IS) {
       desiredResult |= FileItemIsHardlinked;
     }
   }
   
-  if (packageCheckBox.state == NSOnState) {
+  if (packageCheckBox.state == NSControlStateValueOn) {
     flagsMask |= FileItemIsPackage;
     if (packageStatusPopUp.indexOfSelectedItem == POPUP_FLAG_IS) {
       desiredResult |= FileItemIsPackage;
@@ -752,13 +754,15 @@
   
   BOOL  targetsOnlyFiles = testTargetPopUp.indexOfSelectedItem == POPUP_FILES;
   
-  BOOL  nameTestUsed = nameCheckBox.state==NSOnState;
-  BOOL  pathTestUsed = pathCheckBox.state==NSOnState;
-  BOOL  hardLinkTestUsed = hardLinkCheckBox.state==NSOnState;
-  BOOL  packageTestUsed = packageCheckBox.state==NSOnState;
-  BOOL  typeTestUsed = ( typeCheckBox.state==NSOnState && targetsOnlyFiles );
-  BOOL  lowerBoundTestUsed = ( sizeLowerBoundCheckBox.state==NSOnState && targetsOnlyFiles );
-  BOOL  upperBoundTestUsed = ( sizeUpperBoundCheckBox.state==NSOnState && targetsOnlyFiles );
+  BOOL  nameTestUsed = nameCheckBox.state==NSControlStateValueOn;
+  BOOL  pathTestUsed = pathCheckBox.state==NSControlStateValueOn;
+  BOOL  hardLinkTestUsed = hardLinkCheckBox.state==NSControlStateValueOn;
+  BOOL  packageTestUsed = packageCheckBox.state==NSControlStateValueOn;
+  BOOL  typeTestUsed = ( typeCheckBox.state==NSControlStateValueOn && targetsOnlyFiles );
+  BOOL  lowerBoundTestUsed = ( sizeLowerBoundCheckBox.state==NSControlStateValueOn
+                               && targetsOnlyFiles );
+  BOOL  upperBoundTestUsed = ( sizeUpperBoundCheckBox.state==NSControlStateValueOn
+                               && targetsOnlyFiles );
   
   [nameTestControls setEnabled: nameTestUsed];
   [pathTestControls setEnabled: pathTestUsed];
@@ -1010,7 +1014,7 @@
   [super resetState];
   
   [matchPopUpButton selectItemAtIndex: POPUP_STRING_IS];
-  caseInsensitiveCheckBox.state = NSOffState;
+  caseInsensitiveCheckBox.state = NSControlStateValueOff;
 }
 
 
@@ -1066,7 +1070,8 @@
   [matchTargets addObjectsFromArray: test.matchTargets];
   [targetsView reloadData];
   
-  caseInsensitiveCheckBox.state = test.isCaseSensitive ? NSOffState : NSOnState;
+  caseInsensitiveCheckBox.state =
+    test.isCaseSensitive ? NSControlStateValueOff : NSControlStateValueOn;
 }
 
 
@@ -1092,7 +1097,7 @@
     default: NSAssert(NO, @"Unexpected matching index.");
   }
       
-  BOOL  caseSensitive = (caseInsensitiveCheckBox.state == NSOffState);
+  BOOL  caseSensitive = (caseInsensitiveCheckBox.state == NSControlStateValueOff);
   stringTest = [[stringTest initWithMatchTargets: matchTargets
                                    caseSensitive: caseSensitive] autorelease];
       

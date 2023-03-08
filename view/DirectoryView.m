@@ -225,7 +225,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   [targetImage lockFocus];
   [treeImage drawInRect: NSMakeRect(0, 0, w, h)
                fromRect: NSMakeRect(x, y, w, h)
-              operation: NSCompositeCopy
+              operation: NSCompositingOperationCopy
                fraction: 1.0];
   [targetImage unlockFocus];
 
@@ -443,7 +443,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   } else if (treeImage != nil) {
     [treeImage drawInRect: self.bounds
                  fromRect: NSZeroRect
-                operation: NSCompositeCopy
+                operation: NSCompositingOperationCopy
                  fraction: 1.0f];
 
     if (overlayImage != nil) {
@@ -489,12 +489,12 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
 
 - (BOOL)performKeyEquivalent:(NSEvent *)theEvent {
-  int  flags = theEvent.modifierFlags & NSDeviceIndependentModifierFlagsMask;
+  int  flags = theEvent.modifierFlags & NSEventModifierFlagDeviceIndependentFlagsMask;
   NSString  *chars = theEvent.characters;
   unichar const  code = [chars characterAtIndex: 0];
   
   if ([chars isEqualToString: @"]"]) {
-    if (flags == NSCommandKeyMask) {
+    if (flags == NSEventModifierFlagCommand) {
       if ([self canMoveFocusDown]) {
         [self moveFocusDown];
       }
@@ -502,7 +502,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
     }
   }
   else if ([chars isEqualToString: @"["]) {
-    if (flags == NSCommandKeyMask) {
+    if (flags == NSEventModifierFlagCommand) {
       if ([self canMoveFocusUp]) {
         [self moveFocusUp];
       }
@@ -512,7 +512,8 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   else if ([chars isEqualToString: @"="]) {
     // Accepting this with or without the Shift key-pressed, as having to use 
     // the Shift key is a bit of a pain.
-    if ((flags | NSShiftKeyMask) == (NSCommandKeyMask | NSShiftKeyMask)) {
+    if ((flags | NSEventModifierFlagShift)
+        == (NSEventModifierFlagCommand | NSEventModifierFlagShift)) {
       if ([self canZoomIn]) {
         [self zoomIn];
       }
@@ -520,7 +521,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
     }
   }
   else if ([chars isEqualToString: @"-"]) {
-    if (flags == NSCommandKeyMask) {
+    if (flags == NSEventModifierFlagCommand) {
       if ([self canZoomOut]) {
         [self zoomOut];
       }
@@ -913,7 +914,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
                            fromRect: NSMakeRect(x, y,
                                                 fullP->size.width / scaleX,
                                                 fullP->size.height / scaleY)
-                           operation: NSCompositeCopy
+                          operation: NSCompositingOperationCopy
                            fraction: 0.5];
   } else {
     [NSColor.blackColor setFill];
@@ -922,7 +923,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
   [zoomImage drawInRect: zoomBounds
                fromRect: NSZeroRect
-              operation: NSCompositeCopy
+              operation: NSCompositingOperationCopy
                fraction: 1.0];
 }
 

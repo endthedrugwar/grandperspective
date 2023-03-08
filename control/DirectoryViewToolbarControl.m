@@ -324,10 +324,10 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   // of them or remind the user of them). They do not actually have an effect. Handling these key
   // equivalents is handled in the DirectoryView class.
   zoomOutItem.keyEquivalent = @"-";
-  zoomOutItem.keyEquivalentModifierMask = NSCommandKeyMask;
+  zoomOutItem.keyEquivalentModifierMask = NSEventModifierFlagCommand;
   
   zoomInItem.keyEquivalent = @"+";
-  zoomInItem.keyEquivalentModifierMask = NSCommandKeyMask;
+  zoomInItem.keyEquivalentModifierMask = NSEventModifierFlagCommand;
 
   item.menuFormRepresentation = menu;
 
@@ -369,10 +369,10 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   // of them or remind the user of them). They do not actually have an effect. Handling these key
   // equivalents is handled in the DirectoryView class.
   focusUpItem.keyEquivalent = @"[";
-  focusUpItem.keyEquivalentModifierMask = NSCommandKeyMask;
+  focusUpItem.keyEquivalentModifierMask = NSEventModifierFlagCommand;
   
   focusDownItem.keyEquivalent = @"]";
-  focusDownItem.keyEquivalentModifierMask = NSCommandKeyMask;
+  focusDownItem.keyEquivalentModifierMask = NSEventModifierFlagCommand;
 
   item.menuFormRepresentation = menu;
 
