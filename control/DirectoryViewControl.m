@@ -686,18 +686,12 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 - (void) deleteSelectedFile {
   FileItem  *selectedFile = pathModelView.selectedFileItem;
+  NSURL  *fileUrl = [NSURL fileURLWithPath: selectedFile.systemPath];
 
-  NSWorkspace  *workspace = NSWorkspace.sharedWorkspace;
-  NSString  *sourceDir = selectedFile.parentDirectory.systemPath;
-    // Note: Can always obtain the encompassing directory this way. The volume tree cannot be
-    // deleted so there is always a valid parent directory.
-
-  NSInteger  tag;
-  if ([workspace performFileOperation: NSWorkspaceRecycleOperation
-                               source: sourceDir
-                          destination: @""
-                                files: @[selectedFile.systemPathComponent]
-                                  tag: &tag]) {
+  NSError  *error = nil;
+  if ([NSFileManager.defaultManager trashItemAtURL: fileUrl
+                                  resultingItemURL: nil
+                                             error: &error]) {
     [treeContext deleteSelectedFileItem: pathModelView];
     
     return; // All went okay
@@ -710,9 +704,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
       ? NSLocalizedString(@"Failed to delete the folder \"%@\"", @"Alert message")
       : NSLocalizedString( @"Failed to delete the file \"%@\"", @"Alert message") );
   NSString  *msg = [NSString stringWithFormat: msgFmt, selectedFile.pathComponent];
-  NSString  *info =
-    NSLocalizedString(@"Possible reasons are that it does not exist anymore (it may have been moved, renamed, or deleted by other means) or that you lack the required permissions.", 
-                      @"Alert message"); 
+  NSString  *info = error.localizedDescription;
          
   [alert addButtonWithTitle: OK_BUTTON_TITLE];
   alert.messageText = msg;
