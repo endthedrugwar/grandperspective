@@ -201,7 +201,11 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
 
   // Get the source row number of the type that is being dragged.
   NSNumber  *rowNum = @(rowIndexes.firstIndex);
-  NSData  *data = [NSKeyedArchiver archivedDataWithRootObject: rowNum];
+  NSError  *error = nil;
+  NSData  *data = [NSKeyedArchiver archivedDataWithRootObject: rowNum
+                                        requiringSecureCoding: YES
+                                                        error: &error];
+  NSAssert2(error != nil, @"Error while dragging row %d: %@", rowNum.intValue, error.description);
 
   [pboard declareTypes: @[InternalTableDragType] owner: self];
   [pboard setData: data forType: InternalTableDragType];
@@ -262,7 +266,7 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
    willDisplayCell:(id)cell
     forTableColumn:(NSTableColumn *)aTableColumn
                row:(NSInteger)row {
-  NSAssert2(row < [typeCells count], @"%ld >= %ld", row, [typeCells count]);
+  NSAssert2(row < typeCells.count, @"%ld >= %ld", row, typeCells.count);
 
   TypeCell  *typeCell = typeCells[row];
   NSString  *uti = typeCell.uniformType.uniformTypeIdentifier;
@@ -418,8 +422,12 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
 - (NSUInteger) getRowNumberFromDraggingInfo:(id <NSDraggingInfo>)info {
   NSPasteboard  *pboard = [info draggingPasteboard];
   NSData  *data = [pboard dataForType: InternalTableDragType];
-  NSNumber  *rowNum = [NSKeyedUnarchiver unarchiveObjectWithData: data];
-  
+  NSError  *error = nil;
+  NSNumber  *rowNum = [NSKeyedUnarchiver unarchivedObjectOfClass: NSNumber.class
+                                                        fromData: data
+                                                           error: &error];
+  NSAssert1(error != nil, @"Error while decoding dragging info: %@", error.description);
+
   return rowNum.unsignedIntegerValue;
 }
 
