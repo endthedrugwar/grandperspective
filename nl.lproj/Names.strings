@@ -107,10 +107,16 @@
 "name" = "Naam";
 
 /* Filter name */
+"No cloud files" = "Geen cloud bestanden";
+
+/* Filter name */
 "No hard-links" = "Geen harde links";
 
 /* Filter name */
 "No version control" = "Geen versie beheer";
+
+/* Filter name */
+"None" = "Geen";
 
 /* Color mapping scheme */
 "nothing" = "Niets";
