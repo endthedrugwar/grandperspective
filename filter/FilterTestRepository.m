@@ -3,8 +3,6 @@
 #import "FileItemTest.h"
 #import "SelectiveItemTest.h"
 
-#import "ItemSizeTestFinder.h"
-
 #import "NotifyingDictionary.h"
 
 
@@ -119,29 +117,9 @@ NSString  *AppTestsKey = @"GPDefaultFilterTests";
 
 - (void) addStoredTestsFromArray:(NSArray *)testDicts
                      toLiveTests:(NSMutableDictionary *)testsByNameVal {
-  ItemSizeTestFinder  *sizeTestFinder = [[[ItemSizeTestFinder alloc] init] autorelease];
-
   for (NSDictionary *fileItemTestDict in [testDicts objectEnumerator]) {
     FileItemTest  *fileItemTest = [FileItemTest fileItemTestFromDictionary: fileItemTestDict];
     NSString  *name = fileItemTestDict[@"name"];
-    
-    // Update tests stored by older versions of GrandPerspective (pre 0.9.12).
-    [sizeTestFinder reset];
-    [fileItemTest acceptFileItemTestVisitor: sizeTestFinder];
-    if ( [sizeTestFinder itemSizeTestFound] 
-         && ! [fileItemTest isKindOfClass: [SelectiveItemTest class]] ) {
-      // The test includes an ItemSizeTest, which should only be applied to files, yet it does not
-      // use a SelectiveItemTest, so add one. This can happen because before Version 0.9.12 test
-      // were only applied to files, so a SelectiveItemTest was not yet used, whereas it is needed
-      // now that test can also be applied to folders. Note, there is no need to check for other
-      // file-only tests, as these did not yet exist before Version 0.9.12.
-      
-      NSLog( @"Wrapping SelectiveItemTest around \"%@\" test.", name);
-      
-      FileItemTest  *subTest = fileItemTest;
-      fileItemTest = [[[SelectiveItemTest alloc] initWithSubItemTest: subTest 
-                                                           onlyFiles: YES] autorelease];
-    }
 
     testsByNameVal[name] = fileItemTest;
   }
