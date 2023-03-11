@@ -3,6 +3,9 @@
 @class NotifyingDictionary;
 @class Filter;
 
+extern NSString  *NoneFilter;
+
+
 @interface FilterRepository : NSObject {
   // Contains the filters provided by the application.
   NSDictionary  *applicationProvidedFilters;

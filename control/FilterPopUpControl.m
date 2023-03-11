@@ -31,6 +31,14 @@ NSString  *SelectedFilterUpdated = @"selectedFilterUpdated";
 
 - (instancetype) initWithPopUpButton:(NSPopUpButton *)popUpButtonVal
                     filterRepository:(FilterRepository *)filterRepositoryVal {
+  return [self initWithPopUpButton: popUpButtonVal
+                  filterRepository: filterRepositoryVal
+                        noneOption: NO];
+}
+
+- (instancetype) initWithPopUpButton:(NSPopUpButton *)popUpButtonVal
+                    filterRepository:(FilterRepository *)filterRepositoryVal
+                          noneOption:(BOOL)addNoneOption {
   if (self = [super init]) {
     popUpButton = [popUpButtonVal retain];
     filterRepository = [filterRepositoryVal retain];
@@ -65,6 +73,14 @@ NSString  *SelectedFilterUpdated = @"selectedFilterUpdated";
                         toPopUp: popUpButton
                          select: [userDefaults stringForKey: ScanFilterKey]
                           table: @"Names"];
+
+    if (addNoneOption) {
+      [tagMaker addLocalisedName: NoneFilter
+                         toPopUp: popUpButton
+                          select: [[userDefaults stringForKey: ScanFilterKey]
+                                   isEqualToString: NoneFilter]
+                           table: @"Names"];
+    }
   }
   return self;
 }

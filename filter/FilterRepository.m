@@ -11,6 +11,9 @@ NSString  *UserFiltersKey = @"filters";
 // The key for storing application-provided tests
 NSString  *AppFiltersKey = @"GPDefaultFilters";
 
+// The name used for "no filter" option
+NSString  *NoneFilter = @"None";
+
 
 @interface FilterRepository (PrivateMethods)
 

@@ -6,6 +6,7 @@
 #import "ColorListCollection.h"
 #import "TreeBuilder.h"
 
+#import "FilterRepository.h"
 #import "FilterPopUpControl.h"
 
 #import "UniqueTagsTransformer.h"
@@ -124,7 +125,7 @@ static BOOL appHasDeletePermission;
     [self setPopUp: fileDeletionPopUp toValue: DeleteNothing];
   }
 
-  // This settings was stored under a different key before v3.1.0. Read it and convert it
+  // Convert old setting that was stored under a different key before v3.1.0.
   NSString  *oldFilterSetting = [userDefaults stringForKey: DefaultFilterKey_Deprecated];
   if (oldFilterSetting != nil) {
     NSLog(@"Read default mask from %@", DefaultFilterKey_Deprecated);
@@ -134,14 +135,17 @@ static BOOL appHasDeletePermission;
 
   UniqueTagsTransformer  *tagMaker = UniqueTagsTransformer.defaultUniqueTagsTransformer;
 
-  // The filter pop-ups use their own control that keeps it up to date. Its entries can change when
+  // The filter pop-ups use their own control that keep it up to date. Their entries change when
   // filters are added/removed.
   defaultMaskFilterPopUpControl =
     [[FilterPopUpControl alloc] initWithPopUpButton: defaultMaskFilterPopUp];
   [defaultMaskFilterPopUpControl selectFilterNamed: [userDefaults stringForKey: MaskFilterKey]];
   defaultMaskFilterPopUp.tag = [[tagMaker transformedValue: MaskFilterKey] intValue];
 
-  scanFilterPopUpControl = [[FilterPopUpControl alloc] initWithPopUpButton: scanFilterPopUp];
+  scanFilterPopUpControl =
+    [[FilterPopUpControl alloc] initWithPopUpButton: scanFilterPopUp
+                                   filterRepository: FilterRepository.defaultFilterRepository
+                                         noneOption: YES];
   [scanFilterPopUpControl selectFilterNamed: [userDefaults stringForKey: ScanFilterKey]];
   scanFilterPopUp.tag = [[tagMaker transformedValue: ScanFilterKey] intValue];
 

@@ -146,7 +146,8 @@ NSString  *AfterClosingLastViewDoNothing = @"do nothing";
 
 - (void) hideControlPanel;
 
-- (void) scanFolderUsingFilter:(BOOL)useFilter;
+// Initiates scan after asking the user which folder to scan, and optionally which filter to use.
+- (void) scanFolderSelectingFilter:(BOOL)selectFilter;
 - (void) scanFolder:(NSString *)path namedFilter:(NamedFilter *)filter;
 - (void) scanFolder:(NSString *)path filterSet:(FilterSet *)filterSet;
 
@@ -169,6 +170,8 @@ NSString  *AfterClosingLastViewDoNothing = @"do nothing";
  * filter to initially select.
  */
 - (NamedFilter *)selectFilter:(NSString *)initialSelection;
+
+- (NamedFilter *)defaultNamedFilter;
 
 + (FilterSet *)updateFiltersIfNeeded:(FilterSet *)filterSet;
 
@@ -445,7 +448,7 @@ static dispatch_once_t  singletonOnceToken;
     NSLog(@"%@", *error); // Also logging. Setting *error does not seem to work?
     return;
   }
-  
+
   [self scanFolder: fileUrl.path namedFilter: nil];
 }
 
@@ -541,11 +544,11 @@ static dispatch_once_t  singletonOnceToken;
 }
 
 - (IBAction) scanDirectoryView:(id)sender {
-  [self scanFolderUsingFilter: NO];
+  [self scanFolderSelectingFilter: NO];
 }
 
 - (IBAction) scanFilteredDirectoryView:(id)sender {
-  [self scanFolderUsingFilter: YES];
+  [self scanFolderSelectingFilter: YES];
 }
 
 - (IBAction) refresh:(id)sender {
@@ -825,7 +828,7 @@ static dispatch_once_t  singletonOnceToken;
 }
 
 - (void) scanFolder:(NSString *)path {
-  [self scanFolder: path filterSet: nil];
+  [self scanFolder: path namedFilter: nil];
 }
 
 @end // @implementation MainMenuControl
@@ -882,14 +885,15 @@ static dispatch_once_t  singletonOnceToken;
   [[ControlPanelControl singletonInstance] hidePanel];
 }
 
-- (void) scanFolderUsingFilter:(BOOL)useFilter {
+- (void) scanFolderSelectingFilter:(BOOL)selectFilter {
   NSOpenPanel  *openPanel = [NSOpenPanel openPanel];
   [openPanel setCanChooseFiles: NO];
   [openPanel setCanChooseDirectories: YES];
   [openPanel setAllowsMultipleSelection: NO];
-  
-  openPanel.treatsFilePackagesAsDirectories = [NSUserDefaults.standardUserDefaults
-                                               boolForKey: ShowPackageContentsByDefaultKey];
+
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
+  openPanel.treatsFilePackagesAsDirectories =
+    [userDefaults boolForKey: ShowPackageContentsByDefaultKey];
   
   [openPanel setTitle: NSLocalizedString(@"Scan folder", @"Title of open panel")];
   [openPanel setPrompt: NSLocalizedString(@"Scan", @"Prompt in open panel")];
@@ -906,9 +910,10 @@ static dispatch_once_t  singletonOnceToken;
     NSLog(@"URL '%@' is not a file?", targetURL);
     return;
   }
+
   NamedFilter  *namedFilter = nil;
-  if (useFilter) {
-    namedFilter = [self selectFilter: nil];
+  if (selectFilter) {
+    namedFilter = [self selectFilter: [userDefaults objectForKey: ScanFilterKey]];
 
     if (namedFilter == nil) {
       // User cancelled filter selection. Abort scanning.
@@ -921,6 +926,11 @@ static dispatch_once_t  singletonOnceToken;
 
 - (void) scanFolder:(NSString *)path namedFilter:(NamedFilter *)namedFilter {
   FilterSet  *filterSet = nil;
+
+  if (namedFilter == nil) {
+    // Use default filter, if any, as specified by the preferences
+    namedFilter = [self defaultNamedFilter];
+  }
 
   if (namedFilter != nil) {
     BOOL  showPackageContentsByDefault =
@@ -1107,6 +1117,16 @@ static dispatch_once_t  singletonOnceToken;
     return filterSelectionPanelControl.selectedNamedFilter;
   }
   return nil;
+}
+
+- (NamedFilter *)defaultNamedFilter {
+  NSString  *name = [NSUserDefaults.standardUserDefaults objectForKey: ScanFilterKey];
+  if ([name isEqualToString: NoneFilter]) {
+    return nil;
+  }
+
+  Filter  *filter = FilterRepository.defaultFilterRepository.filtersByName[name];
+  return [NamedFilter namedFilter: filter name: name];
 }
 
 + (FilterSet *)updateFiltersIfNeeded:(FilterSet *)filterSet {

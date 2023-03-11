@@ -26,7 +26,11 @@ extern NSString  *SelectedFilterUpdated;
 - (instancetype) initWithPopUpButton:(NSPopUpButton *)popUpButton;
 
 - (instancetype) initWithPopUpButton:(NSPopUpButton *)popUpButton
-                    filterRepository:(FilterRepository *)filterRepository NS_DESIGNATED_INITIALIZER;
+                    filterRepository:(FilterRepository *)filterRepository;
+
+- (instancetype) initWithPopUpButton:(NSPopUpButton *)popUpButton
+                    filterRepository:(FilterRepository *)filterRepository
+                          noneOption:(BOOL)noneOption NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, strong) NSNotificationCenter *notificationCenter;
 
