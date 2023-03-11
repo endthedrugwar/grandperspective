@@ -67,7 +67,9 @@
 		<string>folder</string>
 		<key>defaultColorPalette</key>
 		<string>CoffeeBeans</string>
-		<key>defaultFilter</key>
+		<key>scanFilter</key>
+		<string>No hard-links</string>
+		<key>maskFilter</key>
 		<string>No hard-links</string>
 		<key>defaultRescanAction</key>
 		<string>rescan all</string>

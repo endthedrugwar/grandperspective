@@ -10,7 +10,7 @@
   return
     [self initWithColorMappingKey: [ud stringForKey: DefaultColorMappingKey]
                   colorPaletteKey: [ud stringForKey: DefaultColorPaletteKey]
-                         maskName: [ud stringForKey: DefaultFilterName]
+                         maskName: [ud stringForKey: MaskFilterKey]
                       maskEnabled: NO
                  showEntireVolume: [[ud objectForKey: ShowEntireVolumeByDefaultKey] boolValue]
               showPackageContents: [[ud objectForKey: ShowPackageContentsByDefaultKey] boolValue]];

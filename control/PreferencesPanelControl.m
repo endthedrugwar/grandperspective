@@ -16,11 +16,15 @@ NSString  *RescanBehaviourKey = @"rescanBehaviour";
 NSString  *NoViewsBehaviourKey = @"noViewsBehaviour";
 NSString  *FileSizeMeasureKey = @"fileSizeMeasure";
 NSString  *FileSizeUnitSystemKey = @"fileSizeUnitSystem";
+NSString  *ScanFilterKey = @"scanFilter";
+NSString  *MaskFilterKey = @"maskFilter";
 NSString  *DefaultColorMappingKey = @"defaultColorMapping";
 NSString  *DefaultColorPaletteKey = @"defaultColorPalette";
-NSString  *DefaultFilterName = @"defaultFilter";
 NSString  *ShowPackageContentsByDefaultKey = @"showPackageContentsByDefault";
 NSString  *ShowEntireVolumeByDefaultKey = @"showEntireVolumeByDefault";
+
+// Deprecated since 3.1.0
+NSString  *DefaultFilterKey_Deprecated = @"defaultFilter";
 
 
 /* Note: The preferences below cannot currently be changed from the preferences panel; they are set
@@ -102,7 +106,7 @@ static BOOL appHasDeletePermission;
            content: MainMenuControl.noViewsBehaviourNames];
   [self setupPopUp: fileSizeMeasurePopUp
                key: FileSizeMeasureKey
-           content: [TreeBuilder fileSizeMeasureNames]];
+           content: TreeBuilder.fileSizeMeasureNames];
   [self setupPopUp: fileSizeUnitSystemPopUp
                key: FileSizeUnitSystemKey
            content: FileItem.fileSizeUnitSystemNames];
@@ -119,13 +123,21 @@ static BOOL appHasDeletePermission;
     [self setPopUp: fileDeletionPopUp toValue: DeleteNothing];
   }
 
+  // This settings was stored under a different key before v3.1.0. Read it and convert it
+  NSString  *oldFilterSetting = [userDefaults stringForKey: DefaultFilterKey_Deprecated];
+  if (oldFilterSetting != nil) {
+    NSLog(@"Read default mask from %@", DefaultFilterKey_Deprecated);
+    [userDefaults setObject: oldFilterSetting forKey: MaskFilterKey];
+    [userDefaults removeObjectForKey: DefaultFilterKey_Deprecated];
+  }
+
   // The filter pop-up uses its own control that keeps it up to date. Its entries can change when
   // filters are added/removed.
   filterPopUpControl = [[FilterPopUpControl alloc] initWithPopUpButton: defaultFilterPopUp];
-  [filterPopUpControl selectFilterNamed: [userDefaults stringForKey: DefaultFilterName]];
+  [filterPopUpControl selectFilterNamed: [userDefaults stringForKey: MaskFilterKey]];
 
   UniqueTagsTransformer  *tagMaker = UniqueTagsTransformer.defaultUniqueTagsTransformer;
-  defaultFilterPopUp.tag = [[tagMaker transformedValue: DefaultFilterName] intValue];
+  defaultFilterPopUp.tag = [[tagMaker transformedValue: MaskFilterKey] intValue];
   
   fileDeletionConfirmationCheckBox.state =
     [userDefaults boolForKey: ConfirmFileDeletionKey]

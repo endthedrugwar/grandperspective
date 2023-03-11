@@ -63,7 +63,7 @@ NSString  *SelectedFilterUpdated = @"selectedFilterUpdated";
     [popUpButton removeAllItems];
     [tagMaker addLocalisedNames: filterRepository.filtersByName.allKeys
                         toPopUp: popUpButton
-                         select: [userDefaults stringForKey: DefaultFilterName]
+                         select: [userDefaults stringForKey: ScanFilterKey]
                           table: @"Names"];
   }
   return self;
