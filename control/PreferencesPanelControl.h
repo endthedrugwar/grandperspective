@@ -41,15 +41,17 @@ extern NSString  *KeyboardNavigationDeltaKey;
   
   IBOutlet NSPopUpButton  *fileSizeMeasurePopUp;
   IBOutlet NSPopUpButton  *fileSizeUnitSystemPopUp;
+  IBOutlet NSPopUpButton  *scanFilterPopUp;
 
   IBOutlet NSPopUpButton  *defaultColorMappingPopUp;
   IBOutlet NSPopUpButton  *defaultColorPalettePopUp;
-  IBOutlet NSPopUpButton  *defaultFilterPopUp;
+  IBOutlet NSPopUpButton  *defaultMaskFilterPopUp;
   
   IBOutlet NSButton  *showPackageContentsByDefaultCheckBox;
   IBOutlet NSButton  *showEntireVolumeByDefaultCheckBox;
-  
-  FilterPopUpControl  *filterPopUpControl;
+
+  FilterPopUpControl  *defaultMaskFilterPopUpControl;
+  FilterPopUpControl  *scanFilterPopUpControl;
 }
 
 - (IBAction) popUpValueChanged:(id)sender;

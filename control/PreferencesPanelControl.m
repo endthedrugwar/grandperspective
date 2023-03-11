@@ -81,7 +81,8 @@ static BOOL appHasDeletePermission;
 }
 
 - (void) dealloc {
-  [filterPopUpControl release];
+  [defaultMaskFilterPopUpControl release];
+  [scanFilterPopUpControl release];
   
   [super dealloc];
 }
@@ -131,14 +132,19 @@ static BOOL appHasDeletePermission;
     [userDefaults removeObjectForKey: DefaultFilterKey_Deprecated];
   }
 
-  // The filter pop-up uses its own control that keeps it up to date. Its entries can change when
-  // filters are added/removed.
-  filterPopUpControl = [[FilterPopUpControl alloc] initWithPopUpButton: defaultFilterPopUp];
-  [filterPopUpControl selectFilterNamed: [userDefaults stringForKey: MaskFilterKey]];
-
   UniqueTagsTransformer  *tagMaker = UniqueTagsTransformer.defaultUniqueTagsTransformer;
-  defaultFilterPopUp.tag = [[tagMaker transformedValue: MaskFilterKey] intValue];
-  
+
+  // The filter pop-ups use their own control that keeps it up to date. Its entries can change when
+  // filters are added/removed.
+  defaultMaskFilterPopUpControl =
+    [[FilterPopUpControl alloc] initWithPopUpButton: defaultMaskFilterPopUp];
+  [defaultMaskFilterPopUpControl selectFilterNamed: [userDefaults stringForKey: MaskFilterKey]];
+  defaultMaskFilterPopUp.tag = [[tagMaker transformedValue: MaskFilterKey] intValue];
+
+  scanFilterPopUpControl = [[FilterPopUpControl alloc] initWithPopUpButton: scanFilterPopUp];
+  [scanFilterPopUpControl selectFilterNamed: [userDefaults stringForKey: ScanFilterKey]];
+  scanFilterPopUp.tag = [[tagMaker transformedValue: ScanFilterKey] intValue];
+
   fileDeletionConfirmationCheckBox.state =
     [userDefaults boolForKey: ConfirmFileDeletionKey]
     ? NSControlStateValueOn : NSControlStateValueOff;
