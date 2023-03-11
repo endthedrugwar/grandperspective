@@ -167,9 +167,10 @@ NSString  *AfterClosingLastViewDoNothing = @"do nothing";
 - (void) duplicateCurrentWindowSharingPath:(BOOL)sharePathModel;
 
 /* Prompts the user to select a filter. The initialSelection, when set, specifies the name of the
- * filter to initially select.
+ * filter to initially select. Returns NO when the user cancelled selection. Otherwise returns the
+ * filter using selectedFilter. This value is nil when the user selected "no filter".
  */
-- (NamedFilter *)selectFilter:(NSString *)initialSelection;
+- (BOOL)selectFilter:(NSString *)initialSelection selectedFilter:(NamedFilter **)selectedFilter;
 
 - (NamedFilter *)defaultNamedFilter;
 
@@ -382,7 +383,7 @@ static dispatch_once_t  singletonOnceToken;
       // Prevent window from showing if this action triggered the application to start
       showWelcomeWindow = NO;
 
-      [self scanFolder: filename namedFilter: nil];
+      [self scanFolder: filename namedFilter: [self defaultNamedFilter]];
       // Loading is done asynchronously, so starting a scan is assumed a successful action
       return YES;
     }
@@ -449,7 +450,7 @@ static dispatch_once_t  singletonOnceToken;
     return;
   }
 
-  [self scanFolder: fileUrl.path namedFilter: nil];
+  [self scanFolder: fileUrl.path namedFilter: [self defaultNamedFilter]];
 }
 
 
@@ -660,8 +661,8 @@ static dispatch_once_t  singletonOnceToken;
   DirectoryViewControlSettings  *settings = oldControl.directoryViewControlSettings;
   DirectoryViewDisplaySettings  *displaySettings = settings.displaySettings;
 
-  NamedFilter  *namedFilter = [self selectFilter: oldControl.nameOfActiveMask];
-  if (namedFilter == nil) {
+  NamedFilter  *namedFilter = nil;
+  if (![self selectFilter: oldControl.nameOfActiveMask selectedFilter: &namedFilter]) {
     // User cancelled selection, so abort
     return;
   }
@@ -828,7 +829,7 @@ static dispatch_once_t  singletonOnceToken;
 }
 
 - (void) scanFolder:(NSString *)path {
-  [self scanFolder: path namedFilter: nil];
+  [self scanFolder: path namedFilter: [self defaultNamedFilter]];
 }
 
 @end // @implementation MainMenuControl
@@ -912,13 +913,9 @@ static dispatch_once_t  singletonOnceToken;
   }
 
   NamedFilter  *namedFilter = nil;
-  if (selectFilter) {
-    namedFilter = [self selectFilter: [userDefaults objectForKey: ScanFilterKey]];
-
-    if (namedFilter == nil) {
-      // User cancelled filter selection. Abort scanning.
-      return;
-    }
+  if (selectFilter && ![self selectFilter: [userDefaults objectForKey: ScanFilterKey]
+                           selectedFilter: &namedFilter]) {
+    // User cancelled filter selection. Abort scanning.
   }
 
   [self scanFolder: targetURL.path namedFilter: namedFilter];
@@ -926,11 +923,6 @@ static dispatch_once_t  singletonOnceToken;
 
 - (void) scanFolder:(NSString *)path namedFilter:(NamedFilter *)namedFilter {
   FilterSet  *filterSet = nil;
-
-  if (namedFilter == nil) {
-    // Use default filter, if any, as specified by the preferences
-    namedFilter = [self defaultNamedFilter];
-  }
 
   if (namedFilter != nil) {
     BOOL  showPackageContentsByDefault =
@@ -1100,7 +1092,8 @@ static dispatch_once_t  singletonOnceToken;
 }
 
 
-- (NamedFilter *)selectFilter:(NSString *)initialSelection {
+- (BOOL)selectFilter:(NSString *)initialSelection
+      selectedFilter:(NamedFilter **)selectedFilter {
   if (filterSelectionPanelControl == nil) {
     filterSelectionPanelControl = [[FilterSelectionPanelControl alloc] init];
   }
@@ -1113,10 +1106,13 @@ static dispatch_once_t  singletonOnceToken;
   NSInteger  status = [NSApp runModalForWindow: selectFilterWindow];
   [selectFilterWindow close];
   
-  if (status == NSModalResponseStop) {
-    return filterSelectionPanelControl.selectedNamedFilter;
+  if (status != NSModalResponseStop) {
+    // User aborted selection
+    return NO;
   }
-  return nil;
+
+  *selectedFilter = filterSelectionPanelControl.selectedNamedFilter;
+  return YES;
 }
 
 - (NamedFilter *)defaultNamedFilter {

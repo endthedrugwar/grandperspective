@@ -43,7 +43,8 @@
 
 - (void) windowDidLoad {
   filterPopUpControl = [[FilterPopUpControl alloc] initWithPopUpButton: filterPopUp
-                                                      filterRepository: filterRepository];
+                                                      filterRepository: filterRepository
+                                                            noneOption: YES];
 }
 
 
@@ -74,6 +75,12 @@
 
 - (NamedFilter *)selectedNamedFilter {
   NSString  *name = filterPopUpControl.selectedFilterName;
+
+  if ([name isEqualToString: NoneFilter]) {
+    // User selected "no filter". This can be useful if the user has configured a scan filter in the
+    // preferences and wants to scan without this filter without changing the preferences.
+    return nil;
+  }
 
   Filter  *filter = filterRepository.filtersByName[name];
   // Filter should always exist, as pop-up control is observing the filter repository.
