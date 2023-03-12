@@ -32,13 +32,13 @@
             <value key="minSize" type="size" width="386" height="431"/>
             <value key="maxSize" type="size" width="480" height="520"/>
             <view key="contentView" id="5">
-                <rect key="frame" x="0.0" y="0.0" width="400" height="526"/>
+                <rect key="frame" x="0.0" y="0.0" width="400" height="513"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <box verticalHuggingPriority="249" title="Display" translatesAutoresizingMaskIntoConstraints="NO" id="29">
-                        <rect key="frame" x="17" y="183" width="366" height="195"/>
+                        <rect key="frame" x="17" y="183" width="366" height="182"/>
                         <view key="contentView" id="Xs8-gY-Ijv">
-                            <rect key="frame" x="3" y="3" width="360" height="177"/>
+                            <rect key="frame" x="3" y="3" width="360" height="164"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="44">
@@ -279,7 +279,7 @@
                         </view>
                     </box>
                     <box title="Scanning" translatesAutoresizingMaskIntoConstraints="NO" id="57">
-                        <rect key="frame" x="17" y="382" width="366" height="124"/>
+                        <rect key="frame" x="17" y="369" width="366" height="124"/>
                         <view key="contentView" id="2cE-6p-LKq">
                             <rect key="frame" x="3" y="3" width="360" height="106"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -384,10 +384,9 @@
                 <constraints>
                     <constraint firstItem="150" firstAttribute="height" secondItem="59" secondAttribute="height" id="Bsw-h9-uZz"/>
                     <constraint firstAttribute="trailing" secondItem="72" secondAttribute="trailing" constant="20" id="EWr-NR-pf4"/>
-                    <constraint firstAttribute="trailing" secondItem="57" secondAttribute="trailing" constant="20" id="Fek-M5-et7"/>
-                    <constraint firstItem="72" firstAttribute="top" secondItem="Xs8-gY-Ijv" secondAttribute="bottom" constant="20" id="KWE-l3-M0a"/>
+                    <constraint firstAttribute="trailing" secondItem="57" secondAttribute="trailing" constant="20" symbolic="YES" id="Fek-M5-et7"/>
                     <constraint firstItem="57" firstAttribute="top" secondItem="5" secondAttribute="top" constant="20" symbolic="YES" id="KlY-EE-fCR"/>
-                    <constraint firstItem="29" firstAttribute="top" secondItem="57" secondAttribute="bottom" constant="8" id="VFe-WP-93E"/>
+                    <constraint firstItem="29" firstAttribute="top" secondItem="57" secondAttribute="bottom" constant="8" symbolic="YES" id="VFe-WP-93E"/>
                     <constraint firstItem="213" firstAttribute="width" secondItem="110" secondAttribute="width" id="WeS-eX-td7"/>
                     <constraint firstItem="72" firstAttribute="top" secondItem="29" secondAttribute="bottom" constant="8" symbolic="YES" id="X4U-DP-BCK"/>
                     <constraint firstAttribute="trailing" secondItem="29" secondAttribute="trailing" constant="20" id="aPP-RT-Vmm"/>
