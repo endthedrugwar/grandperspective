@@ -1174,9 +1174,9 @@ static dispatch_once_t  singletonOnceToken;
   FilterSet  *filterSet = treeContext.filterSet;
 
   if (filterSet.numFilters == 0) {
-    return [NSString stringWithFormat: @"%@ - %@", scanPath, scanTime];
+    return [NSString stringWithFormat: @"%@ @ %@", scanPath, scanTime];
   }
-  return [NSString stringWithFormat: @"%@ - %@ - %@", scanPath, scanTime, filterSet.description];
+  return [NSString stringWithFormat: @"%@ - %@ @ %@", scanPath, filterSet.description, scanTime];
 }
 
 - (void) viewWillOpen:(NSNotification *)notification {

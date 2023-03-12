@@ -495,6 +495,7 @@ NSString  *TallyFileSizeName = @"tally";
       return alert;
     }
   }
+
   return nil;
 }
 

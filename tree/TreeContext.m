@@ -247,8 +247,8 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
   static NSDateFormatter *format = nil;
   if (format == nil) {
     format = [[NSDateFormatter alloc] init];
-    format.timeStyle = NSDateFormatterMediumStyle;
-    format.dateStyle = NSDateFormatterMediumStyle;
+    format.timeStyle = NSDateFormatterShortStyle;
+    format.dateStyle = NSDateFormatterShortStyle;
   }
   return [format stringFromDate: self.scanTime];
 }
