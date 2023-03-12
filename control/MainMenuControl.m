@@ -1122,7 +1122,9 @@ static dispatch_once_t  singletonOnceToken;
   }
 
   Filter  *filter = FilterRepository.defaultFilterRepository.filtersByName[name];
-  return [NamedFilter namedFilter: filter name: name];
+  return [[[NamedFilter alloc] initWithFilter: filter
+                                         name: name
+                                     implicit: YES] autorelease];
 }
 
 + (FilterSet *)updateFiltersIfNeeded:(FilterSet *)filterSet {

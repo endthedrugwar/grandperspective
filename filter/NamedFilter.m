@@ -15,9 +15,14 @@
 
 
 - (instancetype) initWithFilter:(Filter *)filter name:(NSString *)name {
+  return [self initWithFilter: filter name: name implicit: NO];
+}
+
+- (instancetype) initWithFilter:(Filter *)filter name:(NSString *)name implicit:(BOOL)implicit {
   if (self = [super init]) {
     _filter = [filter retain];
     _name = [name retain];
+    _isImplicit = implicit;
   }
   return self;
 }
