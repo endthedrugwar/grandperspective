@@ -46,7 +46,7 @@
 /* Class = "NSTextFieldCell"; title = "File size unit system:"; ObjectID = "214"; */
 "214.title" = "Bestandsgrootte eenheidstelsel:";
 
-/* Class = "NSTextFieldCell"; title = "Scan filter:"; ObjectID = "bAf-Lb-Hos"; */
+/* Class = "NSTextFieldCell"; title = "Default filter:"; ObjectID = "bAf-Lb-Hos"; */
 "bAf-Lb-Hos.title" = "Standaard filter:";
 
 /* Class = "NSTextFieldCell"; title = "After closing last view:"; ObjectID = "KFu-2k-t7Z"; */
