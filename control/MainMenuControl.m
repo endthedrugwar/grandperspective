@@ -149,6 +149,7 @@ NSString  *AfterClosingLastViewDoNothing = @"do nothing";
 // Initiates scan after asking the user which folder to scan, and optionally which filter to use.
 - (void) scanFolderSelectingFilter:(BOOL)selectFilter;
 - (void) scanFolder:(NSString *)path namedFilter:(NamedFilter *)filter;
+- (void) scanFolder:(NSString *)path namedFilters:(NSArray *)filters;
 - (void) scanFolder:(NSString *)path filterSet:(FilterSet *)filterSet;
 
 - (void) refreshItem:(DirectoryItem *)item deriveFrom:(DirectoryViewControl *)oldControl;
@@ -167,10 +168,14 @@ NSString  *AfterClosingLastViewDoNothing = @"do nothing";
 - (void) duplicateCurrentWindowSharingPath:(BOOL)sharePathModel;
 
 /* Prompts the user to select a filter. The initialSelection, when set, specifies the name of the
- * filter to initially select. Returns NO when the user cancelled selection. Otherwise returns the
- * filter using selectedFilter. This value is nil when the user selected "no filter".
+ * filter to initially select. The forNewScan argument should be used to signal if the filter will
+ * be applied to a new scan, or an existing view. This affects whether or not the user can choose
+ * if the default filter (if any) should also be applied.
+ *
+ * Returns nil when the user cancelled selection. Otherwise returns an array with zero or more
+ * NamedFilter instances.
  */
-- (BOOL)selectFilter:(NSString *)initialSelection selectedFilter:(NamedFilter **)selectedFilter;
+- (NSArray *)selectFilter:(NSString *)initialSelection forNewScan:(BOOL)forNewScan;
 
 - (NamedFilter *)defaultNamedFilter;
 
@@ -661,11 +666,14 @@ static dispatch_once_t  singletonOnceToken;
   DirectoryViewControlSettings  *settings = oldControl.directoryViewControlSettings;
   DirectoryViewDisplaySettings  *displaySettings = settings.displaySettings;
 
-  NamedFilter  *namedFilter = nil;
-  if (![self selectFilter: oldControl.nameOfActiveMask selectedFilter: &namedFilter]) {
-    // User cancelled selection, so abort
+  NSArray  *selectedFilters = [self selectFilter: oldControl.nameOfActiveMask forNewScan: NO];
+  if (selectedFilters == nil || selectedFilters.count == 0) {
+    // User cancelled selection or selected "no filter", so abort
     return;
   }
+
+  NSAssert(selectedFilters.count == 1, @"Expected only one filter");
+  NamedFilter  *filter = selectedFilters[0];
 
   TreeContext  *oldContext = oldControl.treeContext;
   BOOL  packagesAsFiles = (oldContext.filterSet.numFilters > 0
@@ -674,14 +682,14 @@ static dispatch_once_t  singletonOnceToken;
                            ? oldContext.filterSet.packagesAsFiles
                            // Let filter behaviour for packages depend on current display setting
                            : !displaySettings.showPackageContents);
+
   NSMutableArray  *unboundTests = [NSMutableArray arrayWithCapacity: 8];
-  FilterSet  *filterSet =
-    [oldContext.filterSet filterSetWithAddedNamedFilter: namedFilter
-                                        packagesAsFiles: packagesAsFiles
-                                           unboundTests: unboundTests];
+  FilterSet  *filterSet = [oldContext.filterSet filterSetWithAddedNamedFilter: filter
+                                                              packagesAsFiles: packagesAsFiles
+                                                                 unboundTests: unboundTests];
   [MainMenuControl reportUnboundTests: unboundTests];
 
-  if ([namedFilter.name isEqualToString: displaySettings.maskName]) {
+  if ([filter.name isEqualToString: displaySettings.maskName]) {
     // Don't retain the mask if the filter has the same name. It is likely that the filter is the
     // same as the mask, or if not, is at least a modified version of it. It therefore does not make
     // sense to retain the mask. This is only confusing.
@@ -693,7 +701,6 @@ static dispatch_once_t  singletonOnceToken;
     [[[DerivedDirViewWindowCreator alloc] initWithWindowManager: windowManager
                                                      targetPath: pathModel
                                                        settings: settings] autorelease];
-
 
   FilterTaskInput  *input = [[[FilterTaskInput alloc] initWithTreeContext: oldContext
                                                                 filterSet: filterSet]
@@ -912,29 +919,37 @@ static dispatch_once_t  singletonOnceToken;
     return;
   }
 
-  NamedFilter  *namedFilter = nil;
-  if (selectFilter && ![self selectFilter: [userDefaults objectForKey: ScanFilterKey]
-                           selectedFilter: &namedFilter]) {
-    // User cancelled filter selection. Abort scanning.
-    return;
-  }
+  if (selectFilter) {
+    NSArray  *filters = [self selectFilter: nil forNewScan: YES];
 
-  [self scanFolder: targetURL.path namedFilter: namedFilter];
+    if (filters == nil) {
+      // User cancelled filter selection. Abort scanning.
+      return;
+    }
+
+    [self scanFolder: targetURL.path namedFilters: filters];
+  } else {
+    [self scanFolder: targetURL.path namedFilter: [self defaultNamedFilter]];
+  }
 }
 
 - (void) scanFolder:(NSString *)path namedFilter:(NamedFilter *)namedFilter {
+  [self scanFolder: path namedFilters: (namedFilter != nil) ? @[namedFilter] : nil];
+}
+
+- (void) scanFolder:(NSString *)path namedFilters:(NSArray *)filters {
   FilterSet  *filterSet = nil;
 
-  if (namedFilter != nil) {
+  if (filters != nil && filters.count > 0) {
     BOOL  showPackageContentsByDefault =
       [NSUserDefaults.standardUserDefaults boolForKey: ShowPackageContentsByDefaultKey];
 
     NSMutableArray  *unboundFilters = [NSMutableArray arrayWithCapacity: 8];
     NSMutableArray  *unboundTests = [NSMutableArray arrayWithCapacity: 8];
-    filterSet = [FilterSet filterSetWithNamedFilter: namedFilter
-                                    packagesAsFiles: !showPackageContentsByDefault
-                                     unboundFilters: unboundFilters
-                                       unboundTests: unboundTests];
+    filterSet = [FilterSet filterSetWithNamedFilters: filters
+                                     packagesAsFiles: !showPackageContentsByDefault
+                                      unboundFilters: unboundFilters
+                                        unboundTests: unboundTests];
     [MainMenuControl reportUnboundFilters: unboundFilters];
     [MainMenuControl reportUnboundTests: unboundTests];
   }
@@ -1093,15 +1108,17 @@ static dispatch_once_t  singletonOnceToken;
 }
 
 
-- (BOOL)selectFilter:(NSString *)initialSelection
-      selectedFilter:(NamedFilter **)selectedFilter {
+- (NSArray *)selectFilter:(NSString *)initialSelection forNewScan:(BOOL)forNewScan {
   if (filterSelectionPanelControl == nil) {
     filterSelectionPanelControl = [[FilterSelectionPanelControl alloc] init];
   }
 
-  if (initialSelection != nil) {
-    [filterSelectionPanelControl selectFilterNamed: initialSelection];
-  }
+  [filterSelectionPanelControl selectFilterNamed: (initialSelection != nil
+                                                   ? initialSelection : NoneFilter)];
+
+  NSString  *defaultFilterName = [NSUserDefaults.standardUserDefaults objectForKey: ScanFilterKey];
+  BOOL  canApplyDefaultFilter = forNewScan && ![defaultFilterName isEqualToString: NoneFilter];
+  [filterSelectionPanelControl enableApplyDefaultFilterOption: canApplyDefaultFilter];
   
   NSWindow  *selectFilterWindow = filterSelectionPanelControl.window;
   NSInteger  status = [NSApp runModalForWindow: selectFilterWindow];
@@ -1109,11 +1126,22 @@ static dispatch_once_t  singletonOnceToken;
   
   if (status != NSModalResponseStop) {
     // User aborted selection
-    return NO;
+    return nil;
   }
 
-  *selectedFilter = filterSelectionPanelControl.selectedNamedFilter;
-  return YES;
+  NSMutableArray  *filters = [NSMutableArray arrayWithCapacity: 2];
+  if (filterSelectionPanelControl.applyDefaultFilter) {
+    [filters addObject: [self defaultNamedFilter]];
+  }
+
+  NamedFilter  *selectedFilter = filterSelectionPanelControl.selectedNamedFilter;
+  if (selectedFilter != nil
+      // Do not add the same filter twice
+      && (filters.count == 0 || selectedFilter.name != defaultFilterName)) {
+    [filters addObject: filterSelectionPanelControl.selectedNamedFilter];
+  }
+
+  return filters;
 }
 
 - (NamedFilter *)defaultNamedFilter {

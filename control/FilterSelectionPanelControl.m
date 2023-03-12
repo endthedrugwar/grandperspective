@@ -32,7 +32,7 @@
   [filterRepository release];
   [filterEditor release];
   [filterPopUpControl release];
-  
+
   [super dealloc];
 }
 
@@ -46,7 +46,6 @@
                                                       filterRepository: filterRepository
                                                             noneOption: YES];
 }
-
 
 - (IBAction) editFilter:(id)sender {
   [self filterEditor];
@@ -87,6 +86,15 @@
   NSAssert(filter != nil, @"Unexpected nil filter");
 
   return [NamedFilter namedFilter: filter name: name];
+}
+
+- (void) enableApplyDefaultFilterOption:(BOOL)enable {
+  applyDefaultFilterCheckbox.state = enable ? NSControlStateValueOn : NSControlStateValueOff;
+  applyDefaultFilterCheckbox.enabled = enable;
+}
+
+- (BOOL) applyDefaultFilter {
+  return applyDefaultFilterCheckbox.state == NSControlStateValueOn;
 }
 
 @end // @implementation FilterSelectionPanelControl

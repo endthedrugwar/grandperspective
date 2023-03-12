@@ -65,20 +65,17 @@ NSString  *SelectedFilterUpdated = @"selectedFilterUpdated";
            selector: @selector(filterRenamedInRepository:)
                name: ObjectRenamedEvent
              object: repositoryFiltersByName];
-          
-    NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
 
     [popUpButton removeAllItems];
     [tagMaker addLocalisedNames: filterRepository.filtersByName.allKeys
                         toPopUp: popUpButton
-                         select: [userDefaults stringForKey: ScanFilterKey]
+                         select: nil
                           table: @"Names"];
 
     if (addNoneOption) {
       [tagMaker addLocalisedName: NoneFilter
                          toPopUp: popUpButton
-                          select: [[userDefaults stringForKey: ScanFilterKey]
-                                   isEqualToString: NoneFilter]
+                          select: NO
                            table: @"Names"];
     }
   }
