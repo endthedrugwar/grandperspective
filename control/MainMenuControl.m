@@ -916,6 +916,7 @@ static dispatch_once_t  singletonOnceToken;
   if (selectFilter && ![self selectFilter: [userDefaults objectForKey: ScanFilterKey]
                            selectedFilter: &namedFilter]) {
     // User cancelled filter selection. Abort scanning.
+    return;
   }
 
   [self scanFolder: targetURL.path namedFilter: namedFilter];
