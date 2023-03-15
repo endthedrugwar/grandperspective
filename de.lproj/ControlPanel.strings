@@ -50,7 +50,7 @@
 "931.title" = "Maskierung (Ausblendung) von Dateien:";
 
 /* Class = "NSButtonCell"; title = "Enable mask"; ObjectID = "933"; */
-"933.title" = "Maskierung einschalten:";
+"933.title" = "Maskierung einschalten";
 
 /* Class = "NSTextFieldCell"; title = "Color by:"; ObjectID = "935"; */
 "935.title" = "Farbzuordnung:";

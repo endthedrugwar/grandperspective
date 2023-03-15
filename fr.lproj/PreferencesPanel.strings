@@ -38,7 +38,7 @@
 "178.title" = "Après réanalyse complète:";
 
 /* Class = "NSTextFieldCell"; title = "Mask:"; ObjectID = "181"; */
-"181.title" = "Filtre:";
+"181.title" = "Masque:";
 
 /* Class = "NSButtonCell"; title = "Show entire volume"; ObjectID = "199"; */
 "199.title" = "Afficher le volume entier";

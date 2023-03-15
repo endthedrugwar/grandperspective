@@ -38,7 +38,7 @@
 "178.title" = "Na alles herlezen:";
 
 /* Class = "NSTextFieldCell"; title = "Mask:"; ObjectID = "181"; */
-"181.title" = "Filter:";
+"181.title" = "Masker:";
 
 /* Class = "NSButtonCell"; title = "Show entire volume"; ObjectID = "199"; */
 "199.title" = "Toon gehele opslagmedium";

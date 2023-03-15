@@ -38,7 +38,7 @@
 "178.title" = "Dopo successo scansione:";
 
 /* Class = "NSTextFieldCell"; title = "Mask:"; ObjectID = "181"; */
-"181.title" = "Filtro:";
+"181.title" = "Maschera:";
 
 /* Class = "NSButtonCell"; title = "Show entire volume"; ObjectID = "199"; */
 "199.title" = "Visualizza volume intero";
