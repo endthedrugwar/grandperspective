@@ -59,7 +59,7 @@
 "GreenEggs" = "Uova verdi";
 
 /* Filter test */
-"Hard-linked items" = "Elemento con hard-link";
+"Hard-linked items" = "Elementi con hard-link";
 
 /* Color palette */
 "Heatmap-12" = "Mappa termica 12";
@@ -107,10 +107,16 @@
 "name" = "Nome";
 
 /* Filter name */
-"No hard-links" = "Nessun hard-link";
+"No cloud files" = "Escludi file cloud";
 
 /* Filter name */
-"No version control" = "Nessun controllo versione";
+"No hard-links" = "Escludi hard-link";
+
+/* Filter name */
+"No version control" = "Escludi controllo versione";
+
+/* Filter name */
+"None" = "Nessuno";
 
 /* Color mapping scheme */
 "nothing" = "Niente";

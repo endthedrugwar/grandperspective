@@ -38,6 +38,12 @@
 "Quick Look" = "Aperçu rapide";
 
 /* Toolbar action */
+"Refresh" = "Rafraîchir";
+
+/* Tooltip */
+"Refresh view data" = "Rafraîchir les données de la vue";
+
+/* Toolbar action */
 "Rescan" = "Réanalyser";
 
 /* Tooltip */

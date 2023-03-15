@@ -5,7 +5,7 @@
 "18.title" = "Seçili sınamalar";
 
 /* Class = "NSBox"; title = "Available tests"; ObjectID = "24"; */
-"24.title" = "Mevcut sınamalar";
+"24.title" = "Kullanılabilir sınamalar";
 
 /* Class = "NSButtonCell"; title = "<"; ObjectID = "173"; */
 "173.title" = "<";

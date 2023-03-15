@@ -4,8 +4,8 @@
 /* Class = "NSBox"; title = "Display"; ObjectID = "29"; */
 "29.title" = "Visualizzazione";
 
-/* Class = "NSBox"; title = "Info"; ObjectID = "57"; */
-"57.title" = "Info";
+/* Class = "NSBox"; title = "Scanning"; ObjectID = "57"; */
+"57.title" = "Scansionando";
 
 /* Class = "NSBox"; title = "Actions"; ObjectID = "72"; */
 "72.title" = "Azioni";
@@ -37,7 +37,7 @@
 /* Class = "NSTextFieldCell"; title = "After full rescan:"; ObjectID = "178"; */
 "178.title" = "Dopo successo scansione:";
 
-/* Class = "NSTextFieldCell"; title = "Filter:"; ObjectID = "181"; */
+/* Class = "NSTextFieldCell"; title = "Mask:"; ObjectID = "181"; */
 "181.title" = "Filtro:";
 
 /* Class = "NSButtonCell"; title = "Show entire volume"; ObjectID = "199"; */
@@ -45,6 +45,9 @@
 
 /* Class = "NSTextFieldCell"; title = "File size unit system:"; ObjectID = "214"; */
 "214.title" = "Sistema dimensione file:";
+
+/* Class = "NSTextFieldCell"; title = "Default filter:"; ObjectID = "bAf-Lb-Hos"; */
+"bAf-Lb-Hos.title" = "Filtro predefinito:";
 
 /* Class = "NSTextFieldCell"; title = "After closing last view:"; ObjectID = "KFu-2k-t7Z"; */
 "KFu-2k-t7Z.title" = "Dopo chiusura ultima vista:";

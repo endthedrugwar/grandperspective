@@ -4,7 +4,7 @@
 /* Class = "NSBox"; title = "Display"; ObjectID = "29"; */
 "29.title" = "Afficher";
 
-/* Class = "NSBox"; title = "Info"; ObjectID = "57"; */
+/* Class = "NSBox"; title = "Scanning"; ObjectID = "57"; */
 "57.title" = "Info";
 
 /* Class = "NSBox"; title = "Actions"; ObjectID = "72"; */
@@ -37,20 +37,17 @@
 /* Class = "NSTextFieldCell"; title = "After full rescan:"; ObjectID = "178"; */
 "178.title" = "Après réanalyse complète:";
 
-/* Class = "NSTextFieldCell"; title = "Filter:"; ObjectID = "181"; */
+/* Class = "NSTextFieldCell"; title = "Mask:"; ObjectID = "181"; */
 "181.title" = "Filtre:";
-
-/* Class = "NSTextFieldCell"; title = "Rescan action:"; ObjectID = "189"; */
-"189.title" = "Action de réanalyse:";
-
-/* Class = "NSMenuItem"; title = "Rescan folder in view"; ObjectID = "193"; */
-"193.title" = "Réanalyser le dossier en vue";
 
 /* Class = "NSButtonCell"; title = "Show entire volume"; ObjectID = "199"; */
 "199.title" = "Afficher le volume entier";
 
 /* Class = "NSTextFieldCell"; title = "File size unit system:"; ObjectID = "214"; */
 "214.title" = "Système de taille de fichier:";
+
+/* Class = "NSTextFieldCell"; title = "Default filter:"; ObjectID = "bAf-Lb-Hos"; */
+"bAf-Lb-Hos.title" = "Filtre par défaut:";
 
 /* Class = "NSTextFieldCell"; title = "After closing last view:"; ObjectID = "KFu-2k-t7Z"; */
 "KFu-2k-t7Z.title" = "Après clôture de la dernière vue:";

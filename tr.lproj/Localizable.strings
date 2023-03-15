@@ -74,7 +74,7 @@
 "Conforms to:" = "İle uyumludur:";
 
 /* Header in exported text file */
-"Created" = "Oluşturuldu";
+"Created" = "Oluşturulma";
 
 /* Alert panel button */
 "Delete" = "Sil";
@@ -317,7 +317,7 @@
 "Scanning failed" = "Tarama başarısız oldu";
 
 /* Title of progress panel. */
-"Scanning in progress" = "Taranıyor";
+"Scanning in progress" = "Tarama sürüyor";
 
 /* Solitairy entry in Start window */
 "Select Folder" = "Klasör Seç";
