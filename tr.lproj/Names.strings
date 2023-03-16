@@ -107,7 +107,7 @@
 "name" = "Ad";
 
 /* Filter name */
-"No cloud files" = "TO DO";
+"No cloud files" = "Bulutta dosya yok";
 
 /* Filter name */
 "No hard-links" = "Sabit bağlantı yok";
@@ -116,7 +116,7 @@
 "No version control" = "Sürüm denetimi yok ";
 
 /* Filter name */
-"None" = "TO DO";
+"None" = "Hiçbiri";
 
 /* Color mapping scheme */
 "nothing" = "Hiçbir şey";

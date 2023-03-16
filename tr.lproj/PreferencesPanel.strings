@@ -5,7 +5,7 @@
 "29.title" = "Görüntü";
 
 /* Class = "NSBox"; title = "Scanning"; ObjectID = "57"; */
-"57.title" = "Taranıyor";
+"57.title" = "Tarama";
 
 /* Class = "NSBox"; title = "Actions"; ObjectID = "72"; */
 "72.title" = "Eylemler";
