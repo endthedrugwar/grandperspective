@@ -107,10 +107,16 @@
 "name" = "Nimi";
 
 /* Filter name */
+"No cloud files" = "Ei pilvitiedostoja";
+
+/* Filter name */
 "No hard-links" = "Ei linkitettyjä (hard)";
 
 /* Filter name */
 "No version control" = "Ei versiohallintaa";
+
+/* Filter name */
+"None" = "Ei mitään";
 
 /* Color mapping scheme */
 "nothing" = "Ei mitään";

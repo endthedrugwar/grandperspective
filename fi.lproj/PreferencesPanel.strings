@@ -4,8 +4,8 @@
 /* Class = "NSBox"; title = "Display"; ObjectID = "29"; */
 "29.title" = "Ulkoasu";
 
-/* Class = "NSBox"; title = "Info"; ObjectID = "57"; */
-"57.title" = "Info";
+/* Class = "NSBox"; title = "Scanning"; ObjectID = "57"; */
+"57.title" = "Skannaus";
 
 /* Class = "NSBox"; title = "Actions"; ObjectID = "72"; */
 "72.title" = "Toiminnot";
@@ -37,14 +37,17 @@
 /* Class = "NSTextFieldCell"; title = "After full rescan:"; ObjectID = "178"; */
 "178.title" = "Täyden skannin jälkeen:";
 
-/* Class = "NSTextFieldCell"; title = "Filter:"; ObjectID = "181"; */
-"181.title" = "Suodatin:";
+/* Class = "NSTextFieldCell"; title = "Mask:"; ObjectID = "181"; */
+"181.title" = "Maski:";
 
 /* Class = "NSButtonCell"; title = "Show entire volume"; ObjectID = "199"; */
 "199.title" = "Näytä koko levy";
 
 /* Class = "NSTextFieldCell"; title = "File size unit system:"; ObjectID = "214"; */
 "214.title" = "Tiedostokoon yksikkö:";
+
+/* Class = "NSTextFieldCell"; title = "Default filter:"; ObjectID = "bAf-Lb-Hos"; */
+"bAf-Lb-Hos.title" = "Oletussuodatin:";
 
 /* Class = "NSTextFieldCell"; title = "After closing last view:"; ObjectID = "KFu-2k-t7Z"; */
 "KFu-2k-t7Z.title" = "Viimeisen näkymän suljettua:";
