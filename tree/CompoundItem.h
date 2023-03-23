@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 /* Can handle case where either one or both are nil. If both are nil, it returns nil. If one item is
  * nil, it returns the other item. Otherwise it returns a CompoundItem containing both.
  */
-+ (Item *)compoundItemWithFirst:(nullable Item *)first second:(nullable Item *)second;
++ (nullable Item *)compoundItemWithFirst:(nullable Item *)first second:(nullable Item *)second;
 
 /* Visits FileItem leave nodes until it finds one for which the predicate applies. It then return
  * the given item, and returns nil otherwise.
@@ -47,9 +47,9 @@ NS_ASSUME_NONNULL_BEGIN
  * Note: It does not recurse into DirectoryItem nodes. For this, use -findFileItemDescendant
  * instead.
  */
-+ (FileItem *)findFileItemChild:(Item *)item predicate:(BOOL(^)(FileItem *))predicate;
-+ (FileItem *)findFileItemChildMaybeNil:(nullable Item *)item
-                              predicate:(BOOL(^)(FileItem *))predicate;
++ (nullable FileItem *)findFileItemChild:(Item *)item predicate:(BOOL(^)(FileItem *))predicate;
++ (nullable FileItem *)findFileItemChildMaybeNil:(nullable Item *)item
+                                       predicate:(BOOL(^)(FileItem *))predicate;
 
 /* Visits all FileItem leave nodes in the tree with "item" at the root and applies the callback on
  * each.
