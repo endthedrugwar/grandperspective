@@ -16,3 +16,6 @@
 /* Class = "NSButtonCell"; title = "Edit"; ObjectID = "25"; */
 "25.title" = "Editar";
 
+/* Class = "NSButtonCell"; title = "Apply default filter"; ObjectID = "oBx-0o-cNN"; */
+"oBx-0o-cNN.title" = "Aplica filtro por defecto";
+

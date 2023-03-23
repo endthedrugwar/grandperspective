@@ -89,7 +89,7 @@
 "339.title" = "Guardar datos escaneados...";
 
 /* Class = "NSMenuItem"; title = "Load Scan Data..."; ObjectID = "340"; */
-"340.title" = "cargar datos escaneados...";
+"340.title" = "Cargar datos escaneados...";
 
 /* Class = "NSMenuItem"; title = "GrandPerspective Website"; ObjectID = "345"; */
 "345.title" = "Sitio web de GrandPerspective";

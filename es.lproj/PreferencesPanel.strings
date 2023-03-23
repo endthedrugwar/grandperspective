@@ -7,7 +7,7 @@
 /* Class = "NSMenu"; title = "OtherViews"; ObjectID = "53"; */
 "53.title" = "OtherViews";
 
-/* Class = "NSBox"; title = "Info"; ObjectID = "57"; */
+/* Class = "NSBox"; title = "Scanning"; ObjectID = "57"; */
 "57.title" = "Información";
 
 /* Class = "NSMenuItem"; title = "Item1"; ObjectID = "61"; */
@@ -52,14 +52,17 @@
 /* Class = "NSTextFieldCell"; title = "After full rescan:"; ObjectID = "178"; */
 "178.title" = "Después del resecanedo completo:";
 
-/* Class = "NSTextFieldCell"; title = "Filter:"; ObjectID = "181"; */
-"181.title" = "Filtro:";
+/* Class = "NSTextFieldCell"; title = "Mask:"; ObjectID = "181"; */
+"181.title" = "Máscara:";
 
 /* Class = "NSButtonCell"; title = "Show entire volume"; ObjectID = "199"; */
 "199.title" = "Mostrar la unidad completa";
 
 /* Class = "NSTextFieldCell"; title = "File size unit system:"; ObjectID = "214"; */
 "214.title" = "Tamaño de la unidad del sistema:";
+
+/* Class = "NSTextFieldCell"; title = "Default filter:"; ObjectID = "bAf-Lb-Hos"; */
+"bAf-Lb-Hos.title" = "Filtro por defecto:";
 
 /* Class = "NSTextFieldCell"; title = "After closing last view:"; ObjectID = "KFu-2k-t7Z"; */
 "KFu-2k-t7Z.title" = "Tras cerrar la última vista:";
