@@ -1362,7 +1362,7 @@ static dispatch_once_t  singletonOnceToken;
                          @"Alert informative text")];
   }
   else {
-    // An error occured while writing
+    // An error occurred while writing
     msgFormat = NSLocalizedString( @"Failed to save the scan data to \"%@\"", 
                                    @"Alert message (with filename arg)" );
     alert.informativeText = ((NSError *)result).localizedDescription;

@@ -22,7 +22,7 @@
           ? NSLocalizedString(@"%d folders processed",
                               @"Message in progress panel while executing refresh-based scan")
           : NSLocalizedString(@"%d folders scanned",
-                              @"Message in progress panel while executting a full scan"));
+                              @"Message in progress panel while executing a full scan"));
 }
 
 - (NSString *)pathFromTaskInput:(id)taskInput {

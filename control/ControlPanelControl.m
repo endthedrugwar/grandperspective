@@ -324,7 +324,7 @@ NSString  *DisplaySettingsChangedEvent = @"displaySettingsChanged";
   if (dirViewControl == nil) {
     // This can happen when the application is activated again. Ignore it. Wait until it is not nil.
     //
-    // Note, the main menu control is reponsible for closing the panel after the last directory view
+    // Note, the main menu control is responsible for closing the panel after the last directory view
     // window closed.
     return;
   }

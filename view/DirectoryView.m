@@ -782,7 +782,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
  */
 - (void) itemTreeImageReady: (id) image {
   if (image == nil) {
-    // Only take action when the drawing task has completed succesfully.
+    // Only take action when the drawing task has completed successfully.
     //
     // Without this check, a race condition can occur. When a new drawing task aborts the execution
     // of an ongoing task, the completion of the latter and subsequent invocation of -drawRect:

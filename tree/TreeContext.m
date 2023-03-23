@@ -489,7 +489,7 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
     
     // Note: Deletion of hard-linked items is included in the freedSpace accounting, even though
     // the free space on the harddrive won't be increased until all instances have been deleted.
-    // The reason is that not doing can result in strange anonalies. For example, deleting a
+    // The reason is that not doing can result in strange anomalies. For example, deleting a
     // directory that contains one or more hard-linked files increases the freedSpace count by less
     // than the size of the "freed space" block that replaces all files that have been deleted.
 

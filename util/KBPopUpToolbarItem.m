@@ -51,7 +51,7 @@
 	NSDate *endDate;
 	NSPoint currentPoint = theEvent.locationInWindow;
 	BOOL done = NO;
-	BOOL trackContinously = [self startTrackingAt:currentPoint inView:controlView];
+	BOOL trackContinuously = [self startTrackingAt:currentPoint inView:controlView];
 	
 	// Catch next mouse-dragged or mouse-up event until timeout
 	BOOL mouseIsUp = NO;
@@ -76,7 +76,7 @@
 			currentPoint = event.locationInWindow;
 			
 			// Send continueTracking.../stopTracking...
-			if (trackContinously)
+			if (trackContinuously)
 			{
 				if (![self continueTracking:lastPoint at:currentPoint inView:controlView])
 				{

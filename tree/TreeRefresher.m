@@ -154,7 +154,7 @@
     hardLinkMismatch = true;
   }
 
-  // Do not polute auto-release pool
+  // Do not pollute auto-release pool
   [dirs release];
   [files release];
 }

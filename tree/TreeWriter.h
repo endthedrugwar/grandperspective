@@ -59,7 +59,7 @@ extern NSString  *DateTimeFormat;
 
 @interface TreeWriter (ProtectedMethods)
 
-/* Formatter used to create (locale-independent) string reprentations for time values. Has same
+/* Formatter used to create (locale-independent) string representations for time values. Has same
  * format as timeFormatter.
  */
 @property (class, nonatomic, readonly) NSDateFormatter *nsTimeFormatter;

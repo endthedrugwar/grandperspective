@@ -62,7 +62,7 @@
 - (void) asynchronouslyRunTaskWithInput:(id)input
                                callback:(NSObject *)callback
                                selector:(SEL)selector {
-  // Show the progess panel and let its Cancel button abort the task.
+  // Show the progress panel and let its Cancel button abort the task.
   [progressPanelControl taskStartedWithInput: input
                               cancelCallback: taskManager
                                     selector: @selector(abortTask) ];
