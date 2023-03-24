@@ -677,10 +677,13 @@ NSString  *TallyFileSizeName = @"tally";
   NSError  *error = nil;
   NSFileManager  *fileManager = NSFileManager.defaultManager;
   NSDictionary  *fileAttributes = [fileManager attributesOfItemAtPath: url.path error: &error];
-  NSAssert2(
-    error==nil, @"Error getting attributes for %@: %@", url, error.description
-  );
-  NSNumber  *fileNumber = fileAttributes[NSFileSystemFileNumber];
+  NSNumber  *fileNumber = nil;
+
+  if (error != nil) {
+    NSLog(@"Error getting attributes for %@: %@", url, error.description);
+  } else {
+    fileNumber = fileAttributes[NSFileSystemFileNumber];
+  }
 
   if (fileNumber == nil) {
     // Workaround for bug #2243134
