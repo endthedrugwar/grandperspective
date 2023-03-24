@@ -131,7 +131,7 @@ NSString  *FriendlySizeKey = @"friendlySize";
 - (NSArray *)itemPath {
   // Note: For efficiency returning path directly, instead of an (immutable) copy. This is done so
   // that there is not too much overhead associated with invoking ItemPathDrawer
-  // -drawVisiblePath:...: many times in short successsion.
+  // -drawVisiblePath:...: many times in short succession.
   return path;
 }
 
@@ -412,7 +412,7 @@ NSString  *FriendlySizeKey = @"friendlySize";
 
 - (void) postSelectedItemChanged {
   if (lastNotifiedSelectedItem != nil) {
-    // Currently surpressing notifications
+    // Currently suppressing notifications
     return;
   }
 

@@ -144,7 +144,7 @@ NSString  *UnknownTypeUTI = @"unknown";
 
   // Temporarily associate "self" with the UTI to mark that the type is currently being created.
   // This is done to guard against infinite recursion should there be a cycle in the
-  // type-conformance relationsships.
+  // type-conformance relationships.
   typeForUTI[uti] = self;
   UniformType  *type = [self createUniformTypeForIdentifier: uti];
 

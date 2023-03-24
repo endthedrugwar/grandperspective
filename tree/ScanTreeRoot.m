@@ -9,7 +9,7 @@
   [super dealloc];
 
   if ([Item disposeZoneAfterUse: zone]) {
-    NSLog(@"Recyling memory zone");
+    NSLog(@"Recycling memory zone");
     NSRecycleZone(zone);
     NSLog(@"Recycled memory zone");
   }

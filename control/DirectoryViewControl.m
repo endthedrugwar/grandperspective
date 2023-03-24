@@ -565,7 +565,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 }
 
 - (void)endPreviewPanelControl:(QLPreviewPanel *)panel {
-  // This document loses its responsisibility on the preview panel. Until the next call to
+  // This document loses its responsibility on the preview panel. Until the next call to
   // -beginPreviewPanelControl: it must not change the panel's delegate, data source or refresh it.
   self.previewPanel = nil;
 }

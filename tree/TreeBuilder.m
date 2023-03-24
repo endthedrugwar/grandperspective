@@ -401,7 +401,7 @@ NSString  *TallyFileSizeName = @"tally";
         NSLog(@"No permissions to read %@", path);
       }
       else {
-        NSLog(@"Error occured for path %@: %@", path, error);
+        NSLog(@"Error occurred for path %@: %@", path, error);
       }
 
       return YES;

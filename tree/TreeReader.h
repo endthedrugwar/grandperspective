@@ -32,7 +32,7 @@
 - (instancetype) initWithFilterTestRepository:(FilterTestRepository *)repository NS_DESIGNATED_INITIALIZER;
 
 /* Reads the tree from a file in scan dump format. Returns the annotated tree context when
- * succesful. The tree can then later be retrieved using -annotatedTreeContext. Returns nil if
+ * successful. The tree can then later be retrieved using -annotatedTreeContext. Returns nil if
  * reading is aborted, or if there is an error. In the latter case, the error can be retrieved
  * using -error.
  */

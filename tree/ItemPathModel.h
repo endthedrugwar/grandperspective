@@ -38,13 +38,13 @@ extern NSString  *FriendlySizeKey;
   // still follow (in particular when the path is being extended).
   NSUInteger  lastFileItemIndex;
   
-  // Controls if "selectedItemChanged" notifications are being (temporarily) supressed. If it is set
+  // Controls if "selectedItemChanged" notifications are being (temporarily) suppressed. If it is set
   // to nil, they are posted as they occur. Otherwise it will suppress notifications, but remember
   // the current selection state. As soon as notifications are enabled again, it will check if a
   // notification needs to be fired.
   FileItem  *lastNotifiedSelectedItem;
 
-  // Controls if "visibleTreeChanged" notifications are being (temporarily) supressed.
+  // Controls if "visibleTreeChanged" notifications are being (temporarily) suppressed.
   FileItem  *lastNotifiedVisibleTree;
 
   // If it is set to "NO", the visible item path cannot be changed. (Note: the invisible part can
