@@ -52,6 +52,7 @@ NSString*  TaglineFormat = @"tagline-%d";
   recentScansView.doubleAction = @selector(scanActionAfterDoubleClick:);
 
   [recentScansView registerForDraggedTypes: NSURL.supportedPasteboardTypes];
+  [recentScansView sizeLastColumnToFit];
 
   [self setTagLineField];
 }
