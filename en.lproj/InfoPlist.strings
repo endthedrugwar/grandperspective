@@ -3,4 +3,4 @@
 CFBundleName = "GrandPerspective";
 CFBundleDisplayName = "GrandPerspective";
 NSHumanReadableCopyright = "Copyright © Eriban Software, 2005-2023";
-CFBundleGetInfoString = "12 Mar 2023";
+CFBundleGetInfoString = "26 Mar 2023";
