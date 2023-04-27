@@ -1,180 +1,171 @@
-/* Filter name */
-"None" = "None";
-
-/* Filter name */
-"No cloud files" = "No cloud files";
-
-/* Filter name */
-"No hard-links" = "No hard-links";
-
-/* Filter name */
-"No version control" = "No version control";
-
+/* Color mapping scheme */
+"access" = "Τελευταία πρόσβαση";
 
 /* Filter test */
-"Tiny files" = "Tiny files";
+"Audio" = "Ήχος (Audio)";
 
-/* Filter test */
-"Small files" = "Small files";
+/* File size base type */
+"base-2" = "Δυαδικό";
 
-/* Filter test */
-"Medium files" = "Medium files";
-
-/* Filter test */
-"Large files" = "Large files";
-
-/* Filter test */
-"Huge files" = "Huge files";
-
-/* Filter test */
-"Images" = "Images";
-
-/* Filter test */
-"Audio" = "Audio";
-
-/* Filter test */
-"Version control" = "Version control";
-
-/* Filter test */
-"Packages" = "Packages";
-
-/* Filter test */
-"Hard-linked items" = "Hard-linked items";
-
-
-/* Color palette */
-"OliveSunset" = "Olive sunset";
-
-/* Color palette */
-"MossAndLichen" = "Moss and lichen";
-
-/* Color palette */
-"Monaco" = "Monaco";
-
-/* Color palette */
-"Bujumbura" = "Bujumbura";
-
-/* Color palette */
-"CoffeeBeans" = "Coffee beans";
+/* File size base type */
+"base-10" = "Δεκαδικό";
 
 /* Color palette */
 "BlueSkyTulips" = "Blue sky tulips";
 
 /* Color palette */
-"OrigamiMice" = "Origami mice";
+"Bujumbura" = "Bujumbura";
+
+/* Rescan preference behaviour */
+"close old window" = "Κλείσιμο παλιού παραθύρου";
 
 /* Color palette */
-"GreenEggs" = "Green eggs";
+"CoffeeBeans" = "Coffee beans";
+
+/* Color mapping scheme */
+"creation" = "Δημιουργία";
+
+/* Color palette */
+"Daytona" = "Daytona Beach";
+
+/* File deletion preference option */
+"delete files and folders" = "Αρχεία και φάκελοι";
+
+/* File deletion preference option */
+"delete nothing" = "Τίποτα";
+
+/* Preference option for what to do after last view is closed */
+"do nothing" = "Καμία ενέργεια";
+
+/* Color mapping scheme */
+"extension" = "Επέκταση";
 
 /* Color palette */
 "FengShui" = "Feng Shui";
 
 /* Color palette */
-"Daytona" = "Daytona Beach";
-
-/* Color palette */
 "FlyingGeese" = "Magenta magic";
 
-/* Color palette */
-"Rainbow" = "Rainbow";
+/* Color mapping scheme */
+"folder" = "Φάκελος";
+
+/* Name of "special" file in the viewer */
+"free" = "Ελεύθερος χώρος";
+
+/* Name of "special" file in the viewer */
+"freed" = "Απελευθερωμένος χώρος";
 
 /* Color palette */
-"LagoonNebula" = "Lagoon nebula";
+"GreenEggs" = "Green eggs";
 
-/* Color palette */
-"Heatmap-23" = "Heatmap 23";
+/* Filter test */
+"Hard-linked items" = "Σκληρά συνδεδεμένα (hard-linked) στοιχεία";
 
 /* Color palette */
 "Heatmap-12" = "Heatmap 12";
 
+/* Color palette */
+"Heatmap-23" = "Heatmap 23";
+
+/* Filter test */
+"Huge files" = "Τεράστια αρχεία";
+
+/* Filter test */
+"Images" = "Εικόνες";
+
+/* Rescan preference behaviour */
+"keep old window" = "Διατήρηση παλιού παραθύρου";
+
+/* Color palette */
+"LagoonNebula" = "Lagoon nebula";
+
+/* Filter test */
+"Large files" = "Μεγάλα αρχεία";
 
 /* Color mapping scheme */
-"level" = "Level";
-
-/* Color mapping scheme */
-"extension" = "Extension";
-
-/* Color mapping scheme */
-"folder" = "Folder";
-
-/* Color mapping scheme */
-"name" = "Name";
-
-/* Color mapping scheme */
-"nothing" = "Nothing";
-
-/* Color mapping scheme */
-"top folder" = "Top folder";
-
-/* Color mapping scheme */
-"uniform type" = "File type";
-
-/* Color mapping scheme */
-"creation" = "Creation";
-
-/* Color mapping scheme */
-"modification" = "Last change";
-
-/* Color mapping scheme */
-"access" = "Last access";
-
+"level" = "Επίπεδο";
 
 /* File size type */
-"logical" = "Logical";
+"logical" = "Λογικό";
+
+/* Filter test */
+"Medium files" = "Μεσαίου μεγέθους αρχεία";
+
+/* Name of "special" file in the viewer */
+"misc used" = "Διάφορος χρησιμοποιούμενος χώρος:";
+
+/* Color mapping scheme */
+"modification" = "Τελευταία αλλαγή";
+
+/* Color palette */
+"Monaco" = "Monaco";
+
+/* Color palette */
+"MossAndLichen" = "Moss and lichen";
+
+/* Color mapping scheme */
+"name" = "Όνομα";
+
+/* Filter name */
+"No cloud files" = "Χωρίς αρχεία σε νέφος";
+
+/* Filter name */
+"No hard-links" = "Χωρίς σκληρούς συνδέσμους";
+
+/* Filter name */
+"No version control" = "Χωρίς έλεγχο έκδοσης";
+
+/* Filter name */
+"None" = "Κανένα";
+
+/* Color mapping scheme */
+"nothing" = "Τίποτα";
+
+/* Color palette */
+"OliveSunset" = "Olive sunset";
+
+/* File deletion preference option */
+"only delete files" = "Αρχεία";
+
+/* Color palette */
+"OrigamiMice" = "Origami mice";
+
+/* Filter test */
+"Packages" = "Πακέτα";
 
 /* File size type */
-"physical" = "Physical";
+"physical" = "Φυσικό";
+
+/* Preference option for what to do after last view is closed */
+"quit" = "Τερματισμός εφαρμογής";
+
+/* Color palette */
+"Rainbow" = "Rainbow";
+
+/* Rescan preference option */
+"rescan all" = "Πλήρης επανασάρωση";
+
+/* Rescan preference option */
+"rescan visible" = "Επανασάρωση φακέλου σε προβολή";
+
+/* Preference option for what to do after last view is closed */
+"show welcome" = "Εμφάνιση μηνύματος καλωσορίσματος";
+
+/* Filter test */
+"Small files" = "Μικρά αρχεία";
 
 /* File size type */
 "tally" = "Tally";
 
+/* Filter test */
+"Tiny files" = "Μικροσκοπικά αρχεία";
 
-/* File size base type */
-"base-2" = "Binary";
+/* Color mapping scheme */
+"top folder" = "Κορυφαίος φάκελος";
 
-/* File size base type */
-"base-10" = "Decimal";
+/* Color mapping scheme */
+"uniform type" = "Τύπος αρχείου";
 
+/* Filter test */
+"Version control" = "Έλεγχος έκδοσης";
 
-/* Name of "special" file in the viewer */
-"free" = "Free space";
-
-/* Name of "special" file in the viewer */
-"freed" = "Freed space";
-
-/* Name of "special" file in the viewer */
-"misc used" = "Miscellaneous used space";
-
-
-/* File deletion preference option */
-"delete nothing" = "Nothing";
-
-/* File deletion preference option */
-"only delete files" = "Files";
-
-/* File deletion preference option */
-"delete files and folders" = "Files and folders";
-
-
-/* Rescan preference option */
-"rescan all" = "Full rescan";
-
-/* Rescan preference option */
-"rescan visible" = "Rescan folder in view";
-
-
-/* Rescan preference behaviour */
-"close old window" = "Close old window";
-
-/* Rescan preference behaviour */
-"keep old window" = "Keep old window";
-
-
-/* Preference option for what to do after last view is closed */
-"quit" = "Terminate application";
-
-/* Preference option for what to do after last view is closed */
-"show welcome" = "Show welcome window";
-
-/* Preference option for what to do after last view is closed */
-"do nothing" = "Do nothing";

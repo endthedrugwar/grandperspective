@@ -1,22 +1,21 @@
-"num-taglines" = "7";
+/* Tag line in Welcome window */
+"tagline-1" = "σας βοηθά να ανακτήσετε τον χαμένο χώρο στο δίσκο";
 
 /* Tag line in Welcome window */
-"tagline-1" = "helps you recover lost disk space";
+"tagline-2" = "σας επιτρέπει να εντοπίσετε τεράστιους σπαταλητές χώρου";
 
 /* Tag line in Welcome window */
-"tagline-2" = "lets you track and hunt giant space wasters";
+"tagline-3" = "αποκαλύπτει πού πήγε ο ελεύθερος χώρος στο δίσκο σας";
 
 /* Tag line in Welcome window */
-"tagline-3" = "reveals where your free disk space went";
+"tagline-4" = "δείχνει γραφικά τη χρήση του δίσκου σας";
 
 /* Tag line in Welcome window */
-"tagline-4" = "graphically shows your disk usage";
+"tagline-5" = "φτιάχνει όμορφες εικόνες του σκληρού σας δίσκου";
 
 /* Tag line in Welcome window */
-"tagline-5" = "makes pretty pictures of your harddrive";
+"tagline-6" = "βρίσκει τα τεράστια αρχεία που απορροφούν το χώρο στο δίσκο";
 
 /* Tag line in Welcome window */
-"tagline-6" = "finds those giant files that suck up your disk space";
+"tagline-7" = "αποκαλύπτει αρχεία και φακέλους που καταλαμβάνουν πολύ χώρο";
 
-/* Tag line in Welcome window */
-"tagline-7" = "uncovers space-hogging files and folders";
