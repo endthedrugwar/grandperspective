@@ -14,7 +14,7 @@
 "910.title" = "Μέγεθος σαρωμένων αρχείων:";
 
 /* Class = "NSTextFieldCell"; title = "File sizes:"; ObjectID = "911"; */
-"911.title" = "Μεγέθη αρχείων:";
+"911.title" = "Μέγεθος αρχείων:";
 
 /* Class = "NSTextFieldCell"; title = "Initial free space:"; ObjectID = "912"; */
 "912.title" = "Αρχικός ελεύθερος χώρος:";

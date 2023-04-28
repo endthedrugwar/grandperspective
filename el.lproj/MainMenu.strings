@@ -71,7 +71,7 @@
 "321.title" = "Αντιγραφή (Twin)";
 
 /* Class = "NSMenuItem"; title = "Export As Image..."; ObjectID = "324"; */
-"324.title" = "Εξαγωγή ως εικόνα...";
+"324.title" = "Εξαγωγή ως Εικόνα...";
 
 /* Class = "NSMenuItem"; title = "Filter..."; ObjectID = "331"; */
 "331.title" = "Φίλτρο...";
