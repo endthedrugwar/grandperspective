@@ -1,5 +1,8 @@
 #import "TreeBuilder.h"
 
+#include <fts.h>
+#include <sys/stat.h>
+
 #import "AlertMessage.h"
 #import "TreeConstants.h"
 #import "PlainFileItem.h"
@@ -71,13 +74,19 @@ NSString  *TallyFileSizeName = @"tally";
 
 - (BOOL) visitItemAtURL:(NSURL *)url
                  parent:(ScanStackFrame *)parent
-                recurse:(BOOL)visitDescendants;
+                recurse:(BOOL)visitDescendants
+                   stat:(struct stat *)statBlock;
 - (BOOL) visitHardLinkedItemAtURL:(NSURL *)url;
 
 - (int) determineNumSubFoldersFor:(NSURL *)url;
 
 @end // @interface TreeBuilder (PrivateMethods)
 
+
+CFAbsoluteTime convertTimespec(struct timespec ts) {
+  // Ignore nanoseconds; we do not need sub-second accuracy
+  return (CFAbsoluteTime)((CFTimeInterval)ts.tv_sec - kCFAbsoluteTimeIntervalSince1970);
+}
 
 @implementation ScanStackFrame
 
@@ -392,27 +401,29 @@ NSString  *TallyFileSizeName = @"tally";
 }
 
 - (BOOL) scanTreeForDirectory:(DirectoryItem *)dirItem atPath:(NSString *)path {
-  NSDirectoryEnumerator  *directoryEnumerator =
-    [NSFileManager.defaultManager enumeratorAtURL: [NSURL fileURLWithPath: path]
-                       includingPropertiesForKeys: dirEnumKeysFullScan
-                                          options: 0
-                                     errorHandler: ^(NSURL *path, NSError *error) {
-      if (error.code == 257 && [error.domain isEqualToString: @"NSCocoaErrorDomain"]) {
-        NSLog(@"No permissions to read %@", path);
-      }
-      else {
-        NSLog(@"Error occurred for path %@: %@", path, error);
-      }
-
-      return YES;
-    }];
-
   NSAutoreleasePool  *autoreleasePool = nil;
+  FTS  *ftsp = NULL;
   int  i = 0;
   dirStackTopIndex = -1;
 
   @try {
-    for (NSURL *fileURL in directoryEnumerator) {
+    char*  paths[2] = {(char *)path.UTF8String, NULL};
+    if ((ftsp = fts_open(paths, FTS_PHYSICAL | FTS_XDEV | FTS_NOCHDIR, NULL)) == NULL) {
+      NSLog(@"Error: fts_open failed for %@", path);
+      return NO;
+    }
+
+    // Get the root directory out of the way
+    fts_read(ftsp);
+
+    FTSENT *entp;
+    while ((entp = fts_read(ftsp)) != NULL) {
+      if (entp->fts_info == FTS_DP) continue; // Directory being visited a second time
+
+      NSURL *fileURL =
+        [NSURL fileURLWithFileSystemRepresentation: entp->fts_path
+                                       isDirectory: S_ISDIR(entp->fts_statp->st_mode)
+                                     relativeToURL: NULL];
       NSURL  *parentURL = nil;
       [fileURL getParentURL: &parentURL];
 
@@ -426,8 +437,8 @@ NSString  *TallyFileSizeName = @"tally";
       ScanStackFrame  *parent = [self unwindStackToURL: parentURL];
       NSAssert1(parent != nil, @"Unwind failure at %@", fileURL);
 
-      if (![self visitItemAtURL: fileURL parent: parent recurse: YES]) {
-        [directoryEnumerator skipDescendants];
+      if (![self visitItemAtURL: fileURL parent: parent recurse: YES stat: entp->fts_statp]) {
+        fts_set(ftsp, entp, FTS_SKIP);
       }
       if (++i == AUTORELEASE_PERIOD) {
         [autoreleasePool release];
@@ -445,6 +456,9 @@ NSString  *TallyFileSizeName = @"tally";
   }
   @finally {
     [autoreleasePool release];
+    if (ftsp) {
+      fts_close(ftsp);
+    }
   }
 
   return YES;
@@ -455,18 +469,36 @@ NSString  *TallyFileSizeName = @"tally";
                             dirs:(NSMutableArray<DirectoryItem *> *)dirs
                            files:(NSMutableArray<PlainFileItem *> *)files {
   NSURL  *parentURL = [NSURL fileURLWithPath: path];
-  NSDirectoryEnumerator  *directoryEnumerator =
-    [NSFileManager.defaultManager enumeratorAtURL: parentURL
-                       includingPropertiesForKeys: dirEnumKeysFullScan
-                                          options: NSDirectoryEnumerationSkipsSubdirectoryDescendants
-                                     errorHandler: nil];
 
   ScanStackFrame  *parent = [[[ScanStackFrame alloc] initWithDirs: dirs files: files] autorelease];
   [parent initWithDirectoryItem: dirItem URL: parentURL];
 
-  for (NSURL *fileURL in directoryEnumerator) {
-    [self visitItemAtURL: fileURL parent: parent recurse: NO];
+  FTS  *ftsp;
+  char*  paths[2] = {(char *)path.UTF8String, NULL};
+  if ((ftsp = fts_open(paths, FTS_PHYSICAL | FTS_XDEV | FTS_NOCHDIR, NULL)) == NULL) {
+    NSLog(@"Error: fts_open failed for %@", path);
+    return;
   }
+
+  // Get the root directory out of the way
+  fts_read(ftsp);
+
+  FTSENT *entp;
+  while ((entp = fts_read(ftsp)) != NULL) {
+    if (entp->fts_info == FTS_DP) continue; // Directory being visited a second time
+
+    BOOL  isDirectory = S_ISDIR(entp->fts_statp->st_mode);
+    NSURL *fileURL = [NSURL fileURLWithFileSystemRepresentation: entp->fts_path
+                                                    isDirectory: isDirectory
+                                                  relativeToURL: NULL];
+
+    [self visitItemAtURL: fileURL parent: parent recurse: NO stat: entp->fts_statp];
+    if (isDirectory) {
+      fts_set(ftsp, entp, FTS_SKIP);
+    }
+  }
+
+  fts_close(ftsp);
 }
 
 - (AlertMessage *)createAlertMessage:(DirectoryItem *)scanTree {
@@ -563,11 +595,12 @@ NSString  *TallyFileSizeName = @"tally";
 
 - (BOOL) visitItemAtURL:(NSURL *)url
                  parent:(ScanStackFrame *)parent
-                recurse:(BOOL)visitDescendants {
+                recurse:(BOOL)visitDescendants
+                   stat:(struct stat *)statBlock {
   FileItemOptions  flags = 0;
-  BOOL  isDirectory = url.isDirectory;
+  BOOL  isDirectory = S_ISDIR(statBlock->st_mode);
 
-  if (url.isHardLinked) {
+  if (statBlock->st_nlink > 1) {
     flags |= FileItemIsHardlinked;
 
     if (![self visitHardLinkedItemAtURL: url]) {
@@ -587,13 +620,13 @@ NSString  *TallyFileSizeName = @"tally";
       flags |= FileItemIsPackage;
     }
     
-    DirectoryItem  *dirChildItem =
-      [[DirectoryItem allocWithZone: parent.zone] initWithLabel: lastPathComponent
-                                                         parent: parent->dirItem
-                                                          flags: flags
-                                                   creationTime: url.creationTime
-                                               modificationTime: url.modificationTime
-                                                     accessTime: url.accessTime];
+    DirectoryItem  *dirChildItem = [[DirectoryItem allocWithZone: parent.zone]
+                                    initWithLabel: lastPathComponent
+                                           parent: parent->dirItem
+                                            flags: flags
+                                     creationTime: convertTimespec(statBlock->st_birthtimespec)
+                                 modificationTime: convertTimespec(statBlock->st_mtimespec)
+                                       accessTime: convertTimespec(statBlock->st_atimespec)];
 
     // Explicitly check if the path is the System Data volume. We do not want to scan its contents
     // to prevent its contents from being scanned twice (as they also appear inside the root via
@@ -620,8 +653,7 @@ NSString  *TallyFileSizeName = @"tally";
     [dirChildItem release];
   }
   else { // A file node.
-    NSNumber  *physicalFileSize;
-    [url getResourceValue: &physicalFileSize forKey: NSURLTotalFileAllocatedSizeKey error: nil];
+    ITEM_SIZE  physicalFileSize = statBlock->st_blocks * 512;
     ITEM_SIZE  fileSize;
 
     UniformType  *fileType =
@@ -630,33 +662,33 @@ NSString  *TallyFileSizeName = @"tally";
     switch (fileSizeMeasure) {
       case LogicalFileSize: {
         fileSize = [TreeBuilder getLogicalFileSize: url withType: fileType];
-        totalPhysicalSize += physicalFileSize.unsignedLongLongValue;
+        totalPhysicalSize += physicalFileSize;
 
-        if (fileSize > physicalFileSize.unsignedLongLongValue) {
+        if (fileSize > physicalFileSize) {
           if (debugLogEnabled) {
             NSLog(@"Warning: logical file size larger than physical file size for %@ (%llu > %llu)",
-                  url, fileSize, physicalFileSize.unsignedLongLongValue);
+                  url, fileSize, physicalFileSize);
           }
           numOverestimatedFiles++;
         }
         break;
       }
       case PhysicalFileSize:
-        fileSize = physicalFileSize.unsignedLongLongValue;
+        fileSize = physicalFileSize;
         break;
       case TallyFileSize:
         fileSize = 1;
     }
 
-    PlainFileItem  *fileChildItem =
-      [[PlainFileItem allocWithZone: parent.zone] initWithLabel: lastPathComponent
-                                                         parent: parent->dirItem
-                                                           size: fileSize
-                                                           type: fileType
-                                                          flags: flags
-                                                   creationTime: url.creationTime
-                                               modificationTime: url.modificationTime
-                                                     accessTime: url.accessTime];
+    PlainFileItem  *fileChildItem = [[PlainFileItem allocWithZone: parent.zone]
+                                     initWithLabel: lastPathComponent
+                                            parent: parent->dirItem
+                                              size: fileSize
+                                              type: fileType
+                                             flags: flags
+                                      creationTime: convertTimespec(statBlock->st_birthtimespec)
+                                  modificationTime: convertTimespec(statBlock->st_mtimespec)
+                                        accessTime: convertTimespec(statBlock->st_atimespec)];
 
     // Only add file items that pass the filter test.
     if ( [treeGuide includeFileItem: fileChildItem] ) {
