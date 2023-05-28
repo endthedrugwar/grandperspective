@@ -70,7 +70,7 @@ NSString  *TallyFileSizeName = @"tally";
 + (ITEM_SIZE) getLogicalFileSize:(NSURL *)url withType:(UniformType *)fileType;
 
 - (void) addToStack:(DirectoryItem *)dirItem URL:(NSURL *)url;
-- (ScanStackFrame *)unwindStackToURL:(NSURL *)url;
+- (void) popFromStack;
 
 - (BOOL) visitItemAtURL:(NSURL *)url
                  parent:(ScanStackFrame *)parent
@@ -405,17 +405,25 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   @try {
     FTSENT *entp;
     while ((entp = fts_read(ftsp)) != NULL) {
-      if (entp->fts_info == FTS_DP) continue; // Directory being visited a second time
+      switch (entp->fts_info) {
+        case FTS_DP:
+          // Directory being visited a second time
+          [self popFromStack];
+          continue;
+        case FTS_DNR:
+          [self popFromStack];
+        case FTS_ERR:
+        case FTS_NS:
+          NSLog(@"Error reading directory %s: %s", entp->fts_path, strerror(entp->fts_errno));
+          continue;
+      }
 
       NSURL *fileURL =
         [NSURL fileURLWithFileSystemRepresentation: entp->fts_path
                                        isDirectory: S_ISDIR(entp->fts_statp->st_mode)
                                      relativeToURL: NULL];
-      NSURL  *parentURL = nil;
-      [fileURL getParentURL: &parentURL];
 
-      ScanStackFrame  *parent = [self unwindStackToURL: parentURL];
-      NSAssert1(parent != nil, @"Unwind failure at %@", fileURL);
+      ScanStackFrame  *parent = dirStack[dirStackTopIndex];
 
       if (![self visitItemAtURL: fileURL parent: parent recurse: YES stat: entp->fts_statp]) {
         fts_set(ftsp, entp, FTS_SKIP);
@@ -430,9 +438,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
       }
     }
 
-    if (dirStackTopIndex != -1) {
-      [self unwindStackToURL: nil]; // Force full unwind
-    }
+    NSAssert(dirStackTopIndex == -1, @"Stack not fully popped");
   }
   @finally {
     [autoreleasePool release];
@@ -521,6 +527,8 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 }
 
 - (void) addToStack:(DirectoryItem *)dirItem URL:(NSURL *)url {
+//  NSLog(@"Push: %@", url);
+
   // Expand stack if required
   if (dirStackTopIndex + 1 == (int)dirStack.count) {
     [dirStack addObject: [[[ScanStackFrame alloc] init] autorelease]];
@@ -539,28 +547,20 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   }
 }
 
-- (ScanStackFrame *)unwindStackToURL:(NSURL *)url {
-  ScanStackFrame  *topDir = (ScanStackFrame *)dirStack[dirStackTopIndex];
-  while (! [topDir->url isEqual: url]) {
-    // Pop directory from stack. Its contents have been fully scanned so finalize its contents.
-    [topDir filterSubDirectories: treeGuide];
-    
-    DirectoryItem  *dirItem = topDir->dirItem;
-    
-    [dirItem setFileItems: [treeBalancer createTreeForItems: topDir->files]
-           directoryItems: [treeBalancer createTreeForItems: topDir->dirs]];
+- (void) popFromStack {
+  ScanStackFrame  *topDir = (ScanStackFrame *)dirStack[dirStackTopIndex--];
+//  NSLog(@"Pop: %@", topDir->url);
 
-    [treeGuide emergedFromDirectory: dirItem];
-    [progressTracker processedFolder: dirItem];
+  // Pop directory from stack. Its contents have been fully scanned so finalize its contents.
+  [topDir filterSubDirectories: treeGuide];
 
-    if (dirStackTopIndex == 0) {
-      return nil;
-    }
+  DirectoryItem  *dirItem = topDir->dirItem;
 
-    topDir = (ScanStackFrame *)dirStack[--dirStackTopIndex];
-  }
+  [dirItem setFileItems: [treeBalancer createTreeForItems: topDir->files]
+         directoryItems: [treeBalancer createTreeForItems: topDir->dirs]];
 
-  return topDir;
+  [treeGuide emergedFromDirectory: dirItem];
+  [progressTracker processedFolder: dirItem];
 }
 
 - (BOOL) visitItemAtURL:(NSURL *)url
