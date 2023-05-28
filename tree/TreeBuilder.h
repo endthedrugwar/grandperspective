@@ -1,5 +1,7 @@
 #import <Cocoa/Cocoa.h>
 
+#include <fts.h>
+
 #import "FileItem.h"
 
 extern NSString  *LogicalFileSizeName;
@@ -32,8 +34,7 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
   NSString  *fileSizeMeasureName;
   FileSizeEnum  fileSizeMeasure;
 
-  NSArray<NSURLResourceKey>  *dirEnumKeysFullScan;
-  NSArray<NSURLResourceKey>  *dirEnumKeysCountSubdirs;
+  FTS  *ftsp;
 
   // In case logical file sizes are used, tracks total physical size.
   ITEM_SIZE  totalPhysicalSize;

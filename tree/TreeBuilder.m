@@ -78,7 +78,11 @@ NSString  *TallyFileSizeName = @"tally";
                    stat:(struct stat *)statBlock;
 - (BOOL) visitHardLinkedItemAtURL:(NSURL *)url;
 
-- (int) determineNumSubFoldersFor:(NSURL *)url;
+// Return the number of sub-folders of the (directory) item last returned by fts_read
+- (int) determineNumSubFolders;
+
+- (BOOL) startScan:(NSString *)path;
+- (void) stopScan;
 
 @end // @interface TreeBuilder (PrivateMethods)
 
@@ -180,19 +184,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
     treeBalancer = [[TreeBalancer alloc] init];
     typeInventory = [UniformTypeInventory.defaultUniformTypeInventory retain];
 
-    dirEnumKeysFullScan = [@[
-      NSURLNameKey,
-      NSURLIsDirectoryKey,
-      NSURLParentDirectoryURLKey,
-      NSURLCreationDateKey,
-      NSURLContentModificationDateKey,
-      NSURLContentAccessDateKey,
-      NSURLLinkCountKey,
-      NSURLIsPackageKey,
-      NSURLTotalFileSizeKey,
-      NSURLTotalFileAllocatedSizeKey
-    ] retain];
-    dirEnumKeysCountSubdirs = [@[NSURLIsDirectoryKey] retain];
+    ftsp = NULL;
 
     hardLinkedFileNumbers = [[NSMutableSet alloc] initWithCapacity: 32];
     abort = NO;
@@ -220,9 +212,8 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   [treeBalancer release];
   [typeInventory release];
 
-  [dirEnumKeysFullScan release];
-  [dirEnumKeysCountSubdirs release];
-  
+  NSAssert(ftsp == NULL, @"ftsp not closed");
+
   [hardLinkedFileNumbers release];
   [fileSizeMeasureName release];
   
@@ -402,20 +393,16 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 
 - (BOOL) scanTreeForDirectory:(DirectoryItem *)dirItem atPath:(NSString *)path {
   NSAutoreleasePool  *autoreleasePool = nil;
-  FTS  *ftsp = NULL;
   int  i = 0;
   dirStackTopIndex = -1;
 
+  if (![self startScan: path]) {
+    return NO;
+  }
+
+  [self addToStack: dirItem URL: [NSURL fileURLWithPath: path]];
+
   @try {
-    char*  paths[2] = {(char *)path.UTF8String, NULL};
-    if ((ftsp = fts_open(paths, FTS_PHYSICAL | FTS_XDEV | FTS_NOCHDIR, NULL)) == NULL) {
-      NSLog(@"Error: fts_open failed for %@", path);
-      return NO;
-    }
-
-    // Get the root directory out of the way
-    fts_read(ftsp);
-
     FTSENT *entp;
     while ((entp = fts_read(ftsp)) != NULL) {
       if (entp->fts_info == FTS_DP) continue; // Directory being visited a second time
@@ -426,13 +413,6 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
                                      relativeToURL: NULL];
       NSURL  *parentURL = nil;
       [fileURL getParentURL: &parentURL];
-
-      if (dirStackTopIndex == -1) {
-        // Init first element of stack using URL as returned by getParentURL. This is done instead
-        // constructing the URL from the path using NSURL fileURLWithPath: as the latter can
-        // generate a different URL (see Bug #80), which in turn will cause an unwind failure.
-        [self addToStack: dirItem URL: parentURL];
-      }
 
       ScanStackFrame  *parent = [self unwindStackToURL: parentURL];
       NSAssert1(parent != nil, @"Unwind failure at %@", fileURL);
@@ -456,9 +436,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   }
   @finally {
     [autoreleasePool release];
-    if (ftsp) {
-      fts_close(ftsp);
-    }
+    [self stopScan];
   }
 
   return YES;
@@ -473,15 +451,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   ScanStackFrame  *parent = [[[ScanStackFrame alloc] initWithDirs: dirs files: files] autorelease];
   [parent initWithDirectoryItem: dirItem URL: parentURL];
 
-  FTS  *ftsp;
-  char*  paths[2] = {(char *)path.UTF8String, NULL};
-  if ((ftsp = fts_open(paths, FTS_PHYSICAL | FTS_XDEV | FTS_NOCHDIR, NULL)) == NULL) {
-    NSLog(@"Error: fts_open failed for %@", path);
-    return;
-  }
-
-  // Get the root directory out of the way
-  fts_read(ftsp);
+  if (![self startScan: path]) return;
 
   FTSENT *entp;
   while ((entp = fts_read(ftsp)) != NULL) {
@@ -498,7 +468,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
     }
   }
 
-  fts_close(ftsp);
+  [self stopScan];
 }
 
 - (AlertMessage *)createAlertMessage:(DirectoryItem *)scanTree {
@@ -565,7 +535,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
     NSLog(@"Scanning %@", url);
   }
   if (dirStackTopIndex < NUM_SCAN_PROGRESS_ESTIMATE_LEVELS) {
-    [progressTracker setNumSubFolders: [self determineNumSubFoldersFor: url]];
+    [progressTracker setNumSubFolders: [self determineNumSubFolders]];
   }
 }
 
@@ -736,17 +706,34 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   return YES;
 }
 
-- (int) determineNumSubFoldersFor:(NSURL *)url {
-  NSDirectoryEnumerator  *directoryEnumerator =
-    [NSFileManager.defaultManager enumeratorAtURL: url
-                       includingPropertiesForKeys: dirEnumKeysCountSubdirs
-                                          options: NSDirectoryEnumerationSkipsSubdirectoryDescendants
-                                     errorHandler: nil];
+- (BOOL) startScan:(NSString *)path {
+  char*  paths[2] = {(char *)path.UTF8String, NULL};
+  ftsp = fts_open(paths, FTS_PHYSICAL | FTS_XDEV | FTS_NOCHDIR, NULL);
+
+  if (ftsp == NULL) {
+    NSLog(@"Error: fts_open failed for %@", path);
+    return NO;
+  }
+
+  // Get the root directory out of the way
+  fts_read(ftsp);
+
+  return YES;
+}
+
+- (void) stopScan {
+  fts_close(ftsp);
+  ftsp = NULL;
+}
+
+- (int) determineNumSubFolders {
   int  numSubDirs = 0;
-  for (NSURL *fileURL in directoryEnumerator) {
-    if (fileURL.isDirectory) {
+  FTSENT *entp = fts_children(ftsp, 0);
+  while (entp != NULL) {
+    if (S_ISDIR(entp->fts_statp->st_mode)) {
       numSubDirs++;
     }
+    entp = entp->fts_link;
   }
 
   return numSubDirs;
