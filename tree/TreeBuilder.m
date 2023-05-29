@@ -41,8 +41,7 @@ NSString  *TallyFileSizeName = @"tally";
 @public
   DirectoryItem  *dirItem;
 
-  // The url for the directory file item
-  NSURL  *url;
+  FTSENT  *entp;
 
   // Arrays containing the immediate children
   NSMutableArray<DirectoryItem *>  *dirs;
@@ -53,8 +52,7 @@ NSString  *TallyFileSizeName = @"tally";
                         files:(NSMutableArray<PlainFileItem *> *)files NS_DESIGNATED_INITIALIZER;
 
 // Convenience "constructor" for repeated usage
-- (void) initWithDirectoryItem:(DirectoryItem *)dirItem
-                           URL:(NSURL *)url;
+- (void) initWithDirectoryItem:(DirectoryItem *)dirItem entp:(FTSENT *)entp;
 
 /* Remove any sub-directories that should not be included according to the treeGuide. This
  * filtering needs to be done after all items inside this directory have been scanned, as the
@@ -67,21 +65,20 @@ NSString  *TallyFileSizeName = @"tally";
 
 @interface TreeBuilder (PrivateMethods)
 
-+ (ITEM_SIZE) getLogicalFileSize:(NSURL *)url withType:(UniformType *)fileType;
++ (ITEM_SIZE) getLogicalFileSize:(FTSENT *)entp withType:(UniformType *)fileType;
 
-- (void) addToStack:(DirectoryItem *)dirItem URL:(NSURL *)url;
+- (void) addToStack:(DirectoryItem *)dirItem entp:(FTSENT *)entp;
 - (void) popFromStack;
 
-- (BOOL) visitItemAtURL:(NSURL *)url
-                 parent:(ScanStackFrame *)parent
-                recurse:(BOOL)visitDescendants
-                   entp:(FTSENT *)entp;
+- (BOOL) visitItem:(FTSENT *)entp
+            parent:(ScanStackFrame *)parent
+           recurse:(BOOL)visitDescendants;
 - (BOOL) visitHardLinkedItem:(FTSENT *)entp;
 
 // Return the number of sub-folders of the (directory) item last returned by fts_read
 - (int) determineNumSubFolders;
 
-- (BOOL) startScan:(NSString *)path;
+- (FTSENT *)startScan:(NSString *)path;
 - (void) stopScan;
 
 @end // @interface TreeBuilder (PrivateMethods)
@@ -113,16 +110,13 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 }
 
 // "Constructor" intended for repeated usage. It assumes init has already been invoked
-- (void) initWithDirectoryItem:(DirectoryItem *)dirItemVal URL:(NSURL *)urlVal {
+- (void) initWithDirectoryItem:(DirectoryItem *)dirItemVal entp:(FTSENT *)entpVal {
   if (dirItem != dirItemVal) {
     [dirItem release];
   }
   dirItem = [dirItemVal retain];
 
-  if (url != urlVal) {
-    [url release];
-  }
-  url = [urlVal retain];
+  entp = entpVal;
 
   // Clear data from previous usage
   [dirs removeAllObjects];
@@ -133,7 +127,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   [dirs release];
   [files release];
 
-  [url release];
+  entp = NULL;
   [dirItem release];
   
   [super dealloc];
@@ -396,11 +390,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   int  i = 0;
   dirStackTopIndex = -1;
 
-  if (![self startScan: path]) {
-    return NO;
-  }
-
-  [self addToStack: dirItem URL: [NSURL fileURLWithPath: path]];
+  [self addToStack: dirItem entp: [self startScan: path]];
 
   @try {
     FTSENT *entp;
@@ -418,14 +408,10 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
           continue;
       }
 
-      NSURL *fileURL =
-        [NSURL fileURLWithFileSystemRepresentation: entp->fts_path
-                                       isDirectory: S_ISDIR(entp->fts_statp->st_mode)
-                                     relativeToURL: NULL];
-
+      // TODO: Sanity check on frame (compare parent of entp)
       ScanStackFrame  *parent = dirStack[dirStackTopIndex];
 
-      if (![self visitItemAtURL: fileURL parent: parent recurse: YES entp: entp]) {
+      if (![self visitItem: entp parent: parent recurse: YES]) {
         fts_set(ftsp, entp, FTS_SKIP);
       }
       if (++i == AUTORELEASE_PERIOD) {
@@ -452,23 +438,15 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
                           atPath:(NSString *)path
                             dirs:(NSMutableArray<DirectoryItem *> *)dirs
                            files:(NSMutableArray<PlainFileItem *> *)files {
-  NSURL  *parentURL = [NSURL fileURLWithPath: path];
-
   ScanStackFrame  *parent = [[[ScanStackFrame alloc] initWithDirs: dirs files: files] autorelease];
-  [parent initWithDirectoryItem: dirItem URL: parentURL];
-
-  if (![self startScan: path]) return;
+  [parent initWithDirectoryItem: dirItem entp: [self startScan: path]];
 
   FTSENT *entp;
   while ((entp = fts_read(ftsp)) != NULL) {
     if (entp->fts_info == FTS_DP) continue; // Directory being visited a second time
 
     BOOL  isDirectory = S_ISDIR(entp->fts_statp->st_mode);
-    NSURL *fileURL = [NSURL fileURLWithFileSystemRepresentation: entp->fts_path
-                                                    isDirectory: isDirectory
-                                                  relativeToURL: NULL];
-
-    [self visitItemAtURL: fileURL parent: parent recurse: NO entp: entp];
+    [self visitItem: entp parent: parent recurse: NO];
     if (isDirectory) {
       fts_set(ftsp, entp, FTS_SKIP);
     }
@@ -512,21 +490,21 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 
 @implementation TreeBuilder (PrivateMethods)
 
-+ (ITEM_SIZE) getLogicalFileSize:(NSURL *)url withType:(UniformType *)fileType {
++ (ITEM_SIZE) getLogicalFileSize:(FTSENT *)entp withType:(UniformType *)fileType {
   if ([fileType.uniformTypeIdentifier isEqualToString: @"com.apple.icloud-file-fault"]) {
+    NSURL  *url = [NSURL fileURLWithFileSystemRepresentation: entp->fts_path
+                                                 isDirectory: S_ISDIR(entp->fts_statp->st_mode)
+                                               relativeToURL: NULL];
     NSDictionary  *dict = [NSDictionary dictionaryWithContentsOfURL: url];
     NSNumber  *fileSize = [dict objectForKey: @"NSURLFileSizeKey"];
 
     return fileSize.unsignedLongLongValue;
   } else {
-    NSNumber  *logicalFileSize;
-    [url getResourceValue: &logicalFileSize forKey: NSURLTotalFileSizeKey error: nil];
-
-    return logicalFileSize.unsignedLongLongValue;
+    return entp->fts_statp->st_size;
   }
 }
 
-- (void) addToStack:(DirectoryItem *)dirItem URL:(NSURL *)url {
+- (void) addToStack:(DirectoryItem *)dirItem entp:(FTSENT *)entp {
 //  NSLog(@"Push: %@", url);
 
   // Expand stack if required
@@ -535,12 +513,12 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   }
   
   // Add the item to the stack. Overwriting the previous entry.
-  [dirStack[++dirStackTopIndex] initWithDirectoryItem: dirItem URL: url];
+  [dirStack[++dirStackTopIndex] initWithDirectoryItem: dirItem entp: entp];
   
   [treeGuide descendIntoDirectory: dirItem];
   [progressTracker processingFolder: dirItem];
   if (debugLogEnabled) {
-    NSLog(@"Scanning %@", url);
+    NSLog(@"Scanning %s", entp->fts_path);
   }
   if (dirStackTopIndex < NUM_SCAN_PROGRESS_ESTIMATE_LEVELS) {
     [progressTracker setNumSubFolders: [self determineNumSubFolders]];
@@ -563,10 +541,9 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   [progressTracker processedFolder: dirItem];
 }
 
-- (BOOL) visitItemAtURL:(NSURL *)url
-                 parent:(ScanStackFrame *)parent
-                recurse:(BOOL)visitDescendants
-                   entp:(FTSENT *)entp {
+- (BOOL) visitItem:(FTSENT *)entp
+            parent:(ScanStackFrame *)parent
+           recurse:(BOOL)visitDescendants {
   FileItemOptions  flags = 0;
   struct stat  *statBlock = entp->fts_statp;
   BOOL  isDirectory = S_ISDIR(statBlock->st_mode);
@@ -588,6 +565,10 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   NSString  *lastPathComponent = [NSString stringWithUTF8String: entp->fts_name];
 
   if (isDirectory) {
+    // TODO: Speed up package check?
+    NSURL  *url = [NSURL fileURLWithFileSystemRepresentation: entp->fts_path
+                                                 isDirectory: YES
+                                               relativeToURL: NULL];
     if (url.isPackage) {
       if (lastPathComponent.pathExtension.length == 0) {
         NSLog(@"Extension-less package: %s", entp->fts_path);
@@ -617,10 +598,10 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
     if ( !isDataVolume && [treeGuide shouldDescendIntoDirectory: dirChildItem] ) {
       [parent->dirs addObject: dirChildItem];
       if (visitDescendants) {
-        [self addToStack: dirChildItem URL: url];
+        [self addToStack: dirChildItem entp: entp];
       }
     } else {
-      NSLog(@"Skipping scan of %@", url);
+      NSLog(@"Skipping scan of %s", entp->fts_path);
       [progressTracker skippedFolder: dirChildItem];
       visitDescendants = NO;
     }
@@ -628,6 +609,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
     [dirChildItem release];
   }
   else { // A file node.
+    // TODO: Make blocksize a constant (is it always fixed?)
     ITEM_SIZE  physicalFileSize = statBlock->st_blocks * 512;
     ITEM_SIZE  fileSize;
 
@@ -636,13 +618,13 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 
     switch (fileSizeMeasure) {
       case LogicalFileSize: {
-        fileSize = [TreeBuilder getLogicalFileSize: url withType: fileType];
+        fileSize = [TreeBuilder getLogicalFileSize: entp withType: fileType];
         totalPhysicalSize += physicalFileSize;
 
         if (fileSize > physicalFileSize) {
           if (debugLogEnabled) {
-            NSLog(@"Warning: logical file size larger than physical file size for %@ (%llu > %llu)",
-                  url, fileSize, physicalFileSize);
+            NSLog(@"Warning: logical file size larger than physical file size for %s (%llu > %llu)",
+                  entp->fts_path, fileSize, physicalFileSize);
           }
           numOverestimatedFiles++;
         }
@@ -689,19 +671,17 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   return sizeBefore < hardLinkedFileNumbers.count; // Only scan newly encountered items
 }
 
-- (BOOL) startScan:(NSString *)path {
+- (FTSENT *)startScan:(NSString *)path {
   char*  paths[2] = {(char *)path.UTF8String, NULL};
   ftsp = fts_open(paths, FTS_PHYSICAL | FTS_XDEV | FTS_NOCHDIR, NULL);
 
   if (ftsp == NULL) {
     NSLog(@"Error: fts_open failed for %@", path);
-    return NO;
+    return NULL;
   }
 
   // Get the root directory out of the way
-  fts_read(ftsp);
-
-  return YES;
+  return fts_read(ftsp);
 }
 
 - (void) stopScan {
