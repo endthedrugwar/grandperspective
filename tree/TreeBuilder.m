@@ -75,8 +75,8 @@ NSString  *TallyFileSizeName = @"tally";
 - (BOOL) visitItemAtURL:(NSURL *)url
                  parent:(ScanStackFrame *)parent
                 recurse:(BOOL)visitDescendants
-                   stat:(struct stat *)statBlock;
-- (BOOL) visitHardLinkedItemAtURL:(NSURL *)url;
+                   entp:(FTSENT *)entp;
+- (BOOL) visitHardLinkedItem:(FTSENT *)entp;
 
 // Return the number of sub-folders of the (directory) item last returned by fts_read
 - (int) determineNumSubFolders;
@@ -425,7 +425,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 
       ScanStackFrame  *parent = dirStack[dirStackTopIndex];
 
-      if (![self visitItemAtURL: fileURL parent: parent recurse: YES stat: entp->fts_statp]) {
+      if (![self visitItemAtURL: fileURL parent: parent recurse: YES entp: entp]) {
         fts_set(ftsp, entp, FTS_SKIP);
       }
       if (++i == AUTORELEASE_PERIOD) {
@@ -468,7 +468,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
                                                     isDirectory: isDirectory
                                                   relativeToURL: NULL];
 
-    [self visitItemAtURL: fileURL parent: parent recurse: NO stat: entp->fts_statp];
+    [self visitItemAtURL: fileURL parent: parent recurse: NO entp: entp];
     if (isDirectory) {
       fts_set(ftsp, entp, FTS_SKIP);
     }
@@ -566,14 +566,15 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 - (BOOL) visitItemAtURL:(NSURL *)url
                  parent:(ScanStackFrame *)parent
                 recurse:(BOOL)visitDescendants
-                   stat:(struct stat *)statBlock {
+                   entp:(FTSENT *)entp {
   FileItemOptions  flags = 0;
+  struct stat  *statBlock = entp->fts_statp;
   BOOL  isDirectory = S_ISDIR(statBlock->st_mode);
 
   if (statBlock->st_nlink > 1) {
     flags |= FileItemIsHardlinked;
 
-    if (![self visitHardLinkedItemAtURL: url]) {
+    if (![self visitHardLinkedItem: entp]) {
       // Do not visit descendants if the item was a directory
       if (isDirectory) {
         visitDescendants = NO;
@@ -583,10 +584,14 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
     }
   }
   
-  NSString  *lastPathComponent = url.lastPathComponent;
+  // TODO: Alloc in parent.zone?
+  NSString  *lastPathComponent = [NSString stringWithUTF8String: entp->fts_name];
 
   if (isDirectory) {
     if (url.isPackage) {
+      if (lastPathComponent.pathExtension.length == 0) {
+        NSLog(@"Extension-less package: %s", entp->fts_path);
+      }
       flags |= FileItemIsPackage;
     }
     
@@ -675,35 +680,13 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 /* Returns YES if item should be included in the tree. It returns NO when the item is hard-linked
  * and has already been encountered.
  */
-- (BOOL) visitHardLinkedItemAtURL:(NSURL *)url {
-  NSError  *error = nil;
-  NSFileManager  *fileManager = NSFileManager.defaultManager;
-  NSDictionary  *fileAttributes = [fileManager attributesOfItemAtPath: url.path error: &error];
-  NSNumber  *fileNumber = nil;
-
-  if (error != nil) {
-    NSLog(@"Error getting attributes for %@: %@", url, error.description);
-  } else {
-    fileNumber = fileAttributes[NSFileSystemFileNumber];
-  }
-
-  if (fileNumber == nil) {
-    // Workaround for bug #2243134
-    NSLog(
-      @"Failed to get file number for the hard-linked file: %@\nCannot establish if the file has been included already, but including it anyway (possibly overestimating the amount of used disk space).",
-      url.path
-    );
-    return YES;
-  }
-
-  if ([hardLinkedFileNumbers containsObject: fileNumber]) {
-    // The item has already been encountered. Ignore it now so that it is only counted once.
-
-    return NO;
-  }
+- (BOOL) visitHardLinkedItem:(FTSENT *)entp {
+  NSNumber  *fileNumber = [NSNumber numberWithUnsignedLongLong: entp->fts_statp->st_ino];
+  NSUInteger  sizeBefore = hardLinkedFileNumbers.count;
 
   [hardLinkedFileNumbers addObject: fileNumber];
-  return YES;
+
+  return sizeBefore < hardLinkedFileNumbers.count; // Only scan newly encountered items
 }
 
 - (BOOL) startScan:(NSString *)path {
