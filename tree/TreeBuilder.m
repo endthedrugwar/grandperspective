@@ -400,11 +400,12 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   @try {
     FTSENT *entp;
     while ((entp = fts_read(ftsp)) != NULL) {
+
       switch (entp->fts_info) {
         case FTS_DP:
           // Directory being visited a second time
-          popped = [self popFromStack: entp];
-          NSAssert1(popped, @"Failed to pop %s", entp->fts_path);
+          // Note: not popping from stack here, as this event can also occur without the item
+          // being added to the stack (when the directory should be skipped)
           continue;
         case FTS_DNR:
         case FTS_ERR:
@@ -413,8 +414,6 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
           continue;
       }
 
-      // Fail-safe unwind. This typically is not necessary due to pop on FTS_DP. However, it is
-      // sometimes needed to recover from FTS errors.
       popped = [self unwindStackToParent: entp->fts_parent];
       NSAssert1(popped, @"Failed to unwind to %s", entp->fts_parent->fts_path);
 
@@ -434,8 +433,6 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
     }
 
     if (dirStackTopIndex >= 0) {
-      NSLog(@"Warning: Stack not fully unwound");
-
       popped = [self popFromStack: ((ScanStackFrame *)dirStack[0])->entp];
       NSAssert(popped, @"Final stack unwind failed?");
     }
