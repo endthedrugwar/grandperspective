@@ -68,7 +68,11 @@ NSString  *TallyFileSizeName = @"tally";
 + (ITEM_SIZE) getLogicalFileSize:(FTSENT *)entp withType:(UniformType *)fileType;
 
 - (void) addToStack:(DirectoryItem *)dirItem entp:(FTSENT *)entp;
-- (void) popFromStack;
+
+- (BOOL) unwindStackToParent:(FTSENT *)entp;
+- (BOOL) popFromStack:(FTSENT *)entp;
+
+- (void) finalizeStackFrame:(ScanStackFrame *)stackFrame;
 
 - (BOOL) visitItem:(FTSENT *)entp
             parent:(ScanStackFrame *)parent
@@ -388,6 +392,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 - (BOOL) scanTreeForDirectory:(DirectoryItem *)dirItem atPath:(NSString *)path {
   NSAutoreleasePool  *autoreleasePool = nil;
   int  i = 0;
+  BOOL  popped;
   dirStackTopIndex = -1;
 
   [self addToStack: dirItem entp: [self startScan: path]];
@@ -398,17 +403,21 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
       switch (entp->fts_info) {
         case FTS_DP:
           // Directory being visited a second time
-          [self popFromStack];
+          popped = [self popFromStack: entp];
+          NSAssert1(popped, @"Failed to pop %s", entp->fts_path);
           continue;
         case FTS_DNR:
-          [self popFromStack];
         case FTS_ERR:
         case FTS_NS:
           NSLog(@"Error reading directory %s: %s", entp->fts_path, strerror(entp->fts_errno));
           continue;
       }
 
-      // TODO: Sanity check on frame (compare parent of entp)
+      // Fail-safe unwind. This typically is not necessary due to pop on FTS_DP. However, it is
+      // sometimes needed to recover from FTS errors.
+      popped = [self unwindStackToParent: entp->fts_parent];
+      NSAssert1(popped, @"Failed to unwind to %s", entp->fts_parent->fts_path);
+
       ScanStackFrame  *parent = dirStack[dirStackTopIndex];
 
       if (![self visitItem: entp parent: parent recurse: YES]) {
@@ -424,7 +433,12 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
       }
     }
 
-    NSAssert(dirStackTopIndex == -1, @"Stack not fully popped");
+    if (dirStackTopIndex >= 0) {
+      NSLog(@"Warning: Stack not fully unwound");
+
+      popped = [self popFromStack: ((ScanStackFrame *)dirStack[0])->entp];
+      NSAssert(popped, @"Final stack unwind failed?");
+    }
   }
   @finally {
     [autoreleasePool release];
@@ -505,7 +519,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 }
 
 - (void) addToStack:(DirectoryItem *)dirItem entp:(FTSENT *)entp {
-//  NSLog(@"Push: %@", url);
+//  NSLog(@"Push: %s", entp->fts_path);
 
   // Expand stack if required
   if (dirStackTopIndex + 1 == (int)dirStack.count) {
@@ -525,11 +539,36 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   }
 }
 
-- (void) popFromStack {
-  ScanStackFrame  *topDir = (ScanStackFrame *)dirStack[dirStackTopIndex--];
-//  NSLog(@"Pop: %@", topDir->url);
+- (BOOL) unwindStackToParent:(FTSENT *)entp {
+  while (dirStackTopIndex >= 0) {
+    ScanStackFrame  *topDir = (ScanStackFrame *)dirStack[dirStackTopIndex];
+    if (topDir->entp == entp) {
+      return YES;
+    }
 
-  // Pop directory from stack. Its contents have been fully scanned so finalize its contents.
+    [self finalizeStackFrame: topDir];
+    dirStackTopIndex--;
+  }
+
+  return NO;
+}
+
+- (BOOL) popFromStack:(FTSENT *)entp {
+  while (dirStackTopIndex >= 0) {
+    ScanStackFrame  *topDir = (ScanStackFrame *)dirStack[dirStackTopIndex--];
+
+    [self finalizeStackFrame: topDir];
+    if (topDir->entp == entp) {
+      return YES;
+    }
+  }
+
+  return NO;
+}
+
+- (void) finalizeStackFrame:(ScanStackFrame *)topDir {
+//  NSLog(@"Pop: %s", topDir->entp->fts_path);
+
   [topDir filterSubDirectories: treeGuide];
 
   DirectoryItem  *dirItem = topDir->dirItem;
