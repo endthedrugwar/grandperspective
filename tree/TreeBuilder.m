@@ -410,7 +410,9 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
         case FTS_DNR:
         case FTS_ERR:
         case FTS_NS:
-          NSLog(@"Error reading directory %s: %s", entp->fts_path, strerror(entp->fts_errno));
+          if (debugLogEnabled) {
+            NSLog(@"Error reading directory %s: %s", entp->fts_path, strerror(entp->fts_errno));
+          }
           continue;
       }
 
@@ -584,6 +586,12 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   struct stat  *statBlock = entp->fts_statp;
   BOOL  isDirectory = S_ISDIR(statBlock->st_mode);
 
+  // Apple File System (APFS) does not support hard-links to directories, but has "hard links"
+  // for each file a directory contains (including . and ..). So a possible optimization is to skip
+  // the hardlink check for directories on APFS as this will greatly reduce the size of the set
+  // used to track the hard-linked items. Note, some directories in /System/Volumes have the same
+  // inode but their contents differ so there's no duplication in scanning each of these.
+  // TODO: Skip this check for directories on APFS
   if (statBlock->st_nlink > 1) {
     flags |= FileItemIsHardlinked;
 
@@ -600,14 +608,15 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   NSString  *lastPathComponent = [NSString stringWithUTF8String: entp->fts_name];
 
   if (isDirectory) {
-    // TODO: Speed up package check?
+    // The package check is relatively expensive (amongst others because it requires an NSURL).
+    // A possible optimization is to only apply it to directories with an extension, as most
+    // packages are identified by extension. However, this fails to identify some packages.
+    // On my macOS 12.6.3 on 2023/05 this applies to ~/Pictures/Photo Booth Library and
+    // ~/Library/Application Support/SyncServices/Local.
     NSURL  *url = [NSURL fileURLWithFileSystemRepresentation: entp->fts_path
                                                  isDirectory: YES
                                                relativeToURL: NULL];
     if (url.isPackage) {
-      if (lastPathComponent.pathExtension.length == 0) {
-        NSLog(@"Extension-less package: %s", entp->fts_path);
-      }
       flags |= FileItemIsPackage;
     }
     
@@ -708,7 +717,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 
 - (FTSENT *)startScan:(NSString *)path {
   char*  paths[2] = {(char *)path.UTF8String, NULL};
-  ftsp = fts_open(paths, FTS_PHYSICAL | FTS_XDEV | FTS_NOCHDIR, NULL);
+  ftsp = fts_open(paths, FTS_PHYSICAL | FTS_XDEV, NULL);
 
   if (ftsp == NULL) {
     NSLog(@"Error: fts_open failed for %@", path);
