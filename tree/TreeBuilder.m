@@ -596,8 +596,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
       return visitDescendants;
     }
   }
-  
-  // TODO: Alloc in parent.zone?
+
   NSString  *lastPathComponent = [NSString stringWithUTF8String: entp->fts_name];
 
   if (isDirectory) {
@@ -645,7 +644,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
     [dirChildItem release];
   }
   else { // A file node.
-    // TODO: Make blocksize a constant (is it always fixed?)
+    // According to stat(2) documentation, st_blocks returns the number of 512B blocks allocated.
     ITEM_SIZE  physicalFileSize = statBlock->st_blocks * 512;
     ITEM_SIZE  fileSize;
 
