@@ -2,6 +2,7 @@
 
 #include <fts.h>
 #include <sys/stat.h>
+#include <sys/mount.h>
 
 #import "AlertMessage.h"
 #import "TreeConstants.h"
@@ -327,6 +328,26 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
     NSLog(@"Failed to determine capacity of %@: %@", volumeRoot, error.description);
   }
 
+  NSString  *volumeFormat;
+  [volumeRoot getResourceValue: &volumeFormat forKey: NSURLVolumeLocalizedFormatDescriptionKey
+                         error: &error];
+  if (error == nil) {
+    NSLog(@"Volume format = %@", volumeFormat);
+  }
+
+  ignoreHardLinksForDirectories = NO; // Default
+  struct statfs volinfo;
+  if (statfs(volumeRoot.path.fileSystemRepresentation, &volinfo) == 0) {
+    NSLog(@"fstypename = %s", volinfo.f_fstypename);
+    if (strcmp("apfs", volinfo.f_fstypename) == 0) {
+      // APFS does not support hardlinking directories. However, directories will have a non-zero
+      // hardlink count, as each file it contains increases the count. So ignore this count when
+      // deciding if a directory should be visited in APFS
+      ignoreHardLinksForDirectories = YES;
+    }
+  }
+  NSLog(@"ignoreHardLinksForDirectories = %d", ignoreHardLinksForDirectories);
+
   return [[[TreeContext alloc] initWithVolumePath: volumeRoot.path
                                   fileSizeMeasure: fileSizeMeasureName
                                        volumeSize: volumeSize.unsignedLongLongValue
@@ -591,8 +612,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   // the hardlink check for directories on APFS as this will greatly reduce the size of the set
   // used to track the hard-linked items. Note, some directories in /System/Volumes have the same
   // inode but their contents differ so there's no duplication in scanning each of these.
-  // TODO: Skip this check for directories on APFS
-  if (statBlock->st_nlink > 1) {
+  if (statBlock->st_nlink > 1 && !(isDirectory && ignoreHardLinksForDirectories)) {
     flags |= FileItemIsHardlinked;
 
     if (![self visitHardLinkedItem: entp]) {

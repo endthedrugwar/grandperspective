@@ -58,6 +58,7 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
   int  dirStackTopIndex;
   
   BOOL  debugLogEnabled;
+  BOOL  ignoreHardLinksForDirectories;
 }
 
 + (NSArray *)fileSizeMeasureNames;
