@@ -98,7 +98,7 @@
       }
     }
     
-    id  newBranch = [[CompoundItem allocWithZone: first.zone] initWithFirst: first second: second];
+    id  newBranch = [[CompoundItem alloc] initWithFirst: first second: second];
     [sortedBranches addObject: newBranch];
     [newBranch release]; // Not auto-releasing to minimise size of auto-release pool.
   }

@@ -63,7 +63,7 @@
                                     scanTime: oldTree.scanTime
                                  monitorPath: pathToMonitor] autorelease];
 
-  DirectoryItem  *scanTree = [ScanTreeRoot allocWithZone: Item.zoneForTree];
+  DirectoryItem  *scanTree = [ScanTreeRoot alloc];
   [[scanTree initWithLabel: oldScanTree.label
                     parent: filterResult.scanTreeParent
                      flags: oldScanTree.fileItemFlags

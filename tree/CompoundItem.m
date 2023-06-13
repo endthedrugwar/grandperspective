@@ -6,8 +6,7 @@
 
 + (Item *)compoundItemWithFirst:(Item *)first second:(Item *)second {
   if (first != nil && second != nil) {
-    return [[[CompoundItem allocWithZone: [first zone]] initWithFirst: first
-                                                               second: second] autorelease];
+    return [[[CompoundItem alloc] initWithFirst: first second: second] autorelease];
   }
   if (first != nil) {
     return first;

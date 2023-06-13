@@ -52,15 +52,14 @@
 
 // Overrides abstract method in FileItem
 - (FileItem *)duplicateFileItem:(DirectoryItem *)newParent {
-  return [[[PlainFileItem allocWithZone: newParent.zone] initWithLabel: self.label
-                                                                parent: newParent
-                                                                  size: self.itemSize
-                                                                  type: self.uniformType
-                                                                 flags: self.fileItemFlags
-                                                          creationTime: self.creationTime
-                                                      modificationTime: self.modificationTime
-                                                            accessTime: self.accessTime]
-          autorelease];
+  return [[[PlainFileItem alloc] initWithLabel: self.label
+                                        parent: newParent
+                                          size: self.itemSize
+                                          type: self.uniformType
+                                         flags: self.fileItemFlags
+                                  creationTime: self.creationTime
+                              modificationTime: self.modificationTime
+                                    accessTime: self.accessTime] autorelease];
 }
 
 // Overrides abstract method in Item

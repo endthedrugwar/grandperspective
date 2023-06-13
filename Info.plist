@@ -105,8 +105,6 @@
 		<false/>
 		<key>showPackageContentsByDefault</key>
 		<false/>
-		<key>treeMemoryZone</key>
-		<string>default</string>
 		<key>uniformTypesRanking</key>
 		<array>
 			<string>unknown</string>

@@ -387,7 +387,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
     flags |= FileItemIsHardlinked;
   }
 
-  ScanTreeRoot  *scanTree = [ScanTreeRoot allocWithZone: [Item zoneForTree]];
+  ScanTreeRoot  *scanTree = [ScanTreeRoot alloc];
   [[scanTree initWithLabel: relativePath
                     parent: treeContext.scanTreeParent
                      flags: flags
@@ -640,7 +640,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
       flags |= FileItemIsPackage;
     }
     
-    DirectoryItem  *dirChildItem = [[DirectoryItem allocWithZone: parent.zone]
+    DirectoryItem  *dirChildItem = [[DirectoryItem alloc]
                                     initWithLabel: lastPathComponent
                                            parent: parent->dirItem
                                             flags: flags
@@ -701,7 +701,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
         fileSize = 1;
     }
 
-    PlainFileItem  *fileChildItem = [[PlainFileItem allocWithZone: parent.zone]
+    PlainFileItem  *fileChildItem = [[PlainFileItem alloc]
                                      initWithLabel: lastPathComponent
                                             parent: parent->dirItem
                                               size: fileSize

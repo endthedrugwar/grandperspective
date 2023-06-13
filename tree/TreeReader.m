@@ -276,7 +276,7 @@ NSString  *AttributeNameKey = @"name";
 
 // Returns an allocated but uninitialised directory item. This extension method is provided so that
 // ScanTreeRootElementHandler can override it.
-- (DirectoryItem *)allocDirectoryItemWithZone:(NSZone *)zone;
+- (DirectoryItem *)allocDirectoryItem;
 
 @end // @interface FolderElementHandler
 
@@ -1380,7 +1380,7 @@ didStartElement:(NSString *)childElement
     CFAbsoluteTime  modificationTime = [self getTimeAttributeValue: ModifiedAttr from: attribs];
     CFAbsoluteTime  accessTime = [self getTimeAttributeValue: AccessedAttr from: attribs];
     
-    dirItem = [self allocDirectoryItemWithZone: [parentItem zone]];
+    dirItem = [self allocDirectoryItem];
     [dirItem initWithLabel: name
                     parent: parentItem
                      flags: flags
@@ -1444,8 +1444,8 @@ didStartElement:(NSString *)childElement
 }
 
 
-- (DirectoryItem *)allocDirectoryItemWithZone:(NSZone *)zone {
-  return [DirectoryItem allocWithZone: zone];
+- (DirectoryItem *)allocDirectoryItem {
+  return [DirectoryItem alloc];
 }
 
 @end // @implementation FolderElementHandler 
@@ -1453,8 +1453,8 @@ didStartElement:(NSString *)childElement
 
 @implementation ScanTreeRootElementHandler
 
-- (DirectoryItem *)allocDirectoryItemWithZone:(NSZone *)zone {
-  return [ScanTreeRoot allocWithZone: zone];
+- (DirectoryItem *)allocDirectoryItem {
+  return [ScanTreeRoot alloc];
 }
 
 @end // @implementation ScanTreeRootElementHandler 
@@ -1511,7 +1511,7 @@ didStartElement:(NSString *)childElement
     CFAbsoluteTime  modificationTime = [self getTimeAttributeValue: ModifiedAttr from: attribs];
     CFAbsoluteTime  accessTime = [self getTimeAttributeValue: AccessedAttr from: attribs];
 
-    fileItem = [PlainFileItem allocWithZone: [parentItem zone]];
+    fileItem = [PlainFileItem alloc];
     [fileItem initWithLabel: name
                      parent: parentItem
                        size: size
