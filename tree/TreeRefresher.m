@@ -121,7 +121,8 @@
   [progressTracker processingFolder: newDir];
 
   // Perform shallow rescan
-  [self getContentsForDirectory: newDir atPath: path dirs: dirs files: files];
+  // TODO: Refactor and restore
+//  [self getContentsForDirectory: newDir atPath: path dirs: dirs files: files];
   [progressTracker setNumSubFolders: dirs.count];
 
   // Gather the old directories

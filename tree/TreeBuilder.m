@@ -44,22 +44,18 @@ NSString  *TallyFileSizeName = @"tally";
 
   FTSENT  *entp;
 
-  // Arrays containing the immediate children
-  NSMutableArray<DirectoryItem *>  *dirs;
-  NSMutableArray<PlainFileItem *>  *files;
+  // (Unbalanced) trees containing the immediate children
+  Item  *subdirs;
+  Item  *files;
 }
 
-- (instancetype) initWithDirs:(NSMutableArray<DirectoryItem *> *)dirs
-                        files:(NSMutableArray<PlainFileItem *> *)files NS_DESIGNATED_INITIALIZER;
+- (instancetype) init NS_DESIGNATED_INITIALIZER;
 
 // Convenience "constructor" for repeated usage
 - (void) initWithDirectoryItem:(DirectoryItem *)dirItem entp:(FTSENT *)entp;
 
-/* Remove any sub-directories that should not be included according to the treeGuide. This
- * filtering needs to be done after all items inside this directory have been scanned, as the
- * filtering may be based on the (recursive) size of the items.
- */
-- (void) filterSubDirectories:(FilteredTreeGuide *)treeGuide;
+- (void) addFile:(FileItem *)fileItem;
+- (void) addSubdir:(FileItem *)dirItem;
 
 @end // @interface ScanStackFrame
 
@@ -69,11 +65,9 @@ NSString  *TallyFileSizeName = @"tally";
 + (ITEM_SIZE) getLogicalFileSize:(FTSENT *)entp withType:(UniformType *)fileType;
 
 - (void) addToStack:(DirectoryItem *)dirItem entp:(FTSENT *)entp;
-
 - (BOOL) unwindStackToParent:(FTSENT *)entp;
-- (BOOL) popFromStack:(FTSENT *)entp;
 
-- (void) finalizeStackFrame:(ScanStackFrame *)stackFrame;
+- (FileItem *)finalizeStackFrame:(ScanStackFrame *)stackFrame;
 
 - (BOOL) visitItem:(FTSENT *)entp
             parent:(ScanStackFrame *)parent
@@ -98,18 +92,10 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 
 // Overrides super's designated initialiser.
 - (instancetype) init {
-  return [self initWithDirs: [[NSMutableArray alloc] initWithCapacity: INITIAL_DIRS_CAPACITY * 32]
-                      files: [[NSMutableArray alloc] initWithCapacity: INITIAL_FILES_CAPACITY * 32]
-  ];
-}
-
-- (instancetype) initWithDirs:(NSMutableArray<DirectoryItem *> *)dirsVal
-                        files:(NSMutableArray<PlainFileItem *> *)filesVal {
   if (self = [super init]) {
-    // Multiplying sizes specified in TreeConstants.h. As these arrays are being re-used, it is
-    // better to make them initially larger to avoid unnecessary resizing.
-    dirs = [dirsVal retain];
-    files = [filesVal retain];
+    dirItem = nil;
+    subdirs = nil;
+    files = nil;
   }
   return self;
 }
@@ -124,12 +110,11 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   entp = entpVal;
 
   // Clear data from previous usage
-  [dirs removeAllObjects];
-  [files removeAllObjects];
+  NSAssert(subdirs == nil && files == nil, @"Children not nil");
 }
 
 - (void) dealloc {
-  [dirs release];
+  [subdirs release];
   [files release];
 
   entp = NULL;
@@ -138,18 +123,23 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   [super dealloc];
 }
 
-- (DirectoryItem *) directoryItem {
-  return dirItem;
+- (void) addFile:(FileItem *)fileItem {
+  if (files == nil) {
+    files = [fileItem retain];
+  } else {
+    CompoundItem  *newHead = [[CompoundItem alloc] initWithFirst: fileItem second: files];
+    [files release];
+    files = newHead;
+  }
 }
 
-- (void) filterSubDirectories:(FilteredTreeGuide *)treeGuide {
-  for (NSUInteger i = dirs.count; i-- > 0; ) {
-    DirectoryItem  *dirChildItem = dirs[i];
-
-    if (! [treeGuide includeFileItem: dirChildItem] ) {
-      // The directory did not pass the test, so exclude it.
-      [dirs removeObjectAtIndex: i];
-    }
+- (void) addSubdir:(FileItem *)dirItem {
+  if (subdirs == nil) {
+    subdirs = [dirItem retain];
+  } else {
+    CompoundItem  *newHead = [[CompoundItem alloc] initWithFirst: dirItem second: subdirs];
+    [subdirs release];
+    subdirs = newHead;
   }
 }
 
@@ -455,10 +445,8 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
       }
     }
 
-    if (dirStackTopIndex >= 0) {
-      popped = [self popFromStack: ((ScanStackFrame *)dirStack[0])->entp];
-      NSAssert(popped, @"Final stack unwind failed?");
-    }
+    [self unwindStackToParent: nil];
+    NSAssert(dirStackTopIndex == -1, @"Final stack unwind failed?");
   }
   @finally {
     [autoreleasePool release];
@@ -468,26 +456,27 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   return YES;
 }
 
-- (void) getContentsForDirectory:(DirectoryItem *)dirItem
-                          atPath:(NSString *)path
-                            dirs:(NSMutableArray<DirectoryItem *> *)dirs
-                           files:(NSMutableArray<PlainFileItem *> *)files {
-  ScanStackFrame  *parent = [[[ScanStackFrame alloc] initWithDirs: dirs files: files] autorelease];
-  [parent initWithDirectoryItem: dirItem entp: [self startScan: path]];
-
-  FTSENT *entp;
-  while ((entp = fts_read(ftsp)) != NULL) {
-    if (entp->fts_info == FTS_DP) continue; // Directory being visited a second time
-
-    BOOL  isDirectory = S_ISDIR(entp->fts_statp->st_mode);
-    [self visitItem: entp parent: parent recurse: NO];
-    if (isDirectory) {
-      fts_set(ftsp, entp, FTS_SKIP);
-    }
-  }
-
-  [self stopScan];
-}
+// TODO: Refactor and restore
+//- (void) getContentsForDirectory:(DirectoryItem *)dirItem
+//                          atPath:(NSString *)path
+//                            dirs:(NSMutableArray<DirectoryItem *> *)dirs
+//                           files:(NSMutableArray<PlainFileItem *> *)files {
+//  ScanStackFrame  *parent = [[[ScanStackFrame alloc] initWithDirs: dirs files: files] autorelease];
+//  [parent initWithDirectoryItem: dirItem entp: [self startScan: path]];
+//
+//  FTSENT *entp;
+//  while ((entp = fts_read(ftsp)) != NULL) {
+//    if (entp->fts_info == FTS_DP) continue; // Directory being visited a second time
+//
+//    BOOL  isDirectory = S_ISDIR(entp->fts_statp->st_mode);
+//    [self visitItem: entp parent: parent recurse: NO];
+//    if (isDirectory) {
+//      fts_set(ftsp, entp, FTS_SKIP);
+//    }
+//  }
+//
+//  [self stopScan];
+//}
 
 - (AlertMessage *)createAlertMessage:(DirectoryItem *)scanTree {
   if (fileSizeMeasure == LogicalFileSize) {
@@ -560,44 +549,35 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 }
 
 - (BOOL) unwindStackToParent:(FTSENT *)entp {
+  FileItem  *finalizedSubdir = nil;
   while (dirStackTopIndex >= 0) {
-    ScanStackFrame  *topDir = (ScanStackFrame *)dirStack[dirStackTopIndex];
+    ScanStackFrame  *topDir = dirStack[dirStackTopIndex];
+    if (finalizedSubdir != nil) {
+      [topDir addSubdir: finalizedSubdir];
+    }
     if (topDir->entp == entp) {
       return YES;
     }
 
-    [self finalizeStackFrame: topDir];
+    finalizedSubdir = [self finalizeStackFrame: topDir];
     dirStackTopIndex--;
   }
 
   return NO;
 }
 
-- (BOOL) popFromStack:(FTSENT *)entp {
-  while (dirStackTopIndex >= 0) {
-    ScanStackFrame  *topDir = (ScanStackFrame *)dirStack[dirStackTopIndex--];
-
-    [self finalizeStackFrame: topDir];
-    if (topDir->entp == entp) {
-      return YES;
-    }
-  }
-
-  return NO;
-}
-
-- (void) finalizeStackFrame:(ScanStackFrame *)topDir {
+- (FileItem *)finalizeStackFrame:(ScanStackFrame *)topDir {
 //  NSLog(@"Pop: %s", topDir->entp->fts_path);
-
-  [topDir filterSubDirectories: treeGuide];
 
   DirectoryItem  *dirItem = topDir->dirItem;
 
-  [dirItem setFileItems: [treeBalancer createTreeForItems: topDir->files]
-         directoryItems: [treeBalancer createTreeForItems: topDir->dirs]];
+  [dirItem setFileItems: [treeBalancer convertLinkedListToTree: topDir->files]
+         directoryItems: [treeBalancer convertLinkedListToTree: topDir->subdirs]];
 
   [treeGuide emergedFromDirectory: dirItem];
   [progressTracker processedFolder: dirItem];
+
+  return [treeGuide includeFileItem: dirItem] != nil ? dirItem : nil;
 }
 
 - (BOOL) visitItem:(FTSENT *)entp
@@ -657,10 +637,9 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
                          [dirChildItem.path isEqualToString: @"/System/Volumes/Data"]
                         );
 
-    // Only add directories that should be scanned (this does not necessarily mean that it has
-    // passed the filter test already)
+    // Check if directory should be scanned. It is only added as a sub-directory after scan is
+    // completed, as it may be filtered.
     if ( !isDataVolume && [treeGuide shouldDescendIntoDirectory: dirChildItem] ) {
-      [parent->dirs addObject: dirChildItem];
       if (visitDescendants) {
         [self addToStack: dirChildItem entp: entp];
       }
@@ -701,19 +680,19 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
         fileSize = 1;
     }
 
-    PlainFileItem  *fileChildItem = [[PlainFileItem alloc]
-                                     initWithLabel: lastPathComponent
-                                            parent: parent->dirItem
-                                              size: fileSize
-                                              type: fileType
-                                             flags: flags
-                                      creationTime: convertTimespec(statBlock->st_birthtimespec)
-                                  modificationTime: convertTimespec(statBlock->st_mtimespec)
-                                        accessTime: convertTimespec(statBlock->st_atimespec)];
+    PlainFileItem  *fileChildItem =
+      [[PlainFileItem alloc] initWithLabel: lastPathComponent
+                                    parent: parent->dirItem
+                                      size: fileSize
+                                      type: fileType
+                                     flags: flags
+                              creationTime: convertTimespec(statBlock->st_birthtimespec)
+                          modificationTime: convertTimespec(statBlock->st_mtimespec)
+                                accessTime: convertTimespec(statBlock->st_atimespec)];
 
     // Only add file items that pass the filter test.
     if ( [treeGuide includeFileItem: fileChildItem] ) {
-      [parent->files addObject: fileChildItem];
+      [parent addFile: fileChildItem];
     }
 
     [fileChildItem release];

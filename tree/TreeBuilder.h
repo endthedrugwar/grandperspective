@@ -24,6 +24,7 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
 @class FilterSet;
 @class TreeContext;
 @class ScanProgressTracker;
+@class ScanStackFrame;
 
 
 /* Constructs trees for folders by (recursively) scanning the folder's contents.
@@ -52,7 +53,7 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
   
   ScanProgressTracker  *progressTracker;
   
-  NSMutableArray  *dirStack;
+  NSMutableArray<ScanStackFrame *>  *dirStack;
   // The index of the top element on the stack. It is not necessarly the last object in the array,
   // as items on the stack are never popped but kept for re-use.
   int  dirStackTopIndex;
@@ -119,10 +120,11 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
  * is not updated as the scan is shallow. Before the directory can be finalized, its
  * sub-directory children need to be populated first.
  */
-- (void) getContentsForDirectory:(DirectoryItem *)dirItem
-                          atPath:(NSString *)path
-                            dirs:(NSMutableArray<DirectoryItem *> *)dirs
-                           files:(NSMutableArray<PlainFileItem *> *)files;
+// TODO: Refactor and restore
+//- (void) getContentsForDirectory:(DirectoryItem *)dirItem
+//                          atPath:(NSString *)path
+//                            dirs:(NSMutableArray<DirectoryItem *> *)dirs
+//                           files:(NSMutableArray<PlainFileItem *> *)files;
 
 - (AlertMessage *)createAlertMessage:(DirectoryItem *)scanTree;
 

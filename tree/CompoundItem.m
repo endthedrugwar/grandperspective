@@ -25,7 +25,6 @@
     if (retVal == nil) {
       retVal = [CompoundItem findFileItemChild: ((CompoundItem *)item).first predicate: predicate];
     }
-
   } else {
     retVal = predicate((FileItem *)item) ? (FileItem *)item : nil;
   }

@@ -76,6 +76,11 @@
 
 
 - (FileItem *) includeFileItem: (FileItem *)item {
+  if (item.itemSize == 0) {
+    // Never include zero-sized items (as they are not visible)
+    return nil;
+  }
+
   FileItem  *proxyItem = item; // Default
 
   if (item.isDirectory) {

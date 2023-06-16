@@ -28,7 +28,7 @@
     // No items, so nothing needs doing: return immediately.
     return nil;
   }
-  
+
   [items sortUsingComparator: ^(Item *item1, Item *item2) {
     if (item1.itemSize < item2.itemSize) {
       return NSOrderedAscending;
@@ -102,6 +102,11 @@
     [sortedBranches addObject: newBranch];
     [newBranch release]; // Not auto-releasing to minimise size of auto-release pool.
   }
+}
+
+- (Item *)convertLinkedListToTree:(Item *)items {
+  // TODO
+  return items;
 }
 
 @end // @implementation TreeBalancer
