@@ -41,6 +41,7 @@ typedef NS_OPTIONS(UInt8, DirectoryRescanOptions) {
 
 - (void) addFile:(FileItem *)fileItem;
 - (void) addSubdir:(FileItem *)dirItem;
+- (void) setSize;
 
 - (void) balanceTree:(TreeBalancer *)treeBalancer;
 

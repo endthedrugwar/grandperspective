@@ -46,6 +46,7 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
   FilteredTreeGuide  *treeGuide;
   TreeBalancer  *treeBalancer;
   UniformTypeInventory  *typeInventory;
+  dispatch_queue_t  treeBalanceDispatchQueue;
   
   // Contains the file numbers of the hard linked files that have been encountered so far. If a file
   // with a same number is encountered once more, it is ignored.

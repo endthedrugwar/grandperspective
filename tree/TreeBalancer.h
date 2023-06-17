@@ -10,6 +10,8 @@
   NSMutableArray  *tmpArray2;
 }
 
++ (dispatch_queue_t)dispatchQueue;
+
 // Note: assumes that array may be modified for sorting!
 - (Item *)createTreeForItems:(NSMutableArray *)items;
 

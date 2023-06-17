@@ -136,6 +136,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
     [treeGuide setPackagesAsFiles: filterSet.packagesAsFiles];
 
     treeBalancer = [[TreeBalancer alloc] init];
+    treeBalanceDispatchQueue = TreeBalancer.dispatchQueue;
     typeInventory = [UniformTypeInventory.defaultUniformTypeInventory retain];
 
     ftsp = NULL;
@@ -418,6 +419,9 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
     [self stopScan];
   }
 
+  // Wait for the tree balancing to end
+  dispatch_sync(treeBalanceDispatchQueue, ^{});
+
   return YES;
 }
 
@@ -535,13 +539,18 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 //  NSLog(@"Pop: %s", topDir->entp->fts_path);
 
   DirectoryItem  *dirItem = topDir->dirItem;
-
-  [dirItem balanceTree: treeBalancer];
+  [dirItem setSize]; // Fix the size
 
   [treeGuide emergedFromDirectory: dirItem];
   [progressTracker processedFolder: dirItem];
 
-  return [treeGuide includeFileItem: dirItem] != nil ? dirItem : nil;
+  if ([treeGuide includeFileItem: dirItem] == nil) {
+    return nil;
+  }
+
+  dispatch_async(treeBalanceDispatchQueue, ^{ [dirItem balanceTree: treeBalancer]; });
+
+  return dirItem;
 }
 
 - (BOOL) visitItem:(FTSENT *)entp

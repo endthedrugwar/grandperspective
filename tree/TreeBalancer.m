@@ -6,6 +6,19 @@
 
 @implementation TreeBalancer
 
++ (dispatch_queue_t)dispatchQueue {
+  static dispatch_queue_t  queue;
+  static dispatch_once_t  onceToken;
+
+  dispatch_once(&onceToken, ^{
+    queue = dispatch_queue_create("net.sourceforge.grandperspectiv.TreeBalancer",
+                                  DISPATCH_QUEUE_SERIAL);
+  });
+
+  return queue;
+}
+
+
 - (instancetype) init {
   if (self = [super init]) {
     tmpArray = [[NSMutableArray alloc] initWithCapacity: 1024];
@@ -138,7 +151,8 @@
     return NSOrderedSame;
   }];
 
-  // Not using auto-release to minimise size of auto-release pool.
+  // Not using auto-release to minimise size of auto-release pool (and to enable running in
+  // dispatch queue without auto-release pool).
   PeekingEnumerator  *sortedItems =
     [[PeekingEnumerator alloc] initWithEnumerator: itemArray.objectEnumerator];
 

@@ -83,7 +83,6 @@
 
 - (void) addFile:(FileItem *)fileItem {
   NSAssert(self.itemSize == 0, @"Can only add files in construction phase");
-
   if (_fileItems == nil) {
     _fileItems = [fileItem retain];
   } else {
@@ -95,7 +94,6 @@
 
 - (void) addSubdir:(FileItem *)dirItem {
   NSAssert(self.itemSize == 0, @"Can only add subdirs in construction phase");
-
   if (_directoryItems == nil) {
     _directoryItems = [dirItem retain];
   } else {
@@ -105,9 +103,11 @@
   }
 }
 
-- (void) balanceTree:(TreeBalancer *)treeBalancer {
-  NSAssert(self.itemSize == 0, @"Can only balance tree once (to end the construction phase)");
+- (void) setSize {
+  self.itemSize = _fileItems.itemSize + _directoryItems.itemSize;
+}
 
+- (void) balanceTree:(TreeBalancer *)treeBalancer {
   Item  *balancedFiles = [[treeBalancer convertLinkedListToTree: _fileItems] retain];
   [_fileItems release];
   _fileItems = balancedFiles;
@@ -116,7 +116,8 @@
   [_directoryItems release];
   _directoryItems = balancedSubdirs;
 
-  self.itemSize = _fileItems.itemSize + _directoryItems.itemSize;
+  NSAssert(self.itemSize == _fileItems.itemSize + _directoryItems.itemSize,
+           @"Directory size changed after balancing");
 }
 
 - (void) replaceFileItems:(Item *)newItem {
