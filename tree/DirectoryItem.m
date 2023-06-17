@@ -2,6 +2,7 @@
 
 #import "PlainFileItem.h"
 #import "UniformTypeInventory.h"
+#import "TreeBalancer.h"
 
 
 @implementation DirectoryItem
@@ -78,6 +79,44 @@
   _directoryItems = [dirItems retain];
 
   self.itemSize = fileItems.itemSize + dirItems.itemSize;
+}
+
+- (void) addFile:(FileItem *)fileItem {
+  NSAssert(self.itemSize == 0, @"Can only add files in construction phase");
+
+  if (_fileItems == nil) {
+    _fileItems = [fileItem retain];
+  } else {
+    CompoundItem  *newHead = [[CompoundItem alloc] initWithFirst: fileItem second: _fileItems];
+    [_fileItems release];
+    _fileItems = newHead;
+  }
+}
+
+- (void) addSubdir:(FileItem *)dirItem {
+  NSAssert(self.itemSize == 0, @"Can only add subdirs in construction phase");
+
+  if (_directoryItems == nil) {
+    _directoryItems = [dirItem retain];
+  } else {
+    CompoundItem  *newHead = [[CompoundItem alloc] initWithFirst: dirItem second: _directoryItems];
+    [_directoryItems release];
+    _directoryItems = newHead;
+  }
+}
+
+- (void) balanceTree:(TreeBalancer *)treeBalancer {
+  NSAssert(self.itemSize == 0, @"Can only balance tree once (to end the construction phase)");
+
+  Item  *balancedFiles = [[treeBalancer convertLinkedListToTree: _fileItems] retain];
+  [_fileItems release];
+  _fileItems = balancedFiles;
+
+  Item  *balancedSubdirs = [[treeBalancer convertLinkedListToTree: _directoryItems] retain];
+  [_directoryItems release];
+  _directoryItems = balancedSubdirs;
+
+  self.itemSize = _fileItems.itemSize + _directoryItems.itemSize;
 }
 
 - (void) replaceFileItems:(Item *)newItem {

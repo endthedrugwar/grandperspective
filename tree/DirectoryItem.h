@@ -11,6 +11,8 @@ typedef NS_OPTIONS(UInt8, DirectoryRescanOptions) {
   DirectoryNeedsFullRescan = 0x02,
 };
 
+@class TreeBalancer;
+
 @interface DirectoryItem : FileItem {
 }
 
@@ -33,8 +35,14 @@ typedef NS_OPTIONS(UInt8, DirectoryRescanOptions) {
               modificationTime:(CFAbsoluteTime)modificationTime
                     accessTime:(CFAbsoluteTime)accessTime NS_DESIGNATED_INITIALIZER;
 
+// TODO: Remove
 - (void) setFileItems:(Item *)fileItems
        directoryItems:(Item *)dirItems;
+
+- (void) addFile:(FileItem *)fileItem;
+- (void) addSubdir:(FileItem *)dirItem;
+
+- (void) balanceTree:(TreeBalancer *)treeBalancer;
 
 /* Replaces the directory contents. The item must have the same size as the original item (otherwise
  * the resulting tree would be incorrect).

@@ -43,19 +43,12 @@ NSString  *TallyFileSizeName = @"tally";
   DirectoryItem  *dirItem;
 
   FTSENT  *entp;
-
-  // (Unbalanced) trees containing the immediate children
-  Item  *subdirs;
-  Item  *files;
 }
 
 - (instancetype) init NS_DESIGNATED_INITIALIZER;
 
 // Convenience "constructor" for repeated usage
 - (void) initWithDirectoryItem:(DirectoryItem *)dirItem entp:(FTSENT *)entp;
-
-- (void) addFile:(FileItem *)fileItem;
-- (void) addSubdir:(FileItem *)dirItem;
 
 @end // @interface ScanStackFrame
 
@@ -94,8 +87,6 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 - (instancetype) init {
   if (self = [super init]) {
     dirItem = nil;
-    subdirs = nil;
-    files = nil;
   }
   return self;
 }
@@ -108,39 +99,13 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   dirItem = [dirItemVal retain];
 
   entp = entpVal;
-
-  // Clear data from previous usage
-  NSAssert(subdirs == nil && files == nil, @"Children not nil");
 }
 
 - (void) dealloc {
-  [subdirs release];
-  [files release];
-
   entp = NULL;
   [dirItem release];
   
   [super dealloc];
-}
-
-- (void) addFile:(FileItem *)fileItem {
-  if (files == nil) {
-    files = [fileItem retain];
-  } else {
-    CompoundItem  *newHead = [[CompoundItem alloc] initWithFirst: fileItem second: files];
-    [files release];
-    files = newHead;
-  }
-}
-
-- (void) addSubdir:(FileItem *)dirItem {
-  if (subdirs == nil) {
-    subdirs = [dirItem retain];
-  } else {
-    CompoundItem  *newHead = [[CompoundItem alloc] initWithFirst: dirItem second: subdirs];
-    [subdirs release];
-    subdirs = newHead;
-  }
 }
 
 @end // @implementation ScanStackFrame
@@ -553,7 +518,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   while (dirStackTopIndex >= 0) {
     ScanStackFrame  *topDir = dirStack[dirStackTopIndex];
     if (finalizedSubdir != nil) {
-      [topDir addSubdir: finalizedSubdir];
+      [topDir->dirItem addSubdir: finalizedSubdir];
     }
     if (topDir->entp == entp) {
       return YES;
@@ -571,8 +536,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 
   DirectoryItem  *dirItem = topDir->dirItem;
 
-  [dirItem setFileItems: [treeBalancer convertLinkedListToTree: topDir->files]
-         directoryItems: [treeBalancer convertLinkedListToTree: topDir->subdirs]];
+  [dirItem balanceTree: treeBalancer];
 
   [treeGuide emergedFromDirectory: dirItem];
   [progressTracker processedFolder: dirItem];
@@ -692,7 +656,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 
     // Only add file items that pass the filter test.
     if ( [treeGuide includeFileItem: fileChildItem] ) {
-      [parent addFile: fileChildItem];
+      [parent->dirItem addFile: fileChildItem];
     }
 
     [fileChildItem release];
