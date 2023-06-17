@@ -7,6 +7,7 @@
 
 @private
   NSMutableArray  *tmpArray;
+  NSMutableArray  *tmpArray2;
 }
 
 // Note: assumes that array may be modified for sorting!

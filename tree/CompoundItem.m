@@ -72,6 +72,14 @@
   [super dealloc];
 }
 
+- (void) clear {
+  [_first release];
+  [_second release];
+  _first = nil;
+  _second = nil;
+  numFiles = 0;
+}
+
 
 - (NSString *)description {
   return [NSString stringWithFormat:@"CompoundItem(%@, %@)", self.first, self.second];

@@ -17,6 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype) initWithFirst:(Item *)first
                         second:(Item *)second NS_DESIGNATED_INITIALIZER;
 
+/* Resets object for re-use. After this, it can be initialized again.
+ */
+- (void) clear;
+
 @property (nonatomic, readonly, strong) Item *first;
 
 @property (nonatomic, readonly, strong) Item *second;

@@ -9,6 +9,7 @@
 - (instancetype) init {
   if (self = [super init]) {
     tmpArray = [[NSMutableArray alloc] initWithCapacity: 1024];
+    tmpArray2 = [[NSMutableArray alloc] initWithCapacity: 1024];
   }
   
   return self;
@@ -16,6 +17,7 @@
 
 - (void) dealloc {
   [tmpArray release];
+  [tmpArray2 release];
 
   [super dealloc];
 }
@@ -105,8 +107,90 @@
 }
 
 - (Item *)convertLinkedListToTree:(Item *)items {
-  // TODO
-  return items;
+  if (items == nil || !items.virtual) {
+    // Handle zero or one item here (so that rest of code knows there's at least one CompoundItem)
+    return items;
+  }
+
+  // Copy CompoundItems to separate array, for later re-use.
+  // Also copy actual file items to item array, for sorting.
+  NSAssert(tmpArray != nil && tmpArray.count == 0, @"Temporary array not valid." );
+  NSMutableArray<CompoundItem *>  *compoundItems = tmpArray;
+  NSAssert(tmpArray2 != nil && tmpArray2.count == 0, @"Temporary array not valid." );
+  NSMutableArray<Item *>  *itemArray = tmpArray2;
+
+  Item  *item = items;
+  while (item.isVirtual) {
+    CompoundItem  *compoundItem = (CompoundItem *)item;
+    [compoundItems addObject: compoundItem];
+    [itemArray addObject: compoundItem.first];
+    item = compoundItem.second;
+  }
+  [itemArray addObject: compoundItems.lastObject.second];
+
+  [itemArray sortUsingComparator: ^(Item *item1, Item *item2) {
+    if (item1.itemSize < item2.itemSize) {
+      return NSOrderedAscending;
+    }
+    if (item1.itemSize > item2.itemSize) {
+      return NSOrderedDescending;
+    }
+    return NSOrderedSame;
+  }];
+
+  // Not using auto-release to minimise size of auto-release pool.
+  PeekingEnumerator  *sortedItems =
+    [[PeekingEnumerator alloc] initWithEnumerator: itemArray.objectEnumerator];
+
+  // The index from where to get the next uninitialized Compound Item
+  int  i = 0;
+  // The index from where to get the first initialized but orphaned Compound Item (when j < i)
+  int  j = 0;
+
+  while (YES) {
+    Item  *first = nil;
+    Item  *second = nil;
+
+    while (second == nil) {
+      Item*  smallest;
+
+      if (
+        // Out of leafs, or
+        sortedItems.peekObject == nil || (
+          // orphaned branches exist, and the branch is smaller
+          j < i && compoundItems[j].itemSize < ((Item *)sortedItems.peekObject).itemSize
+        )
+      ) {
+        if (j < i) {
+          smallest = compoundItems[j++];
+        } else {
+          // We're finished building the tree
+
+          // As zero-sized items are excluded, first can actually be nil but that is okay.
+          [first retain];
+
+          // Clean up
+          [itemArray removeAllObjects];
+          [compoundItems removeAllObjects];
+          [sortedItems release];
+
+          return [first autorelease];
+        }
+      } else {
+        smallest = [sortedItems nextObject];
+      }
+      NSAssert(smallest != nil, @"Smallest is nil.");
+
+      if (first == nil) {
+        first = smallest;
+      } else {
+        second = smallest;
+      }
+    }
+
+    [compoundItems[i] clear];
+    [compoundItems[i++] initWithFirst: first second: second];
+  }
 }
 
 @end // @implementation TreeBalancer
