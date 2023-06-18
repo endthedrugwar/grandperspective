@@ -149,8 +149,6 @@
 		AAAB9A700EF3D38F00B3C482 /* RevealInFinder.png in Resources */ = {isa = PBXBuildFile; fileRef = AAAB9A6E0EF3D38F00B3C482 /* RevealInFinder.png */; };
 		AAAB9A710EF3D38F00B3C482 /* OpenWithFinder.png in Resources */ = {isa = PBXBuildFile; fileRef = AAAB9A6F0EF3D38F00B3C482 /* OpenWithFinder.png */; };
 		AAAEEEA521AAE3C800B7C024 /* ScanTaskOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAEEEA421AAE3C800B7C024 /* ScanTaskOutput.m */; };
-		AAB52EBB0E4F8DFE00BF7B20 /* ObjectPool.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB52EBA0E4F8DFE00BF7B20 /* ObjectPool.m */; };
-		AAB52EC30E520E7A00BF7B20 /* MutableArrayPool.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB52EC20E520E7A00BF7B20 /* MutableArrayPool.m */; };
 		AAB907F92496749F00681E2E /* OverlayDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB907F82496749F00681E2E /* OverlayDrawer.m */; };
 		AAB907FD24981BAC00681E2E /* OverlayDrawTaskInput.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB907FC24981BAC00681E2E /* OverlayDrawTaskInput.m */; };
 		AAB90800249A98C000681E2E /* OverlayDrawTaskExecutor.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB907FF249A98C000681E2E /* OverlayDrawTaskExecutor.m */; };
@@ -1375,10 +1373,8 @@
 				AA7A7F170E4F3C2800EB366E /* ProgressTracker.m in Sources */,
 				AAE476C21D0D945E007CF42F /* RecentDocumentTableCellView.m in Sources */,
 				AAE476C51D0D947E007CF42F /* StartWindowControl.m in Sources */,
-				AAB52EBB0E4F8DFE00BF7B20 /* ObjectPool.m in Sources */,
 				AA280136284BA33900E9EB7A /* TreeMonitor.m in Sources */,
 				AAA4FF1723C8FA7200A51C97 /* WindowManager.m in Sources */,
-				AAB52EC30E520E7A00BF7B20 /* MutableArrayPool.m in Sources */,
 				AAF951B10EDEE2E100844FD5 /* DirectoryViewToolbarControl.m in Sources */,
 				AAB90800249A98C000681E2E /* OverlayDrawTaskExecutor.m in Sources */,
 				AA819B431D5F9A7D003C7139 /* TreeVisitingProgressTracker.m in Sources */,

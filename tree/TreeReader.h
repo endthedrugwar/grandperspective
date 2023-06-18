@@ -5,7 +5,6 @@
 @class AnnotatedTreeContext;
 @class TreeBalancer;
 @class ReadProgressTracker;
-@class ObjectPool;
 
 @interface TreeReader : NSObject <NSXMLParserDelegate> {
 
@@ -22,8 +21,6 @@
   
   ReadProgressTracker  *progressTracker;
   TreeBalancer  *treeBalancer;
-  ObjectPool  *dirsArrayPool;
-  ObjectPool  *filesArrayPool;
 
   NSAutoreleasePool  *autoreleasePool;
 }
