@@ -1116,11 +1116,13 @@ static dispatch_once_t  singletonOnceToken;
   [filterSelectionPanelControl selectFilterNamed: (initialSelection != nil
                                                    ? initialSelection : NoneFilter)];
 
+  // Note: Ensure window is loaded before changing enabled status of its controls
+  NSWindow  *selectFilterWindow = filterSelectionPanelControl.window;
+
   NSString  *defaultFilterName = [NSUserDefaults.standardUserDefaults objectForKey: ScanFilterKey];
   BOOL  canApplyDefaultFilter = forNewScan && ![defaultFilterName isEqualToString: NoneFilter];
   [filterSelectionPanelControl enableApplyDefaultFilterOption: canApplyDefaultFilter];
   
-  NSWindow  *selectFilterWindow = filterSelectionPanelControl.window;
   NSInteger  status = [NSApp runModalForWindow: selectFilterWindow];
   [selectFilterWindow close];
   
