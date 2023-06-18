@@ -2,18 +2,17 @@
 
 
 @class Item;
+@class CompoundItem;
 
 @interface TreeBalancer : NSObject {
 
 @private
-  NSMutableArray  *tmpArray;
-  NSMutableArray  *tmpArray2;
+  // Temporary arrays
+  NSMutableArray<CompoundItem *>  *compoundItems;
+  NSMutableArray<Item *>  *itemArray;
 }
 
 + (dispatch_queue_t)dispatchQueue;
-
-// Note: assumes that array may be modified for sorting!
-- (Item *)createTreeForItems:(NSMutableArray *)items;
 
 // Balance tree with as input the items passed via a linked list of CompoundItems. These
 // CompoundItems are re-used to create the balanced tree. This is a way to pass the request to
