@@ -81,6 +81,7 @@
 - (void) refreshItemTree:(DirectoryItem *)oldDir
                     into:(DirectoryItem *)newDir {
   NSAssert([oldDir.label isEqualToString: newDir.label] , @"Label mismatch");
+//  NSLog(@"refreshItemTree %@", newDir.path);
 
   if (abort) return;
 
@@ -111,8 +112,6 @@
 
 - (void) refreshViaShallowRescanItemTree:(DirectoryItem *)oldDir
                                     into:(DirectoryItem *)newDir {
-  NSMutableArray  *files = [[NSMutableArray alloc] initWithCapacity: INITIAL_FILES_CAPACITY];
-  NSMutableArray  *dirs = [[NSMutableArray alloc] initWithCapacity: INITIAL_DIRS_CAPACITY];
   NSString  *path = newDir.systemPath;
 
   NSLog(@"Shallow rescan of %@", path);
@@ -120,32 +119,52 @@
   [treeGuide descendIntoDirectory: newDir];
   [progressTracker processingFolder: newDir];
 
-  // Perform shallow rescan
-  // TODO: Refactor and restore
-//  [self getContentsForDirectory: newDir atPath: path dirs: dirs files: files];
-  [progressTracker setNumSubFolders: dirs.count];
-
   // Gather the old directories
-  NSMutableDictionary  *oldSubDirs = [NSMutableDictionary dictionary];
+  NSMutableDictionary  *oldSubdirs = [NSMutableDictionary dictionary];
   [CompoundItem visitFileItemChildrenMaybeNil: oldDir.directoryItems
                                      callback: ^(FileItem *dir) {
-    oldSubDirs[dir.label] = dir;
+    oldSubdirs[dir.label] = dir;
   }];
 
-  // Populate the contents of all sub-directories
-  for (NSUInteger i = dirs.count; i-- > 0; ) {
-    DirectoryItem  *newSubDir = dirs[i];
-    DirectoryItem  *oldSubDir = oldSubDirs[newSubDir.label];
+  // Perform shallow rescan. First scan into a temporary directory, as the sizes of the subdirs
+  // will be incorrect (zero).
+  DirectoryItem  *tmpDir = (DirectoryItem *)[newDir duplicateFileItem: newDir.parentDirectory];
+  [self getContentsForDirectory: tmpDir atPath: path];
 
-    if (oldSubDir != nil) {
-      [self refreshItemTree: oldSubDir into: newSubDir];
+  __block int  numSubdirs = 0;
+  [CompoundItem visitFileItemChildrenMaybeNil: tmpDir.directoryItems
+                                     callback: ^(FileItem *dir) {
+    ++numSubdirs;
+  }];
+  [progressTracker setNumSubFolders: numSubdirs];
+
+  // Populate the children directories, put results in linked list.
+  __block Item  *newSubdirs = nil;
+  [CompoundItem visitFileItemChildrenMaybeNil: tmpDir.directoryItems
+                                     callback: ^(FileItem *dir) {
+    DirectoryItem  *newSubdir = (DirectoryItem *)dir;
+    DirectoryItem  *oldSubdir = oldSubdirs[newSubdir.label];
+
+    if (oldSubdir != nil) {
+      [self refreshItemTree: oldSubdir into: newSubdir];
     } else {
-      [self scanTreeForDirectory: newSubDir atPath: newSubDir.systemPath];
+      [self scanTreeForDirectory: newSubdir atPath: newSubdir.systemPath];
     }
-  }
 
-  [newDir setFileItems: [treeBalancer createTreeForItems: files]
-        directoryItems: [treeBalancer createTreeForItems: dirs]];
+    if (newSubdirs == nil) {
+      newSubdirs = [newSubdir retain];
+    } else {
+      CompoundItem  *newHead = [[CompoundItem alloc] initWithFirst: newSubdir second: newSubdirs];
+      [newSubdirs release];
+      newSubdirs = newHead;
+    }
+  }];
+
+  // Balance the items
+  Item  *balancedFiles = [treeBalancer convertLinkedListToTree: tmpDir.fileItems];
+  Item  *balancedSubdirs = [treeBalancer convertLinkedListToTree: newSubdirs];
+
+  [newDir setFileItems: balancedFiles directoryItems: balancedSubdirs];
 
   [treeGuide emergedFromDirectory: newDir];
   [progressTracker processedFolder: newDir];
@@ -154,55 +173,41 @@
     NSLog(@"Shallow hardlink mismatch at %@", path);
     hardLinkMismatch = true;
   }
-
-  // Do not pollute auto-release pool
-  [dirs release];
-  [files release];
 }
 
 - (void) refreshViaShallowCopyItemTree:(DirectoryItem *)oldDir
                                   into:(DirectoryItem *)newDir {
-  NSMutableArray  *files = [[NSMutableArray alloc] initWithCapacity: INITIAL_FILES_CAPACITY];
-  NSMutableArray  *dirs = [[NSMutableArray alloc] initWithCapacity: INITIAL_DIRS_CAPACITY];
-
   [treeGuide descendIntoDirectory: newDir];
   [progressTracker processingFolder: newDir];
 
   [CompoundItem visitFileItemChildrenMaybeNil: oldDir.fileItems
-                                     callback: ^(FileItem *file) {
-    [files addObject: file];
+                                     callback: ^(FileItem *oldFile) {
+    [newDir addFile: [oldFile duplicateFileItem: newDir]];
   }];
-  for (NSUInteger i = files.count; i-- > 0; ) {
-    PlainFileItem  *oldFile = files[i];
-    PlainFileItem  *newFile = (PlainFileItem *)[oldFile duplicateFileItem: newDir];
 
-    files[i] = newFile;
-  }
-
+  __block int  numSubdirs = 0;
   [CompoundItem visitFileItemChildrenMaybeNil: oldDir.directoryItems
-                                     callback: ^(FileItem *dir) {
-    [dirs addObject: dir];
+                                     callback: ^(FileItem *oldSubdir) {
+    DirectoryItem  *newSubdir = (DirectoryItem *)[oldSubdir duplicateFileItem: newDir];
+    [newDir addSubdir: newSubdir];
+    ++numSubdirs;
   }];
-  [progressTracker setNumSubFolders: dirs.count];
+  [progressTracker setNumSubFolders: numSubdirs];
 
-  for (NSUInteger i = dirs.count; i-- > 0; ) {
-    DirectoryItem  *oldSubDir = dirs[i];
-    DirectoryItem  *newSubDir = (DirectoryItem *)[oldSubDir duplicateFileItem: newDir];
+  // Populate the children directories
+  [CompoundItem visitFileItemChildrenMaybeNil: oldDir.directoryItems
+                                     callback: ^(FileItem *oldSubdir) {
+    DirectoryItem  *newSubdir = (DirectoryItem *)[oldSubdir duplicateFileItem: newDir];
 
-    [self refreshItemTree: oldSubDir into: newSubDir];
+    [self refreshItemTree: (DirectoryItem *)oldSubdir into: newSubdir];
+    [newDir addSubdir: newSubdir];
+  }];
 
-    dirs[i] = newSubDir;
-  }
-
-  [newDir setFileItems: [treeBalancer createTreeForItems: files]
-        directoryItems: [treeBalancer createTreeForItems: dirs]];
+  [newDir setSize];
+  [newDir balanceTree: treeBalancer];
 
   [treeGuide emergedFromDirectory: newDir];
   [progressTracker processedFolder: newDir];
-
-  // Do not polute auto-release pool
-  [dirs release];
-  [files release];
 }
 
 - (BOOL) deepHardlinkCompare:(DirectoryItem *)oldDir to:(DirectoryItem *)newDir {

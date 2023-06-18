@@ -367,6 +367,8 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 }
 
 - (BOOL) scanTreeForDirectory:(DirectoryItem *)dirItem atPath:(NSString *)path {
+//  NSLog(@"scanTreeForDirectory %@", path);
+
   NSAutoreleasePool  *autoreleasePool = nil;
   int  i = 0;
   BOOL  popped;
@@ -425,27 +427,24 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   return YES;
 }
 
-// TODO: Refactor and restore
-//- (void) getContentsForDirectory:(DirectoryItem *)dirItem
-//                          atPath:(NSString *)path
-//                            dirs:(NSMutableArray<DirectoryItem *> *)dirs
-//                           files:(NSMutableArray<PlainFileItem *> *)files {
-//  ScanStackFrame  *parent = [[[ScanStackFrame alloc] initWithDirs: dirs files: files] autorelease];
-//  [parent initWithDirectoryItem: dirItem entp: [self startScan: path]];
-//
-//  FTSENT *entp;
-//  while ((entp = fts_read(ftsp)) != NULL) {
-//    if (entp->fts_info == FTS_DP) continue; // Directory being visited a second time
-//
-//    BOOL  isDirectory = S_ISDIR(entp->fts_statp->st_mode);
-//    [self visitItem: entp parent: parent recurse: NO];
-//    if (isDirectory) {
-//      fts_set(ftsp, entp, FTS_SKIP);
-//    }
-//  }
-//
-//  [self stopScan];
-//}
+- (void) getContentsForDirectory:(DirectoryItem *)dirItem
+                          atPath:(NSString *)path {
+  ScanStackFrame  *parent = [[[ScanStackFrame alloc] init] autorelease];
+  [parent initWithDirectoryItem: dirItem entp: [self startScan: path]];
+
+  FTSENT *entp;
+  while ((entp = fts_read(ftsp)) != NULL) {
+    if (entp->fts_info == FTS_DP) continue; // Directory being visited a second time
+
+    BOOL  isDirectory = S_ISDIR(entp->fts_statp->st_mode);
+    [self visitItem: entp parent: parent recurse: NO];
+    if (isDirectory) {
+      fts_set(ftsp, entp, FTS_SKIP);
+    }
+  }
+
+  [self stopScan];
+}
 
 - (AlertMessage *)createAlertMessage:(DirectoryItem *)scanTree {
   if (fileSizeMeasure == LogicalFileSize) {
@@ -615,6 +614,9 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
     if ( !isDataVolume && [treeGuide shouldDescendIntoDirectory: dirChildItem] ) {
       if (visitDescendants) {
         [self addToStack: dirChildItem entp: entp];
+      } else {
+        // When performing a shallow scan, we cannot apply a filter based on its contents (size).
+        [parent->dirItem addSubdir: dirChildItem];
       }
     } else {
       NSLog(@"Skipping scan of %s", entp->fts_path);

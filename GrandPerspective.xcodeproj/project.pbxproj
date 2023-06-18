@@ -251,7 +251,7 @@
 		AA1A92641170579600217CF6 /* KBPopUpToolbarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KBPopUpToolbarItem.m; path = util/KBPopUpToolbarItem.m; sourceTree = "<group>"; };
 		AA280135284BA33900E9EB7A /* TreeMonitor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TreeMonitor.m; path = tree/TreeMonitor.m; sourceTree = "<group>"; };
 		AA280137284BA36100E9EB7A /* TreeMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TreeMonitor.h; path = tree/TreeMonitor.h; sourceTree = "<group>"; };
-		AA28013E284CEFBA00E9EB7A /* TreeRefresher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TreeRefresher.m; path = tree/TreeRefresher.m; sourceTree = "<group>"; };
+		AA28013E284CEFBA00E9EB7A /* TreeRefresher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TreeRefresher.m; path = tree/TreeRefresher.m; sourceTree = "<group>"; usesTabs = 0; };
 		AA28013F284CEFBA00E9EB7A /* TreeRefresher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TreeRefresher.h; path = tree/TreeRefresher.h; sourceTree = "<group>"; };
 		AA2B48B510495BDB00B10262 /* Rescan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Rescan.png; path = Images/Rescan.png; sourceTree = "<group>"; };
 		AA2B49B9104AEFB100B10262 /* nl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/PopUpMenu.strings; sourceTree = "<group>"; };
