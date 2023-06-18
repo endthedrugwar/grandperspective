@@ -100,64 +100,43 @@
 @implementation TreeFilter (PrivateMethods)
 
 - (void) filterItemTree:(DirectoryItem *)oldDir into:(DirectoryItem *)newDir {
-  NSMutableArray  *dirs = [[NSMutableArray alloc] initWithCapacity: INITIAL_DIRS_CAPACITY];
-  NSMutableArray  *files = [[NSMutableArray alloc] initWithCapacity: INITIAL_FILES_CAPACITY];
+  // Break recursion when task has been aborted.
+  if (abort) return;
   
   [treeGuide descendIntoDirectory: newDir];
   [progressTracker processingFolder: oldDir];
 
-  // Flatten and filter file children
+  // Collect file children that pass the filter test
   [CompoundItem visitFileItemChildrenMaybeNil: oldDir.fileItems
                                      callback: ^(FileItem *file) {
-    if ( [treeGuide includeFileItem: file] ) {
-      [files addObject: file];
+    if ([treeGuide includeFileItem: file]) {
+      [newDir addFile: [file duplicateFileItem: newDir]];
     }
   }];
 
-  // Flatten and filter directory children
+  // Collect and populate directory children that pass the filter test
   [CompoundItem visitFileItemChildrenMaybeNil: oldDir.directoryItems
-                                     callback: ^(FileItem *dir) {
-    if ([treeGuide includeFileItem: dir]) {
-      [dirs addObject: dir];
-    } else {
-      [progressTracker skippedFolder: (DirectoryItem *)dir];
-    }
-  }];
-
-  if (!abort) { // Break recursion when task has been aborted.
-    NSUInteger  i;
-  
-    // Collect all file items that passed the test
-    for (i = files.count; i-- > 0; ) {
-      PlainFileItem  *oldFile = files[i];
-      PlainFileItem  *newFile = (PlainFileItem *)[oldFile duplicateFileItem: newDir];
-      
-      files[i] = newFile;
-    }
-  
-    // Filter the contents of all directory items
-    for (i = dirs.count; i-- > 0; ) {
-      DirectoryItem  *oldSubDir = dirs[i];
+                                     callback: ^(FileItem *oldSubDir) {
+    if ([treeGuide includeFileItem: oldSubDir]) {
       DirectoryItem  *newSubDir = (DirectoryItem *)[oldSubDir duplicateFileItem: newDir];
-      
-      [self filterItemTree: oldSubDir into: newSubDir];
-    
+      [self filterItemTree: (DirectoryItem *)oldSubDir into: newSubDir];
+
       if (! abort) {
         // Check to prevent inserting corrupt tree when filtering was aborted.
-        
-        dirs[i] = newSubDir;
+        [newDir addSubdir: newSubDir];
       }
+    } else {
+      [progressTracker skippedFolder: (DirectoryItem *)oldSubDir];
     }
-  
-    [newDir setFileItems: [treeBalancer createTreeForItems: files]
-          directoryItems: [treeBalancer createTreeForItems: dirs]];
+  }];
+
+  if (!abort) {
+    [newDir setSize];
+    [newDir balanceTree: treeBalancer];
   }
   
   [treeGuide emergedFromDirectory: newDir];
   [progressTracker processedFolder: oldDir];
-  
-  [dirs release];
-  [files release];
 }
 
 @end
