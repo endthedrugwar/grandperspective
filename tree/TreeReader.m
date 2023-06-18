@@ -23,7 +23,6 @@
 
 #import "UniformTypeInventory.h"
 #import "ApplicationError.h"
-#import "MutableArrayPool.h"
 
 
 NSString  *AttributeNameKey = @"name";
@@ -73,8 +72,6 @@ NSString  *AttributeNameKey = @"name";
 
 @property (nonatomic, readonly, strong) NSXMLParser *parser;
 @property (nonatomic, readonly, strong) TreeBalancer *treeBalancer;
-@property (nonatomic, readonly, strong) ObjectPool *dirsArrayPool;
-@property (nonatomic, readonly, strong) ObjectPool *filesArrayPool;
 
 @property (nonatomic, readonly, strong) FilterTestRepository *filterTestRepository;
 @property (nonatomic, readonly, copy) NSMutableArray *mutableUnboundFilterTests;
@@ -338,11 +335,6 @@ NSString  *AttributeNameKey = @"name";
     progressTracker = [[ReadProgressTracker alloc] init];
 
     treeBalancer = [[TreeBalancer alloc] init];
-
-    dirsArrayPool = [[MutableArrayPool alloc] initWithCapacity: 16
-                                          initialArrayCapacity: INITIAL_DIRS_CAPACITY * 4];
-    filesArrayPool = [[MutableArrayPool alloc] initWithCapacity: 16
-                                           initialArrayCapacity: INITIAL_FILES_CAPACITY * 4];
   }
   
   return self;
@@ -360,8 +352,6 @@ NSString  *AttributeNameKey = @"name";
   
   [progressTracker release];
   [treeBalancer release];
-  [dirsArrayPool release];
-  [filesArrayPool release];
 
   [super dealloc];
 }
@@ -518,14 +508,6 @@ didStartElement:(NSString *)elementName
 
 - (TreeBalancer *)treeBalancer {
   return treeBalancer;
-}
-
-- (ObjectPool *)dirsArrayPool {
-  return dirsArrayPool;
-}
-
-- (ObjectPool *)filesArrayPool {
-  return filesArrayPool;
 }
 
 - (FilterTestRepository *)filterTestRepository {
@@ -1344,9 +1326,6 @@ didStartElement:(NSString *)childElement
                            callback: callbackVal
                           onSuccess: successSelectorVal]) {
     parentItem = [parentVal retain];
-
-    files = [[reader.filesArrayPool borrowObject] retain];
-    dirs = [[reader.dirsArrayPool borrowObject] retain];
   }
   
   return self;
@@ -1355,12 +1334,6 @@ didStartElement:(NSString *)childElement
 - (void) dealloc {
   [parentItem release];
   [dirItem release];
-  
-  [reader.filesArrayPool returnObject: files];
-  [files release];
-
-  [reader.dirsArrayPool returnObject: dirs];
-  [dirs release];
   
   [super dealloc];
 }
@@ -1420,10 +1393,8 @@ didStartElement:(NSString *)childElement
 }
 
 - (id) objectForElement {
-  TreeBalancer  *treeBalancer = reader.treeBalancer;
-
-  [dirItem setFileItems: [treeBalancer createTreeForItems: files]
-         directoryItems: [treeBalancer createTreeForItems: dirs]];
+  [dirItem setSize];
+  [dirItem balanceTree: reader.treeBalancer];
 
   [reader processedFolder: dirItem];
   
@@ -1432,13 +1403,13 @@ didStartElement:(NSString *)childElement
 
 
 - (void) handler:(ElementHandler *)handler finishedParsingFolderElement:(DirectoryItem *)childItem {
-  [dirs addObject: childItem];
+  [dirItem addSubdir: childItem];
   
   [self handler: handler finishedParsingElement: childItem];
 }
 
 - (void) handler:(ElementHandler *)handler finishedParsingFileElement:(PlainFileItem *)childItem {
-  [files addObject: childItem];
+  [dirItem addFile: childItem];
   
   [self handler: handler finishedParsingElement: childItem];
 }
