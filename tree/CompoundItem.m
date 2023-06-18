@@ -102,6 +102,9 @@
 
 
 // Custom "setter", which enforces that size remains the same
+//
+// Note: The number of files may change, but this is not updated either as it has no effect when it
+// is only updated locally, and it's not used anymore after the initial scan.
 - (void) replaceFirst:(Item *)newItem {
   NSAssert(newItem.itemSize == _first.itemSize, @"Sizes must be equal.");
   
@@ -112,6 +115,9 @@
 }
 
 // Custom "setter", which enforces that size remains the same
+//
+// Note: The number of files may change, but this is not updated either as it has no effect when it
+// is only updated locally, and it's not used anymore after the initial scan.
 - (void) replaceSecond:(Item *)newItem {
   NSAssert(newItem.itemSize == _second.itemSize, @"Sizes must be equal.");
   
