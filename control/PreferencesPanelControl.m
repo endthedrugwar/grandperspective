@@ -45,6 +45,8 @@ NSString  *UpdateFiltersBeforeUse = @"updateFiltersBeforeUse";
 NSString  *TreeMemoryZoneKey = @"treeMemoryZone";
 NSString  *DelayBeforeWelcomeWindowAfterStartupKey = @"delayBeforeWelcomeWindowAfterStartup";
 NSString  *KeyboardNavigationDeltaKey = @"keyboardNavigationDelta";
+NSString  *CheckPackageStatusForExtensionlessDirectoriesKey =
+  @"checkPackageStatusForExtensionlessDirectories";
 
 @interface PreferencesPanelControl (PrivateMethods)
 

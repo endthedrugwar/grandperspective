@@ -61,6 +61,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>GPApplicationDefaults</key>
 	<dict>
+		<key>checkPackageStatusForExtensionlessDirectories</key>
+		<string>sometimes</string>
 		<key>confirmFileDeletion</key>
 		<true/>
 		<key>confirmFolderDeletion</key>

@@ -61,6 +61,7 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
   
   BOOL  debugLogEnabled;
   BOOL  ignoreHardLinksForDirectories;
+  BOOL  fastPackageCheckEnabled;
 }
 
 + (NSArray *)fileSizeMeasureNames;

@@ -20,12 +20,17 @@
 #import "ScanProgressTracker.h"
 #import "UniformType.h"
 #import "UniformTypeInventory.h"
+#import "PreferencesPanelControl.h"
 
 
 NSString  *LogicalFileSizeName = @"logical";
 NSString  *PhysicalFileSizeName = @"physical";
 NSString  *TallyFileSizeName = @"tally";
 
+// Options for CheckPackageStatusForExtensionlessDirectories preference
+NSString  *AlwaysBehavior = @"always";
+NSString  *SometimesBehavior = @"sometimes";
+NSString  *NeverBehavior = @"never";
 
 /* Use smaller bounds given the extra scan cost needed to determine the number of directories
  * at each level used for tracking progress.
@@ -153,6 +158,12 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
     
     NSUserDefaults *args = NSUserDefaults.standardUserDefaults;
     debugLogEnabled = [args boolForKey: @"logAll"] || [args boolForKey: @"logScanning"];
+
+    NSString  *behavior = [args stringForKey: CheckPackageStatusForExtensionlessDirectoriesKey];
+    fastPackageCheckEnabled = ([behavior isEqualToString: NeverBehavior]
+                               || ([behavior isEqualToString: SometimesBehavior]
+                                   && !filterSet.packagesAsFiles));
+    NSLog(@"fastPackageCheckEnabled = %d", fastPackageCheckEnabled);
 
     _alertMessage = nil;
   }
@@ -580,16 +591,19 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   NSString  *lastPathComponent = [NSString stringWithUTF8String: entp->fts_name];
 
   if (isDirectory) {
-    // The package check is relatively expensive (amongst others because it requires an NSURL).
-    // A possible optimization is to only apply it to directories with an extension, as most
-    // packages are identified by extension. However, this fails to identify some packages.
-    // On my macOS 12.6.3 on 2023/05 this applies to ~/Pictures/Photo Booth Library and
-    // ~/Library/Application Support/SyncServices/Local.
-    NSURL  *url = [NSURL fileURLWithFileSystemRepresentation: entp->fts_path
-                                                 isDirectory: YES
-                                               relativeToURL: NULL];
-    if (url.isPackage) {
-      flags |= FileItemIsPackage;
+    if (!fastPackageCheckEnabled || lastPathComponent.pathExtension.length > 0) {
+      // The package check is relatively expensive (it consumes about 30% of total scanning time).
+      //
+      // As most packages are identified by extension and few normal directories have an extension,
+      // an optimization it to only perform this check if the path has an extension. A drawback is
+      // that this fails to identify some packages. On my macOS 12.6.3 on 2023/05 this applies to
+      // ~/Pictures/Photo Booth Library and ~/Library/Application Support/SyncServices/Local.
+      NSURL  *url = [NSURL fileURLWithFileSystemRepresentation: entp->fts_path
+                                                   isDirectory: YES
+                                                 relativeToURL: NULL];
+      if (url.isPackage) {
+        flags |= FileItemIsPackage;
+      }
     }
     
     DirectoryItem  *dirChildItem = [[DirectoryItem alloc]
