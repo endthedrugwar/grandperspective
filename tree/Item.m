@@ -31,7 +31,9 @@
 }
 
 - (void) setItemSize:(ITEM_SIZE)itemSize {
-  NSAssert(_itemSize == 0, @"Cannot change itemSize after it has been set");
+  // Disabled check below as CompoundItem replaceFirst:second now violates it (by design)
+  // NSAssert(_itemSize == 0, @"Cannot change itemSize after it has been set");
+
   _itemSize = itemSize;
 }
 

@@ -17,9 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype) initWithFirst:(Item *)first
                         second:(Item *)second NS_DESIGNATED_INITIALIZER;
 
-/* Resets object for re-use. After this, it can be initialized again.
+/* Replaces the contents of the compound-item.
+ *
+ * Note: Unlike the individual replace methods, the change of the item may change. That implies
+ * that this method should only be used on items that are not yet part of a balanced tree (as this
+ * may "upset" the balance)
  */
-- (void) clear;
+- (void) replaceFirst:(Item *)newFirst second:(Item *)newSecond;
 
 @property (nonatomic, readonly, strong) Item *first;
 

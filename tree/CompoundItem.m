@@ -72,12 +72,18 @@
   [super dealloc];
 }
 
-- (void) clear {
-  [_first release];
-  [_second release];
-  _first = nil;
-  _second = nil;
-  numFiles = 0;
+- (void) replaceFirst:(Item *)newFirst second:(Item *)newSecond {
+  if (newFirst != _first) {
+    [_first release];
+    _first = [newFirst retain];
+  }
+  if (newSecond != _second) {
+    [_second release];
+    _second = [newSecond retain];
+  }
+
+  numFiles = _first.numFiles + _second.numFiles;
+  self.itemSize = _first.itemSize + _second.itemSize;
 }
 
 

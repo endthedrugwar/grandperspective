@@ -117,8 +117,7 @@
       }
     }
 
-    [compoundItems[i] clear];
-    [compoundItems[i++] initWithFirst: first second: second];
+    [compoundItems[i++] replaceFirst: first second: second];
   }
 }
 
