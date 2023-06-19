@@ -26,7 +26,7 @@ extern NSString  *CustomFileRevealApplication;
 extern NSString  *UpdateFiltersBeforeUse;
 extern NSString  *DelayBeforeWelcomeWindowAfterStartupKey;
 extern NSString  *KeyboardNavigationDeltaKey;
-extern NSString  *CheckPackageStatusForExtensionlessDirectoriesKey;
+extern NSString  *PackageCheckBehaviorKey;
 
 @class FilterPopUpControl;
 

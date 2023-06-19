@@ -27,10 +27,10 @@ NSString  *LogicalFileSizeName = @"logical";
 NSString  *PhysicalFileSizeName = @"physical";
 NSString  *TallyFileSizeName = @"tally";
 
-// Options for CheckPackageStatusForExtensionlessDirectories preference
-NSString  *AlwaysBehavior = @"always";
-NSString  *SometimesBehavior = @"sometimes";
-NSString  *NeverBehavior = @"never";
+// Options for PackageCheckBehavior preference
+NSString  *RobustBehavior = @"robust";
+NSString  *AdaptiveBehavior = @"adaptive";
+NSString  *FastBehavior = @"fast";
 
 /* Use smaller bounds given the extra scan cost needed to determine the number of directories
  * at each level used for tracking progress.
@@ -159,9 +159,9 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
     NSUserDefaults *args = NSUserDefaults.standardUserDefaults;
     debugLogEnabled = [args boolForKey: @"logAll"] || [args boolForKey: @"logScanning"];
 
-    NSString  *behavior = [args stringForKey: CheckPackageStatusForExtensionlessDirectoriesKey];
-    fastPackageCheckEnabled = ([behavior isEqualToString: NeverBehavior]
-                               || ([behavior isEqualToString: SometimesBehavior]
+    NSString  *behavior = [args stringForKey: PackageCheckBehaviorKey];
+    fastPackageCheckEnabled = ([behavior isEqualToString: FastBehavior]
+                               || ([behavior isEqualToString: AdaptiveBehavior]
                                    && !filterSet.packagesAsFiles));
     NSLog(@"fastPackageCheckEnabled = %d", fastPackageCheckEnabled);
 
