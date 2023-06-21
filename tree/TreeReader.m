@@ -1,7 +1,5 @@
 #import "TreeReader.h"
 
-#import "TreeConstants.h"
-
 #import "TreeContext.h"
 #import "AnnotatedTreeContext.h"
 #import "DirectoryItem.h"
@@ -27,7 +25,7 @@
 
 NSString  *AttributeNameKey = @"name";
 
-#define  AUTORELEASE_PERIOD  1024
+static const int AUTORELEASE_PERIOD = 1024;
 
 // Localized error messages
 #define PARSE_ERROR_MSG \

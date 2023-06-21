@@ -583,7 +583,6 @@
 		AAB907FC24981BAC00681E2E /* OverlayDrawTaskInput.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = OverlayDrawTaskInput.m; path = task/OverlayDrawTaskInput.m; sourceTree = "<group>"; };
 		AAB907FE249A98C000681E2E /* OverlayDrawTaskExecutor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OverlayDrawTaskExecutor.h; path = task/OverlayDrawTaskExecutor.h; sourceTree = "<group>"; };
 		AAB907FF249A98C000681E2E /* OverlayDrawTaskExecutor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = OverlayDrawTaskExecutor.m; path = task/OverlayDrawTaskExecutor.m; sourceTree = "<group>"; };
-		AAB922110E200D29003FB89A /* TreeConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TreeConstants.h; path = tree/TreeConstants.h; sourceTree = "<group>"; };
 		AAC14E31243889D000E132F2 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		AAC14E32243889D000E132F2 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/ControlPanel.strings; sourceTree = "<group>"; };
 		AAC14E33243889D000E132F2 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/DirectoryViewWindow.strings; sourceTree = "<group>"; };
@@ -833,7 +832,6 @@
 		AA6012010A5AEE0D00DEBCB8 /* tree */ = {
 			isa = PBXGroup;
 			children = (
-				AAB922110E200D29003FB89A /* TreeConstants.h */,
 				AA3B38DD0D17EEF60070E889 /* Item.h */,
 				AA3B38DE0D17EEF60070E889 /* Item.m */,
 				AA3B38D70D17EEF60070E889 /* CompoundItem.h */,

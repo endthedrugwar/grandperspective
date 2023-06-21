@@ -8,7 +8,8 @@
 #import "PreferencesPanelControl.h"
 
 
-#define STICK_TO_ENDPOINT  0xFFFF
+static const unsigned STICK_TO_ENDPOINT = 0xFFFF;
+
 
 @interface ItemPathModelView (PrivateMethods)
 

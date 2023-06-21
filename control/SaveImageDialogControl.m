@@ -9,7 +9,8 @@
 #import "ItemPathModelView.h"
 #import "DirectoryItem.h"
 
-#define MINIMUM_SIZE 16
+
+static const int MINIMUM_SIZE = 16;
 
 
 @implementation SaveImageDialogControl

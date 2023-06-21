@@ -30,11 +30,10 @@
 
 #import "LocalizableStrings.h"
 
-#define SCROLL_WHEEL_SENSITIVITY  6.0
+static const float SCROLL_WHEEL_SENSITIVITY = 6.0;
 
-
-#define ZOOM_ANIMATION_SKIP_THRESHOLD  0.99
-#define ZOOM_ANIMATION_MAXLEN_THRESHOLD  0.80
+static const float ZOOM_ANIMATION_SKIP_THRESHOLD = 0.99;
+static const float ZOOM_ANIMATION_MAXLEN_THRESHOLD = 0.80;
 
 NSString  *ColorPaletteChangedEvent = @"colorPaletteChanged";
 NSString  *ColorMappingChangedEvent = @"colorMappingChanged";

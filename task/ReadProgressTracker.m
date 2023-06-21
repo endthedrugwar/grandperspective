@@ -1,6 +1,6 @@
 #import "ReadProgressTracker.h"
 
-#define READ_BUFFER_SIZE  16384
+static const int READ_BUFFER_SIZE = 16384;
 
 
 @implementation ReadProgressTracker

@@ -5,7 +5,6 @@
 #include <sys/mount.h>
 
 #import "AlertMessage.h"
-#import "TreeConstants.h"
 #import "PlainFileItem.h"
 #import "DirectoryItem.h"
 #import "ScanTreeRoot.h"
@@ -37,7 +36,7 @@ NSString  *FastBehavior = @"fast";
  */
 #define  NUM_SCAN_PROGRESS_ESTIMATE_LEVELS MIN(6, NUM_PROGRESS_ESTIMATE_LEVELS)
 
-#define  AUTORELEASE_PERIOD  1024
+static const int AUTORELEASE_PERIOD = 1024;
 
 /* Helper class that is used to temporarily store additional info for directories that are being
  * scanned. It stores the info that is not maintained by the DirectoryItem class yet is needed

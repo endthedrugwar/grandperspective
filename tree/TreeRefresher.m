@@ -2,7 +2,6 @@
 
 #import "AlertMessage.h"
 #import "DirectoryItem.h"
-#import "TreeConstants.h"
 #import "TreeBalancer.h"
 #import "FilteredTreeGuide.h"
 #import "ScanProgressTracker.h"

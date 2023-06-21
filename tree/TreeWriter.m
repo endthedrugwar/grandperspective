@@ -16,7 +16,9 @@ NSLocalizedString(@"Failed to write last data to file.", @"Error message")
 #define WRITING_BUFFER_FAILED \
 NSLocalizedString(@"Failed to write entire buffer.", @"Error message")
 
-#define  BUFFER_SIZE  4096 * 16
+
+static const NSUInteger BUFFER_SIZE = 4096 * 16;
+
 
 @implementation TreeWriter
 

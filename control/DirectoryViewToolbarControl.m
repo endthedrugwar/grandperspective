@@ -26,12 +26,12 @@ NSString  *ToolbarSearch = @"Search";
 
 // Tags for each of the segments in the Zoom and Focus controls, so that the 
 // order can be changed in the nib file.
-#define  ZOOM_IN_TAG     100
-#define  ZOOM_OUT_TAG    101
-#define  FOCUS_UP_TAG    102
-#define  FOCUS_DOWN_TAG  103
-#define  ZOOM_RESET_TAG  104
-#define  FOCUS_RESET_TAG 105
+static const NSUInteger ZOOM_IN_TAG     = 100;
+static const NSUInteger ZOOM_OUT_TAG    = 101;
+static const NSUInteger FOCUS_UP_TAG    = 102;
+static const NSUInteger FOCUS_DOWN_TAG  = 103;
+static const NSUInteger ZOOM_RESET_TAG  = 104;
+static const NSUInteger FOCUS_RESET_TAG = 105;
 
 
 @interface DirectoryViewToolbarControl (PrivateMethods)

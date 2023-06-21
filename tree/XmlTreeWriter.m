@@ -14,7 +14,8 @@
 #import "TreeVisitingProgressTracker.h"
 
 
-#define  AUTORELEASE_PERIOD  1024
+static const int AUTORELEASE_PERIOD = 1024;
+
 
 /* Changes
  * v6: Use system path component for name of physical files and directories
@@ -70,10 +71,9 @@ typedef NS_OPTIONS(NSUInteger, CharacterOptions) {
   CharNonPrinting = 0x10
 };
 
-#define  ATTRIBUTE_ESCAPE_CHARS \
-(CharAmpersand | CharLessThan | CharDoubleQuote | CharWhitespace | CharNonPrinting)
-#define  CHARDATA_ESCAPE_CHARS \
-(CharAmpersand | CharLessThan | CharNonPrinting)
+static const NSUInteger CHARDATA_ESCAPE_CHARS = (CharAmpersand | CharLessThan | CharNonPrinting);
+static const NSUInteger ATTRIBUTE_ESCAPE_CHARS = (CHARDATA_ESCAPE_CHARS
+                                                  | CharDoubleQuote | CharWhitespace);
 
 
 /* Escapes the string so that it can be used a valid XML attribute value or valid XML character

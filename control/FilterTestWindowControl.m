@@ -27,32 +27,32 @@
 
 
 // testTargetPopUp choices
-#define POPUP_FILES              0
-#define POPUP_FOLDERS            1
-#define POPUP_FILES_AND_FOLDERS  2
+static const NSInteger POPUP_FILES             = 0;
+static const NSInteger POPUP_FOLDERS           = 1;
+static const NSInteger POPUP_FILES_AND_FOLDERS = 2;
 
 // nameMatchPopUp and pathMatchPopUp choices
-#define POPUP_STRING_IS           0
-#define POPUP_STRING_CONTAINS     1
-#define POPUP_STRING_STARTS_WITH  2
-#define POPUP_STRING_ENDS_WITH    3
+static const NSInteger POPUP_STRING_IS          = 0;
+static const NSInteger POPUP_STRING_CONTAINS    = 1;
+static const NSInteger POPUP_STRING_STARTS_WITH = 2;
+static const NSInteger POPUP_STRING_ENDS_WITH   = 3;
 
 // typeMatchPopUp
-#define POPUP_TYPE_CONFORMS_TO  0
-#define POPUP_TYPE_EQUALS       1
+static const NSInteger POPUP_TYPE_CONFORMS_TO = 0;
+static const NSInteger POPUP_TYPE_EQUALS      = 1;
 
 // addTypeTargetButton
-#define POPUP_ADD_TYPE  0
+static const NSInteger POPUP_ADD_TYPE = 0;
 
 // hardLinkStatusPopUp and packageStatusPopUp
-#define POPUP_FLAG_IS      0
-#define POPUP_FLAG_IS_NOT  1
+static const NSInteger POPUP_FLAG_IS     = 0;
+static const NSInteger POPUP_FLAG_IS_NOT = 1;
 
 // sizeLowerBoundsUnits and sizeUpperBoundsUnits choices
-#define POPUP_BYTES  0
-#define POPUP_KB     1
-#define POPUP_MB     2
-#define POPUP_GB     3
+static const NSInteger POPUP_BYTES = 0;
+static const NSInteger POPUP_KB __attribute__ ((unused)) = 1;
+static const NSInteger POPUP_MB __attribute__ ((unused)) = 2;
+static const NSInteger POPUP_GB    = 3;
 
 
 @interface FilterTestWindowControl (PrivateMethods) 

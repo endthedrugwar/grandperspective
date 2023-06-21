@@ -12,7 +12,8 @@
 #import "TreeVisitingProgressTracker.h"
 
 
-#define  AUTORELEASE_PERIOD  1024
+static const int AUTORELEASE_PERIOD = 1024;
+
 
 #define  HEADER_PATH NSLocalizedString( @"Path", @"Header in exported text file")
 #define  HEADER_FILENAME NSLocalizedString( @"Filename", @"Header in exported text file")

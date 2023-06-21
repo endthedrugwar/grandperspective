@@ -1,6 +1,5 @@
 #import "TreeFilter.h"
 
-#import "TreeConstants.h"
 #import "PlainFileItem.h"
 #import "ScanTreeRoot.h"
 #import "CompoundItem.h"
