@@ -2,10 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © Eriban Software, 2005-2023</string>
 	<key>CFBundleDisplayName</key>
 	<string>GrandPerspective</string>
 	<key>CFBundleName</key>
-	<string>GrandPerspectiv</string>
+	<string>GrandPerspective</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDocumentTypes</key>
