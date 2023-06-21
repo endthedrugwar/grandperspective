@@ -4,14 +4,11 @@
 @protocol FileItemTestVisitor;
 
 
-#define TestResult  SInt8
-
-/* TestResult values
- */
-#define TEST_PASSED          1
-#define TEST_FAILED          0
-#define TEST_NOT_APPLICABLE -1
-
+typedef NS_ENUM(SInt8, TestResult) {
+  TestPassed        = 1,
+  TestFailed        = 0,
+  TestNotApplicable = -1
+};
 
 /* (Abstract) test that can be applied to a FileItem. 
  *
@@ -40,8 +37,8 @@
 
 @interface FileItemTest (AbstractMethods)
 
-/* Tests the file item. It returns TEST_PASSED when the item passes the test, TEST_FAILED when the
- * item fails the test, or TEST_NOT_APPLICABLE when the test does not apply to the item.
+/* Tests the file item. It returns TestPassed when the item passes the test, TestFailed when the
+ * item fails the test, or TestNotApplicable when the test does not apply to the item.
  *
  * A context is passed, which may provide additional information and/or state used by the test. See
  * the ItemPathTest class for an example.
@@ -49,7 +46,7 @@
 - (TestResult) testFileItem:(FileItem *)item context:(id)context;
 
 /* Returns YES iff the test applies (also) to directories. Returns NO otherwise, i.e. when the test
- * only applies to files and returns TEST_NOT_APPLICABLE for directory items.
+ * only applies to files and returns TestNotApplicable for directory items.
  */
 @property (nonatomic, readonly) BOOL appliesToDirectories;
 

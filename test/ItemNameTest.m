@@ -15,7 +15,7 @@
 
 
 - (TestResult) testFileItem:(FileItem *)item context:(id) context {
-  return [self.stringTest testString: [item pathComponent]] ? TEST_PASSED : TEST_FAILED;
+  return [self.stringTest testString: [item pathComponent]] ? TestPassed : TestFailed;
 }
 
 - (BOOL) appliesToDirectories {

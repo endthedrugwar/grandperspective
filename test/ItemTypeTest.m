@@ -81,7 +81,7 @@
 - (TestResult) testFileItem:(FileItem *)item context:(id) context {
   if (item.isDirectory) {
     // Test does not apply to directories
-    return TEST_NOT_APPLICABLE;
+    return TestNotApplicable;
   }
   
   UniformType  *type = ((PlainFileItem *)item).uniformType;
@@ -91,11 +91,11 @@
   while (i-- > 0) {
     UniformType  *matchType = self.matchTargets[i];
     if (type == matchType || [ancestorTypes containsObject: matchType]) {
-      return TEST_PASSED;
+      return TestPassed;
     }
   }
   
-  return TEST_FAILED;
+  return TestFailed;
 }
 
 - (BOOL) appliesToDirectories {

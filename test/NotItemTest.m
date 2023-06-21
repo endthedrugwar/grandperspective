@@ -42,9 +42,9 @@
 - (TestResult) testFileItem:(FileItem *)item context:(id) context {
   TestResult  result = [self.subItemTest testFileItem: item context: context];
   
-  return (result == TEST_NOT_APPLICABLE
-          ? TEST_NOT_APPLICABLE
-          : (result == TEST_FAILED ? TEST_PASSED : TEST_FAILED));
+  return (result == TestNotApplicable
+          ? TestNotApplicable
+          : (result == TestFailed ? TestPassed : TestFailed));
 }
 
 - (BOOL) appliesToDirectories {

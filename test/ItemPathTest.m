@@ -21,7 +21,7 @@
   // provided by the FileItemPathStringCache class. This way, path items do not constantly need to
   // be rebuilt from scratch, nor do they need to be maintained longer than needed.
   
-  return [self.stringTest testString: path] ? TEST_PASSED : TEST_FAILED;
+  return [self.stringTest testString: path] ? TestPassed : TestFailed;
 }
 
 - (BOOL) appliesToDirectories {

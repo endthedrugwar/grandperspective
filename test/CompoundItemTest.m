@@ -75,7 +75,7 @@
 
 - (TestResult) testFileItem:(FileItem *)item {
   NSAssert(NO, @"This method must be overridden.");
-  return TEST_FAILED;
+  return TestFailed;
 }
 
 - (BOOL) appliesToDirectories {

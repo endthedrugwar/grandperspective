@@ -107,7 +107,7 @@
   }
 
   if (itemTest == nil || [itemTest testFileItem: proxyItem
-                                        context: fileItemPathStringCache] != TEST_FAILED) {
+                                        context: fileItemPathStringCache] != TestFailed) {
     // The item passed the test.
     return proxyItem;
   }
@@ -136,7 +136,7 @@
   // So only descend (and construct the contents) when it passed the test (and will be included in
   // the tree).
   return (itemTest == nil || [itemTest testFileItem: proxyItem
-                                            context: fileItemPathStringCache] != TEST_FAILED);
+                                            context: fileItemPathStringCache] != TestFailed);
 }
 
 

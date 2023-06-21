@@ -42,7 +42,7 @@
 
 
 - (TestResult) testFileItem:(FileItem *)item context:(id)context {
-  return ([item fileItemFlags] & self.flagsMask) == self.desiredResult ? TEST_PASSED : TEST_FAILED;
+  return ([item fileItemFlags] & self.flagsMask) == self.desiredResult ? TestPassed : TestFailed;
 }
 
 - (BOOL) appliesToDirectories {

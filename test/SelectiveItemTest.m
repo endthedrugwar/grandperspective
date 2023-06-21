@@ -47,10 +47,10 @@
 - (TestResult) testFileItem:(FileItem *)item context:(id) context {
   if (item.isDirectory == self.applyToFilesOnly) {
     // Test should not be applied to this type of item.
-    return TEST_NOT_APPLICABLE;
+    return TestNotApplicable;
   }
   
-  return [self.subItemTest testFileItem: item context: context] ? TEST_PASSED : TEST_FAILED;
+  return [self.subItemTest testFileItem: item context: context] ? TestPassed : TestFailed;
 }
 
 - (BOOL) appliesToDirectories {

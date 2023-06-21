@@ -64,7 +64,7 @@
 - (TestResult) testFileItem:(FileItem *)item context:(id) context {
   return
     ([item itemSize] >= self.lowerBound &&
-     [item itemSize] <= self.upperBound) ? TEST_PASSED : TEST_FAILED;
+     [item itemSize] <= self.upperBound) ? TestPassed : TestFailed;
 }
 
 - (BOOL) appliesToDirectories {

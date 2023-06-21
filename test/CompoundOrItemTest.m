@@ -20,17 +20,17 @@
   while (i < max) {
     TestResult  result = [self.subItemTests[i++] testFileItem: item context: context];
       
-    if (result == TEST_PASSED) {
+    if (result == TestPassed) {
       // Short-circuit evaluation.
-      return TEST_PASSED;
+      return TestPassed;
     }
-    if (result == TEST_FAILED) {
-      // Test cannot return "TEST_NOT_APPLICABLE" anymore
+    if (result == TestFailed) {
+      // Test cannot return "TestNotApplicable" anymore
       applicable = YES;
     }
   }
 
-  return applicable ? TEST_FAILED : TEST_NOT_APPLICABLE;
+  return applicable ? TestFailed : TestNotApplicable;
 }
 
 - (void) acceptFileItemTestVisitor:(NSObject <FileItemTestVisitor> *)visitor {
