@@ -7,10 +7,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CompoundItem : Item {
-  FILE_COUNT  numFiles;
+  file_count_t  numFiles;
 }
 
-- (instancetype) initWithItemSize:(ITEM_SIZE)size NS_UNAVAILABLE;
+- (instancetype) initWithItemSize:(item_size_t)size NS_UNAVAILABLE;
 
 /* Both items must be non-nil.
  */

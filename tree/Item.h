@@ -1,7 +1,7 @@
 #import <Cocoa/Cocoa.h>
 
-#define ITEM_SIZE  unsigned long long
-#define FILE_COUNT  unsigned long long
+typedef unsigned long long item_size_t;
+typedef unsigned long long file_count_t;
 
 @class FileItem;
 
@@ -9,7 +9,7 @@
 }
 
 
-- (instancetype) initWithItemSize:(ITEM_SIZE)size NS_DESIGNATED_INITIALIZER;
+- (instancetype) initWithItemSize:(item_size_t)size NS_DESIGNATED_INITIALIZER;
 
 /* Applies the callback to all file item descendants.
  */
@@ -22,8 +22,8 @@
 /* Item size should not be changed once it is set. It is not "readonly" to enable DirectoryItem
  * subclass to set it later (once it knows its size).
  */
-@property (nonatomic) ITEM_SIZE itemSize;
-@property (nonatomic, readonly) FILE_COUNT numFiles;
+@property (nonatomic) item_size_t itemSize;
+@property (nonatomic, readonly) file_count_t numFiles;
 
 // An item is virtual if it is not a file item (i.e. a file or directory).
 @property (nonatomic, getter=isVirtual, readonly) BOOL virtual;

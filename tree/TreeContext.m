@@ -164,8 +164,8 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
 
   _scanTree = [scanTree retain];
 
-  ITEM_SIZE  miscUsedSize = self.volumeSize;
-  ITEM_SIZE  actualFreeSpace = self.freeSpace;
+  item_size_t  miscUsedSize = self.volumeSize;
+  item_size_t  actualFreeSpace = self.freeSpace;
   BOOL  miscUsedSizeAnomaly = FALSE;
   if (scanTree.itemSize <= self.volumeSize) {
     miscUsedSize -= scanTree.itemSize;
@@ -257,7 +257,7 @@ typedef NS_ENUM(NSInteger, LockConditionEnum) {
   return [self.fileSizeMeasure isEqualToString: TallyFileSizeName];
 }
 
-- (NSString *)stringForFileItemSize:(ITEM_SIZE)size {
+- (NSString *)stringForFileItemSize:(item_size_t)size {
   if (self.usesTallyFileSize) {
     if (size == 1) {
       return @"";

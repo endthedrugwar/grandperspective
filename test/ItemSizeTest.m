@@ -6,16 +6,16 @@
 
 @implementation ItemSizeTest
 
-- (instancetype) initWithLowerBound:(ITEM_SIZE)lowerBound {
+- (instancetype) initWithLowerBound:(item_size_t)lowerBound {
   return [self initWithLowerBound: lowerBound upperBound: ULONG_LONG_MAX];
 }
 
-- (instancetype) initWithUpperBound:(ITEM_SIZE)upperBound {
+- (instancetype) initWithUpperBound:(item_size_t)upperBound {
   return [self initWithLowerBound: 0 upperBound: upperBound];
 }
 
-- (instancetype) initWithLowerBound:(ITEM_SIZE)lowerBound
-                         upperBound:(ITEM_SIZE)upperBound {
+- (instancetype) initWithLowerBound:(item_size_t)lowerBound
+                         upperBound:(item_size_t)upperBound {
   if (self = [super init]) {
     _lowerBound = lowerBound;
     _upperBound = upperBound;

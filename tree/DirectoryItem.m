@@ -171,7 +171,7 @@
 }
 
 
-- (FILE_COUNT) numFiles {
+- (file_count_t) numFiles {
   return self.fileItems.numFiles + self.directoryItems.numFiles;
 }
 

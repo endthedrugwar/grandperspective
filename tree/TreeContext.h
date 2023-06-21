@@ -135,7 +135,7 @@ extern NSString  *FileItemDeletedEvent;
  * It should only be used for item in its own tree, as the string representation depends on the
  * measure that was used.
  */
-- (NSString *)stringForFileItemSize:(ITEM_SIZE)size;
+- (NSString *)stringForFileItemSize:(item_size_t)size;
 
 - (void) deleteSelectedFileItem:(ItemPathModelView *)path;
 

@@ -39,7 +39,7 @@
 
   NSUInteger i = 0;
   NSUInteger max_i = MIN(level, NUM_PROGRESS_ESTIMATE_LEVELS - 1);
-  FILE_COUNT totalFilesProcessed = 0;
+  file_count_t totalFilesProcessed = 0;
   while (i < max_i) {
     totalFilesProcessed += numFilesProcessed[i];
     i++;

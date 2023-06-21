@@ -92,7 +92,7 @@
 }
 
 
-- (FILE_COUNT) numFiles {
+- (file_count_t) numFiles {
   return numFiles;
 }
 

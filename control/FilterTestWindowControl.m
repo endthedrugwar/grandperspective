@@ -581,7 +581,7 @@
   int  bytesUnit = FileItem.bytesPerKilobyte;
 
   if (test.hasLowerBound) {
-    ITEM_SIZE  bound = test.lowerBound;
+    item_size_t  bound = test.lowerBound;
     int  i = POPUP_BYTES;
     
     if (bound > 0) {
@@ -597,7 +597,7 @@
   }
 
   if (test.hasUpperBound) {
-    ITEM_SIZE  bound = test.upperBound;
+    item_size_t  bound = test.upperBound;
     int  i = POPUP_BYTES;
           
     if (bound > 0) {
@@ -674,13 +674,13 @@
 - (ItemSizeTest *)itemSizeTestBasedOnState {
   int  bytesUnit = FileItem.bytesPerKilobyte;
 
-  ITEM_SIZE  lowerBound = MAX(0, [sizeLowerBoundField intValue]);
+  item_size_t  lowerBound = MAX(0, [sizeLowerBoundField intValue]);
   NSUInteger  i = sizeLowerBoundUnits.indexOfSelectedItem;
   while (i-- > 0) {
     lowerBound *= bytesUnit;
   }
 
-  ITEM_SIZE  upperBound = MAX(0, [sizeUpperBoundField intValue]);
+  item_size_t  upperBound = MAX(0, [sizeUpperBoundField intValue]);
   i = sizeUpperBoundUnits.indexOfSelectedItem;
   while (i-- > 0) {
     upperBound *= bytesUnit;

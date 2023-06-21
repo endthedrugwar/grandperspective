@@ -38,7 +38,7 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
   FTS  *ftsp;
 
   // In case logical file sizes are used, tracks total physical size.
-  ITEM_SIZE  totalPhysicalSize;
+  item_size_t  totalPhysicalSize;
   // In case logical file sizes are used, tracks how many files are actually smaller than reported.
   int  numOverestimatedFiles;
 

@@ -19,7 +19,7 @@ typedef NS_OPTIONS(UInt8, DirectoryRescanOptions) {
 // Overrides designated initialiser
 - (instancetype) initWithLabel:(NSString *)label
                         parent:(DirectoryItem *)parent
-                          size:(ITEM_SIZE)size
+                          size:(item_size_t)size
                          flags:(FileItemOptions)flags
                   creationTime:(CFAbsoluteTime)creationTime
               modificationTime:(CFAbsoluteTime)modificationTime

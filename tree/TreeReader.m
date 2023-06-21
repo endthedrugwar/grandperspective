@@ -148,11 +148,11 @@ NSString  *AttributeNameKey = @"name";
                                  from:(NSDictionary *)attribs
                          defaultValue:(NSString *)defVal;
 
-- (ITEM_SIZE) getItemSizeAttributeValue:(NSString *)name
+- (item_size_t) getItemSizeAttributeValue:(NSString *)name
                                    from:(NSDictionary *)attribs;
-- (ITEM_SIZE) getItemSizeAttributeValue:(NSString *)name
+- (item_size_t) getItemSizeAttributeValue:(NSString *)name
                                    from:(NSDictionary *)attribs
-                           defaultValue:(ITEM_SIZE) defVal;
+                           defaultValue:(item_size_t) defVal;
 
 - (NSDate *)getDateAttributeValue:(NSString *)name
                              from:(NSDictionary *)attribs;
@@ -183,7 +183,7 @@ NSString  *AttributeNameKey = @"name";
 
 @interface ElementHandler (PrivateMethods) 
 
-- (ITEM_SIZE) parseItemSizeAttribute:(NSString *)name value:(NSString *)value;
+- (item_size_t) parseItemSizeAttribute:(NSString *)name value:(NSString *)value;
 - (NSDate *) parseDateAttribute:(NSString *)name value:(NSString *)value;
 - (int) parseIntegerAttribute:(NSString *)name value:(NSString *)value;
 - (BOOL) parseBooleanAttribute:(NSString *)name value:(NSString *)value;
@@ -700,15 +700,15 @@ didStartElement:(NSString *)childElement
 }
 
 
-- (ITEM_SIZE) getItemSizeAttributeValue:(NSString *)name
+- (item_size_t) getItemSizeAttributeValue:(NSString *)name
                                    from:(NSDictionary *)attribs {
   return [self parseItemSizeAttribute: name
                                 value: [self getStringAttributeValue: name from: attribs]];
 }
 
-- (ITEM_SIZE) getItemSizeAttributeValue:(NSString *)name
+- (item_size_t) getItemSizeAttributeValue:(NSString *)name
                                    from:(NSDictionary *)attribs
-                           defaultValue:(ITEM_SIZE) defVal {
+                           defaultValue:(item_size_t) defVal {
   NSString  *stringValue = attribs[name];
 
   return (stringValue != nil) ? [self parseItemSizeAttribute: name value: stringValue] : defVal;
@@ -775,13 +775,13 @@ didStartElement:(NSString *)childElement
 
 @implementation ElementHandler (PrivateMethods) 
 
-- (ITEM_SIZE) parseItemSizeAttribute: (NSString *)name 
+- (item_size_t) parseItemSizeAttribute: (NSString *)name 
                                value: (NSString *)stringValue {
   // Using own parsing code instead of NSScanner's scanLongLong for two reasons:
   // 1) NSScanner cannot handle unsigned long long values
   // 2) This is faster (partly because there's no need to allocate and release memory).
 
-  ITEM_SIZE  size = 0;
+  item_size_t  size = 0;
   NSUInteger  i = 0;
   NSUInteger  len = stringValue.length;
   while (i < len) {
@@ -986,8 +986,8 @@ didStartElement:(NSString *)childElement
   
   @try {
     NSString  *volumePath = [self getStringAttributeValue: VolumePathAttr from: attribs];
-    ITEM_SIZE  volumeSize = [self getItemSizeAttributeValue: VolumeSizeAttr from: attribs];
-    ITEM_SIZE  freeSpace = [self getItemSizeAttributeValue: FreeSpaceAttr from: attribs];
+    item_size_t  volumeSize = [self getItemSizeAttributeValue: VolumeSizeAttr from: attribs];
+    item_size_t  freeSpace = [self getItemSizeAttributeValue: FreeSpaceAttr from: attribs];
     NSDate  *scanTime = [self getDateAttributeValue: ScanTimeAttr from: attribs];
     NSString  *sizeMeasure = [self getStringAttributeValue: FileSizeMeasureAttr from: attribs];
 
@@ -1473,7 +1473,7 @@ didStartElement:(NSString *)childElement
     }
 
     int  flags = [self getIntegerAttributeValue: FlagsAttr from: attribs defaultValue: 0];
-    ITEM_SIZE  size = [self getItemSizeAttributeValue: SizeAttr from: attribs];
+    item_size_t  size = [self getItemSizeAttributeValue: SizeAttr from: attribs];
     
     UniformTypeInventory  *typeInventory = UniformTypeInventory.defaultUniformTypeInventory;
     UniformType  *fileType = [typeInventory uniformTypeForExtension: name.pathExtension];

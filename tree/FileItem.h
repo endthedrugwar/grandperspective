@@ -32,11 +32,11 @@ typedef NS_OPTIONS(UInt8, FileItemOptions) {
 @property (class, nonatomic, readonly) int bytesPerKilobyte;
 
 // Overrides super's designated initialiser.
-- (instancetype) initWithItemSize:(ITEM_SIZE) sizeVal NS_UNAVAILABLE;
+- (instancetype) initWithItemSize:(item_size_t) sizeVal NS_UNAVAILABLE;
 
 - (instancetype) initWithLabel:(NSString *)label
                         parent:(DirectoryItem *)parent
-                          size:(ITEM_SIZE)size
+                          size:(item_size_t)size
                          flags:(FileItemOptions)flags
                   creationTime:(CFAbsoluteTime)creationTime
               modificationTime:(CFAbsoluteTime)modificationTime
@@ -125,7 +125,7 @@ typedef NS_OPTIONS(UInt8, FileItemOptions) {
  * Note: This method assumes that the file size measure is "bytes". It should not be used, for
  * example, when the tally file size measure is used.
  */
-+ (NSString *)stringForFileItemSize:(ITEM_SIZE)size;
++ (NSString *)stringForFileItemSize:(item_size_t)size;
 
 /* Returns a string for the provided time.
  */

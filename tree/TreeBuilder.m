@@ -60,7 +60,7 @@ NSString  *FastBehavior = @"fast";
 
 @interface TreeBuilder (PrivateMethods)
 
-+ (ITEM_SIZE) getLogicalFileSize:(FTSENT *)entp withType:(UniformType *)fileType;
++ (item_size_t) getLogicalFileSize:(FTSENT *)entp withType:(UniformType *)fileType;
 
 - (void) addToStack:(DirectoryItem *)dirItem entp:(FTSENT *)entp;
 - (BOOL) unwindStackToParent:(FTSENT *)entp;
@@ -492,7 +492,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 
 @implementation TreeBuilder (PrivateMethods)
 
-+ (ITEM_SIZE) getLogicalFileSize:(FTSENT *)entp withType:(UniformType *)fileType {
++ (item_size_t) getLogicalFileSize:(FTSENT *)entp withType:(UniformType *)fileType {
   if ([fileType.uniformTypeIdentifier isEqualToString: @"com.apple.icloud-file-fault"]) {
     NSURL  *url = [NSURL fileURLWithFileSystemRepresentation: entp->fts_path
                                                  isDirectory: S_ISDIR(entp->fts_statp->st_mode)
@@ -642,8 +642,8 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   }
   else { // A file node.
     // According to stat(2) documentation, st_blocks returns the number of 512B blocks allocated.
-    ITEM_SIZE  physicalFileSize = statBlock->st_blocks * 512;
-    ITEM_SIZE  fileSize;
+    item_size_t  physicalFileSize = statBlock->st_blocks * 512;
+    item_size_t  fileSize;
 
     UniformType  *fileType =
       [typeInventory uniformTypeForExtension: lastPathComponent.pathExtension];

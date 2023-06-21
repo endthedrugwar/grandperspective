@@ -12,12 +12,12 @@
 // Overrides designated initialiser.
 - (instancetype) init NS_UNAVAILABLE;
 
-- (instancetype) initWithLowerBound:(ITEM_SIZE)lowerBound;
+- (instancetype) initWithLowerBound:(item_size_t)lowerBound;
 
-- (instancetype) initWithUpperBound:(ITEM_SIZE)upperBound;
+- (instancetype) initWithUpperBound:(item_size_t)upperBound;
 
-- (instancetype) initWithLowerBound:(ITEM_SIZE)lowerBound
-                         upperBound:(ITEM_SIZE)upperBound NS_DESIGNATED_INITIALIZER;
+- (instancetype) initWithLowerBound:(item_size_t)lowerBound
+                         upperBound:(item_size_t)upperBound NS_DESIGNATED_INITIALIZER;
 - (instancetype) initWithPropertiesFromDictionary:(NSDictionary *)dict NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, readonly) BOOL hasLowerBound;

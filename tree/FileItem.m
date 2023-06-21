@@ -45,7 +45,7 @@ NSString*  FileSizeUnitSystemBase10 = @"base-10";
 
 - (instancetype) initWithLabel:(NSString *)label
                         parent:(DirectoryItem *)parent
-                          size:(ITEM_SIZE)size
+                          size:(item_size_t)size
                          flags:(FileItemOptions)fileItemFlags
                   creationTime:(CFAbsoluteTime)creationTime
               modificationTime:(CFAbsoluteTime)modificationTime
@@ -81,7 +81,7 @@ NSString*  FileSizeUnitSystemBase10 = @"base-10";
 }
 
 
-- (FILE_COUNT) numFiles {
+- (file_count_t) numFiles {
   return 1;
 }
 
@@ -131,7 +131,7 @@ NSString*  FileSizeUnitSystemBase10 = @"base-10";
   return [self constructPath: YES];
 }
 
-+ (NSString *)stringForFileItemSize:(ITEM_SIZE)filesize {
++ (NSString *)stringForFileItemSize:(item_size_t)filesize {
   int  bytesUnit = FileItem.bytesPerKilobyte;
   
   if (filesize < bytesUnit) {

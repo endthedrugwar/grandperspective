@@ -9,9 +9,9 @@
  */
 @interface TreeVisitingProgressTracker : ProgressTracker {
   // The number of files in the input tree at each level
-  FILE_COUNT  numFiles[NUM_PROGRESS_ESTIMATE_LEVELS];
+  file_count_t  numFiles[NUM_PROGRESS_ESTIMATE_LEVELS];
 
   // The number of processed files in the input tree at each level
-  FILE_COUNT  numFilesProcessed[NUM_PROGRESS_ESTIMATE_LEVELS];
+  file_count_t  numFilesProcessed[NUM_PROGRESS_ESTIMATE_LEVELS];
 }
 @end
