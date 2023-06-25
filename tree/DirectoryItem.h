@@ -36,14 +36,19 @@ typedef NS_OPTIONS(UInt8, DirectoryRescanOptions) {
               modificationTime:(CFAbsoluteTime)modificationTime
                     accessTime:(CFAbsoluteTime)accessTime NS_DESIGNATED_INITIALIZER;
 
-// TODO: Remove
+/* This method can be used to set the (balanced) trees for the file and sub-dirirectory children at
+ * once.
+ */
 - (void) setFileItems:(Item *)fileItems
        directoryItems:(Item *)dirItems;
 
+/* The addFile: and addSubDir: methods can be used to add file and sub-directory children one at a
+ * time. Once done, the size should be locked using setSize, and the trees balanced using
+ * balanceTree:
+ */
 - (void) addFile:(FileItem *)fileItem;
 - (void) addSubdir:(FileItem *)dirItem;
 - (void) setSize;
-
 - (void) balanceTree:(TreeBalancer *)treeBalancer;
 
 /* Replaces the directory contents. The item must have the same size as the original item (otherwise
