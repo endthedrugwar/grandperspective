@@ -1,7 +1,7 @@
 #import <Cocoa/Cocoa.h>
 
 #import "FileItem.h"
-#import "CompoundItem.h"
+
 
 /* Bitmasks used for the "dirty" flags field of the DirectoryItem
  */
@@ -11,6 +11,7 @@ typedef NS_OPTIONS(UInt8, DirectoryRescanOptions) {
   DirectoryNeedsFullRescan = 0x02,
 };
 
+@class PlainFileItem;
 @class TreeBalancer;
 
 @interface DirectoryItem : FileItem {
@@ -74,6 +75,10 @@ typedef NS_OPTIONS(UInt8, DirectoryRescanOptions) {
  * a temporary CompoundItem object when the directory contains both types of children.
  */
 @property (nonatomic, readonly, strong) Item *childItems;
+
+/* Return the directory represented as plain file.
+ */
+@property (nonatomic, readonly, strong) PlainFileItem *directoryAsPlainFile;
 
 /* Returns the item that represents the receiver when package contents should not be shown (i.e.
  * when the directory should be represented by a file).

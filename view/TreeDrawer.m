@@ -12,12 +12,12 @@
 // Overrides designated initialiser of base class
 - (instancetype) initWithScanTree:(DirectoryItem *)scanTreeVal
                      colorPalette:(NSColorList *)colorPalette {
-  TreeDrawerSettings  *defaultSettings = [[[TreeDrawerSettings alloc] init] autorelease];
+  TreeDrawerSettings  *settings = [[[TreeDrawerSettings alloc] init] autorelease];
   if (colorPalette) {
-    defaultSettings = [defaultSettings settingsWithChangedColorPalette: colorPalette];
+    settings = [settings settingsWithChangedColorPalette: colorPalette];
   }
 
-  return [self initWithScanTree: scanTreeVal treeDrawerSettings: defaultSettings];
+  return [self initWithScanTree: scanTreeVal treeDrawerSettings: settings];
 }
 
 - (instancetype) initWithScanTree:(DirectoryItem *)scanTreeVal
@@ -66,21 +66,13 @@
 }
 
 
-- (void) setShowPackageContents:(BOOL)showPackageContents {
-  [treeGuide setPackagesAsFiles: !showPackageContents];
-}
-
-- (BOOL) showPackageContents {
-  return !treeGuide.packagesAsFiles;
-}
-
-
 - (void) updateSettings:(TreeDrawerSettings *)settings {
+  [super updateSettings: settings];
+
   [self setColorMapper: settings.colorMapper];
   [rectangleDrawer setColorPalette: settings.colorPalette];
   [rectangleDrawer setColorGradient: settings.colorGradient];
   [self setMaskTest: settings.maskTest];
-  [self setShowPackageContents: settings.showPackageContents];
 }
 
 

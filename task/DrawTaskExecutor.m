@@ -20,7 +20,7 @@
   
     treeDrawer = [[TreeDrawer alloc] initWithScanTree: treeContext.scanTree
                                    treeDrawerSettings: settings];
-    treeDrawerSettings = [settings retain];
+    _treeDrawerSettings = [settings retain];
     
     settingsLock = [[NSLock alloc] init];
   }
@@ -31,7 +31,7 @@
   [treeContext release];
 
   [treeDrawer release];
-  [treeDrawerSettings release];
+  [_treeDrawerSettings release];
   
   [settingsLock release];
   
@@ -39,15 +39,11 @@
 }
 
 
-- (TreeDrawerSettings *)treeDrawerSettings {
-  return treeDrawerSettings;
-}
-
 - (void) setTreeDrawerSettings:(TreeDrawerSettings *)settings {
   [settingsLock lock];
-  if (settings != treeDrawerSettings) {
-    [treeDrawerSettings release];
-    treeDrawerSettings = [settings retain];
+  if (settings != _treeDrawerSettings) {
+    [_treeDrawerSettings release];
+    _treeDrawerSettings = [settings retain];
   }
   [settingsLock unlock];
 }
@@ -61,7 +57,7 @@
   [settingsLock lock];
   // Even though the settings are immutable, obtaining the settingsLock
   // ensures that it is not de-allocated while it is being used. 
-  [treeDrawer updateSettings: treeDrawerSettings];
+  [treeDrawer updateSettings: self.treeDrawerSettings];
   [settingsLock unlock];
 
   DrawTaskInput  *drawingInput = input;

@@ -12,8 +12,7 @@
   TreeContext  *treeContext;
 
   TreeDrawer  *treeDrawer;
-  
-  TreeDrawerSettings  *treeDrawerSettings;
+
   NSLock  *settingsLock;
 }
 

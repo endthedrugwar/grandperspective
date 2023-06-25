@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class FilteredTreeGuide;
 @class GradientRectangleDrawer;
 @class TreeLayoutBuilder;
+@class TreeDrawerBaseSettings;
 
 @interface TreeDrawerBase : NSObject <TreeLayoutTraverser> {
   GradientRectangleDrawer  *rectangleDrawer;
@@ -30,6 +31,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype) initWithScanTree:(DirectoryItem *)scanTree
                      colorPalette:(nullable NSColorList *)colorPalette NS_DESIGNATED_INITIALIZER;
+
+@property (nonatomic) int maxDepth;
+@property (nonatomic) BOOL showPackageContents;
+
+// Updates the drawer according to the given settings.
+- (void) updateSettings:(TreeDrawerBaseSettings *)settings;
 
 /* Draws the visible tree. Drawing typically also starts there, but can start at the volume tree
  * root when the entire volume is drawn.

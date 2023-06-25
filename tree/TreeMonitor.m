@@ -1,5 +1,6 @@
 #import "TreeMonitor.h"
 
+#import "CompoundItem.h"
 #import "DirectoryItem.h"
 #import "TreeContext.h"
 

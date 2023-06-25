@@ -1,5 +1,6 @@
 #import "DirectoryItem.h"
 
+#import "CompoundItem.h"
 #import "PlainFileItem.h"
 #import "UniformTypeInventory.h"
 #import "TreeBalancer.h"
@@ -142,26 +143,25 @@
   return [CompoundItem compoundItemWithFirst: _fileItems second: _directoryItems];
 }
 
+- (PlainFileItem *)directoryAsPlainFile {
+  UniformType  *fileType = [UniformTypeInventory.defaultUniformTypeInventory
+                            uniformTypeForExtension: self.systemPathComponent.pathExtension];
+
+  // Note: This item is short-lived, so it is allocated in the default zone.
+  return [[[PlainFileItem alloc]
+           initWithLabel: self.label
+                  parent: self.parentDirectory
+                    size: self.itemSize
+                    type: fileType
+                   flags: self.fileItemFlags
+            creationTime: self.creationTime
+        modificationTime: self.modificationTime
+              accessTime: self.accessTime
+            ] autorelease];
+}
+
 - (FileItem *)itemWhenHidingPackageContents {
-  if (self.isPackage) {
-    UniformType  *fileType = [UniformTypeInventory.defaultUniformTypeInventory
-                              uniformTypeForExtension: self.systemPathComponent.pathExtension];
-  
-    // Note: This item is short-lived, so it is allocated in the default zone.
-    return [[[PlainFileItem alloc]
-             initWithLabel: self.label
-                    parent: self.parentDirectory
-                      size: self.itemSize
-                      type: fileType
-                     flags: self.fileItemFlags
-              creationTime: self.creationTime
-          modificationTime: self.modificationTime
-                accessTime: self.accessTime
-              ] autorelease];
-  }
-  else {
-    return self;
-  }
+  return self.isPackage ? self.directoryAsPlainFile : self;
 }
 
 

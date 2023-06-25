@@ -247,13 +247,16 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 }
 
 - (void) setTreeDrawerSettings:(TreeDrawerSettings *)settings {
-  DrawTaskExecutor  *drawTaskExecutor = (DrawTaskExecutor*)drawTaskManager.taskExecutor;
+  DrawTaskExecutor  *drawTaskExecutor = (DrawTaskExecutor *)drawTaskManager.taskExecutor;
+  OverlayDrawTaskExecutor  *overlayDrawTaskExecutor = (OverlayDrawTaskExecutor *
+                                                       )overlayDrawTaskManager.taskExecutor;
 
   TreeDrawerSettings  *oldSettings = drawTaskExecutor.treeDrawerSettings;
   if (settings != oldSettings) {
     [oldSettings retain];
 
     [drawTaskExecutor setTreeDrawerSettings: settings];
+    [overlayDrawTaskExecutor setOverlayDrawerSettings: settings];
     
     if (settings.colorPalette != oldSettings.colorPalette) {
       [self postColorPaletteChanged]; 

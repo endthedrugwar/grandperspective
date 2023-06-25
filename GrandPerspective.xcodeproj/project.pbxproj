@@ -96,6 +96,7 @@
 		AA819B421D5F9A7D003C7139 /* ScanProgressTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = AA819B3F1D5F9A7D003C7139 /* ScanProgressTracker.m */; };
 		AA819B431D5F9A7D003C7139 /* TreeVisitingProgressTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = AA819B411D5F9A7D003C7139 /* TreeVisitingProgressTracker.m */; };
 		AA819B461D5FA0A5003C7139 /* ReadProgressTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = AA819B451D5FA0A5003C7139 /* ReadProgressTracker.m */; };
+		AA8261EC2A4888D9007D9211 /* TreeDrawerBaseSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8261EB2A4888D9007D9211 /* TreeDrawerBaseSettings.m */; };
 		AA837DBF0E29ECE5005384E0 /* XmlTreeWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = AA837DBE0E29ECE5005384E0 /* XmlTreeWriter.m */; };
 		AA837E740E2D171D005384E0 /* TreeReader.m in Sources */ = {isa = PBXBuildFile; fileRef = AA837E730E2D171D005384E0 /* TreeReader.m */; };
 		AA83A34010F0D329002542E4 /* MutableFilterTestRef.m in Sources */ = {isa = PBXBuildFile; fileRef = AA83A33F10F0D329002542E4 /* MutableFilterTestRef.m */; };
@@ -432,6 +433,8 @@
 		AA819B411D5F9A7D003C7139 /* TreeVisitingProgressTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TreeVisitingProgressTracker.m; path = task/TreeVisitingProgressTracker.m; sourceTree = "<group>"; };
 		AA819B441D5FA0A5003C7139 /* ReadProgressTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReadProgressTracker.h; path = task/ReadProgressTracker.h; sourceTree = "<group>"; };
 		AA819B451D5FA0A5003C7139 /* ReadProgressTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReadProgressTracker.m; path = task/ReadProgressTracker.m; sourceTree = "<group>"; };
+		AA8261EA2A4888D9007D9211 /* TreeDrawerBaseSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TreeDrawerBaseSettings.h; path = view/TreeDrawerBaseSettings.h; sourceTree = "<group>"; };
+		AA8261EB2A4888D9007D9211 /* TreeDrawerBaseSettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TreeDrawerBaseSettings.m; path = view/TreeDrawerBaseSettings.m; sourceTree = "<group>"; };
 		AA837DBD0E29ECE5005384E0 /* XmlTreeWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XmlTreeWriter.h; path = tree/XmlTreeWriter.h; sourceTree = "<group>"; };
 		AA837DBE0E29ECE5005384E0 /* XmlTreeWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XmlTreeWriter.m; path = tree/XmlTreeWriter.m; sourceTree = "<group>"; };
 		AA837E720E2D171D005384E0 /* TreeReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TreeReader.h; path = tree/TreeReader.h; sourceTree = "<group>"; };
@@ -890,6 +893,8 @@
 				AAD1BC62249D39E900F749EB /* TreeDrawerBase.m */,
 				AA7A7EF20E4F2B5E00EB366E /* TreeDrawer.h */,
 				AA7A7EF30E4F2B5E00EB366E /* TreeDrawer.m */,
+				AA8261EA2A4888D9007D9211 /* TreeDrawerBaseSettings.h */,
+				AA8261EB2A4888D9007D9211 /* TreeDrawerBaseSettings.m */,
 				AA7A7EF40E4F2B5E00EB366E /* TreeDrawerSettings.h */,
 				AA7A7EF50E4F2B5E00EB366E /* TreeDrawerSettings.m */,
 				AAB907FA249674E100681E2E /* OverlayDrawer.h */,
@@ -1381,6 +1386,7 @@
 				AAEF42831081136100468832 /* LocalizableStrings.m in Sources */,
 				AA59E3AE23C334EB006A5184 /* ControlPanelControl.m in Sources */,
 				AAEF43771081E0EE00468832 /* FilterTestRef.m in Sources */,
+				AA8261EC2A4888D9007D9211 /* TreeDrawerBaseSettings.m in Sources */,
 				AAEF43A71081FC2E00468832 /* FilterTest.m in Sources */,
 				AAEF440C10821A3800468832 /* FilterTestRepository.m in Sources */,
 				AAEF442510821EC800468832 /* FileItemTest.m in Sources */,

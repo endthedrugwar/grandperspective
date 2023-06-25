@@ -5,6 +5,7 @@
 #import "GradientRectangleDrawer.h"
 #import "TreeLayoutBuilder.h"
 #import "TreeContext.h"
+#import "TreeDrawerSettings.h"
 
 @implementation TreeDrawerBase
 
@@ -35,6 +36,22 @@
 
   [super dealloc];
 }
+
+
+- (void) setShowPackageContents:(BOOL)showPackageContents {
+  [treeGuide setPackagesAsFiles: !showPackageContents];
+}
+
+- (BOOL) showPackageContents {
+  return !treeGuide.packagesAsFiles;
+}
+
+
+- (void) updateSettings:(TreeDrawerBaseSettings *)settings {
+  [self setShowPackageContents: settings.showPackageContents];
+  self.maxDepth = settings.maxDepth;
+}
+
 
 - (NSImage *)drawImageOfVisibleTree:(FileItem *)visibleTreeVal
                      startingAtTree:(FileItem *)treeRoot
@@ -125,15 +142,18 @@
   }
 
   if (file.isDirectory) {
-    // Descend unless drawing has been aborted
-
-    if (!abort) {
-      [treeGuide descendIntoDirectory: (DirectoryItem *)file];
-      return YES;
-    }
-    else {
+    if (abort) {
       return NO;
     }
+
+    if (depth == self.maxDepth) {
+      [self drawFile: ((DirectoryItem *)file).directoryAsPlainFile atRect: rect depth: depth];
+
+      return NO;
+    }
+
+    [treeGuide descendIntoDirectory: (DirectoryItem *)file];
+    return YES;
   }
 
   // It's a plain file

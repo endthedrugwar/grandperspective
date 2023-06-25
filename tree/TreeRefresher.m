@@ -1,6 +1,7 @@
 #import "TreeRefresher.h"
 
 #import "AlertMessage.h"
+#import "CompoundItem.h"
 #import "DirectoryItem.h"
 #import "TreeBalancer.h"
 #import "FilteredTreeGuide.h"

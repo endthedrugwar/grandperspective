@@ -359,7 +359,8 @@ NSString  *DisplaySettingsChangedEvent = @"displaySettingsChanged";
 }
 
 - (TreeDrawerSettings *)instantiateDisplaySettings:(DirectoryViewDisplaySettings *)displaySettings
-                                           forTree:(DirectoryItem *)tree {
+                                           forTree:(DirectoryItem *)tree
+                                      displayDepth:(int)displayDepth {
   NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
 
   NSObject <FileItemMappingScheme>
@@ -385,12 +386,13 @@ NSString  *DisplaySettingsChangedEvent = @"displaySettingsChanged";
     }
   }
 
-  TreeDrawerSettings *tds = [TreeDrawerSettings alloc];
-  return [[tds initWithColorMapper: mapper
-                      colorPalette: palette
-                     colorGradient: gradient
-                          maskTest: maskTest
-               showPackageContents: displaySettings.showPackageContents] autorelease];
+  return [[[TreeDrawerSettings alloc] initWithColorMapper: mapper
+                                             colorPalette: palette
+                                            colorGradient: gradient
+                                                 maskTest: maskTest
+                                                 maxDepth: displayDepth
+                                      showPackageContents: displaySettings.showPackageContents]
+          autorelease];
 }
 
 @end // @implementation ControlPanelControl

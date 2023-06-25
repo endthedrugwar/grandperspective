@@ -1,3 +1,5 @@
+#import <Cocoa/Cocoa.h>
+
 #import "TreeDrawerSettings.h"
 
 #import "StatelessFileItemMapping.h"
@@ -14,15 +16,16 @@
 @implementation TreeDrawerSettings
 
 // Creates default settings.
-- (instancetype) init {
+- (instancetype) initWithMaxDepth:(int)maxDepthVal
+              showPackageContents:(BOOL)showPackageContentsVal {
   NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
-  
-  return 
-    [self initWithColorMapper: [[[StatelessFileItemMapping alloc] init] autorelease]
-                 colorPalette: TreeDrawerSettings.defaultColorPalette
-                colorGradient: [userDefaults floatForKey: DefaultColorGradient]
-                     maskTest: nil
-          showPackageContents: YES];
+
+  return [self initWithColorMapper: [[[StatelessFileItemMapping alloc] init] autorelease]
+                      colorPalette: TreeDrawerSettings.defaultColorPalette
+                     colorGradient: [userDefaults floatForKey: DefaultColorGradient]
+                          maskTest: nil
+                          maxDepth: maxDepthVal
+               showPackageContents: showPackageContentsVal];
 }
 
 
@@ -30,13 +33,13 @@
                         colorPalette:(NSColorList *)colorPaletteVal
                        colorGradient:(float)colorGradientVal
                             maskTest:(FileItemTest *)maskTestVal
+                            maxDepth:(int)maxDepthVal
                  showPackageContents:(BOOL)showPackageContentsVal {
-  if (self = [super init]) {
+  if (self = [super initWithMaxDepth: maxDepthVal showPackageContents: showPackageContentsVal]) {
     colorMapper = [colorMapperVal retain];
     colorPalette = [colorPaletteVal retain];
     colorGradient = colorGradientVal;
     maskTest = [maskTestVal retain];
-    showPackageContents = showPackageContentsVal;
   }
   
   return self;
@@ -56,6 +59,7 @@
                                              colorPalette: colorPalette
                                             colorGradient: colorGradient
                                                  maskTest: maskTest
+                                                 maxDepth: maxDepth
                                       showPackageContents: showPackageContents] autorelease];
 }
 
@@ -64,6 +68,7 @@
                                              colorPalette: colorPaletteVal
                                             colorGradient: colorGradient
                                                  maskTest: maskTest
+                                                 maxDepth: maxDepth
                                       showPackageContents: showPackageContents] autorelease];
 }
 
@@ -72,6 +77,7 @@
                                              colorPalette: colorPalette
                                             colorGradient: colorGradientVal
                                                  maskTest: maskTest
+                                                 maxDepth: maxDepth
                                       showPackageContents: showPackageContents] autorelease];
 }
 
@@ -80,6 +86,16 @@
                                              colorPalette: colorPalette
                                             colorGradient: colorGradient
                                                  maskTest: maskTestVal
+                                                 maxDepth: maxDepth
+                                      showPackageContents: showPackageContents] autorelease];
+}
+
+- (id) settingsWithChangedMaxDepth:(int) maxDepthVal {
+  return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
+                                             colorPalette: colorPalette
+                                            colorGradient: colorGradient
+                                                 maskTest: maskTest
+                                                 maxDepth: maxDepthVal
                                       showPackageContents: showPackageContents] autorelease];
 }
 
@@ -88,6 +104,7 @@
                                              colorPalette: colorPalette
                                             colorGradient: colorGradient
                                                  maskTest: maskTest
+                                                 maxDepth: maxDepth
                                       showPackageContents: showPackageContentsVal] autorelease];
 }
 
@@ -105,10 +122,6 @@
 
 - (FileItemTest *)maskTest {
   return maskTest;
-}
-
-- (BOOL) showPackageContents {
-  return showPackageContents;
 }
 
 @end // @implementation TreeDrawerSettings

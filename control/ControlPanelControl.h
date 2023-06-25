@@ -103,8 +103,21 @@ extern NSString  *DisplaySettingsChangedEvent;
 - (NSString *)comments;
 
 // Converts a description of the display settings to an object that realizes these.
+//
+// Note: The mapping is not fully one-to-one, as both classes serve a different purpose.
+// - DirectoryViewDisplaySettings captures the display settings that can be changed from the
+//   control panel.
+// - TreeDrawerSettings are the settings that the tree drawer needs
+//
+// More specifically, the differences are:
+// - The showEntireVolume setting is not part of TreeDrawerSettings, as this is realized by
+//   invoking the drawer with a different tree
+// - The maxDrawDepth settings it not part of DirectoryViewDisplaySettings, as it is changed from
+//   the toolbar, given that changing it is closely related to the selection focus depth (and uses
+//   the same buttons)
 - (TreeDrawerSettings *)instantiateDisplaySettings:(DirectoryViewDisplaySettings *)displaySettings
-                                           forTree:(DirectoryItem *)tree;
+                                           forTree:(DirectoryItem *)tree
+                                      displayDepth:(int)displayDepth;
 
 @end
 

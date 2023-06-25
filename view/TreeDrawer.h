@@ -21,9 +21,4 @@
 
 @property (nonatomic, strong) NSObject<FileItemMapping> *colorMapper;
 
-@property (nonatomic) BOOL showPackageContents;
-
-// Updates the drawer according to the given settings.
-- (void) updateSettings:(TreeDrawerSettings *)settings;
-
 @end
