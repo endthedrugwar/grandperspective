@@ -90,19 +90,19 @@
   [rectangleDrawer drawBasicFilledRect: rect intColor: visibleTreeBackgroundColor];
 }
 
-- (void)drawUsedSpaceAtRect:(NSRect) rect {
+- (void) drawUsedSpaceAtRect:(NSRect) rect {
   [rectangleDrawer drawBasicFilledRect: rect intColor: usedSpaceColor];
 }
 
-- (void)drawFreeSpaceAtRect:(NSRect) rect {
+- (void) drawFreeSpaceAtRect:(NSRect) rect {
   [rectangleDrawer drawBasicFilledRect: rect intColor: freeSpaceColor];
 }
 
-- (void)drawFreedSpaceAtRect:(NSRect) rect {
+- (void) drawFreedSpaceAtRect:(NSRect) rect {
   [rectangleDrawer drawBasicFilledRect: rect intColor: freeSpaceColor];
 }
 
-- (void)drawFile:(PlainFileItem *)fileItem atRect:(NSRect) rect depth:(int) depth {
+- (void) drawFile:(PlainFileItem *)fileItem atRect:(NSRect) rect depth:(int) depth {
   NSUInteger  colorIndex = [colorMapper hashForFileItem: fileItem atDepth: depth];
   if (colorMapper.canProvideLegend) {
     colorIndex = MIN(colorIndex, rectangleDrawer.numGradientColors - 1);

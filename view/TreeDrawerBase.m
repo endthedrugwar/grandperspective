@@ -176,10 +176,10 @@
 @implementation TreeDrawerBase (ProtectedMethods)
 
 // Provide default empty implementation
-- (void)drawVisibleTreeAtRect:(NSRect) rect {}
-- (void)drawUsedSpaceAtRect:(NSRect) rect {}
-- (void)drawFreeSpaceAtRect:(NSRect) rect {}
-- (void)drawFreedSpaceAtRect:(NSRect) rect {}
-- (void)drawFile:(PlainFileItem *)fileItem atRect:(NSRect) rect depth:(int) depth {}
+- (void) drawVisibleTreeAtRect:(NSRect) rect {}
+- (void) drawUsedSpaceAtRect:(NSRect) rect {}
+- (void) drawFreeSpaceAtRect:(NSRect) rect {}
+- (void) drawFreedSpaceAtRect:(NSRect) rect {}
+- (void) drawFile:(PlainFileItem *)fileItem atRect:(NSRect) rect depth:(int) depth {}
 
 @end
