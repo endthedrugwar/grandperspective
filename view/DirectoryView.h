@@ -115,4 +115,10 @@ extern NSString  *ColorMappingChangedEvent;
 - (void) moveFocusUp;
 - (void) moveFocusDown;
 
+@property (nonatomic, readonly) BOOL canMoveDisplayDepthUp;
+@property (nonatomic, readonly) BOOL canMoveDisplayDepthDown;
+
+- (void) moveDisplayDepthUp;
+- (void) moveDisplayDepthDown;
+
 @end

@@ -410,6 +410,42 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   }
 }
 
+- (BOOL) canMoveDisplayDepthUp {
+  return self.treeDrawerSettings.maxDepth > 1;
+}
+
+- (BOOL) canMoveDisplayDepthDown {
+  return self.treeDrawerSettings.maxDepth != NO_DRAW_DEPTH_LIMIT;
+}
+
+- (void) moveDisplayDepthUp {
+  if (!self.canMoveDisplayDepthUp) return;
+
+  // Ensure the change is always visible
+  //
+  // TODO: More accurately determine max depth, also taking into account "show package content"
+  // setting
+  int newDepth = MIN(MAX_DRAW_DEPTH_LIMIT, MIN(self.treeInView.maxDepth,
+                                               self.treeDrawerSettings.maxDepth) - 1);
+  self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedMaxDepth: newDepth];
+
+  NSLog(@"displayDepth = %d", self.treeDrawerSettings.maxDepth);
+}
+
+- (void) moveDisplayDepthDown {
+  if (!self.canMoveDisplayDepthDown) return;
+
+  // Ensure the change is always visible
+  int newDepth = self.treeDrawerSettings.maxDepth + 1;
+  if (newDepth > MAX_DRAW_DEPTH_LIMIT || newDepth >= self.treeInView.maxDepth) {
+    newDepth = NO_DRAW_DEPTH_LIMIT;
+  }
+
+  self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedMaxDepth: newDepth];
+
+  NSLog(@"displayDepth = %d", self.treeDrawerSettings.maxDepth);
+}
+
 
 - (void) drawRect:(NSRect)rect {
   if (pathModelView == nil) {
@@ -992,6 +1028,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 }
 
 - (void) visibleTreeChanged:(NSNotification *)notification {
+  NSLog(@"visibleTreeChanged");
   [self updatePathEndRect: NO];
 
   [self forceRedraw];

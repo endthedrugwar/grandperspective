@@ -54,7 +54,7 @@
 }
 
 
-- (id) settingsWithChangedColorMapper:(NSObject <FileItemMapping> *)colorMapperVal {
+- (instancetype) settingsWithChangedColorMapper:(NSObject <FileItemMapping> *)colorMapperVal {
   return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapperVal
                                              colorPalette: colorPalette
                                             colorGradient: colorGradient
@@ -63,7 +63,7 @@
                                       showPackageContents: showPackageContents] autorelease];
 }
 
-- (id) settingsWithChangedColorPalette:(NSColorList *)colorPaletteVal {
+- (instancetype) settingsWithChangedColorPalette:(NSColorList *)colorPaletteVal {
   return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
                                              colorPalette: colorPaletteVal
                                             colorGradient: colorGradient
@@ -72,7 +72,7 @@
                                       showPackageContents: showPackageContents] autorelease];
 }
 
-- (id) settingsWithChangedColorGradient:(float) colorGradientVal {
+- (instancetype) settingsWithChangedColorGradient:(float) colorGradientVal {
   return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
                                              colorPalette: colorPalette
                                             colorGradient: colorGradientVal
@@ -81,7 +81,7 @@
                                       showPackageContents: showPackageContents] autorelease];
 }
 
-- (id) settingsWithChangedMaskTest:(FileItemTest *)maskTestVal {
+- (instancetype) settingsWithChangedMaskTest:(FileItemTest *)maskTestVal {
   return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
                                              colorPalette: colorPalette
                                             colorGradient: colorGradient
@@ -90,7 +90,7 @@
                                       showPackageContents: showPackageContents] autorelease];
 }
 
-- (id) settingsWithChangedMaxDepth:(int) maxDepthVal {
+- (instancetype) settingsWithChangedMaxDepth:(int) maxDepthVal {
   return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
                                              colorPalette: colorPalette
                                             colorGradient: colorGradient
@@ -99,7 +99,7 @@
                                       showPackageContents: showPackageContents] autorelease];
 }
 
-- (id) settingsWithChangedShowPackageContents:(BOOL) showPackageContentsVal {
+- (instancetype) settingsWithChangedShowPackageContents:(BOOL) showPackageContentsVal {
   return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
                                              colorPalette: colorPalette
                                             colorGradient: colorGradient
@@ -107,6 +107,7 @@
                                                  maxDepth: maxDepth
                                       showPackageContents: showPackageContentsVal] autorelease];
 }
+
 
 - (NSObject <FileItemMapping> *)colorMapper {
   return colorMapper;

@@ -100,6 +100,9 @@
   return YES;
 }
 
+- (int) maxDepth {
+  return MAX(_first.maxDepth, _second.maxDepth);
+}
 
 // Custom "setter", which enforces that size remains the same
 //

@@ -148,16 +148,15 @@
                             uniformTypeForExtension: self.systemPathComponent.pathExtension];
 
   // Note: This item is short-lived, so it is allocated in the default zone.
-  return [[[PlainFileItem alloc]
-           initWithLabel: self.label
-                  parent: self.parentDirectory
-                    size: self.itemSize
-                    type: fileType
-                   flags: self.fileItemFlags
-            creationTime: self.creationTime
-        modificationTime: self.modificationTime
-              accessTime: self.accessTime
-            ] autorelease];
+  return [[[PlainFileItem alloc] initWithLabel: self.label
+                                        parent: self.parentDirectory
+                                          size: self.itemSize
+                                          type: fileType
+                                         flags: self.fileItemFlags
+                                  creationTime: self.creationTime
+                              modificationTime: self.modificationTime
+                                    accessTime: self.accessTime
+          ] autorelease];
 }
 
 - (FileItem *)itemWhenHidingPackageContents {
@@ -172,11 +171,15 @@
 
 
 - (file_count_t) numFiles {
-  return self.fileItems.numFiles + self.directoryItems.numFiles;
+  return _fileItems.numFiles + _directoryItems.numFiles;
 }
 
 - (BOOL) isDirectory {
   return YES;
+}
+
+- (int) maxDepth {
+  return 1 + _directoryItems.maxDepth;
 }
 
 @end // @implementation DirectoryItem

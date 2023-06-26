@@ -41,6 +41,10 @@
   return NO;
 }
 
+- (int) maxDepth {
+  return 0;
+}
+
 - (NSString *)description {
   return [NSString stringWithFormat:@"Item(size=%qu)", self.itemSize];
 }

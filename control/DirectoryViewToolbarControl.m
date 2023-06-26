@@ -504,11 +504,13 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 
 - (id) validateFocusControls:(NSToolbarItem *)toolbarItem {
   NSSegmentedControl  *control = (NSSegmentedControl *)toolbarItem.view;
-  DirectoryView  *dirView = dirViewControl.directoryView;
 
-  [control setEnabled: [dirView canMoveFocusUp] forSegment: focusUpSegment];
-  [control setEnabled: [dirView canMoveFocusDown] forSegment: focusDownSegment];
-  [control setEnabled: [dirView canMoveFocusDown] forSegment: focusResetSegment];
+  [control setEnabled: [self validateAction: @selector(moveFocusUp:)]
+           forSegment: focusUpSegment];
+  [control setEnabled: [self validateAction: @selector(moveFocusDown:)]
+           forSegment: focusDownSegment];
+  [control setEnabled: [self validateAction: @selector(resetFocus:)]
+           forSegment: focusResetSegment];
 
   return self; // Always enable the overall control
 }
@@ -532,10 +534,20 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
     return dirViewControl.directoryView.canZoomIn;
   }
   if ( action == @selector(moveFocusUp:) ) {
-    return dirViewControl.directoryView.canMoveFocusUp;
+    if (dirViewControl.isSelectedFileLocked) {
+      return dirViewControl.directoryView.canMoveFocusUp;
+    } else {
+      return dirViewControl.directoryView.canMoveDisplayDepthUp;
+    }
   }
-  else if ( action == @selector(moveFocusDown:) ||
-            action == @selector(resetFocus:) ) {
+  else if ( action == @selector(moveFocusDown:) ) {
+    if (dirViewControl.isSelectedFileLocked) {
+      return dirViewControl.directoryView.canMoveFocusDown;
+    } else {
+      return dirViewControl.directoryView.canMoveDisplayDepthDown;
+    }
+  }
+  else if ( action == @selector(resetFocus:) ) {
     return dirViewControl.directoryView.canMoveFocusDown;
   }
   else if ( action == @selector(openFile:) ||
@@ -620,25 +632,24 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 
 
 - (void) moveFocusUp:(id)sender {
-  // Check if we are really allowed to move the focus up. Disabling of the toolbar control may be
-  // lagging. This can in particular happen when the path is not locked and the mouses moves
-  // outside the directory view
-  if ([self validateAction: _cmd]) {
+  if (dirViewControl.isSelectedFileLocked) {
     [dirViewControl.directoryView moveFocusUp];
+  } else {
+    [dirViewControl.directoryView moveDisplayDepthUp];
   }
 }
 
 - (void) moveFocusDown:(id)sender {
-  // Check if we are really allowed to move the focus down. Disabling of the toolbar control may be
-  // lagging.
-  if ([self validateAction: _cmd]) {
+  if (dirViewControl.isSelectedFileLocked) {
     [dirViewControl.directoryView moveFocusDown];
+  } else {
+    [dirViewControl.directoryView moveDisplayDepthDown];
   }
 }
 
 - (void) resetFocus:(id)sender {
   DirectoryView  *directoryView = dirViewControl.directoryView;
-  while ([directoryView canMoveFocusDown]) {
+  while (directoryView.canMoveFocusDown) {
     [directoryView moveFocusDown];
   }
 }

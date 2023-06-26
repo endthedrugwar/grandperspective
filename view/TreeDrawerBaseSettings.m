@@ -1,13 +1,14 @@
 #import "TreeDrawerBaseSettings.h"
 
 
-const int MAX_DRAW_DEPTH_LIMIT = 0xFFFF;
+const int MAX_DRAW_DEPTH_LIMIT = 8;
+const int NO_DRAW_DEPTH_LIMIT = 0xFFFF;
 
 @implementation TreeDrawerBaseSettings
 
 // Creates default settings.
 - (instancetype) init {
-  return [self initWithMaxDepth: MAX_DRAW_DEPTH_LIMIT
+  return [self initWithMaxDepth: NO_DRAW_DEPTH_LIMIT
             showPackageContents: YES];
 }
 
@@ -22,12 +23,12 @@ const int MAX_DRAW_DEPTH_LIMIT = 0xFFFF;
 }
 
 
-- (id) settingsWithChangedMaxDepth:(int) maxDepthVal {
+- (instancetype) settingsWithChangedMaxDepth:(int) maxDepthVal {
   return [[[TreeDrawerBaseSettings alloc] initWithMaxDepth: maxDepthVal
                                        showPackageContents: showPackageContents] autorelease];
 }
 
-- (id) settingsWithChangedShowPackageContents:(BOOL) showPackageContentsVal {
+- (instancetype) settingsWithChangedShowPackageContents:(BOOL) showPackageContentsVal {
   return [[[TreeDrawerBaseSettings alloc] initWithMaxDepth: maxDepth
                                        showPackageContents: showPackageContentsVal] autorelease];
 }

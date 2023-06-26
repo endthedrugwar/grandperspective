@@ -22,10 +22,10 @@
                             maxDepth:(int)maxDepth
                  showPackageContents:(BOOL)showPackageContents NS_DESIGNATED_INITIALIZER;
 
-- (id) settingsWithChangedColorMapper:(NSObject <FileItemMapping> *)colorMapper;
-- (id) settingsWithChangedColorPalette:(NSColorList *)colorPalette;
-- (id) settingsWithChangedColorGradient:(float)colorGradient;
-- (id) settingsWithChangedMaskTest:(FileItemTest *)maskTest;
+- (instancetype) settingsWithChangedColorMapper:(NSObject <FileItemMapping> *)colorMapper;
+- (instancetype) settingsWithChangedColorPalette:(NSColorList *)colorPalette;
+- (instancetype) settingsWithChangedColorGradient:(float)colorGradient;
+- (instancetype) settingsWithChangedMaskTest:(FileItemTest *)maskTest;
 
 @property (nonatomic, readonly, strong) NSObject<FileItemMapping> *colorMapper;
 @property (nonatomic, readonly, strong) NSColorList *colorPalette;
