@@ -89,6 +89,9 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 - (void) updateSelectedItem:(NSPoint)point;
 - (void) moveSelectedItem:(DirectionEnum)direction;
 
+// Determines the maximum draw depth for the tree current visible in the view.
+- (int) maxDrawDepth;
+
 @end 
 
 
@@ -422,11 +425,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   if (!self.canMoveDisplayDepthUp) return;
 
   // Ensure the change is always visible
-  //
-  // TODO: More accurately determine max depth, also taking into account "show package content"
-  // setting
-  int newDepth = MIN(MAX_DRAW_DEPTH_LIMIT, MIN(self.treeInView.maxDepth,
-                                               self.treeDrawerSettings.maxDepth) - 1);
+  int newDepth = MIN(self.maxDrawDepth, self.treeDrawerSettings.maxDepth) - 1;
   self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedMaxDepth: newDepth];
 
   NSLog(@"displayDepth = %d", self.treeDrawerSettings.maxDepth);
@@ -437,7 +436,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
   // Ensure the change is always visible
   int newDepth = self.treeDrawerSettings.maxDepth + 1;
-  if (newDepth > MAX_DRAW_DEPTH_LIMIT || newDepth >= self.treeInView.maxDepth) {
+  if (newDepth > MAX_DRAW_DEPTH_LIMIT || newDepth >= self.maxDrawDepth) {
     newDepth = NO_DRAW_DEPTH_LIMIT;
   }
 
@@ -1119,6 +1118,12 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
                   startingAtTree: self.treeInView
               usingLayoutBuilder: layoutBuilder
                           bounds: self.bounds];
+}
+
+- (int) maxDrawDepth {
+  FileItem  *rootItem = self.treeInView;
+
+  return rootItem.isDirectory ? [((DirectoryItem *)rootItem) maxDepth: MAX_DRAW_DEPTH_LIMIT] : 0;
 }
 
 @end // @implementation DirectoryView (PrivateMethods)

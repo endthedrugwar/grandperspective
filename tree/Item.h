@@ -28,7 +28,4 @@ typedef unsigned long long file_count_t;
 // An item is virtual if it is not a file item (i.e. a file or directory).
 @property (nonatomic, getter=isVirtual, readonly) BOOL virtual;
 
-// TODO: Remove and use dedicated (package-aware) tree visitor instead.
-@property (nonatomic, readonly) int maxDepth;
-
 @end

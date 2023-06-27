@@ -99,4 +99,10 @@ typedef NS_OPTIONS(UInt8, DirectoryRescanOptions) {
  */
 @property (nonatomic) DirectoryRescanOptions rescanFlags;
 
+/* Returns the maximum depth (the directory nesting level) of this part of the file tree. The
+ * maximum level that is returned will not exceed upperBound. In other words, this parameter can be
+ * used to restrict the search.
+ */
+- (int) maxDepth: (int)upperBound;
+
 @end

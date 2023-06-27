@@ -178,8 +178,21 @@
   return YES;
 }
 
-- (int) maxDepth {
-  return 1 + _directoryItems.maxDepth;
+- (int) maxDepth: (int)upperBound {
+  // Limit the bound for when recursing the sub-dir children
+  --upperBound;
+
+  // A directory is always depth one. A tree is depth zero when it consists of a single file
+  __block int  maxDepth = 1;
+  [CompoundItem visitFileItemChildrenMaybeNil: _directoryItems
+                                     callback: ^(FileItem *dir) {
+    if (maxDepth < upperBound) {
+      // Only continue search if maximum has not yet been reached
+      maxDepth = MAX(maxDepth, 1 + [((DirectoryItem *)dir) maxDepth: upperBound]);
+    }
+  }];
+
+  return maxDepth;
 }
 
 @end // @implementation DirectoryItem

@@ -100,10 +100,6 @@
   return YES;
 }
 
-- (int) maxDepth {
-  return MAX(_first.maxDepth, _second.maxDepth);
-}
-
 // Custom "setter", which enforces that size remains the same
 //
 // Note: The number of files may change, but this is not updated either as it has no effect when it
