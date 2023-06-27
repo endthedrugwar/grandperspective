@@ -178,7 +178,7 @@
   return YES;
 }
 
-- (int) maxDepth: (int)upperBound {
+- (int) maxDepth: (int)upperBound packagesAsFiles: (BOOL)packagesAsFiles {
   // Limit the bound for when recursing the sub-dir children
   --upperBound;
 
@@ -186,9 +186,10 @@
   __block int  maxDepth = 1;
   [CompoundItem visitFileItemChildrenMaybeNil: _directoryItems
                                      callback: ^(FileItem *dir) {
-    if (maxDepth < upperBound) {
+    if (maxDepth < upperBound && !(packagesAsFiles && dir.isPackage)) {
       // Only continue search if maximum has not yet been reached
-      maxDepth = MAX(maxDepth, 1 + [((DirectoryItem *)dir) maxDepth: upperBound]);
+      maxDepth = MAX(maxDepth, 1 + [((DirectoryItem *)dir) maxDepth: upperBound
+                                                    packagesAsFiles: packagesAsFiles]);
     }
   }];
 

@@ -103,6 +103,6 @@ typedef NS_OPTIONS(UInt8, DirectoryRescanOptions) {
  * maximum level that is returned will not exceed upperBound. In other words, this parameter can be
  * used to restrict the search.
  */
-- (int) maxDepth: (int)upperBound;
+- (int) maxDepth: (int)upperBound packagesAsFiles: (BOOL)packagesAsFiles;
 
 @end

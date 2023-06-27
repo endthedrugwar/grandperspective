@@ -1123,7 +1123,10 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 - (int) maxDrawDepth {
   FileItem  *rootItem = self.treeInView;
 
-  return rootItem.isDirectory ? [((DirectoryItem *)rootItem) maxDepth: MAX_DRAW_DEPTH_LIMIT] : 0;
+  return (rootItem.isDirectory
+          ? [((DirectoryItem *)rootItem) maxDepth: MAX_DRAW_DEPTH_LIMIT
+                                  packagesAsFiles: !self.treeDrawerSettings.showPackageContents]
+          : 0);
 }
 
 @end // @implementation DirectoryView (PrivateMethods)
