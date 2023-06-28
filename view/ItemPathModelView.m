@@ -25,8 +25,11 @@ static const unsigned STICK_TO_ENDPOINT = 0xFFFF;
  * are hidden and the given item resides insides a package, then the index will end up pointing to
  * the package containing the item, as opposed to the item directly.
  */
-- (int) indexCorrespondingToItem:(FileItem *)targetItem
-                      startingAt:(int) index;
+- (unsigned) indexCorrespondingToItem:(FileItem *)targetItem
+                           startingAt:(unsigned) index;
+- (unsigned) indexCorrespondingToItem:(FileItem *)targetItem
+                           startingAt:(unsigned) index
+                               stopAt:(unsigned) maxIndex;
 
 /* Sends selection-changed events, which comprise selection-changes inside the path, as well as
  * selection of "invisible" items outside the path.
@@ -115,6 +118,14 @@ static const unsigned STICK_TO_ENDPOINT = 0xFFFF;
 
 - (BOOL) showPackageContents {
   return showPackageContents;
+}
+
+- (void) setDisplayDepth:(int)displayDepth {
+  if (_displayDepth != displayDepth) {
+    _displayDepth = displayDepth;
+
+    [self updatePath];
+  }
 }
 
 
@@ -343,18 +354,20 @@ static const unsigned STICK_TO_ENDPOINT = 0xFFFF;
 - (void) updatePath {
   NSArray  *updatedPath = [pathModel fileItemPath: fileItemPath];
   NSAssert(updatedPath == fileItemPath, @"Arrays differ unexpectedly.");
-    
+
   // Set the visible item
   visibleTreeIndex = [self indexCorrespondingToItem: pathModel.visibleTree
                                          startingAt: scanTreeIndex];
   
   // Set the selected item
   selectedItemIndex = [self indexCorrespondingToItem: pathModel.selectedFileItem
-                                          startingAt: visibleTreeIndex];
+                                          startingAt: visibleTreeIndex
+                                              stopAt: visibleTreeIndex + _displayDepth];
 
   // Find the last item that can be selected
   lastSelectableItemIndex = [self indexCorrespondingToItem: nil
-                                                startingAt: selectedItemIndex];
+                                                startingAt: selectedItemIndex
+                                                    stopAt: visibleTreeIndex + _displayDepth];
 }
 
 
@@ -368,7 +381,8 @@ static const unsigned STICK_TO_ENDPOINT = 0xFFFF;
             
   // Find the last item that can be selected
   lastSelectableItemIndex = [self indexCorrespondingToItem: nil
-                                                startingAt: visibleTreeIndex];
+                                                startingAt: visibleTreeIndex
+                                                    stopAt: visibleTreeIndex + _displayDepth];
     
   int  indexToSelect;
   if (preferredSelectionDepth == STICK_TO_ENDPOINT) {
@@ -377,13 +391,22 @@ static const unsigned STICK_TO_ENDPOINT = 0xFFFF;
   else {
     indexToSelect = MIN(visibleTreeIndex + preferredSelectionDepth, lastSelectableItemIndex);
   }
+
   [pathModel selectFileItem: fileItemPath[indexToSelect]];
 }
 
 
-- (int) indexCorrespondingToItem:(FileItem *)targetItem startingAt:(int)index {
-  NSUInteger  maxIndex = fileItemPath.count - 1;
-  
+- (unsigned) indexCorrespondingToItem:(FileItem *)targetItem startingAt:(unsigned)index {
+  return [self indexCorrespondingToItem: targetItem
+                             startingAt: index
+                                 stopAt: (unsigned)fileItemPath.count - 1];
+}
+
+- (unsigned) indexCorrespondingToItem:(FileItem *)targetItem
+                           startingAt:(unsigned) index
+                               stopAt:(unsigned) maxIndex {
+  maxIndex = MIN(maxIndex, (unsigned)fileItemPath.count - 1);
+
   while (YES) {
     FileItem  *fileItem = fileItemPath[index];
     

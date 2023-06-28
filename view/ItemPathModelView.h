@@ -80,6 +80,7 @@ typedef NS_ENUM(NSInteger, DirectionEnum) {
 
 
 @property (nonatomic) BOOL showPackageContents;
+@property (nonatomic) int displayDepth;
 
 - (void) selectItemAtPoint:(NSPoint) point
             startingAtTree:(FileItem *)treeRoot

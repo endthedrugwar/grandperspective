@@ -147,6 +147,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   DrawTaskExecutor  *drawTaskExecutor =
     [[[DrawTaskExecutor alloc] initWithTreeContext: treeContext] autorelease];
   drawTaskManager = [[AsynchronousTaskManager alloc] initWithTaskExecutor: drawTaskExecutor];
+  pathModelView.displayDepth = self.treeDrawerSettings.maxDepth;
 
   OverlayDrawTaskExecutor  *overlayDrawTaskExecutor =
     [[[OverlayDrawTaskExecutor alloc] initWithScanTree: treeContext.scanTree] autorelease];
@@ -244,7 +245,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
 
 - (TreeDrawerSettings *)treeDrawerSettings {
-  DrawTaskExecutor  *drawTaskExecutor = (DrawTaskExecutor*)drawTaskManager.taskExecutor;
+  DrawTaskExecutor  *drawTaskExecutor = (DrawTaskExecutor *)drawTaskManager.taskExecutor;
 
   return drawTaskExecutor.treeDrawerSettings;
 }
@@ -426,7 +427,9 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
   // Ensure the change is always visible
   int newDepth = MIN(self.maxDrawDepth, self.treeDrawerSettings.maxDepth) - 1;
+
   self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedMaxDepth: newDepth];
+  self.pathModelView.displayDepth = newDepth;
 
   NSLog(@"displayDepth = %d", self.treeDrawerSettings.maxDepth);
 }
@@ -441,6 +444,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   }
 
   self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedMaxDepth: newDepth];
+  self.pathModelView.displayDepth = newDepth;
 
   NSLog(@"displayDepth = %d", self.treeDrawerSettings.maxDepth);
 }
@@ -491,7 +495,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
     }
 
     if (!treeImageIsScaled) {
-      if ([pathModelView isSelectedFileItemVisible]) {
+      if (pathModelView.isSelectedFileItemVisible) {
         [pathDrawer drawVisiblePath: pathModelView
                      startingAtTree: self.treeInView
                         withEndRect: pathEndRect
@@ -996,9 +1000,9 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 }
 
 - (void) updatePathEndRect:(BOOL)animate {
-  ItemPathModel  *pathModel = pathModelView.pathModel;
-  NSRect  newPathEndRect = [self locationInViewForItem: pathModel.selectedFileItem
-                                                onPath: pathModel.itemPath];
+  // TODO: Does this work when selected item is a package with hidden contents?
+  NSRect  newPathEndRect = [self locationInViewForItem: pathModelView.selectedFileItem
+                                                onPath: pathModelView.pathModel.itemPath];
 
   if (!NSEqualRects(newPathEndRect, pathEndRect)) {
     [NSAnimationContext beginGrouping];
@@ -1072,9 +1076,8 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
 
 - (void) observeColorMapping {
-  TreeDrawerSettings  *treeDrawerSettings = [self treeDrawerSettings];
-  NSObject <FileItemMappingScheme>  *colorMapping = 
-    treeDrawerSettings.colorMapper.fileItemMappingScheme;
+  NSObject <FileItemMappingScheme>  *colorMapping =
+    self.treeDrawerSettings.colorMapper.fileItemMappingScheme;
     
   if (colorMapping != observedColorMapping) {
     NSNotificationCenter  *nc = NSNotificationCenter.defaultCenter;
