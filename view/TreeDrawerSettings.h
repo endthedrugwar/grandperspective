@@ -9,10 +9,6 @@
  * context.
  */
 @interface TreeDrawerSettings : TreeDrawerBaseSettings {
-  NSObject <FileItemMapping>  *colorMapper;
-  NSColorList  *colorPalette;
-  float  colorGradient;
-  FileItemTest  *maskTest;
 }
 
 - (instancetype) initWithColorMapper:(NSObject <FileItemMapping> *)colorMapper

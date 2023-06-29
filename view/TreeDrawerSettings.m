@@ -29,100 +29,83 @@
 }
 
 
-- (instancetype) initWithColorMapper:(NSObject <FileItemMapping> *)colorMapperVal
-                        colorPalette:(NSColorList *)colorPaletteVal
-                       colorGradient:(float)colorGradientVal
-                            maskTest:(FileItemTest *)maskTestVal
+- (instancetype) initWithColorMapper:(NSObject <FileItemMapping> *)colorMapper
+                        colorPalette:(NSColorList *)colorPalette
+                       colorGradient:(float)colorGradient
+                            maskTest:(FileItemTest *)maskTest
                         displayDepth:(int)displayDepth
                  showPackageContents:(BOOL)showPackageContents {
   if (self = [super initWithDisplayDepth: displayDepth showPackageContents: showPackageContents]) {
-    colorMapper = [colorMapperVal retain];
-    colorPalette = [colorPaletteVal retain];
-    colorGradient = colorGradientVal;
-    maskTest = [maskTestVal retain];
+    _colorMapper = [colorMapper retain];
+    _colorPalette = [colorPalette retain];
+    _colorGradient = colorGradient;
+    _maskTest = [maskTest retain];
   }
   
   return self;
 }
 
 - (void) dealloc {
-  [colorMapper release];
-  [colorPalette release];
-  [maskTest release];
+  [_colorMapper release];
+  [_colorPalette release];
+  [_maskTest release];
   
   [super dealloc];
 }
 
 
-- (instancetype) settingsWithChangedColorMapper:(NSObject <FileItemMapping> *)colorMapperVal {
-  return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapperVal
-                                             colorPalette: colorPalette
-                                            colorGradient: colorGradient
-                                                 maskTest: maskTest
+- (instancetype) settingsWithChangedColorMapper:(NSObject <FileItemMapping> *)colorMapper {
+  return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
+                                             colorPalette: self.colorPalette
+                                            colorGradient: self.colorGradient
+                                                 maskTest: self.maskTest
                                              displayDepth: self.displayDepth
                                       showPackageContents: self.showPackageContents] autorelease];
 }
 
-- (instancetype) settingsWithChangedColorPalette:(NSColorList *)colorPaletteVal {
-  return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
-                                             colorPalette: colorPaletteVal
-                                            colorGradient: colorGradient
-                                                 maskTest: maskTest
+- (instancetype) settingsWithChangedColorPalette:(NSColorList *)colorPalette {
+  return [[[TreeDrawerSettings alloc] initWithColorMapper: self.colorMapper
+                                             colorPalette: colorPalette
+                                            colorGradient: self.colorGradient
+                                                 maskTest: self.maskTest
                                              displayDepth: self.displayDepth
                                       showPackageContents: self.showPackageContents] autorelease];
 }
 
-- (instancetype) settingsWithChangedColorGradient:(float) colorGradientVal {
-  return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
-                                             colorPalette: colorPalette
-                                            colorGradient: colorGradientVal
-                                                 maskTest: maskTest
+- (instancetype) settingsWithChangedColorGradient:(float) colorGradient {
+  return [[[TreeDrawerSettings alloc] initWithColorMapper: self.colorMapper
+                                             colorPalette: self.colorPalette
+                                            colorGradient: colorGradient
+                                                 maskTest: self.maskTest
                                              displayDepth: self.displayDepth
                                       showPackageContents: self.showPackageContents] autorelease];
 }
 
-- (instancetype) settingsWithChangedMaskTest:(FileItemTest *)maskTestVal {
-  return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
-                                             colorPalette: colorPalette
-                                            colorGradient: colorGradient
-                                                 maskTest: maskTestVal
+- (instancetype) settingsWithChangedMaskTest:(FileItemTest *)maskTest {
+  return [[[TreeDrawerSettings alloc] initWithColorMapper: self.colorMapper
+                                             colorPalette: self.colorPalette
+                                            colorGradient: self.colorGradient
+                                                 maskTest: maskTest
                                              displayDepth: self.displayDepth
                                       showPackageContents: self.showPackageContents] autorelease];
 }
 
 - (instancetype) settingsWithChangedDisplayDepth:(int) displayDepth {
-  return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
-                                             colorPalette: colorPalette
-                                            colorGradient: colorGradient
-                                                 maskTest: maskTest
+  return [[[TreeDrawerSettings alloc] initWithColorMapper: self.colorMapper
+                                             colorPalette: self.colorPalette
+                                            colorGradient: self.colorGradient
+                                                 maskTest: self.maskTest
                                              displayDepth: displayDepth
                                       showPackageContents: self.showPackageContents] autorelease];
 }
 
 - (instancetype) settingsWithChangedShowPackageContents:(BOOL) showPackageContents {
-  return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
-                                             colorPalette: colorPalette
-                                            colorGradient: colorGradient
-                                                 maskTest: maskTest
+  return [[[TreeDrawerSettings alloc] initWithColorMapper: self.colorMapper
+                                             colorPalette: self.colorPalette
+                                            colorGradient: self.colorGradient
+                                                 maskTest: self.maskTest
                                              displayDepth: self.displayDepth
-                                      showPackageContents: self.showPackageContents] autorelease];
-}
-
-
-- (NSObject <FileItemMapping> *)colorMapper {
-  return colorMapper;
-}
-
-- (NSColorList *)colorPalette {
-  return colorPalette;
-}
-
-- (float) colorGradient {
-  return colorGradient;
-}
-
-- (FileItemTest *)maskTest {
-  return maskTest;
+                                      showPackageContents: showPackageContents] autorelease];
 }
 
 @end // @implementation TreeDrawerSettings
