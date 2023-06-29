@@ -6,6 +6,7 @@
 #import "ItemPathBuilder.h"
 #import "ItemLocator.h"
 #import "PreferencesPanelControl.h"
+#import "TreeDrawerBaseSettings.h"
 
 
 static const unsigned STICK_TO_ENDPOINT = 0xFFFF;
@@ -55,7 +56,8 @@ static const unsigned STICK_TO_ENDPOINT = 0xFFFF;
     scanTreeIndex = [self indexCorrespondingToItem: pathModel.scanTree startingAt: 0];
     
     invisibleSelectedItem = nil;
-    showPackageContents = YES;
+    _showPackageContents = YES;
+    _displayDepth = NO_DRAW_DEPTH_LIMIT;
     
     [self updatePath];
     
@@ -108,16 +110,12 @@ static const unsigned STICK_TO_ENDPOINT = 0xFFFF;
 }
 
 
-- (void) setShowPackageContents:(BOOL)showPackageContentsVal {
-  if (showPackageContents != showPackageContentsVal) {
-    showPackageContents = showPackageContentsVal;
+- (void) setShowPackageContents:(BOOL)showPackageContents {
+  if (_showPackageContents != showPackageContents) {
+    _showPackageContents = showPackageContents;
     
     [self updatePath];
   }
-}
-
-- (BOOL) showPackageContents {
-  return showPackageContents;
 }
 
 - (void) setDisplayDepth:(int)displayDepth {
@@ -242,7 +240,7 @@ static const unsigned STICK_TO_ENDPOINT = 0xFFFF;
 - (FileItem *)selectedFileItem {
   FileItem  *selectedItem = self.selectedFileItemInTree;
   
-  return (!showPackageContents && selectedItem.isDirectory)
+  return (!_showPackageContents && selectedItem.isDirectory)
          ? ((DirectoryItem *)selectedItem).itemWhenHidingPackageContents
          : selectedItem;
 }
@@ -415,7 +413,7 @@ static const unsigned STICK_TO_ENDPOINT = 0xFFFF;
       break;
     }
 
-    if (!showPackageContents &&
+    if (!_showPackageContents &&
         fileItem.isDirectory &&
         ((DirectoryItem *)fileItem).isPackage) {
       // Got to a package whose contents should remain hidden

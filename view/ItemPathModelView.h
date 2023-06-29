@@ -27,8 +27,6 @@ typedef NS_ENUM(NSInteger, DirectionEnum) {
   ItemPathModel  *pathModel;
   ItemLocator  *itemLocator;
 
-  BOOL  showPackageContents;
-  
   // Contains all file items in the path
   NSMutableArray  *fileItemPath;
 
