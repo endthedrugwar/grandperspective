@@ -1001,7 +1001,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
 - (void) updatePathEndRect:(BOOL)animate {
   // TODO: Does this work when selected item is a package with hidden contents?
-  NSRect  newPathEndRect = [self locationInViewForItem: pathModelView.selectedFileItem
+  NSRect  newPathEndRect = [self locationInViewForItem: pathModelView.selectedFileItemInTree
                                                 onPath: pathModelView.pathModel.itemPath];
 
   if (!NSEqualRects(newPathEndRect, pathEndRect)) {
