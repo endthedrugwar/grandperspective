@@ -16,16 +16,16 @@
 @implementation TreeDrawerSettings
 
 // Creates default settings.
-- (instancetype) initWithMaxDepth:(int)maxDepthVal
-              showPackageContents:(BOOL)showPackageContentsVal {
+- (instancetype) initWithDisplayDepth:(int)displayDepth
+                  showPackageContents:(BOOL)showPackageContents {
   NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
 
   return [self initWithColorMapper: [[[StatelessFileItemMapping alloc] init] autorelease]
                       colorPalette: TreeDrawerSettings.defaultColorPalette
                      colorGradient: [userDefaults floatForKey: DefaultColorGradient]
                           maskTest: nil
-                          maxDepth: maxDepthVal
-               showPackageContents: showPackageContentsVal];
+                      displayDepth: displayDepth
+               showPackageContents: showPackageContents];
 }
 
 
@@ -33,9 +33,9 @@
                         colorPalette:(NSColorList *)colorPaletteVal
                        colorGradient:(float)colorGradientVal
                             maskTest:(FileItemTest *)maskTestVal
-                            maxDepth:(int)maxDepthVal
-                 showPackageContents:(BOOL)showPackageContentsVal {
-  if (self = [super initWithMaxDepth: maxDepthVal showPackageContents: showPackageContentsVal]) {
+                        displayDepth:(int)displayDepth
+                 showPackageContents:(BOOL)showPackageContents {
+  if (self = [super initWithDisplayDepth: displayDepth showPackageContents: showPackageContents]) {
     colorMapper = [colorMapperVal retain];
     colorPalette = [colorPaletteVal retain];
     colorGradient = colorGradientVal;
@@ -59,8 +59,8 @@
                                              colorPalette: colorPalette
                                             colorGradient: colorGradient
                                                  maskTest: maskTest
-                                                 maxDepth: maxDepth
-                                      showPackageContents: showPackageContents] autorelease];
+                                             displayDepth: self.displayDepth
+                                      showPackageContents: self.showPackageContents] autorelease];
 }
 
 - (instancetype) settingsWithChangedColorPalette:(NSColorList *)colorPaletteVal {
@@ -68,8 +68,8 @@
                                              colorPalette: colorPaletteVal
                                             colorGradient: colorGradient
                                                  maskTest: maskTest
-                                                 maxDepth: maxDepth
-                                      showPackageContents: showPackageContents] autorelease];
+                                             displayDepth: self.displayDepth
+                                      showPackageContents: self.showPackageContents] autorelease];
 }
 
 - (instancetype) settingsWithChangedColorGradient:(float) colorGradientVal {
@@ -77,8 +77,8 @@
                                              colorPalette: colorPalette
                                             colorGradient: colorGradientVal
                                                  maskTest: maskTest
-                                                 maxDepth: maxDepth
-                                      showPackageContents: showPackageContents] autorelease];
+                                             displayDepth: self.displayDepth
+                                      showPackageContents: self.showPackageContents] autorelease];
 }
 
 - (instancetype) settingsWithChangedMaskTest:(FileItemTest *)maskTestVal {
@@ -86,26 +86,26 @@
                                              colorPalette: colorPalette
                                             colorGradient: colorGradient
                                                  maskTest: maskTestVal
-                                                 maxDepth: maxDepth
-                                      showPackageContents: showPackageContents] autorelease];
+                                             displayDepth: self.displayDepth
+                                      showPackageContents: self.showPackageContents] autorelease];
 }
 
-- (instancetype) settingsWithChangedMaxDepth:(int) maxDepthVal {
+- (instancetype) settingsWithChangedDisplayDepth:(int) displayDepth {
   return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
                                              colorPalette: colorPalette
                                             colorGradient: colorGradient
                                                  maskTest: maskTest
-                                                 maxDepth: maxDepthVal
-                                      showPackageContents: showPackageContents] autorelease];
+                                             displayDepth: displayDepth
+                                      showPackageContents: self.showPackageContents] autorelease];
 }
 
-- (instancetype) settingsWithChangedShowPackageContents:(BOOL) showPackageContentsVal {
+- (instancetype) settingsWithChangedShowPackageContents:(BOOL) showPackageContents {
   return [[[TreeDrawerSettings alloc] initWithColorMapper: colorMapper
                                              colorPalette: colorPalette
                                             colorGradient: colorGradient
                                                  maskTest: maskTest
-                                                 maxDepth: maxDepth
-                                      showPackageContents: showPackageContentsVal] autorelease];
+                                             displayDepth: self.displayDepth
+                                      showPackageContents: self.showPackageContents] autorelease];
 }
 
 

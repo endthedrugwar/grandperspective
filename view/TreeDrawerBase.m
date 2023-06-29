@@ -49,7 +49,7 @@
 
 - (void) updateSettings:(TreeDrawerBaseSettings *)settings {
   [self setShowPackageContents: settings.showPackageContents];
-  self.maxDepth = settings.maxDepth;
+  self.displayDepth = settings.displayDepth;
 }
 
 
@@ -146,7 +146,7 @@
       return NO;
     }
 
-    if (depth == self.maxDepth) {
+    if (depth == self.displayDepth) {
       [self drawFile: ((DirectoryItem *)file).directoryAsPlainFile atRect: rect depth: depth];
 
       return NO;

@@ -147,7 +147,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   DrawTaskExecutor  *drawTaskExecutor =
     [[[DrawTaskExecutor alloc] initWithTreeContext: treeContext] autorelease];
   drawTaskManager = [[AsynchronousTaskManager alloc] initWithTaskExecutor: drawTaskExecutor];
-  pathModelView.displayDepth = self.treeDrawerSettings.maxDepth;
+  pathModelView.displayDepth = self.treeDrawerSettings.displayDepth;
 
   OverlayDrawTaskExecutor  *overlayDrawTaskExecutor =
     [[[OverlayDrawTaskExecutor alloc] initWithScanTree: treeContext.scanTree] autorelease];
@@ -415,38 +415,38 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 }
 
 - (BOOL) canMoveDisplayDepthUp {
-  return self.treeDrawerSettings.maxDepth > 1;
+  return self.treeDrawerSettings.displayDepth > 1;
 }
 
 - (BOOL) canMoveDisplayDepthDown {
-  return self.treeDrawerSettings.maxDepth != NO_DRAW_DEPTH_LIMIT;
+  return self.treeDrawerSettings.displayDepth != NO_DISPLAY_DEPTH_LIMIT;
 }
 
 - (void) moveDisplayDepthUp {
   if (!self.canMoveDisplayDepthUp) return;
 
   // Ensure the change is always visible
-  int newDepth = MIN(self.maxDrawDepth, self.treeDrawerSettings.maxDepth) - 1;
+  int newDepth = MIN(self.maxDrawDepth, self.treeDrawerSettings.displayDepth) - 1;
 
-  self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedMaxDepth: newDepth];
+  self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedDisplayDepth: newDepth];
   self.pathModelView.displayDepth = newDepth;
 
-  NSLog(@"displayDepth = %d", self.treeDrawerSettings.maxDepth);
+  NSLog(@"displayDepth = %d", self.treeDrawerSettings.displayDepth);
 }
 
 - (void) moveDisplayDepthDown {
   if (!self.canMoveDisplayDepthDown) return;
 
   // Ensure the change is always visible
-  int newDepth = self.treeDrawerSettings.maxDepth + 1;
-  if (newDepth > MAX_DRAW_DEPTH_LIMIT || newDepth >= self.maxDrawDepth) {
-    newDepth = NO_DRAW_DEPTH_LIMIT;
+  int newDepth = self.treeDrawerSettings.displayDepth + 1;
+  if (newDepth > MAX_DISPLAY_DEPTH_LIMIT || newDepth >= self.maxDrawDepth) {
+    newDepth = NO_DISPLAY_DEPTH_LIMIT;
   }
 
-  self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedMaxDepth: newDepth];
+  self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedDisplayDepth: newDepth];
   self.pathModelView.displayDepth = newDepth;
 
-  NSLog(@"displayDepth = %d", self.treeDrawerSettings.maxDepth);
+  NSLog(@"displayDepth = %d", self.treeDrawerSettings.displayDepth);
 }
 
 
@@ -1127,7 +1127,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   FileItem  *rootItem = self.treeInView;
 
   return (rootItem.isDirectory
-          ? [((DirectoryItem *)rootItem) maxDepth: MAX_DRAW_DEPTH_LIMIT
+          ? [((DirectoryItem *)rootItem) maxDepth: MAX_DISPLAY_DEPTH_LIMIT
                                   packagesAsFiles: !self.treeDrawerSettings.showPackageContents]
           : 0);
 }

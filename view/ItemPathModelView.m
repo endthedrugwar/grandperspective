@@ -57,7 +57,7 @@ static const unsigned STICK_TO_ENDPOINT = 0xFFFF;
     
     invisibleSelectedItem = nil;
     _showPackageContents = YES;
-    _displayDepth = NO_DRAW_DEPTH_LIMIT;
+    _displayDepth = NO_DISPLAY_DEPTH_LIMIT;
     
     [self updatePath];
     

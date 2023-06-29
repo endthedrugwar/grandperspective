@@ -390,7 +390,7 @@ NSString  *DisplaySettingsChangedEvent = @"displaySettingsChanged";
                                              colorPalette: palette
                                             colorGradient: gradient
                                                  maskTest: maskTest
-                                                 maxDepth: displayDepth
+                                             displayDepth: displayDepth
                                       showPackageContents: displaySettings.showPackageContents]
           autorelease];
 }

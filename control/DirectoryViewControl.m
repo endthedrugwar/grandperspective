@@ -765,7 +765,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   mainView.treeDrawerSettings =
     [controlPanel instantiateDisplaySettings: displaySettings
                                      forTree: treeContext.scanTree
-                                displayDepth: mainView.treeDrawerSettings.maxDepth];
+                                displayDepth: mainView.treeDrawerSettings.displayDepth];
   [mainView setShowEntireVolume: displaySettings.showEntireVolume];
 
   // How packages are shown may impact how the selected item is represented

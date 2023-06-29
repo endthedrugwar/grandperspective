@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype) initWithScanTree:(DirectoryItem *)scanTree
                      colorPalette:(nullable NSColorList *)colorPalette NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic) int maxDepth;
+@property (nonatomic) int displayDepth;
 @property (nonatomic) BOOL showPackageContents;
 
 // Updates the drawer according to the given settings.
