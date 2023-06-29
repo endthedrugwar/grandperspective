@@ -118,7 +118,7 @@ static const unsigned STICK_TO_ENDPOINT = 0xFFFF;
   }
 }
 
-- (void) setDisplayDepth:(int)displayDepth {
+- (void) setDisplayDepth:(unsigned)displayDepth {
   if (_displayDepth != displayDepth) {
     _displayDepth = displayDepth;
 

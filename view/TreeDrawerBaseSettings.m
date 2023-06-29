@@ -1,8 +1,8 @@
 #import "TreeDrawerBaseSettings.h"
 
 
-const int MAX_DISPLAY_DEPTH_LIMIT = 8;
-const int NO_DISPLAY_DEPTH_LIMIT = 0xFFFF;
+const unsigned MAX_DISPLAY_DEPTH_LIMIT = 8;
+const unsigned NO_DISPLAY_DEPTH_LIMIT = 0xFFFF;
 
 @implementation TreeDrawerBaseSettings
 
@@ -12,7 +12,7 @@ const int NO_DISPLAY_DEPTH_LIMIT = 0xFFFF;
                 showPackageContents: YES];
 }
 
-- (instancetype) initWithDisplayDepth:(int)displayDepth
+- (instancetype) initWithDisplayDepth:(unsigned)displayDepth
                   showPackageContents:(BOOL)showPackageContents {
   if (self = [super init]) {
     _displayDepth = displayDepth;
@@ -23,7 +23,7 @@ const int NO_DISPLAY_DEPTH_LIMIT = 0xFFFF;
 }
 
 
-- (instancetype) settingsWithChangedDisplayDepth:(int) displayDepth {
+- (instancetype) settingsWithChangedDisplayDepth:(unsigned) displayDepth {
   return [[[TreeDrawerBaseSettings alloc] initWithDisplayDepth: displayDepth
                                            showPackageContents: _showPackageContents] autorelease];
 }

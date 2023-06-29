@@ -15,7 +15,7 @@
                         colorPalette:(NSColorList *)colorPalette
                        colorGradient:(float)colorGradient
                             maskTest:(FileItemTest *)maskTest
-                        displayDepth:(int)displayDepth
+                        displayDepth:(unsigned)displayDepth
                  showPackageContents:(BOOL)showPackageContents NS_DESIGNATED_INITIALIZER;
 
 - (instancetype) settingsWithChangedColorMapper:(NSObject <FileItemMapping> *)colorMapper;

@@ -360,7 +360,7 @@ NSString  *DisplaySettingsChangedEvent = @"displaySettingsChanged";
 
 - (TreeDrawerSettings *)instantiateDisplaySettings:(DirectoryViewDisplaySettings *)displaySettings
                                            forTree:(DirectoryItem *)tree
-                                      displayDepth:(int)displayDepth {
+                                      displayDepth:(unsigned)displayDepth {
   NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
 
   NSObject <FileItemMappingScheme>

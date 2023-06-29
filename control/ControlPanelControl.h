@@ -117,7 +117,7 @@ extern NSString  *DisplaySettingsChangedEvent;
 //   the same buttons)
 - (TreeDrawerSettings *)instantiateDisplaySettings:(DirectoryViewDisplaySettings *)displaySettings
                                            forTree:(DirectoryItem *)tree
-                                      displayDepth:(int)displayDepth;
+                                      displayDepth:(unsigned)displayDepth;
 
 @end
 

@@ -16,7 +16,7 @@
 @implementation TreeDrawerSettings
 
 // Creates default settings.
-- (instancetype) initWithDisplayDepth:(int)displayDepth
+- (instancetype) initWithDisplayDepth:(unsigned)displayDepth
                   showPackageContents:(BOOL)showPackageContents {
   NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
 
@@ -33,7 +33,7 @@
                         colorPalette:(NSColorList *)colorPalette
                        colorGradient:(float)colorGradient
                             maskTest:(FileItemTest *)maskTest
-                        displayDepth:(int)displayDepth
+                        displayDepth:(unsigned)displayDepth
                  showPackageContents:(BOOL)showPackageContents {
   if (self = [super initWithDisplayDepth: displayDepth showPackageContents: showPackageContents]) {
     _colorMapper = [colorMapper retain];
@@ -90,7 +90,7 @@
                                       showPackageContents: self.showPackageContents] autorelease];
 }
 
-- (instancetype) settingsWithChangedDisplayDepth:(int) displayDepth {
+- (instancetype) settingsWithChangedDisplayDepth:(unsigned) displayDepth {
   return [[[TreeDrawerSettings alloc] initWithColorMapper: self.colorMapper
                                              colorPalette: self.colorPalette
                                             colorGradient: self.colorGradient

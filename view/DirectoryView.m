@@ -426,7 +426,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   if (!self.canMoveDisplayDepthUp) return;
 
   // Ensure the change is always visible
-  int newDepth = MIN(self.maxDrawDepth, self.treeDrawerSettings.displayDepth) - 1;
+  unsigned newDepth = MIN(self.maxDrawDepth, self.treeDrawerSettings.displayDepth) - 1;
 
   self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedDisplayDepth: newDepth];
   self.pathModelView.displayDepth = newDepth;
@@ -438,7 +438,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   if (!self.canMoveDisplayDepthDown) return;
 
   // Ensure the change is always visible
-  int newDepth = self.treeDrawerSettings.displayDepth + 1;
+  unsigned newDepth = self.treeDrawerSettings.displayDepth + 1;
   if (newDepth > MAX_DISPLAY_DEPTH_LIMIT || newDepth >= self.maxDrawDepth) {
     newDepth = NO_DISPLAY_DEPTH_LIMIT;
   }
