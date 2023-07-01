@@ -526,12 +526,14 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   
 
 - (BOOL) validateAction:(SEL)action {
-  if ( action == @selector(zoomOut:) ||
-       action == @selector(resetZoom:) ) {
+  if ( action == @selector(zoomOut:) ) {
     return dirViewControl.directoryView.canZoomOut;
   }
-  else if ( action == @selector(zoomIn:) ) {
+  if ( action == @selector(zoomIn:) ) {
     return dirViewControl.directoryView.canZoomIn;
+  }
+  if ( action == @selector(resetZoom:) ) {
+    return dirViewControl.directoryView.canResetZoom;
   }
   if ( action == @selector(moveFocusUp:) ) {
     if (dirViewControl.isSelectedFileLocked) {
@@ -540,42 +542,45 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
       return dirViewControl.directoryView.canMoveDisplayDepthUp;
     }
   }
-  else if ( action == @selector(moveFocusDown:) ) {
+  if ( action == @selector(moveFocusDown:) ) {
     if (dirViewControl.isSelectedFileLocked) {
       return dirViewControl.directoryView.canMoveFocusDown;
     } else {
       return dirViewControl.directoryView.canMoveDisplayDepthDown;
     }
   }
-  else if ( action == @selector(resetFocus:) ) {
-    return dirViewControl.directoryView.canMoveFocusDown;
+  if ( action == @selector(resetFocus:) ) {
+    if (dirViewControl.isSelectedFileLocked) {
+      return dirViewControl.directoryView.canResetFocus;
+    } else {
+      return dirViewControl.directoryView.canResetDisplayDepth;
+    }
   }
-  else if ( action == @selector(openFile:) ||
-            action == @selector(previewFile:) ||
-            action == @selector(revealFileInFinder:) ||
-            action == @selector(deleteFile:) ) {
+  if ( action == @selector(openFile:) ||
+       action == @selector(previewFile:) ||
+       action == @selector(revealFileInFinder:) ||
+       action == @selector(deleteFile:) ) {
     return ( [dirViewControl validateAction: action] &&
     
              // Selection must be locked, as it would otherwise change when the mouse is moved in
              // order to click on the toolbar button.
              dirViewControl.isSelectedFileLocked );
   }
-  else if ( action == @selector(rescan:) ) {
+  if ( action == @selector(rescan:) ) {
     return NSApplication.sharedApplication.mainWindow.windowController == dirViewControl;
   }
-  else if ( action == @selector(refresh:) ) {
+  if ( action == @selector(refresh:) ) {
     return ( NSApplication.sharedApplication.mainWindow.windowController == dirViewControl &&
 
              // There must be a monitored change
             dirViewControl.treeContext.numTreeChanges > 0);
   }
-  else if ( action == @selector(search:) ) {
+  if ( action == @selector(search:) ) {
     return YES;
   }
-  else {
-    NSLog(@"Unrecognized action %@", NSStringFromSelector(action));
-    return NO;
-  }
+
+  NSLog(@"Unrecognized action %@", NSStringFromSelector(action));
+  return NO;
 }
 
 
@@ -624,10 +629,7 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 }
 
 - (void) resetZoom:(id)sender {
-  DirectoryView  *directoryView = dirViewControl.directoryView;
-  while ([directoryView canZoomOut]) {
-    [directoryView zoomOut];
-  }
+  [dirViewControl.directoryView resetZoom];
 }
 
 
@@ -648,11 +650,13 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 }
 
 - (void) resetFocus:(id)sender {
-  DirectoryView  *directoryView = dirViewControl.directoryView;
-  while (directoryView.canMoveFocusDown) {
-    [directoryView moveFocusDown];
+  if (dirViewControl.isSelectedFileLocked) {
+    [dirViewControl.directoryView resetFocus];
+  } else {
+    [dirViewControl.directoryView resetDisplayDepth];
   }
 }
+
 
 - (void) search:(id)sender {
   [dirViewControl searchForFiles: ((NSSearchField *)sender).stringValue];

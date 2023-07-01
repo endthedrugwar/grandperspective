@@ -23,6 +23,7 @@ NSString  *DefaultColorMappingKey = @"defaultColorMapping";
 NSString  *DefaultColorPaletteKey = @"defaultColorPalette";
 NSString  *ShowPackageContentsByDefaultKey = @"showPackageContentsByDefault";
 NSString  *ShowEntireVolumeByDefaultKey = @"showEntireVolumeByDefault";
+NSString  *DefaultDisplayDepthKey = @"defaultDisplayDepth";
 
 // Deprecated since 3.1.0
 NSString  *DefaultFilterKey_Deprecated = @"defaultFilter";

@@ -26,6 +26,9 @@ extern const unsigned NO_DISPLAY_DEPTH_LIMIT;
 
 @property (nonatomic, readonly) BOOL showPackageContents;
 
+@property (class, nonatomic, readonly) BOOL showPackageContentsByDefault;
+@property (class, nonatomic, readonly) unsigned defaultDisplayDepth;
+
 @end
 
 NS_ASSUME_NONNULL_END

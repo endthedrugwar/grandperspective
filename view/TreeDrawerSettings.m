@@ -16,6 +16,11 @@
 @implementation TreeDrawerSettings
 
 // Creates default settings.
+- (instancetype) init {
+  return [self initWithDisplayDepth: TreeDrawerBaseSettings.defaultDisplayDepth
+                showPackageContents: TreeDrawerBaseSettings.showPackageContentsByDefault];
+}
+
 - (instancetype) initWithDisplayDepth:(unsigned)displayDepth
                   showPackageContents:(BOOL)showPackageContents {
   NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;

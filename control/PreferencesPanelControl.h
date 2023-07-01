@@ -27,6 +27,7 @@ extern NSString  *UpdateFiltersBeforeUse;
 extern NSString  *DelayBeforeWelcomeWindowAfterStartupKey;
 extern NSString  *KeyboardNavigationDeltaKey;
 extern NSString  *PackageCheckBehaviorKey;
+extern NSString  *DefaultDisplayDepthKey;
 
 @class FilterPopUpControl;
 

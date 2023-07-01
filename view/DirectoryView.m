@@ -345,6 +345,10 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   return pathModelView.canMoveVisibleTreeUp;
 }
 
+- (BOOL) canResetZoom {
+  return pathModelView.canMoveVisibleTreeUp;
+}
+
 
 - (void) zoomIn {
   // Initiate zoom animation
@@ -391,12 +395,25 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   [pathModelView.pathModel setVisiblePathLocking: YES];
 }
 
+- (void) resetZoom {
+  // Simple way to reset the zoom. The animation is not as nice as it can possibly be (as each
+  // step is invidually animated and all but the last animation steps are aborted). However, it is
+  // not worh the hassle/complexity to improve this.
+  while (self.canZoomOut) {
+    [self zoomOut];
+  }
+}
+
 
 - (BOOL) canMoveFocusUp {
   return pathModelView.canMoveSelectionUp;
 }
 
 - (BOOL) canMoveFocusDown {
+  return !pathModelView.selectionSticksToEndPoint;
+}
+
+- (BOOL) canResetFocus {
   return !pathModelView.selectionSticksToEndPoint;
 }
 
@@ -414,12 +431,21 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   }
 }
 
+- (void) resetFocus {
+  [pathModelView setSelectionSticksToEndPoint: YES];
+}
+
+
 - (BOOL) canMoveDisplayDepthUp {
   return self.treeDrawerSettings.displayDepth > 1;
 }
 
 - (BOOL) canMoveDisplayDepthDown {
   return self.treeDrawerSettings.displayDepth != NO_DISPLAY_DEPTH_LIMIT;
+}
+
+- (BOOL) canResetDisplayDepth {
+  return self.treeDrawerSettings.displayDepth != TreeDrawerSettings.defaultDisplayDepth;
 }
 
 - (void) moveDisplayDepthUp {
@@ -447,6 +473,13 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   self.pathModelView.displayDepth = newDepth;
 
   NSLog(@"displayDepth = %d", self.treeDrawerSettings.displayDepth);
+}
+
+- (void) resetDisplayDepth {
+  unsigned newDepth = TreeDrawerSettings.defaultDisplayDepth;
+
+  self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedDisplayDepth: newDepth];
+  self.pathModelView.displayDepth = newDepth;
 }
 
 
@@ -1000,7 +1033,6 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 }
 
 - (void) updatePathEndRect:(BOOL)animate {
-  // TODO: Does this work when selected item is a package with hidden contents?
   NSRect  newPathEndRect = [self locationInViewForItem: pathModelView.selectedFileItemInTree
                                                 onPath: pathModelView.pathModel.itemPath];
 

@@ -105,20 +105,26 @@ extern NSString  *ColorMappingChangedEvent;
 
 @property (nonatomic, readonly) BOOL canZoomIn;
 @property (nonatomic, readonly) BOOL canZoomOut;
+@property (nonatomic, readonly) BOOL canResetZoom;
 
 - (void) zoomIn;
 - (void) zoomOut;
+- (void) resetZoom;
 
 @property (nonatomic, readonly) BOOL canMoveFocusUp;
 @property (nonatomic, readonly) BOOL canMoveFocusDown;
+@property (nonatomic, readonly) BOOL canResetFocus;
 
 - (void) moveFocusUp;
 - (void) moveFocusDown;
+- (void) resetFocus;
 
 @property (nonatomic, readonly) BOOL canMoveDisplayDepthUp;
 @property (nonatomic, readonly) BOOL canMoveDisplayDepthDown;
+@property (nonatomic, readonly) BOOL canResetDisplayDepth;
 
 - (void) moveDisplayDepthUp;
 - (void) moveDisplayDepthDown;
+- (void) resetDisplayDepth;
 
 @end

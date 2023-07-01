@@ -7,13 +7,12 @@
 - (instancetype) init {
   NSUserDefaults  *ud = NSUserDefaults.standardUserDefaults;
 
-  return
-    [self initWithColorMappingKey: [ud stringForKey: DefaultColorMappingKey]
-                  colorPaletteKey: [ud stringForKey: DefaultColorPaletteKey]
-                         maskName: [ud stringForKey: MaskFilterKey]
-                      maskEnabled: NO
-                 showEntireVolume: [[ud objectForKey: ShowEntireVolumeByDefaultKey] boolValue]
-              showPackageContents: [[ud objectForKey: ShowPackageContentsByDefaultKey] boolValue]];
+  return [self initWithColorMappingKey: [ud stringForKey: DefaultColorMappingKey]
+                       colorPaletteKey: [ud stringForKey: DefaultColorPaletteKey]
+                              maskName: [ud stringForKey: MaskFilterKey]
+                           maskEnabled: NO
+                      showEntireVolume: [ud boolForKey: ShowEntireVolumeByDefaultKey]
+                   showPackageContents: [ud boolForKey: ShowPackageContentsByDefaultKey]];
 }
 
 - (instancetype) initWithColorMappingKey:(NSString *)colorMappingKey
