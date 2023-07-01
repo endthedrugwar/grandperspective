@@ -31,11 +31,11 @@
 
 @implementation MappingByLevel
 
-- (NSUInteger) hashForFileItem:(PlainFileItem *)item atDepth:(NSUInteger)depth {
+- (NSUInteger) hashForFileItem:(FileItem *)item atDepth:(NSUInteger)depth {
   return depth;
 }
 
-- (NSUInteger) hashForFileItem:(PlainFileItem *)item inTree:(FileItem *)treeRoot {
+- (NSUInteger) hashForFileItem:(FileItem *)item inTree:(FileItem *)treeRoot {
   // Establish the depth of the file item in the tree.
 
   // Matching parent directories as a stop-criterion, as opposed to matching the file items
@@ -84,7 +84,7 @@
 
 @implementation MappingByExtension
 
-- (NSUInteger) hashForFileItem:(PlainFileItem *)item atDepth:(NSUInteger)depth {
+- (NSUInteger) hashForFileItem:(FileItem *)item atDepth:(NSUInteger)depth {
   return item.systemPathComponent.pathExtension.hash;
 }
 
@@ -93,7 +93,7 @@
 
 @implementation MappingByFilename
 
-- (NSUInteger) hashForFileItem:(PlainFileItem *)item atDepth:(NSUInteger)depth {
+- (NSUInteger) hashForFileItem:(FileItem *)item atDepth:(NSUInteger)depth {
   return item.systemPathComponent.hash;
 }
 
@@ -102,8 +102,12 @@
 
 @implementation MappingByDirectoryName
 
-- (NSUInteger) hashForFileItem:(PlainFileItem *)item atDepth:(NSUInteger)depth {
-  return item.parentDirectory.systemPathComponent.hash;
+- (NSUInteger) hashForFileItem:(FileItem *)item atDepth:(NSUInteger)depth {
+  if (!item.isDirectory) {
+    item = item.parentDirectory;
+  }
+
+  return item.systemPathComponent.hash;
 }
 
 @end // @implementation MappingByDirectoryName 
@@ -111,37 +115,24 @@
 
 @implementation MappingByTopDirectoryName
 
-- (NSUInteger) hashForFileItem:(PlainFileItem *)item atDepth:(NSUInteger)depth {
-  if (depth == 0) {
-    return item.label.hash;
+- (NSUInteger) hashForFileItem:(FileItem *)item atDepth:(NSUInteger)depth {
+  while (depth > 1 || (depth == 1 && !item.isDirectory)) {
+    item = item.parentDirectory;
+    --depth;
   }
 
-  DirectoryItem  *dir = item.parentDirectory;
-  if (depth > 1) {
-    NSUInteger  i = depth - 2;
-
-    while (i-- > 0) {
-      dir = dir.parentDirectory;
-    }
-  }
-
-  return dir.label.hash;
+  return item.label.hash;
 }
 
-- (NSUInteger) hashForFileItem:(PlainFileItem *)item inTree:(FileItem *)treeRoot {
-  if (item == treeRoot) {
-    return item.label.hash;
+- (NSUInteger) hashForFileItem:(FileItem *)item inTree:(FileItem *)treeRoot {
+  FileItem  *prev = item;
+  while (item != treeRoot) {
+    prev = item;
+    item = item.parentDirectory;
+    NSAssert(item != nil, @"Failed to encounter treeRoot");
   }
-  
-  DirectoryItem  *dir = item.parentDirectory;
-  DirectoryItem  *oldDir = dir;
-  while (dir != treeRoot) {
-    oldDir = dir;
-    dir = dir.parentDirectory;
-    NSAssert(dir != nil, @"Failed to encounter treeRoot");
-  }
-  
-  return oldDir.label.hash;
+
+  return prev.isDirectory ? prev.label.hash : item.label.hash;
 }
 
 @end // @implementation MappingByTopDirectoryName 

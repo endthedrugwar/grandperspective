@@ -147,7 +147,7 @@
     }
 
     if (depth == self.displayDepth) {
-      [self drawFile: ((DirectoryItem *)file).directoryAsPlainFile atRect: rect depth: depth];
+      [self drawFileItem: file atRect: rect depth: depth];
 
       return NO;
     }
@@ -158,7 +158,7 @@
 
   // It's a plain file
   if (file.isPhysical) {
-    [self drawFile:(PlainFileItem *)file atRect: rect depth: depth];
+    [self drawFileItem: file atRect: rect depth: depth];
   }
   else {
     if ([file.label isEqualToString: FreedSpace]) {
@@ -200,6 +200,6 @@
 - (void) drawUsedSpaceAtRect:(NSRect) rect {}
 - (void) drawFreeSpaceAtRect:(NSRect) rect {}
 - (void) drawFreedSpaceAtRect:(NSRect) rect {}
-- (void) drawFile:(PlainFileItem *)fileItem atRect:(NSRect) rect depth:(int) depth {}
+- (void) drawFileItem:(FileItem *)fileItem atRect:(NSRect) rect depth:(int) depth {}
 
 @end

@@ -216,11 +216,11 @@ NSString  *ColorDescriptionColumnIdentifier = @"colorDescription";
 
   BOOL  rowSelected = NO;
 
-  if (selectedItem != nil && selectedItem.isPhysical && !selectedItem.isDirectory) {
+  if (selectedItem != nil && selectedItem.isPhysical) {
     NSObject <FileItemMapping>  *colorMapper = dirView.treeDrawerSettings.colorMapper;
 
     if (colorMapper.canProvideLegend) {
-      NSUInteger  colorIndex = [colorMapper hashForFileItem: (PlainFileItem *)selectedItem
+      NSUInteger  colorIndex = [colorMapper hashForFileItem: selectedItem
                                                      inTree: dirView.treeInView];
       NSUInteger  row = MIN(colorIndex, tableView.numberOfRows - 1);
       

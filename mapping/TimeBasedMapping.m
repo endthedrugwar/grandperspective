@@ -31,7 +31,7 @@ const int  minTimeDelta = 60;
 }
 
 
-- (NSUInteger) hashForFileItem:(PlainFileItem *)item atDepth:(NSUInteger)depth {
+- (NSUInteger) hashForFileItem:(FileItem *)item atDepth:(NSUInteger)depth {
   CFAbsoluteTime  itemTime = nowTime - [self timeForFileItem: item];
   CFAbsoluteTime  refTime = nowTime - minTime;
   NSUInteger  hash = 0;

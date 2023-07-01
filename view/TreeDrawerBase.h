@@ -68,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) drawUsedSpaceAtRect:(NSRect) rect;
 - (void) drawFreeSpaceAtRect:(NSRect) rect;
 - (void) drawFreedSpaceAtRect:(NSRect) rect;
-- (void) drawFile:(PlainFileItem *)fileItem atRect:(NSRect) rect depth:(int) depth;
+- (void) drawFileItem:(FileItem *)fileItem atRect:(NSRect) rect depth:(int) depth;
 
 @end
 

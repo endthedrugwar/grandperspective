@@ -19,14 +19,14 @@
  *
  * For calculating the hash value when not traversing a tree, use -hashForFileItem:inTree:.
  */
-- (NSUInteger) hashForFileItem:(PlainFileItem *)item atDepth:(NSUInteger)depth;
+- (NSUInteger) hashForFileItem:(FileItem *)item atDepth:(NSUInteger)depth;
 
 /* Calculates a hash value for a given file item in a tree. It performs the same calculation as
  * -hashForFileItem:depth:. Unlike the latter method, this one can be used when a tree is not being
  * traversed (and the "depth" of the item is not easily available). The depth will be calculated
  * relative to the provided tree root.
  */
-- (NSUInteger) hashForFileItem:(PlainFileItem *)item inTree:(FileItem *)treeRoot;
+- (NSUInteger) hashForFileItem:(FileItem *)item inTree:(FileItem *)treeRoot;
 
 /* Returns "YES" iff there are meaningful descriptions for each hash value. In this case, the range
  * of hash values is expected to be the consecutive numbers from zero upwards, as many as are

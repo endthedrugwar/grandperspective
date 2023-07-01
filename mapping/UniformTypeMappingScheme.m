@@ -103,8 +103,8 @@
 //----------------------------------------------------------------------------
 // Implementation of FileItemMapping protocol
 
-- (NSUInteger) hashForFileItem:(PlainFileItem *)item atDepth:(NSUInteger)depth {
-  UniformType  *type = item.uniformType;
+- (NSUInteger) hashForFileItem:(FileItem *)item atDepth:(NSUInteger)depth {
+  UniformType  *type = item.isDirectory ? nil : ((PlainFileItem *)item).uniformType;
   
   if (type == nil) {
     // Unknown type

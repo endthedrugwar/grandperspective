@@ -94,7 +94,7 @@
   [rectangleDrawer drawBasicFilledRect: rect intColor: freeSpaceColor];
 }
 
-- (void) drawFile:(PlainFileItem *)fileItem atRect:(NSRect) rect depth:(int) depth {
+- (void) drawFileItem:(FileItem *)fileItem atRect:(NSRect) rect depth:(int) depth {
   NSUInteger  colorIndex = [colorMapper hashForFileItem: fileItem atDepth: depth];
   if (colorMapper.canProvideLegend) {
     colorIndex = MIN(colorIndex, rectangleDrawer.numGradientColors - 1);
