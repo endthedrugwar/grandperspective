@@ -40,13 +40,28 @@
                    select:(BOOL)select
                     table:(NSString *)tableName;
 
+/* Lower-level method. It can be used to populate pop-ups (partially) with non-localized values,
+ * for example numeric values.
+ */
+- (void) addValue:(NSObject *)value
+        withTitle:(NSString *)title
+          toPopUp:(NSPopUpButton *)popUp
+          atIndex:(int)index
+           select:(BOOL)select;
+
 /* Returns the locale-independent name for the given item. This works as long as the item was
- * created by this transformer using the -addLocalisedNamesToPopUp:names:select:table method.
+ * created by this transformer using the -addLocalisedNames:toPopUp:names:select:table method.
  */
 - (NSString *)nameForTag:(NSUInteger)tag;
 
 /* Returns the tag for the locale-independent name.
  */
 - (NSUInteger) tagForName:(NSString *)name;
+
+/* Generic variants of nameForTag and tagForWhen, when addValue:withTitle:toPopup:atIndex:select was
+ * used directly to populate the pop-up.
+ */
+- (NSObject *)valueForTag:(NSUInteger)tag;
+- (NSUInteger) tagForValue:(NSObject *)value;
 
 @end

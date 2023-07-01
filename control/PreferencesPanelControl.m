@@ -5,6 +5,7 @@
 #import "FileItemMappingCollection.h"
 #import "ColorListCollection.h"
 #import "TreeBuilder.h"
+#import "TreeDrawerBaseSettings.h"
 
 #import "FilterRepository.h"
 #import "FilterPopUpControl.h"
@@ -48,11 +49,16 @@ NSString  *DelayBeforeWelcomeWindowAfterStartupKey = @"delayBeforeWelcomeWindowA
 NSString  *KeyboardNavigationDeltaKey = @"keyboardNavigationDelta";
 NSString  *PackageCheckBehaviorKey = @"packageCheckBehavior";
 
+NSString  *UnlimitedDisplayDepthValue = @"Unlimited";
+
 @interface PreferencesPanelControl (PrivateMethods)
 
 + (BOOL) doesAppHaveFileDeletePermission;
 
 - (void) setupPopUp:(NSPopUpButton *)popUp key:(NSString *)key content:(NSArray *)names;
+
+// This pop-up has its own setup method, as not all values need to be localized.
+- (void) setupDefaultDisplayDepthPopUp;
 
 - (void) setPopUp:(NSPopUpButton *)popUp toValue:(NSString *)value;
 
@@ -121,6 +127,8 @@ static BOOL appHasDeletePermission;
                key: DefaultColorPaletteKey
            content: ColorListCollection.defaultColorListCollection.allKeys];
 
+  [self setupDefaultDisplayDepthPopUp];
+
   if (! appHasDeletePermission) {
     // Cannot delete, so fix visible setting to "DeleteNothing" and prevent changes
     [fileDeletionPopUp setEnabled: false];
@@ -172,10 +180,10 @@ static BOOL appHasDeletePermission;
   UniqueTagsTransformer  *tagMaker = UniqueTagsTransformer.defaultUniqueTagsTransformer;
 
   NSPopUpButton  *popUp = sender;
-  NSString  *name = [tagMaker nameForTag: popUp.selectedItem.tag];
+  NSObject  *value = [tagMaker valueForTag: popUp.selectedItem.tag];
   NSString  *key = [tagMaker nameForTag: popUp.tag];
 
-  [userDefaults setObject: name forKey: key];
+  [userDefaults setObject: value forKey: key];
   
   if (popUp == fileDeletionPopUp) {
     [self updateButtonState];
@@ -225,6 +233,40 @@ static BOOL appHasDeletePermission;
                       toPopUp: popUp
                        select: [userDefaults stringForKey: key]
                         table: @"Names"];
+}
+
+- (void) setupDefaultDisplayDepthPopUp {
+  UniqueTagsTransformer  *tagMaker = UniqueTagsTransformer.defaultUniqueTagsTransformer;
+  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
+  NSPopUpButton  *popUp = defaultDisplayDepthPopUp;
+  NSString  *prefValue = [userDefaults stringForKey: DefaultDisplayDepthKey];
+
+  popUp.tag = [[tagMaker transformedValue: DefaultDisplayDepthKey] intValue];
+  [popUp removeAllItems];
+
+  int index = 0;
+
+  // Note: The range of preference defaults is more limited than the values that the setting can
+  // take. A value of one is simply useless (this value only helps to temporarily show the mechanics
+  // of changing the focus). High values are also not that useful, as their impact is typically
+  // small. Only in certain scenarios can it make sense.
+  for (int i = MAX(2, MIN_DISPLAY_DEPTH_LIMIT); i <= MIN(5, MAX_DISPLAY_DEPTH_LIMIT); ++i) {
+    NSNumber  *numberVal = @(i);
+    NSString  *title = numberVal.stringValue;
+    [tagMaker addValue: numberVal
+             withTitle: title
+               toPopUp: popUp
+               atIndex: index++
+                select: [title isEqualToString: prefValue]];
+  }
+
+  NSString  *title = NSLocalizedString(UnlimitedDisplayDepthValue,
+                                       @"Value for display depth preference setting");
+  [tagMaker addValue: UnlimitedDisplayDepthValue
+           withTitle: title
+             toPopUp: popUp
+             atIndex: index
+              select: [title isEqualToString: prefValue]];
 }
 
 - (void) setPopUp: (NSPopUpButton *)popUp toValue:(NSString *)value {

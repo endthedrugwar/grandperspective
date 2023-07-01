@@ -29,6 +29,9 @@ extern NSString  *KeyboardNavigationDeltaKey;
 extern NSString  *PackageCheckBehaviorKey;
 extern NSString  *DefaultDisplayDepthKey;
 
+extern NSString  *UnlimitedDisplayDepthValue;
+
+
 @class FilterPopUpControl;
 
 @interface PreferencesPanelControl : NSWindowController {
@@ -47,7 +50,8 @@ extern NSString  *DefaultDisplayDepthKey;
   IBOutlet NSPopUpButton  *defaultColorMappingPopUp;
   IBOutlet NSPopUpButton  *defaultColorPalettePopUp;
   IBOutlet NSPopUpButton  *defaultMaskFilterPopUp;
-  
+  IBOutlet NSPopUpButton  *defaultDisplayDepthPopUp;
+
   IBOutlet NSButton  *showPackageContentsByDefaultCheckBox;
   IBOutlet NSButton  *showEntireVolumeByDefaultCheckBox;
 

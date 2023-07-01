@@ -2,6 +2,7 @@
 
 #import "PreferencesPanelControl.h"
 
+const unsigned MIN_DISPLAY_DEPTH_LIMIT = 1;
 const unsigned MAX_DISPLAY_DEPTH_LIMIT = 8;
 const unsigned NO_DISPLAY_DEPTH_LIMIT = 0xFFFF;
 
@@ -39,11 +40,19 @@ const unsigned NO_DISPLAY_DEPTH_LIMIT = 0xFFFF;
 }
 
 + (unsigned) defaultDisplayDepth {
-  NSInteger  value = [NSUserDefaults.standardUserDefaults integerForKey: DefaultDisplayDepthKey];
+  NSString  *value = [NSUserDefaults.standardUserDefaults stringForKey: DefaultDisplayDepthKey];
+
+  if ([value isEqualToString: UnlimitedDisplayDepthValue]) {
+    return NO_DISPLAY_DEPTH_LIMIT;
+  }
+
+  int  depth = [value intValue];
 
   // Ensure the setting has a valid value (to avoid crashes/strange behavior should the user
   // manually change the preference)
-  return value > MAX_DISPLAY_DEPTH_LIMIT ? NO_DISPLAY_DEPTH_LIMIT : (unsigned)MAX(value, 2);
+  return (depth > MAX_DISPLAY_DEPTH_LIMIT
+          ? NO_DISPLAY_DEPTH_LIMIT
+          : (unsigned)MAX(depth, MIN_DISPLAY_DEPTH_LIMIT));
 }
 
 @end

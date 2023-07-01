@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="defaultColorMappingPopUp" destination="44" id="66"/>
                 <outlet property="defaultColorPalettePopUp" destination="52" id="67"/>
+                <outlet property="defaultDisplayDepthPopUp" destination="CIT-Yp-c67" id="p40-4i-8VN"/>
                 <outlet property="defaultMaskFilterPopUp" destination="182" id="sq1-5q-XgB"/>
                 <outlet property="fileDeletionConfirmationCheckBox" destination="80" id="82"/>
                 <outlet property="fileDeletionPopUp" destination="77" id="81"/>
@@ -143,6 +144,9 @@
                                             </items>
                                         </menu>
                                     </popUpButtonCell>
+                                    <connections>
+                                        <action selector="popUpValueChanged:" target="-2" id="CoQ-kq-NXv"/>
+                                    </connections>
                                 </popUpButton>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="obg-40-hgv">
                                     <rect key="frame" x="18" y="69" width="123" height="14"/>

@@ -2,6 +2,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern const unsigned MIN_DISPLAY_DEPTH_LIMIT;
+
 // The maximum depth limit, when a limit is applied
 extern const unsigned MAX_DISPLAY_DEPTH_LIMIT;
 

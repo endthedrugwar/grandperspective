@@ -76,7 +76,7 @@
 		<key>defaultColorPalette</key>
 		<string>CoffeeBeans</string>
 		<key>defaultDisplayDepth</key>
-		<integer>65535</integer>
+		<string>Unlimited</string>
 		<key>scanFilter</key>
 		<string>No hard-links</string>
 		<key>maskFilter</key>

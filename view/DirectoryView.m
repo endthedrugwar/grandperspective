@@ -437,7 +437,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
 
 - (BOOL) canMoveDisplayDepthUp {
-  return self.treeDrawerSettings.displayDepth > 1;
+  return self.treeDrawerSettings.displayDepth > MIN_DISPLAY_DEPTH_LIMIT;
 }
 
 - (BOOL) canMoveDisplayDepthDown {

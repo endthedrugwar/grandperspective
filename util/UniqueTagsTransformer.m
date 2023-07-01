@@ -90,8 +90,6 @@
                                                                   value: nil
                                                                   table: tableName];
 
-  int  tag = [[self transformedValue: name] intValue];
-  
   // Find location where to insert item so that list remains sorted by localized name
   // Note: Using linear search, which is OK as long as list is relatively small.
   int  index = 0;
@@ -102,24 +100,43 @@
     }
     index++;
   }
-  
-  [popUp insertItemWithTitle: localizedName atIndex: index];
+
+  [self addValue: name
+       withTitle: localizedName
+         toPopUp: popUp
+         atIndex: index
+          select: select];
+}
+
+- (void) addValue:(NSObject *)value
+        withTitle:(NSString *)title
+          toPopUp:(NSPopUpButton *)popUp
+          atIndex:(int)index
+           select:(BOOL)select {
+  int  tag = [[self transformedValue: value] intValue];
+
+  [popUp insertItemWithTitle: title atIndex: index];
   [popUp itemAtIndex: index].tag = tag;
-  
+
   if (select) {
     [popUp selectItemAtIndex: index];
   }
 }
 
-
 - (NSString *)nameForTag:(NSUInteger)tag {
   return [self reverseTransformedValue: @(tag)];
 }
 
-/* Returns the tag for the locale-independent name.
- */
+- (NSObject *)valueForTag:(NSUInteger)tag {
+  return [self reverseTransformedValue: @(tag)];
+}
+
 - (NSUInteger) tagForName:(NSString *)name {
   return [[self transformedValue: name] intValue];
+}
+
+- (NSUInteger) tagForValue:(NSObject *)value {
+  return [[self transformedValue: value] intValue];
 }
 
 @end
