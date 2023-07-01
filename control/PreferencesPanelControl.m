@@ -24,7 +24,7 @@ NSString  *DefaultColorMappingKey = @"defaultColorMapping";
 NSString  *DefaultColorPaletteKey = @"defaultColorPalette";
 NSString  *ShowPackageContentsByDefaultKey = @"showPackageContentsByDefault";
 NSString  *ShowEntireVolumeByDefaultKey = @"showEntireVolumeByDefault";
-NSString  *DefaultDisplayDepthKey = @"defaultDisplayDepth";
+NSString  *DefaultDisplayFocusKey = @"defaultDisplayFocus";
 
 // Deprecated since 3.1.0
 NSString  *DefaultFilterKey_Deprecated = @"defaultFilter";
@@ -49,7 +49,7 @@ NSString  *DelayBeforeWelcomeWindowAfterStartupKey = @"delayBeforeWelcomeWindowA
 NSString  *KeyboardNavigationDeltaKey = @"keyboardNavigationDelta";
 NSString  *PackageCheckBehaviorKey = @"packageCheckBehavior";
 
-NSString  *UnlimitedDisplayDepthValue = @"Unlimited";
+NSString  *UnlimitedDisplayFocusValue = @"Unlimited";
 
 @interface PreferencesPanelControl (PrivateMethods)
 
@@ -58,7 +58,7 @@ NSString  *UnlimitedDisplayDepthValue = @"Unlimited";
 - (void) setupPopUp:(NSPopUpButton *)popUp key:(NSString *)key content:(NSArray *)names;
 
 // This pop-up has its own setup method, as not all values need to be localized.
-- (void) setupDefaultDisplayDepthPopUp;
+- (void) setupDefaultDisplayFocusPopUp;
 
 - (void) setPopUp:(NSPopUpButton *)popUp toValue:(NSString *)value;
 
@@ -127,7 +127,7 @@ static BOOL appHasDeletePermission;
                key: DefaultColorPaletteKey
            content: ColorListCollection.defaultColorListCollection.allKeys];
 
-  [self setupDefaultDisplayDepthPopUp];
+  [self setupDefaultDisplayFocusPopUp];
 
   if (! appHasDeletePermission) {
     // Cannot delete, so fix visible setting to "DeleteNothing" and prevent changes
@@ -235,13 +235,13 @@ static BOOL appHasDeletePermission;
                         table: @"Names"];
 }
 
-- (void) setupDefaultDisplayDepthPopUp {
+- (void) setupDefaultDisplayFocusPopUp {
   UniqueTagsTransformer  *tagMaker = UniqueTagsTransformer.defaultUniqueTagsTransformer;
   NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
-  NSPopUpButton  *popUp = defaultDisplayDepthPopUp;
-  NSString  *prefValue = [userDefaults stringForKey: DefaultDisplayDepthKey];
+  NSPopUpButton  *popUp = defaultDisplayFocusPopUp;
+  NSString  *prefValue = [userDefaults stringForKey: DefaultDisplayFocusKey];
 
-  popUp.tag = [[tagMaker transformedValue: DefaultDisplayDepthKey] intValue];
+  popUp.tag = [[tagMaker transformedValue: DefaultDisplayFocusKey] intValue];
   [popUp removeAllItems];
 
   int index = 0;
@@ -260,9 +260,9 @@ static BOOL appHasDeletePermission;
                 select: [title isEqualToString: prefValue]];
   }
 
-  NSString  *title = NSLocalizedString(UnlimitedDisplayDepthValue,
-                                       @"Value for display depth preference setting");
-  [tagMaker addValue: UnlimitedDisplayDepthValue
+  NSString  *title = NSLocalizedString(UnlimitedDisplayFocusValue,
+                                       @"Value for display focus preference setting");
+  [tagMaker addValue: UnlimitedDisplayFocusValue
            withTitle: title
              toPopUp: popUp
              atIndex: index

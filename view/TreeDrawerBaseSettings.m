@@ -40,9 +40,9 @@ const unsigned NO_DISPLAY_DEPTH_LIMIT = 0xFFFF;
 }
 
 + (unsigned) defaultDisplayDepth {
-  NSString  *value = [NSUserDefaults.standardUserDefaults stringForKey: DefaultDisplayDepthKey];
+  NSString  *value = [NSUserDefaults.standardUserDefaults stringForKey: DefaultDisplayFocusKey];
 
-  if ([value isEqualToString: UnlimitedDisplayDepthValue]) {
+  if ([value isEqualToString: UnlimitedDisplayFocusValue]) {
     return NO_DISPLAY_DEPTH_LIMIT;
   }
 

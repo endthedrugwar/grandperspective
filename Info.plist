@@ -75,7 +75,7 @@
 		<string>folder</string>
 		<key>defaultColorPalette</key>
 		<string>CoffeeBeans</string>
-		<key>defaultDisplayDepth</key>
+		<key>defaultDisplayFocus</key>
 		<string>Unlimited</string>
 		<key>scanFilter</key>
 		<string>No hard-links</string>

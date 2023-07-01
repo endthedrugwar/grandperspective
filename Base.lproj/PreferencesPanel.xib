@@ -9,7 +9,7 @@
             <connections>
                 <outlet property="defaultColorMappingPopUp" destination="44" id="66"/>
                 <outlet property="defaultColorPalettePopUp" destination="52" id="67"/>
-                <outlet property="defaultDisplayDepthPopUp" destination="CIT-Yp-c67" id="p40-4i-8VN"/>
+                <outlet property="defaultDisplayFocusPopUp" destination="CIT-Yp-c67" id="32M-5g-2vt"/>
                 <outlet property="defaultMaskFilterPopUp" destination="182" id="sq1-5q-XgB"/>
                 <outlet property="fileDeletionConfirmationCheckBox" destination="80" id="82"/>
                 <outlet property="fileDeletionPopUp" destination="77" id="81"/>

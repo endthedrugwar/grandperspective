@@ -27,9 +27,9 @@ extern NSString  *UpdateFiltersBeforeUse;
 extern NSString  *DelayBeforeWelcomeWindowAfterStartupKey;
 extern NSString  *KeyboardNavigationDeltaKey;
 extern NSString  *PackageCheckBehaviorKey;
-extern NSString  *DefaultDisplayDepthKey;
+extern NSString  *DefaultDisplayFocusKey;
 
-extern NSString  *UnlimitedDisplayDepthValue;
+extern NSString  *UnlimitedDisplayFocusValue;
 
 
 @class FilterPopUpControl;
@@ -50,7 +50,7 @@ extern NSString  *UnlimitedDisplayDepthValue;
   IBOutlet NSPopUpButton  *defaultColorMappingPopUp;
   IBOutlet NSPopUpButton  *defaultColorPalettePopUp;
   IBOutlet NSPopUpButton  *defaultMaskFilterPopUp;
-  IBOutlet NSPopUpButton  *defaultDisplayDepthPopUp;
+  IBOutlet NSPopUpButton  *defaultDisplayFocusPopUp;
 
   IBOutlet NSButton  *showPackageContentsByDefaultCheckBox;
   IBOutlet NSButton  *showEntireVolumeByDefaultCheckBox;
