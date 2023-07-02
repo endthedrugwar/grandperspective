@@ -254,7 +254,10 @@ NSString  *FriendlySizeKey = @"friendlySize";
 
   if (!nextItem.isVirtual) {
     NSAssert(((FileItem *)nextItem).parentDirectory == path[lastFileItemIndex],
-             @"Path parent inconsistency.");
+             @"Path parent inconsistency for %@: %@ != %@",
+             ((FileItem *)nextItem).path,
+             ((FileItem *)nextItem).parentDirectory.path,
+             ((FileItem *)path[lastFileItemIndex]).path);
   
     lastFileItemIndex = path.count - 1;
   }
