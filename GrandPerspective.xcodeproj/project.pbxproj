@@ -23,7 +23,6 @@
 		AA14A8620EE1401F009CBD3E /* FocusDown.png in Resources */ = {isa = PBXBuildFile; fileRef = AA14A8600EE1401E009CBD3E /* FocusDown.png */; };
 		AA14A8630EE1401F009CBD3E /* FocusUp.png in Resources */ = {isa = PBXBuildFile; fileRef = AA14A8610EE1401E009CBD3E /* FocusUp.png */; };
 		AA16DABC0AF93C7D005052D1 /* NotifyingPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = AA16DABA0AF93C7D005052D1 /* NotifyingPanel.m */; };
-		AA1A92651170579600217CF6 /* KBPopUpToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AA1A92641170579600217CF6 /* KBPopUpToolbarItem.m */; };
 		AA280136284BA33900E9EB7A /* TreeMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = AA280135284BA33900E9EB7A /* TreeMonitor.m */; };
 		AA280141284D3B1E00E9EB7A /* TreeRefresher.m in Sources */ = {isa = PBXBuildFile; fileRef = AA28013E284CEFBA00E9EB7A /* TreeRefresher.m */; };
 		AA2B48B610495BDB00B10262 /* Rescan.png in Resources */ = {isa = PBXBuildFile; fileRef = AA2B48B510495BDB00B10262 /* Rescan.png */; };
@@ -246,8 +245,6 @@
 		AA19DF67258661DC00D9A6C5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Taglines.strings; sourceTree = "<group>"; };
 		AA19DF68258661DC00D9A6C5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Tests.strings; sourceTree = "<group>"; };
 		AA19DF69258661DC00D9A6C5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Toolbar.strings; sourceTree = "<group>"; };
-		AA1A92631170579600217CF6 /* KBPopUpToolbarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KBPopUpToolbarItem.h; path = util/KBPopUpToolbarItem.h; sourceTree = "<group>"; };
-		AA1A92641170579600217CF6 /* KBPopUpToolbarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KBPopUpToolbarItem.m; path = util/KBPopUpToolbarItem.m; sourceTree = "<group>"; };
 		AA280135284BA33900E9EB7A /* TreeMonitor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TreeMonitor.m; path = tree/TreeMonitor.m; sourceTree = "<group>"; };
 		AA280137284BA36100E9EB7A /* TreeMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TreeMonitor.h; path = tree/TreeMonitor.h; sourceTree = "<group>"; };
 		AA28013E284CEFBA00E9EB7A /* TreeRefresher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TreeRefresher.m; path = tree/TreeRefresher.m; sourceTree = "<group>"; usesTabs = 0; };
@@ -949,8 +946,6 @@
 				AAEF42821081136100468832 /* LocalizableStrings.m */,
 				AA2B4BAB10EFB0DA0088EA1C /* ModalityTerminator.h */,
 				AA2B4BAC10EFB0DA0088EA1C /* ModalityTerminator.m */,
-				AA1A92631170579600217CF6 /* KBPopUpToolbarItem.h */,
-				AA1A92641170579600217CF6 /* KBPopUpToolbarItem.m */,
 				AA9A8B14200D481A0048206A /* NSURL.h */,
 				AA9A8B15200D481A0048206A /* NSURL.m */,
 			);
@@ -1411,7 +1406,6 @@
 				AAFB1194238ABF3B00D616C3 /* TreeWriter.m in Sources */,
 				AA054A912393C439001A5826 /* RawTreeWriterOptions.m in Sources */,
 				AAA8724C111492E600ED5112 /* ScanTreeRoot.m in Sources */,
-				AA1A92651170579600217CF6 /* KBPopUpToolbarItem.m in Sources */,
 				AA0CDE711544995C0018D583 /* TimeBasedMapping.m in Sources */,
 				AA0CDE7415487FF60018D583 /* CreationMappingScheme.m in Sources */,
 				AA59E3B123C3443F006A5184 /* DirectoryViewDisplaySettings.m in Sources */,

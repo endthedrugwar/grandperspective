@@ -7,7 +7,6 @@
 
 #import "ToolbarSegmentedCell.h"
 #import "MainMenuControl.h"
-#import "KBPopUpToolbarItem.h"
 #import "LocalizableStrings.h"
 
 #import "TreeContext.h"
@@ -412,11 +411,9 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   NSToolbarItem  *item = 
     [[[NSToolbarItem alloc] initWithItemIdentifier: ToolbarRevealItem] autorelease];
 
-  [item setLabel: NSLocalizedStringFromTable( @"Reveal", @"Toolbar", 
-                                              @"Toolbar action" )];
+  [item setLabel: NSLocalizedStringFromTable(@"Reveal", @"Toolbar", @"Toolbar action")];
   item.paletteLabel = item.label;
-  [item setToolTip: NSLocalizedStringFromTable( @"Reveal in Finder", 
-                                                @"Toolbar", @"Tooltip" )];
+  [item setToolTip: NSLocalizedStringFromTable(@"Reveal in Finder", @"Toolbar", @"Tooltip" )];
   item.image = [NSImage imageNamed: @"RevealInFinder"];
   item.action = @selector(revealFileInFinder:);
   item.target = self;
@@ -439,8 +436,8 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 }
 
 - (NSToolbarItem *)rescanToolbarItem {
-  KBPopUpToolbarItem  *item = 
-    [[[KBPopUpToolbarItem alloc] initWithItemIdentifier: ToolbarRescan] autorelease];
+  NSToolbarItem  *item =
+    [[[NSToolbarItem alloc] initWithItemIdentifier: ToolbarRescan] autorelease];
 
   TreeContext  *treeContext = dirViewControl.treeContext;
   if (treeContext.monitorsSource) {
@@ -462,7 +459,7 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 }
 
 - (NSToolbarItem *)showInfoToolbarItem {
-  NSToolbarItem  *item = 
+  NSToolbarItem  *item =
     [[[NSToolbarItem alloc] initWithItemIdentifier: ToolbarShowInfo] autorelease];
 
   [item setLabel: NSLocalizedStringFromTable(@"Info", @"Toolbar", @"Toolbar action")];
