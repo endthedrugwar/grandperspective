@@ -97,6 +97,7 @@ extern NSString  *ColorMappingChangedEvent;
 // Property used during animation
 @property (nonatomic) NSRect pathEndRect;
 
+@property (nonatomic) unsigned displayDepth;
 @property (nonatomic) BOOL showEntireVolume;
 
 @property (nonatomic, readonly, strong) TreeLayoutBuilder *layoutBuilder;

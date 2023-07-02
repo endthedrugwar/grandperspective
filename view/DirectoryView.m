@@ -328,6 +328,14 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   }
 }
 
+- (unsigned) displayDepth {
+  return self.treeDrawerSettings.displayDepth;
+}
+
+- (void) setDisplayDepth:(unsigned)depth {
+  self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedDisplayDepth: depth];
+  self.pathModelView.displayDepth = depth;
+}
 
 - (TreeLayoutBuilder *)layoutBuilder {
   return layoutBuilder;
@@ -406,25 +414,22 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
 
 - (BOOL) canMoveDisplayDepthUp {
-  return self.treeDrawerSettings.displayDepth > MIN_DISPLAY_DEPTH_LIMIT;
+  return self.displayDepth > MIN_DISPLAY_DEPTH_LIMIT;
 }
 
 - (BOOL) canMoveDisplayDepthDown {
-  return self.treeDrawerSettings.displayDepth != NO_DISPLAY_DEPTH_LIMIT;
+  return self.displayDepth != NO_DISPLAY_DEPTH_LIMIT;
 }
 
 - (BOOL) canResetDisplayDepth {
-  return self.treeDrawerSettings.displayDepth != TreeDrawerSettings.defaultDisplayDepth;
+  return self.displayDepth != TreeDrawerSettings.defaultDisplayDepth;
 }
 
 - (void) moveDisplayDepthUp {
   if (!self.canMoveDisplayDepthUp) return;
 
   // Ensure the change is always visible
-  unsigned newDepth = MIN(self.maxDrawDepth, self.treeDrawerSettings.displayDepth) - 1;
-
-  self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedDisplayDepth: newDepth];
-  self.pathModelView.displayDepth = newDepth;
+  self.displayDepth = MIN(self.maxDrawDepth, self.treeDrawerSettings.displayDepth) - 1;
 }
 
 - (void) moveDisplayDepthDown {
@@ -436,15 +441,11 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
     newDepth = NO_DISPLAY_DEPTH_LIMIT;
   }
 
-  self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedDisplayDepth: newDepth];
-  self.pathModelView.displayDepth = newDepth;
+  self.displayDepth = newDepth;
 }
 
 - (void) resetDisplayDepth {
-  unsigned newDepth = TreeDrawerSettings.defaultDisplayDepth;
-
-  self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedDisplayDepth: newDepth];
-  self.pathModelView.displayDepth = newDepth;
+  self.displayDepth = TreeDrawerSettings.defaultDisplayDepth;
 }
 
 

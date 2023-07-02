@@ -2,23 +2,26 @@
 
 #import "DirectoryViewDisplaySettings.h"
 #import "PreferencesPanelControl.h"
+#import "TreeDrawerBaseSettings.h"
 
 @implementation DirectoryViewControlSettings
 
 - (instancetype) init {
-  NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
+  NSUserDefaults  *ud = NSUserDefaults.standardUserDefaults;
 
-  return 
-    [self initWithDisplaySettings: [DirectoryViewDisplaySettings defaultSettings]
-                 unzoomedViewSize: NSMakeSize([userDefaults floatForKey: DefaultViewWindowWidth],
-                                              [userDefaults floatForKey: DefaultViewWindowHeight])];
+  return [self initWithDisplaySettings: [DirectoryViewDisplaySettings defaultSettings]
+                      unzoomedViewSize: NSMakeSize([ud floatForKey: DefaultViewWindowWidth],
+                                                   [ud floatForKey: DefaultViewWindowHeight])
+                          displayDepth: TreeDrawerBaseSettings.defaultDisplayDepth];
 }
 
 - (instancetype) initWithDisplaySettings:(DirectoryViewDisplaySettings *)displaySettings
-                        unzoomedViewSize:(NSSize)unzoomedViewSize {
+                        unzoomedViewSize:(NSSize)unzoomedViewSize
+                            displayDepth:(unsigned)displayDepth {
   if (self = [super init]) {
     _displaySettings = [displaySettings retain];
     _unzoomedViewSize = unzoomedViewSize;
+    _displayDepth = displayDepth;
   }
   
   return self;

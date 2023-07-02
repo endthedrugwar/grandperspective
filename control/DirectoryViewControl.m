@@ -170,7 +170,8 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   DirectoryViewControlSettings  *dvcs = [DirectoryViewControlSettings alloc];
 
   return [[dvcs initWithDisplaySettings: [[displaySettings copy] autorelease]
-                       unzoomedViewSize: unzoomedViewSize] autorelease];
+                       unzoomedViewSize: unzoomedViewSize
+                           displayDepth: mainView.displayDepth] autorelease];
 }
 
 - (TreeContext *)treeContext {
@@ -241,6 +242,8 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   NSRect  frame = self.window.frame;
   frame.size = unzoomedViewSize;
   [self.window setFrame: frame display: NO];
+
+  mainView.displayDepth = initialSettings.displayDepth;
   
   [self.window makeFirstResponder: mainView];
   [self.window makeKeyAndOrderFront: self];
