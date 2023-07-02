@@ -64,6 +64,8 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 - (void) refreshDisplay;
 - (void) enablePeriodicRedraw:(BOOL) enable;
 
+- (void) animateZoomIn;
+- (void) animateZoomOut;
 - (void) startZoomAnimation;
 - (void) drawZoomAnimation;
 - (void) releaseZoomImages;
@@ -121,7 +123,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   [redrawTimer invalidate];
 
   [layoutBuilder release];
-  [overlayTest release];
+  [_overlayTest release];
   [pathDrawer release];
   [selectedItemLocator release];
   
@@ -285,14 +287,10 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 }
 
 
-- (FileItemTest *)overlayTest {
-  return overlayTest;
-}
-
-- (void)setOverlayTest:(FileItemTest *)overlayTestVal {
-  if (overlayTestVal != overlayTest) {
-    [overlayTest release];
-    overlayTest = [overlayTestVal retain];
+- (void)setOverlayTest:(FileItemTest *)overlayTest {
+  if (overlayTest != _overlayTest) {
+    [_overlayTest release];
+    _overlayTest = [overlayTest retain];
 
     [self forceOverlayRedraw];
   }
@@ -351,48 +349,19 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
 
 - (void) zoomIn {
-  // Initiate zoom animation
-  ItemPathModel  *pathModel = pathModelView.pathModel;
-
-  // If an animation is ongoing, abort it so it won't interfere
-  [self abortZoomAnimation];
-
-  zoomImage = [[self imageInViewForItem: pathModel.itemBelowVisibleTree
-                                 onPath: pathModel.itemPath] retain];
-  zoomBackgroundImage = [treeImage retain];
-  zoomBoundsStart = [self locationInViewForItem: pathModel.itemBelowVisibleTree
-                                         onPath: pathModel.itemPath];
-  zoomBounds = zoomBoundsStart;
-  zoomBoundsEnd = self.bounds;
-  zoomingIn = YES;
-
-  [self startZoomAnimation];
-
-  [pathModelView moveVisibleTreeDown];
+  if (self.showEntireVolume) {
+    [pathModelView moveVisibleTreeDown];
+  } else {
+    [self animateZoomIn];
+  }
 }
 
 - (void) zoomOut {
-  // Initiate zoom animation
-  ItemPathModel  *pathModel = pathModelView.pathModel;
-
-  // If an animation is ongoing, abort it so it won't interfere
-  [self abortZoomAnimation];
-
-  zoomImage = [treeImage retain];
-  // The background image is not yet known. It will be set when the zoomed out image is drawn.
-  NSAssert(zoomBackgroundImage == nil, @"zoomBackgroundImage should be nil");
-  zoomBoundsStart = self.bounds;
-  zoomBounds = zoomBoundsStart;
-  zoomingIn = NO;
-
-  [pathModelView moveVisibleTreeUp];
-
-  zoomBoundsEnd = [self locationInViewForItem: pathModel.itemBelowVisibleTree
-                                       onPath: pathModel.itemPath];
-  [self startZoomAnimation];
-
-  // Automatically lock path as well.
-  [pathModelView.pathModel setVisiblePathLocking: YES];
+  if (self.showEntireVolume) {
+    [pathModelView moveVisibleTreeUp];
+  } else {
+    [self animateZoomOut];
+  }
 }
 
 - (void) resetZoom {
@@ -504,7 +473,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   if ((treeImage == nil || treeImageIsScaled) && !isTreeDrawInProgress) {
     [self startTreeDrawTask];
   } else if ((overlayImage == nil || overlayImageIsScaled) &&
-             overlayTest != nil && !isOverlayDrawInProgress) {
+             _overlayTest != nil && !isOverlayDrawInProgress) {
     [self startOverlayDrawTask];
   }
 
@@ -897,7 +866,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
                                              treeInView: self.treeInView
                                           layoutBuilder: layoutBuilder
                                                  bounds: self.bounds
-                                            overlayTest: overlayTest];
+                                            overlayTest: _overlayTest];
   [overlayDrawTaskManager asynchronouslyRunTaskWithInput: overlayDrawInput
                                                 callback: self
                                                 selector: @selector(overlayImageReady:)];
@@ -943,6 +912,51 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
       redrawTimer = nil;
     }
   }
+}
+
+- (void) animateZoomIn {
+  // Initiate zoom animation
+  ItemPathModel  *pathModel = pathModelView.pathModel;
+
+  // If an animation is ongoing, abort it so it won't interfere
+  [self abortZoomAnimation];
+
+  zoomImage = [[self imageInViewForItem: pathModel.itemBelowVisibleTree
+                                 onPath: pathModel.itemPath] retain];
+  zoomBackgroundImage = [treeImage retain];
+  zoomBoundsStart = [self locationInViewForItem: pathModel.itemBelowVisibleTree
+                                         onPath: pathModel.itemPath];
+  zoomBounds = zoomBoundsStart;
+  zoomBoundsEnd = self.bounds;
+  zoomingIn = YES;
+
+  [self startZoomAnimation];
+
+  [pathModelView moveVisibleTreeDown];
+}
+
+- (void) animateZoomOut {
+  // Initiate zoom animation
+  ItemPathModel  *pathModel = pathModelView.pathModel;
+
+  // If an animation is ongoing, abort it so it won't interfere
+  [self abortZoomAnimation];
+
+  zoomImage = [treeImage retain];
+  // The background image is not yet known. It will be set when the zoomed out image is drawn.
+  NSAssert(zoomBackgroundImage == nil, @"zoomBackgroundImage should be nil");
+  zoomBoundsStart = self.bounds;
+  zoomBounds = zoomBoundsStart;
+  zoomingIn = NO;
+
+  [pathModelView moveVisibleTreeUp];
+
+  zoomBoundsEnd = [self locationInViewForItem: pathModel.itemBelowVisibleTree
+                                       onPath: pathModel.itemPath];
+  [self startZoomAnimation];
+
+  // Automatically lock path as well.
+  [pathModelView.pathModel setVisiblePathLocking: YES];
 }
 
 - (void) startZoomAnimation {

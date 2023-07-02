@@ -30,8 +30,6 @@ extern NSString  *ColorMappingChangedEvent;
   // maintained here, as it is also needed by the pathDrawer, and other objects.
   TreeLayoutBuilder  *layoutBuilder;
 
-  FileItemTest  *overlayTest;
-
   ItemPathDrawer  *pathDrawer;
   ItemPathModelView  *pathModelView;
   ItemLocator  *selectedItemLocator;
