@@ -15,19 +15,20 @@
   NSAssert(pathModel == nil, @"Path model should be nil.");
   pathModel = pathModelVal;
   visibleTree = pathModel.visibleTree;
-  
-  [pathModel clearVisiblePath];
 
-  insideVisibleTree = NO; 
-  FileItem  *retVal = [self itemAtPoint: point 
-                         startingAtTree: treeRoot
-                     usingLayoutBuilder: layoutBuilder
-                                 bounds: bounds];
-  
-  visibleTree = nil;
-  pathModel = nil;
-  
-  return retVal;
+  @try {
+    [pathModel clearVisiblePath];
+    insideVisibleTree = NO;
+
+    return [self itemAtPoint: point
+              startingAtTree: treeRoot
+          usingLayoutBuilder: layoutBuilder
+                      bounds: bounds];
+  }
+  @finally {
+    visibleTree = nil;
+    pathModel = nil;
+  }
 }
 
 - (FileItem *)itemAtPoint:(NSPoint)point
