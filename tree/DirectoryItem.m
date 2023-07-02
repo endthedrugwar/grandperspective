@@ -8,6 +8,12 @@
 
 @implementation DirectoryItem
 
+static NSLock  *rescanFlagsMutex;
+
++ (void)initialize {
+  rescanFlagsMutex = [[NSLock alloc] init];
+}
+
 - (instancetype) initWithLabel:(NSString *)label
                         parent:(DirectoryItem *)parent
                          flags:(FileItemOptions)flags
@@ -176,6 +182,23 @@
 
 - (BOOL) isDirectory {
   return YES;
+}
+
+- (BOOL) setRescanFlag:(DirectoryRescanOptions)flag {
+  [rescanFlagsMutex lock];
+
+  @try {
+    if ((_rescanFlags & flag) == flag) {
+      // Flag(s) are already set
+      return NO;
+    }
+
+    _rescanFlags |= flag;
+    return YES;
+  }
+  @finally {
+    [rescanFlagsMutex unlock];
+  }
 }
 
 - (int) maxDepth: (int)upperBound packagesAsFiles: (BOOL)packagesAsFiles {

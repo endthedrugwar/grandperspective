@@ -113,13 +113,16 @@ void eventCallback(ConstFSEventStreamRef streamRef,
 @implementation TreeMonitor (PrivateMethods)
 
 - (void)invalidatePaths:(NSDictionary<NSString *, NSNumber *> *)paths {
-  [self.treeContext obtainWriteLock];
+  // Even though the monitor can change flags of directory items, it does not make structural
+  // changes to the tree. Therefore, only obtain a read lock. This is needed to prevent hangs when
+  // saving a tree to disk requires a long read lock.
+  [self.treeContext obtainReadLock];
 
   for (id path in paths) {
     [self invalidatePath: path mustScanSubDirs: paths[path].boolValue];
   }
 
-  [self.treeContext releaseWriteLock];
+  [self.treeContext releaseReadLock];
 }
 
 - (void)invalidatePath:(NSString *)path mustScanSubDirs:(BOOL)mustScanSubDirs {
@@ -172,9 +175,7 @@ void eventCallback(ConstFSEventStreamRef streamRef,
     flag = DirectoryNeedsFullRescan;
   }
 
-  if ((dirItem.rescanFlags & flag) != flag) {
-    dirItem.rescanFlags |= flag;
-
+  if ([dirItem setRescanFlag: flag]) {
     ++_numChanges;
     NSLog(@"Updated rescanFlags for %@ to %d in response to event for %@",
           dirItem.path, dirItem.rescanFlags, path);

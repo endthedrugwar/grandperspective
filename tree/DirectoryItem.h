@@ -93,11 +93,15 @@ typedef NS_OPTIONS(UInt8, DirectoryRescanOptions) {
 /* Indicates if the state of the directory on disk has been changed since this object has been
  * created.
  *
- * This property is not immutable. It may be changed. However, it is the responsibility of the
- * sender to ensure that this method is only called when the tree can be modified (e.g. it should
- * not be traversed in another thread).
+ * This property can be modified using setRescanFlag:.
  */
-@property (nonatomic) DirectoryRescanOptions rescanFlags;
+@property (nonatomic, readonly) DirectoryRescanOptions rescanFlags;
+
+/* Sets the given rescan flag(s). Return YES if this resulted in a change.
+ *
+ * A mutex is used to ensure the update is thread-safe.
+ */
+- (BOOL) setRescanFlag:(DirectoryRescanOptions)flag;
 
 /* Returns the maximum depth (the directory nesting level) of this part of the file tree. The
  * maximum level that is returned will not exceed upperBound. In other words, this parameter can be
