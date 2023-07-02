@@ -456,8 +456,6 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
   self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedDisplayDepth: newDepth];
   self.pathModelView.displayDepth = newDepth;
-
-  NSLog(@"displayDepth = %d", self.treeDrawerSettings.displayDepth);
 }
 
 - (void) moveDisplayDepthDown {
@@ -471,8 +469,6 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
   self.treeDrawerSettings = [self.treeDrawerSettings settingsWithChangedDisplayDepth: newDepth];
   self.pathModelView.displayDepth = newDepth;
-
-  NSLog(@"displayDepth = %d", self.treeDrawerSettings.displayDepth);
 }
 
 - (void) resetDisplayDepth {
