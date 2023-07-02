@@ -1,6 +1,7 @@
 #import "TreeDrawerBase.h"
 
 #import "DirectoryItem.h"
+#import "PlainFileItem.h"
 #import "FilteredTreeGuide.h"
 #import "GradientRectangleDrawer.h"
 #import "TreeLayoutBuilder.h"
@@ -147,7 +148,9 @@
     }
 
     if (depth == self.displayDepth) {
-      [self drawFileItem: file atRect: rect depth: depth];
+      if ([treeGuide includeFileItem: ((DirectoryItem *)file).directoryAsPlainFile]) {
+        [self drawFileItem: file atRect: rect depth: depth];
+      }
 
       return NO;
     }

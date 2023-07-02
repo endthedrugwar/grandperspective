@@ -28,7 +28,7 @@
                                 inRect: bounds];
 }
 
-- (void) drawFile:(PlainFileItem *)fileItem atRect:(NSRect) rect depth:(int) depth {
+- (void) drawFileItem:(FileItem *)fileItem atRect:(NSRect) rect depth:(int) depth {
   // Plain file that passed the test. Highlight it
   [rectangleDrawer drawBasicFilledRect: rect intColor: overlayColor];
 }
