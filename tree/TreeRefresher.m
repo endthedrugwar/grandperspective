@@ -186,8 +186,6 @@
   __block int  numSubdirs = 0;
   [CompoundItem visitFileItemChildrenMaybeNil: oldDir.directoryItems
                                      callback: ^(FileItem *oldSubdir) {
-    DirectoryItem  *newSubdir = (DirectoryItem *)[oldSubdir duplicateFileItem: newDir];
-    [newDir addSubdir: newSubdir];
     ++numSubdirs;
   }];
   [progressTracker setNumSubFolders: numSubdirs];
