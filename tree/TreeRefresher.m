@@ -149,6 +149,9 @@
       [self scanTreeForDirectory: newSubdir atPath: newSubdir.systemPath];
     }
 
+    // Exclude empty directories
+    if (newSubdir.itemSize == 0) return;
+
     if (newSubdirs == nil) {
       newSubdirs = [newSubdir retain];
     } else {
