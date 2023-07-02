@@ -44,15 +44,25 @@ static const int AUTORELEASE_PERIOD = 1024;
  */
 @interface ScanStackFrame : NSObject {
 @public
-  DirectoryItem  *dirItem;
+  // The parent for the new children
+  DirectoryItem  *parent;
+
+  // The node where to collect the children. For normal scans it is the same as "parent" but for
+  // shallow scans it is different, as the sizes of the sub-directory children are not yet known,
+  // which is a pre-requisite before then can be added to their parent directory.
+  DirectoryItem  *collector;
 
   FTSENT  *entp;
 }
 
 - (instancetype) init NS_DESIGNATED_INITIALIZER;
 
-// Convenience "constructor" for repeated usage
-- (void) initWithDirectoryItem:(DirectoryItem *)dirItem entp:(FTSENT *)entp;
+// Convenience "constructors" for repeated usage
+- (void) initWithParent:(DirectoryItem *)parent entp:(FTSENT *)entp;
+
+- (void) initWithParent:(DirectoryItem *)parent
+              collector:(DirectoryItem *)collector
+                   entp:(FTSENT *)entp;
 
 @end // @interface ScanStackFrame
 
@@ -90,24 +100,39 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 // Overrides super's designated initialiser.
 - (instancetype) init {
   if (self = [super init]) {
-    dirItem = nil;
+    parent = nil;
+    collector = nil;
   }
   return self;
 }
 
 // "Constructor" intended for repeated usage. It assumes init has already been invoked
-- (void) initWithDirectoryItem:(DirectoryItem *)dirItemVal entp:(FTSENT *)entpVal {
-  if (dirItem != dirItemVal) {
-    [dirItem release];
+- (void) initWithParent:(DirectoryItem *)parentVal
+                   entp:(FTSENT *)entpVal {
+  [self initWithParent: parentVal collector: parentVal entp: entpVal];
+}
+
+// "Constructor" intended for repeated usage. It assumes init has already been invoked
+- (void) initWithParent:(DirectoryItem *)parentVal
+              collector:(DirectoryItem *)collectorVal
+                   entp:(FTSENT *)entpVal {
+  if (parent != parentVal) {
+    [parent release];
   }
-  dirItem = [dirItemVal retain];
+  parent = [parentVal retain];
+
+  if (collector != collectorVal) {
+    [collector release];
+  }
+  collector = [collectorVal retain];
 
   entp = entpVal;
 }
 
 - (void) dealloc {
   entp = NULL;
-  [dirItem release];
+  [parent release];
+  [collector release];
   
   [super dealloc];
 }
@@ -437,10 +462,12 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   return YES;
 }
 
-- (void) getContentsForDirectory:(DirectoryItem *)dirItem
-                          atPath:(NSString *)path {
+- (DirectoryItem *)getContentsForDirectory:(DirectoryItem *)dirItem
+                                    atPath:(NSString *)path {
   ScanStackFrame  *parent = [[[ScanStackFrame alloc] init] autorelease];
-  [parent initWithDirectoryItem: dirItem entp: [self startScan: path]];
+  DirectoryItem  *collector = (DirectoryItem *)[dirItem duplicateFileItem: dirItem.parentDirectory];
+
+  [parent initWithParent: dirItem collector: collector entp: [self startScan: path]];
 
   FTSENT *entp;
   while ((entp = fts_read(ftsp)) != NULL) {
@@ -454,6 +481,8 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   }
 
   [self stopScan];
+
+  return collector;
 }
 
 - (AlertMessage *)createAlertMessage:(DirectoryItem *)scanTree {
@@ -514,7 +543,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   }
   
   // Add the item to the stack. Overwriting the previous entry.
-  [dirStack[++dirStackTopIndex] initWithDirectoryItem: dirItem entp: entp];
+  [dirStack[++dirStackTopIndex] initWithParent: dirItem entp: entp];
   
   [treeGuide descendIntoDirectory: dirItem];
   [progressTracker processingFolder: dirItem];
@@ -531,7 +560,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
   while (dirStackTopIndex >= 0) {
     ScanStackFrame  *topDir = dirStack[dirStackTopIndex];
     if (finalizedSubdir != nil) {
-      [topDir->dirItem addSubdir: finalizedSubdir];
+      [topDir->collector addSubdir: finalizedSubdir];
     }
     if (topDir->entp == entp) {
       return YES;
@@ -547,7 +576,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 - (FileItem *)finalizeStackFrame:(ScanStackFrame *)topDir {
 //  NSLog(@"Pop: %s", topDir->entp->fts_path);
 
-  DirectoryItem  *dirItem = topDir->dirItem;
+  DirectoryItem  *dirItem = topDir->parent;
   [dirItem setSize]; // Fix the size
 
   [treeGuide emergedFromDirectory: dirItem];
@@ -607,7 +636,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
     
     DirectoryItem  *dirChildItem = [[DirectoryItem alloc]
                                     initWithLabel: lastPathComponent
-                                           parent: parent->dirItem
+                                           parent: parent->parent
                                             flags: flags
                                      creationTime: convertTimespec(statBlock->st_birthtimespec)
                                  modificationTime: convertTimespec(statBlock->st_mtimespec)
@@ -629,7 +658,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
         [self addToStack: dirChildItem entp: entp];
       } else {
         // When performing a shallow scan, we cannot apply a filter based on its contents (size).
-        [parent->dirItem addSubdir: dirChildItem];
+        [parent->collector addSubdir: dirChildItem];
       }
     } else {
       NSLog(@"Skipping scan of %s", entp->fts_path);
@@ -670,7 +699,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 
     PlainFileItem  *fileChildItem =
       [[PlainFileItem alloc] initWithLabel: lastPathComponent
-                                    parent: parent->dirItem
+                                    parent: parent->parent
                                       size: fileSize
                                       type: fileType
                                      flags: flags
@@ -680,7 +709,7 @@ CFAbsoluteTime convertTimespec(struct timespec ts) {
 
     // Only add file items that pass the filter test.
     if ( [treeGuide includeFileItem: fileChildItem] ) {
-      [parent->dirItem addFile: fileChildItem];
+      [parent->collector addFile: fileChildItem];
     }
 
     [fileChildItem release];

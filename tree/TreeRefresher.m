@@ -126,13 +126,11 @@
     oldSubdirs[dir.label] = dir;
   }];
 
-  // Perform shallow rescan. First scan into a temporary directory, as the sizes of the subdirs
-  // will be incorrect (zero).
-  DirectoryItem  *tmpDir = (DirectoryItem *)[newDir duplicateFileItem: newDir.parentDirectory];
-  [self getContentsForDirectory: tmpDir atPath: path];
+  // Perform shallow rescan.
+  DirectoryItem  *collector = [self getContentsForDirectory: newDir atPath: path];
 
   __block int  numSubdirs = 0;
-  [CompoundItem visitFileItemChildrenMaybeNil: tmpDir.directoryItems
+  [CompoundItem visitFileItemChildrenMaybeNil: collector.directoryItems
                                      callback: ^(FileItem *dir) {
     ++numSubdirs;
   }];
@@ -140,7 +138,7 @@
 
   // Populate the children directories, put results in linked list.
   __block Item  *newSubdirs = nil;
-  [CompoundItem visitFileItemChildrenMaybeNil: tmpDir.directoryItems
+  [CompoundItem visitFileItemChildrenMaybeNil: collector.directoryItems
                                      callback: ^(FileItem *dir) {
     DirectoryItem  *newSubdir = (DirectoryItem *)dir;
     DirectoryItem  *oldSubdir = oldSubdirs[newSubdir.label];
@@ -161,7 +159,7 @@
   }];
 
   // Balance the items
-  Item  *balancedFiles = [treeBalancer convertLinkedListToTree: tmpDir.fileItems];
+  Item  *balancedFiles = [treeBalancer convertLinkedListToTree: collector.fileItems];
   Item  *balancedSubdirs = [treeBalancer convertLinkedListToTree: newSubdirs];
 
   [newDir setFileItems: balancedFiles directoryItems: balancedSubdirs];

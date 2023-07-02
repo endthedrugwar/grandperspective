@@ -118,11 +118,12 @@ typedef NS_ENUM(NSInteger, FileSizeEnum) {
 
 /* Performs a shallow scan of the folder at the given path to determine its contents.
  *
- * The contents are collected in the dirItem, but not yet finalized (i.e. balanced). Before that
- * can be done, the sub-directories need to be populated (and finalized).
+ * The contents are collected in a temporary directory, but not yet finalized (i.e. balanced).
+ * Before that can be done, the sub-directories need to be populated (and finalized). It returns
+ * the contents via this temporary directory item.
  */
-- (void) getContentsForDirectory:(DirectoryItem *)dirItem
-                          atPath:(NSString *)path;
+- (DirectoryItem *)getContentsForDirectory:(DirectoryItem *)dirItem
+                                    atPath:(NSString *)path;
 
 - (AlertMessage *)createAlertMessage:(DirectoryItem *)scanTree;
 
