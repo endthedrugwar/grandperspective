@@ -22,13 +22,22 @@ the folders in which the file resides are similarly marked.
 The name and size of the selected file are shown underneath the view.
 </p>
 
-<h2>Changing the focus</h2>
+<h2>Locking and unlocking the selection</h2>
 
 <p>
-You can move the selection from the file to one of the folders in which it resides by changing focus.
-This way you can see the size of folders.
-You can change the focus using:
+Clicking inside the view locks the selection so that it does not change when you move the mouse.
+Click once more, anywhere in the view, to unlock the selection.
 </p>
+
+<h2>Changing the selection focus</h2>
+
+<p>
+You can move the selection from a file to a folder in which it resides by changing the focus.
+This way you can see the size of folders.
+</p>
+
+<p>
+You can change the focus using:
 <ul>
 <li>the <b>Focus</b> controls in the toolbar,</li>
 <li>the <b>scrollwheel</b> of your mouse, or</li>
@@ -36,17 +45,25 @@ You can change the focus using:
 <img src="images/ks_command.gif" hspace="2"/><b>[</b> and
 <img src="images/ks_command.gif" hspace="2"/><b>]</b>.</li>
 </ul>
+</p>
 
 <p>
 When you change the focus, it will remain at that level in the file hierarchy until you explicitly move it up or down.
 If you move the focus back down again to a file, the selection will again stick to files.
 </p>
 
-<h2>Locking and unlocking the selection</h2>
+<h2>Changing the display focus</h2>
 
 <p>
-Clicking inside the view locks the selection so that it does not change when you move the mouse.
-Click once more, anywhere in the view, to unlock the selection.
+The display focus controls which items are shown in the view, depending on their depth in the folder hierarchy.
+By default, all files are shown.
+When you move the display focus upwards, the view will not show files that are below the focus depth.
+This can help to get a high-level overview.
+</p>
+
+<p>
+The default display focus can be configured in the <a href="Preferences.html">Preferences</a>.
+When the selection is unlocked, you can use the Focus controls in the toolbar to change the display focus of the view.
 </p>
 
 <h2>Keyboard navigation</h2>
@@ -109,7 +126,7 @@ Deletion can be enabled from the <a href="Preferences.html">Preferences</a>.
 <p>
 <!-- Note: warning repeated in Preferences.html -->
 <em>Beware: Deleting folders will move the entire folder to the Trash, including any files in the folder that are not shown in the view.
-A file may not be shown because it was <a href="MasksAndFilters.html">masked or filtered</a>, it could not be scanned because of insufficient permissions, or it appeared in the folder after the scan was made.
+A file may not be shown because it was <a href="MasksAndFilters.html">masked or filtered</a>, it could not be scanned because of insufficent permissions, or it appeared in the folder after the scan was made.
 In short, you should be very careful when deleting folders.
 </em>
 </p></li>
