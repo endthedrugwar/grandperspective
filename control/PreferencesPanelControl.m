@@ -44,7 +44,6 @@ NSString  *DefaultViewWindowHeight = @"defaultViewWindowHeight";
 NSString  *CustomFileOpenApplication = @"customFileOpenApplication";
 NSString  *CustomFileRevealApplication = @"customFileRevealApplication";
 NSString  *UpdateFiltersBeforeUse = @"updateFiltersBeforeUse";
-NSString  *TreeMemoryZoneKey = @"treeMemoryZone";
 NSString  *DelayBeforeWelcomeWindowAfterStartupKey = @"delayBeforeWelcomeWindowAfterStartup";
 NSString  *KeyboardNavigationDeltaKey = @"keyboardNavigationDelta";
 NSString  *PackageCheckBehaviorKey = @"packageCheckBehavior";
