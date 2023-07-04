@@ -166,6 +166,9 @@
 /* Color mapping scheme */
 "uniform type" = "Τύπος αρχείου";
 
+/* Preference option for display focus */
+"unlimited" = "Χωρίς περιορισμό";
+
 /* Filter test */
 "Version control" = "Έλεγχος έκδοσης";
 

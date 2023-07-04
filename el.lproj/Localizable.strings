@@ -34,7 +34,7 @@
 /* Message in progress panel while saving data */
 "%d folders saved" = "%d αποθηκευμένοι φάκελοι";
 
-/* Message in progress panel while scanning */
+/* Message in progress panel while executing a full scan */
 "%d folders scanned" = "%d σαρωμένοι φάκελοι";
 
 /* Exact file size (in bytes) */
@@ -274,9 +274,6 @@
 /* Header in exported text file */
 "Path" = "Μονοπάτι (Path)";
 
-/* Alert message */
-"Possible reasons are that it does not exist anymore (it may have been moved, renamed, or deleted by other means) or that you lack the required permissions." = "Πιθανοί λόγοι είναι ότι δεν υπάρχει πλέον (μπορεί να έχει μετακινηθεί, μετονομαστεί ή διαγραφεί με άλλο τρόπο) ή ότι δεν έχετε τα απαιτούμενα δικαιώματα.";
-
 /* Message in progress panel while loading data */
 "Reading %@" = "Εν ενεργεία διάβασμα %@";
 
@@ -291,9 +288,6 @@
 
 /* Alert message */
 "Remove the test named \"%@\"?" = "Αφαίρεση του test \"%@\";";
-
-/* Title of save panel */
-"Save image" = "Αποθήκευση εικόνας";
 
 /* Title of save panel */
 "Save scan data" = "Αποθήκευση δεδομένων σάρωσης";
