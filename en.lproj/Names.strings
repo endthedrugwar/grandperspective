@@ -178,3 +178,6 @@
 
 /* Preference option for what to do after last view is closed */
 "do nothing" = "Do nothing";
+
+/* Preference option for display focus */
+"unlimited" = "Unlimited";

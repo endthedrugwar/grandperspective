@@ -76,7 +76,7 @@
 		<key>defaultColorPalette</key>
 		<string>CoffeeBeans</string>
 		<key>defaultDisplayFocus</key>
-		<string>Unlimited</string>
+		<string>unlimited</string>
 		<key>scanFilter</key>
 		<string>No hard-links</string>
 		<key>maskFilter</key>

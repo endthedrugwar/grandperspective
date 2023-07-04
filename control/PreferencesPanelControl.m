@@ -49,7 +49,7 @@ NSString  *DelayBeforeWelcomeWindowAfterStartupKey = @"delayBeforeWelcomeWindowA
 NSString  *KeyboardNavigationDeltaKey = @"keyboardNavigationDelta";
 NSString  *PackageCheckBehaviorKey = @"packageCheckBehavior";
 
-NSString  *UnlimitedDisplayFocusValue = @"Unlimited";
+NSString  *UnlimitedDisplayFocusValue = @"unlimited";
 
 @interface PreferencesPanelControl (PrivateMethods)
 
@@ -260,8 +260,10 @@ static BOOL appHasDeletePermission;
                 select: [title isEqualToString: prefValue]];
   }
 
-  NSString  *title = NSLocalizedString(UnlimitedDisplayFocusValue,
-                                       @"Value for display focus preference setting");
+  NSString  *title = [NSBundle.mainBundle localizedStringForKey: UnlimitedDisplayFocusValue
+                                                          value: nil
+                                                          table: @"Names"];
+
   [tagMaker addValue: UnlimitedDisplayFocusValue
            withTitle: title
              toPopUp: popUp
