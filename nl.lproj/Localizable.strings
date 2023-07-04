@@ -34,7 +34,7 @@
 /* Message in progress panel while saving data */
 "%d folders saved" = "%d mappen opgeslagen";
 
-/* Message in progress panel while scanning */
+/* Message in progress panel while executing a full scan */
 "%d folders scanned" = "%d mappen ingelezen";
 
 /* Exact file size (in bytes) */
@@ -274,9 +274,6 @@
 /* Header in exported text file */
 "Path" = "Pad";
 
-/* Alert message */
-"Possible reasons are that it does not exist anymore (it may have been moved, renamed, or deleted by other means) or that you lack the required permissions." = "Dit kan gebeuren wanneer het bestand niet meer bestaat (omdat het verplaatst, hernoemd of anderszins verwijderd is) of omdat u de vereiste rechten niet heeft.";
-
 /* Message in progress panel while loading data */
 "Reading %@" = "Laden van %@";
 
@@ -291,9 +288,6 @@
 
 /* Alert message */
 "Remove the test named \"%@\"?" = "De filtertest \"%@\" verwijderen?";
-
-/* Title of save panel */
-"Save image" = "Beeld bewaren";
 
 /* Title of save panel */
 "Save scan data" = "Data opslaan";

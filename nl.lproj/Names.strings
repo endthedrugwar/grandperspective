@@ -166,6 +166,9 @@
 /* Color mapping scheme */
 "uniform type" = "Bestandstype";
 
+/* Preference option for display focus */
+"unlimited" = "Onbeperkt";
+
 /* Filter test */
 "Version control" = "Versie beheer";
 

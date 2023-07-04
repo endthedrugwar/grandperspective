@@ -1,9 +1,6 @@
 /* Toolbar action */
 "Delete" = "Verwijder";
 
-/* Toolbar action */
-"Drawer" = "Lade";
-
 /* Label for focus controls */
 "Focus" = "Focus in/uit";
 
@@ -27,9 +24,6 @@
 
 /* Tooltip */
 "Open with Finder" = "Open via Finder";
-
-/* Tooltip */
-"Open/close drawer" = "Open/sluit lade";
 
 /* Tooltip */
 "Preview item in Quick Look panel" = "Snelle weergave van bestand of map";
