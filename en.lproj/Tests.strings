@@ -1,11 +1,11 @@
 /* AND-test for flags sub tests with 1: subtest, 2: one or more sub tests */
 "%@ and %@" = "%1$@ and %2$@";
 
-/* Case-sensitive string test with 1: subject, and 2: match targets */
-"%@ conTains %@" = "%1$@ conTains %2$@";
-
 /* String test with 1: subject, and 2: match targets */
 "%@ contains %@" = "%1$@ contains %2$@";
+
+/* Case-sensitive string test with 1: subject, and 2: match targets */
+"%@ conTains %@" = "%1$@ conTains %2$@";
 
 /* String test with 1: subject, and 2: match targets */
 "%@ ends with %@" = "%1$@ ends with %2$@";
@@ -13,11 +13,11 @@
 /* Case-sensitive string test with 1: subject, and 2: match targets */
 "%@ enDs with %@" = "%1$@ enDs with %2$@";
 
-/* Case-sensitive string test with 1: subject, and 2: match targets */
-"%@ eQuals %@" = "%1$@ eQuals %2$@";
-
 /* String test with 1: subject, and 2: match targets */
 "%@ equals %@" = "%1$@ equals %2$@";
+
+/* Case-sensitive string test with 1: subject, and 2: match targets */
+"%@ eQuals %@" = "%1$@ eQuals %2$@";
 
 /* Pair of match targets with 1: a target match, and 2: another target match */
 "%@ or %@" = "%1$@ or %2$@";

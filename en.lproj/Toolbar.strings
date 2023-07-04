@@ -1,14 +1,14 @@
 /* Toolbar action */
 "Delete" = "Delete";
 
-/* Toolbar action */
-"Drawer" = "Drawer";
-
 /* Label for focus controls */
 "Focus" = "Focus";
 
 /* Menu item */
 "Hide Toolbar" = "Hide Toolbar";
+
+/* Toolbar action */
+"Info" = "Info";
 
 /* Toolbar action */
 "Move focus down" = "Move focus down";
@@ -24,9 +24,6 @@
 
 /* Tooltip */
 "Open with Finder" = "Open with Finder";
-
-/* Tooltip */
-"Open/close drawer" = "Open/close drawer";
 
 /* Tooltip */
 "Preview item in Quick Look panel" = "Preview item in Quick Look panel";
@@ -57,6 +54,12 @@
 
 /* Tooltip */
 "Reveal in Finder" = "Reveal in Finder";
+
+/* Tooltip */
+"Search files by name" = "Search files by name";
+
+/* Tooltip */
+"Show info" = "Show info";
 
 /* Menu item */
 "Show Toolbar" = "Show Toolbar";

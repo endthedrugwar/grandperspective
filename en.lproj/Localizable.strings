@@ -25,13 +25,16 @@
 /* Message in progress panel while filtering */
 "%d folders filtered" = "%d folders filtered";
 
+/* Message in progress panel while executing refresh-based scan */
+"%d folders processed" = "%d folders processed";
+
 /* Message in progress panel while loading data */
 "%d folders read" = "%d folders read";
 
 /* Message in progress panel while saving data */
 "%d folders saved" = "%d folders saved";
 
-/* Message in progress panel while scanning */
+/* Message in progress panel while executing a full scan */
 "%d folders scanned" = "%d folders scanned";
 
 /* Exact file size (in bytes) */
@@ -52,6 +55,9 @@
 /* Alert message (with filename arg) */
 "Aborted saving the scan data to \"%@\"" = "Aborted saving the scan data to \"%@\"";
 
+/* Header in exported text file */
+"Accessed" = "Accessed";
+
 /* Label in Focus panel */
 "Area in view:" = "Area in view:";
 
@@ -63,6 +69,12 @@
 
 /* Alert panel button */
 "Cancel" = "Cancel";
+
+/* Part of tool tip for uniform types */
+"Conforms to:" = "Conforms to:";
+
+/* Header in exported text file */
+"Created" = "Created";
 
 /* Alert panel button */
 "Delete" = "Delete";
@@ -115,6 +127,12 @@
 /* Parse error */
 "Expected unsigned integer value." = "Expected unsigned integer value.";
 
+/* Title of save panel */
+"Export image" = "Export image";
+
+/* Title of save panel */
+"Export scan data as text" = "Export scan data as text";
+
 /* Alert message */
 "Failed to bind one or more filter tests:\n%@" = "Failed to bind one or more filter tests:\n%@";
 
@@ -166,6 +184,9 @@
 /* Label in Focus panel */
 "File in view:" = "File in view:";
 
+/* Header in exported text file */
+"Filename" = "Filename";
+
 /* Window title */
 "Filter - %@" = "Filter - %@";
 
@@ -187,6 +208,12 @@
 /* File size unit for gigabytes. */
 "GB" = "GB";
 
+/* Menu item */
+"Hide Control Panel" = "Hide Control Panel";
+
+/* Alert message */
+"Inaccuracies in hard-linked folder contents" = "Inaccuracies in hard-linked folder contents";
+
 /* File size unit for kilobytes. */
 "kB" = "kB";
 
@@ -204,6 +231,9 @@
 
 /* File size unit for megabytes. */
 "MB" = "MB";
+
+/* Header in exported text file */
+"Modified" = "Modified";
 
 /* Legend for Time-based mapping schemes. */
 "More recent" = "More recent";
@@ -241,11 +271,14 @@
 /* Parse error */
 "Parsing aborted" = "Parsing aborted";
 
-/* Alert message */
-"Possible reasons are that it does not exist anymore (it may have been moved, renamed, or deleted by other means) or that you lack the required permissions." = "Possible reasons are that it does not exist anymore (it may have been moved, renamed, or deleted by other means) or that you lack the required permissions.";
+/* Header in exported text file */
+"Path" = "Path";
 
 /* Message in progress panel while loading data */
 "Reading %@" = "Reading %@";
+
+/* Title of progress panel. */
+"Refresh in progress" = "Refresh in progress";
 
 /* Alert panel button */
 "Remove" = "Remove";
@@ -255,9 +288,6 @@
 
 /* Alert message */
 "Remove the test named \"%@\"?" = "Remove the test named \"%@\"?";
-
-/* Title of save panel */
-"Save image" = "Save image";
 
 /* Title of save panel */
 "Save scan data" = "Save scan data";
@@ -277,8 +307,17 @@
 /* Message in progress panel while scanning */
 "Scanning %@" = "Scanning %@";
 
+/* Alert message */
+"Scanning failed" = "Scanning failed";
+
 /* Title of progress panel. */
 "Scanning in progress" = "Scanning in progress";
+
+/* Solitairy entry in Start window */
+"Select Folder" = "Select Folder";
+
+/* Entry in Start window, alongside other options */
+"Select Other Folder" = "Select Other Folder";
 
 /* Label in Focus panel */
 "Selected area:" = "Selected area:";
@@ -291,6 +330,12 @@
 
 /* Label in Focus panel */
 "Selected package:" = "Selected package:";
+
+/* Menu item */
+"Show Control Panel" = "Show Control Panel";
+
+/* Header in exported text file */
+"Size" = "Size";
 
 /* Alert message (with filename arg) */
 "Successfully saved the scan data to \"%@\"" = "Successfully saved the scan data to \"%@\"";
@@ -309,6 +354,12 @@
 
 /* Alert informative text */
 "The filter will be replaced by the default filter with this name." = "The filter will be replaced by the default filter with this name.";
+
+/* Alert message */
+"The path %@ does not exist or is not a folder" = "The path %@ does not exist or is not a folder";
+
+/* Alert message */
+"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once." = "The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once.";
 
 /* Alert message */
 "The reported size of some files is larger than their actual size on disk" = "The reported size of some files is larger than their actual size on disk";
@@ -342,6 +393,12 @@
 
 /* Alert informative text */
 "These filters do not exist anymore. Their old definition is used instead." = "These filters do not exist anymore. Their old definition is used instead.";
+
+/* Part of tool tip for uniform types */
+"Top-level type" = "Top-level type";
+
+/* Header in exported text file */
+"Type" = "Type";
 
 /* Description for 'unknown' UTI. */
 "unknown file type" = "unknown file type";
