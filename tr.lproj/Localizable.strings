@@ -34,7 +34,7 @@
 /* Message in progress panel while saving data */
 "%d folders saved" = "%d klasör kaydedildi";
 
-/* Message in progress panel while scanning */
+/* Message in progress panel while executing a full scan */
 "%d folders scanned" = "%d klasör tarandı";
 
 /* Exact file size (in bytes) */
@@ -274,9 +274,6 @@
 /* Header in exported text file */
 "Path" = "Yol";
 
-/* Alert message */
-"Possible reasons are that it does not exist anymore (it may have been moved, renamed, or deleted by other means) or that you lack the required permissions." = "Olası bir neden artık var olmaması olabilir (başka yollardan taşınmış, adı değiştirilmiş veya silinmiş olabilir) veya gerekli izinlere sahip olmayabilirsiniz.";
-
 /* Message in progress panel while loading data */
 "Reading %@" = "%@ okunuyor";
 
@@ -291,9 +288,6 @@
 
 /* Alert message */
 "Remove the test named \"%@\"?" = "\"%@\" adlı süzgeci kaldırmak istiyor musunuz?";
-
-/* Title of save panel */
-"Save image" = "Görseli kaydet";
 
 /* Title of save panel */
 "Save scan data" = "Tarama verisini kaydet";

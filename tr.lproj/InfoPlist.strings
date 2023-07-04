@@ -10,7 +10,7 @@
 /* Privacy - Downloads Folder Usage Description */
 "NSDownloadsFolderUsageDescription" = "Bu uygulama İndirilenlen klasörünüzün ne kadar disk alanı kullandığını denetler";
 
-/* (No Comment) */
+/* Copyright (human-readable) */
 "NSHumanReadableCopyright" = "Telif Hakkı © Eriban Software, 2005-2023";
 
 /* Privacy - Reminders Usage Description */

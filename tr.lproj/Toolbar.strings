@@ -1,9 +1,6 @@
 /* Toolbar action */
 "Delete" = "Sil";
 
-/* Toolbar action */
-"Drawer" = "Çekmece";
-
 /* Label for focus controls */
 "Focus" = "Odak";
 
@@ -27,9 +24,6 @@
 
 /* Tooltip */
 "Open with Finder" = "Aç";
-
-/* Tooltip */
-"Open/close drawer" = "Çekmeceyi Aç/Kapat";
 
 /* Tooltip */
 "Preview item in Quick Look panel" = "Göz At Panelinde Önizle";
