@@ -166,6 +166,9 @@
 /* Color mapping scheme */
 "uniform type" = "Dosya türü";
 
+/* Preference option for display focus */
+"unlimited" = "Sınırsız";
+
 /* Filter test */
 "Version control" = "Sürüm denetimi";
 
