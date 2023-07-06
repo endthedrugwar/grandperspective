@@ -34,7 +34,7 @@
 /* Message in progress panel while saving data */
 "%d folders saved" = "%d cartelle salvate";
 
-/* Message in progress panel while scanning */
+/* Message in progress panel while executing a full scan */
 "%d folders scanned" = "%d cartelle scansionate";
 
 /* Exact file size (in bytes) */
@@ -274,9 +274,6 @@
 /* Header in exported text file */
 "Path" = "Percorso";
 
-/* Alert message */
-"Possible reasons are that it does not exist anymore (it may have been moved, renamed, or deleted by other means) or that you lack the required permissions." = "Forse non esiste più (può essere stato spostato, rinominato o cancellato con altri mezzi) o non si dispone delle autorizzazioni necessarie.";
-
 /* Message in progress panel while loading data */
 "Reading %@" = "Leggendo %@";
 
@@ -291,9 +288,6 @@
 
 /* Alert message */
 "Remove the test named \"%@\"?" = "Rimuovere il test chiamato \"%@\"?";
-
-/* Title of save panel */
-"Save image" = "Salva immagine";
 
 /* Title of save panel */
 "Save scan data" = "Salva dati scansione";

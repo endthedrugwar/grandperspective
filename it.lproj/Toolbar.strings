@@ -1,9 +1,6 @@
 /* Toolbar action */
 "Delete" = "Elimina";
 
-/* Toolbar action */
-"Drawer" = "Pannello laterale";
-
 /* Label for focus controls */
 "Focus" = "Focus livello";
 
@@ -27,9 +24,6 @@
 
 /* Tooltip */
 "Open with Finder" = "Apri nel Finder";
-
-/* Tooltip */
-"Open/close drawer" = "Apri/chiudi pannello laterale";
 
 /* Tooltip */
 "Preview item in Quick Look panel" = "Anteprima elemento in Quick Look";
