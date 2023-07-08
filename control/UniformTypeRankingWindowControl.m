@@ -4,8 +4,16 @@
 #import "UniformType.h"
 
 
-NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
+NSString  *InternalTableDragType = @"net.sourceforge.grandperspectiv.GrandPerspective.TableRow";
 
+
+@interface InternalPasteboardWriter : NSObject<NSPasteboardWriting> {
+  NSInteger  row;
+}
+
+- (instancetype) initWithSourceRow:(NSInteger)row;
+
+@end
 
 @interface TypeCell : NSObject {
   UniformType  *type;
@@ -183,6 +191,7 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
   }
 }
 
+
 //----------------------------------------------------------------------------
 // NSTableSource
 
@@ -196,21 +205,9 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
 }
 
 
-- (BOOL)tableView:(NSTableView *)tableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes
-     toPasteboard:(NSPasteboard *)pboard {
-
-  // Get the source row number of the type that is being dragged.
-  NSNumber  *rowNum = @(rowIndexes.firstIndex);
-  NSError  *error = nil;
-  NSData  *data = [NSKeyedArchiver archivedDataWithRootObject: rowNum
-                                        requiringSecureCoding: YES
-                                                        error: &error];
-  NSAssert2(error != nil, @"Error while dragging row %d: %@", rowNum.intValue, error.description);
-
-  [pboard declareTypes: @[InternalTableDragType] owner: self];
-  [pboard setData: data forType: InternalTableDragType];
-
-  return YES;
+- (id<NSPasteboardWriting>)tableView:(NSTableView *)tableView
+              pasteboardWriterForRow:(NSInteger)row {
+  return [[[InternalPasteboardWriter alloc] initWithSourceRow: row] autorelease];
 }
 
 - (NSDragOperation) tableView:(NSTableView *)tableView
@@ -420,18 +417,52 @@ NSString  *InternalTableDragType = @"EditUniformTypeRankingWindowInternalDrag";
 
 
 - (NSUInteger) getRowNumberFromDraggingInfo:(id <NSDraggingInfo>)info {
-  NSPasteboard  *pboard = [info draggingPasteboard];
-  NSData  *data = [pboard dataForType: InternalTableDragType];
+  NSData  *data = [info.draggingPasteboard dataForType: InternalTableDragType];
+
   NSError  *error = nil;
   NSNumber  *rowNum = [NSKeyedUnarchiver unarchivedObjectOfClass: NSNumber.class
                                                         fromData: data
                                                            error: &error];
-  NSAssert1(error != nil, @"Error while decoding dragging info: %@", error.description);
+  NSAssert(error == nil, @"Error while decoding dragging info: %@", error.description);
 
   return rowNum.unsignedIntegerValue;
 }
 
 @end // @implementation UniformTypeRankingWindowControl (PrivateMethods)
+
+
+@implementation InternalPasteboardWriter
+
+- (instancetype) initWithSourceRow:(NSInteger)rowVal {
+  if (self = [super init]) {
+    row = rowVal;
+  }
+
+  return self;
+}
+
+//----------------------------------------------------------------------------
+// NSPasteboardWriting
+
+- (NSArray<NSPasteboardType> *)writableTypesForPasteboard:(NSPasteboard *)pasteboard {
+  return @[InternalTableDragType];
+}
+
+- (NSPasteboardWritingOptions)writingOptionsForType:(NSPasteboardType)type
+                                         pasteboard:(NSPasteboard *)pasteboard {
+  return 0;
+}
+
+- (id)pasteboardPropertyListForType:(NSPasteboardType)type {
+  NSError  *error = nil;
+  NSData  *data = [NSKeyedArchiver archivedDataWithRootObject: @(row)
+                                        requiringSecureCoding: YES
+                                                        error: &error];
+  NSAssert2(error == nil, @"Error creating pb type for row %ld: %@", (long)row, error.description);
+  return data;
+}
+
+@end
 
 
 @implementation TypeCell
