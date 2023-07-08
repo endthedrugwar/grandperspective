@@ -376,7 +376,7 @@
 	<key>LSHasLocalizedDisplayName</key>
 	<true/>
 	<key>LSMinimumSystemVersion</key>
-	<string>$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)</string>
+	<string>11.0</string>
 	<key>NSDesktopFolderUsageDescription</key>
 	<string>The app checks how much disk space your Desktop uses</string>
 	<key>NSDocumentsFolderUsageDescription</key>

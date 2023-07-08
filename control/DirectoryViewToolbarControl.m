@@ -385,7 +385,8 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   [item setLabel: NSLocalizedStringFromTable(@"Open", @"Toolbar", @"Toolbar action")];
   item.paletteLabel = item.label;
   [item setToolTip: NSLocalizedStringFromTable(@"Open with Finder", @"Toolbar", @"Tooltip")];
-  item.image = [NSImage imageNamed: @"OpenWithFinder"];
+  item.image = [NSImage imageWithSystemSymbolName: @"book"
+                         accessibilityDescription: nil];
   item.action = @selector(openFile:);
   item.target = self;
 
@@ -400,7 +401,8 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   item.paletteLabel = item.label;
   [item setToolTip:
     NSLocalizedStringFromTable(@"Preview item in Quick Look panel", @"Toolbar", @"Tooltip")];
-  item.image = [NSImage imageNamed: @"QuickLook"];
+  item.image = [NSImage imageWithSystemSymbolName: @"eye"
+                         accessibilityDescription: nil];
   item.action = @selector(previewFile:);
   item.target = self;
 
@@ -414,7 +416,8 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   [item setLabel: NSLocalizedStringFromTable(@"Reveal", @"Toolbar", @"Toolbar action")];
   item.paletteLabel = item.label;
   [item setToolTip: NSLocalizedStringFromTable(@"Reveal in Finder", @"Toolbar", @"Tooltip" )];
-  item.image = [NSImage imageNamed: @"RevealInFinder"];
+  item.image = [NSImage imageWithSystemSymbolName: @"doc.viewfinder"
+                         accessibilityDescription: nil];
   item.action = @selector(revealFileInFinder:);
   item.target = self;
 
@@ -428,7 +431,8 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   [item setLabel: NSLocalizedStringFromTable(@"Delete", @"Toolbar", @"Toolbar action")];
   item.paletteLabel = item.label;
   [item setToolTip: NSLocalizedStringFromTable(@"Move to trash", @"Toolbar", @"Tooltip")];
-  item.image = [NSImage imageNamed: @"Delete"];
+  item.image = [NSImage imageWithSystemSymbolName: @"trash"
+                         accessibilityDescription: nil];
   item.action = @selector(deleteFile:);
   item.target = self;
 
@@ -452,7 +456,8 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   }
 
   item.paletteLabel = item.label;
-  item.image = [NSImage imageNamed: @"Rescan"];
+  item.image = [NSImage imageWithSystemSymbolName: @"arrow.clockwise"
+                         accessibilityDescription: nil];
   item.target = self;
 
   return item;
@@ -465,7 +470,8 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   [item setLabel: NSLocalizedStringFromTable(@"Info", @"Toolbar", @"Toolbar action")];
   item.paletteLabel = item.label;
   [item setToolTip: NSLocalizedStringFromTable(@"Show info", @"Toolbar", "Tooltip")];
-  item.image = [NSImage imageNamed: @"Info"];
+  item.image = [NSImage imageWithSystemSymbolName: @"info"
+                         accessibilityDescription: nil];
   item.action = @selector(showInfo:);
   item.target = dirViewControl;
 

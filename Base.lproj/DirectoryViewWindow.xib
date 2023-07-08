@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -83,11 +83,9 @@
                     <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="950" customClass="ToolbarSegmentedCell">
                         <font key="font" metaFont="system"/>
                         <segments>
-                            <segment image="ZoomIn" width="26" tag="100"/>
-                            <segment image="ZoomOut" width="26" tag="101"/>
-                            <segment image="Reset" width="26" tag="104">
-                                <nil key="label"/>
-                            </segment>
+                            <segment image="plus" catalog="system" width="26" tag="100"/>
+                            <segment image="minus" catalog="system" width="26" tag="101"/>
+                            <segment image="arrow.uturn.backward" catalog="system" width="26" tag="104"/>
                         </segments>
                     </segmentedCell>
                 </segmentedControl>
@@ -104,9 +102,9 @@
                     <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="951" customClass="ToolbarSegmentedCell">
                         <font key="font" metaFont="system"/>
                         <segments>
-                            <segment image="FocusDown" width="26" tag="103"/>
-                            <segment image="FocusUp" width="26" tag="102"/>
-                            <segment image="Reset" width="26" tag="105">
+                            <segment image="arrow.down.right.and.arrow.up.left" catalog="system" width="26" tag="103"/>
+                            <segment image="arrow.up.backward.and.arrow.down.forward" catalog="system" width="26" tag="102"/>
+                            <segment image="arrow.uturn.backward" catalog="system" width="26" tag="105">
                                 <nil key="label"/>
                             </segment>
                         </segments>
@@ -117,10 +115,10 @@
         </customView>
     </objects>
     <resources>
-        <image name="FocusDown" width="20" height="18"/>
-        <image name="FocusUp" width="20" height="18"/>
-        <image name="Reset" width="20" height="18"/>
-        <image name="ZoomIn" width="16" height="16"/>
-        <image name="ZoomOut" width="16" height="16"/>
+        <image name="arrow.down.right.and.arrow.up.left" catalog="system" width="17" height="15"/>
+        <image name="arrow.up.backward.and.arrow.down.forward" catalog="system" width="17" height="15"/>
+        <image name="arrow.uturn.backward" catalog="system" width="16" height="14"/>
+        <image name="minus" catalog="system" width="15" height="4"/>
+        <image name="plus" catalog="system" width="15" height="13"/>
     </resources>
 </document>
