@@ -72,6 +72,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 - (void) fileSizeUnitSystemChanged;
 
+- (void) openFile:(FileItem *)fileItem withApplication:(NSURL *)appUrl;
 @end
 
 
@@ -301,42 +302,21 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 
 - (IBAction) openFile:(id)sender {
-  FileItem  *file = pathModelView.selectedFileItem;
-  NSString  *filePath = file.systemPath;
+  FileItem  *fileItem = pathModelView.selectedFileItem;
 
   NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
-  NSString  *customApp = [userDefaults stringForKey: CustomFileOpenApplication];
   NSWorkspace  *workspace = NSWorkspace.sharedWorkspace;
+  NSString  *customApp = [userDefaults stringForKey: CustomFileOpenApplication];
+  NSURL  *appUrl;
 
   if (customApp.length > 0) {
-    NSLog(@"Opening using customApp");
-    if ( [workspace openFile: filePath withApplication: customApp] ) {
-      return; // All went okay
-    }
+    NSLog(@"Opening %@ using custom app %@", fileItem.systemPath, customApp);
+    appUrl = [NSURL fileURLWithPath: customApp];
+  } else {
+    appUrl = [workspace URLForApplicationToOpenURL: [NSURL fileURLWithPath: fileItem.systemPath]];
   }
-  else {
-    if ( [workspace openFile: filePath] ) {
-      return; // All went okay
-    }
-  }
-  
-  NSAlert *alert = [[[NSAlert alloc] init] autorelease];
 
-  NSString  *msgFmt = 
-    ( [file isPackage]
-      ? NSLocalizedString(@"Failed to open the package \"%@\"", @"Alert message")
-      : ( [file isDirectory] 
-          // Opening directories should not be enabled, but handle it anyway
-          // here, just for robustness...
-          ? NSLocalizedString(@"Failed to open the folder \"%@\"", @"Alert message")
-          : NSLocalizedString(@"Failed to open the file \"%@\"", @"Alert message") ) );
-  NSString  *msg = [NSString stringWithFormat: msgFmt, [file pathComponent]];
-         
-  [alert addButtonWithTitle: OK_BUTTON_TITLE];
-  alert.messageText = msg;
-  [alert setInformativeText: NOTE_IT_MAY_NOT_EXIST_ANYMORE];
-
-  [alert beginSheetModalForWindow: self.window completionHandler: nil];
+  [self openFile: fileItem withApplication: appUrl];
 }
 
 - (IBAction) previewFile:(id)sender {
@@ -349,56 +329,55 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 }
 
 - (IBAction) revealFileInFinder:(id)sender {
-  FileItem  *file = pathModelView.selectedFileItem;
-  NSString  *filePath = file.systemPath;
+  FileItem  *fileItem = pathModelView.selectedFileItem;
+  NSString  *filePath = fileItem.systemPath;
   
   NSUserDefaults  *userDefaults = NSUserDefaults.standardUserDefaults;
   NSString  *customApp = [userDefaults stringForKey: CustomFileRevealApplication];
   NSWorkspace  *workspace = NSWorkspace.sharedWorkspace;
 
   if (customApp.length > 0) {
-    NSLog(@"Revealing using customApp %@.", customApp);
-    if ( [workspace openFile: filePath withApplication: customApp] ) {
-      return; // All went okay
-    }
+    NSLog(@"Revealing %@ using custom app %@", fileItem.systemPath, customApp);
+
+    [self openFile: fileItem withApplication: [NSURL fileURLWithPath: customApp]];
+    return;
   }
-  else { 
-    // Work-around for bug/limitation of NSWorkSpace. It apparently cannot select files that are
-    // inside a package, unless the package is the root path. So check if the selected file is
-    // inside a package. If so, use it as a root path.
-    DirectoryItem  *ancestor = file.parentDirectory;
-    DirectoryItem  *package = nil;
+
+  // Work-around for bug/limitation of NSWorkSpace. It apparently cannot select files that are
+  // inside a package, unless the package is the root path. So check if the selected file is
+  // inside a package. If so, use it as a root path.
+  DirectoryItem  *ancestor = fileItem.parentDirectory;
+  DirectoryItem  *package = nil;
  
-    while (ancestor != nil) {
-      if (ancestor.isPackage) {
-        if (package != nil) {
-          // The package in which the selected item resides is inside a package itself. Open this
-          // inner package instead (as opening the selected file will not succeed).
-          file = package;
-        }
-        package = ancestor;
+  while (ancestor != nil) {
+    if (ancestor.isPackage) {
+      if (package != nil) {
+        // The package in which the selected item resides is inside a package itself. Open this
+        // inner package instead (as opening the selected file will not succeed).
+        fileItem = package;
       }
-      ancestor = ancestor.parentDirectory;
+      package = ancestor;
     }
-
-    NSString  *rootPath = (package != nil) ? package.systemPath : invisiblePathName;
-
-    if ([workspace selectFile: filePath inFileViewerRootedAtPath: rootPath]) {
-      return; // All went okay
-    }
+    ancestor = ancestor.parentDirectory;
   }
-  
+
+  NSString  *rootPath = (package != nil) ? package.systemPath : invisiblePathName;
+
+  if ([workspace selectFile: filePath inFileViewerRootedAtPath: rootPath]) {
+    return; // All went okay
+  }
+
   NSAlert *alert = [[[NSAlert alloc] init] autorelease];
 
   NSString  *msgFmt = 
-    ( file.isPackage
+    ( fileItem.isPackage
       ? NSLocalizedString(@"Failed to reveal the package \"%@\"", @"Alert message")
-      : ( file.isDirectory
+      : ( fileItem.isDirectory
           ? NSLocalizedString(@"Failed to reveal the folder \"%@\"", @"Alert message")
           : NSLocalizedString(@"Failed to reveal the file \"%@\"", @"Alert message")
          )
      );
-  NSString  *msg = [NSString stringWithFormat: msgFmt, file.pathComponent];
+  NSString  *msg = [NSString stringWithFormat: msgFmt, fileItem.pathComponent];
 
   [alert addButtonWithTitle: OK_BUTTON_TITLE];
   alert.messageText = msg;
@@ -873,6 +852,43 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 - (void) fileSizeUnitSystemChanged {
   [self updateSelectionInStatusbar: nil];
 }
+
+- (void) openFile:(FileItem *)fileItem withApplication:(NSURL *)appUrl {
+  NSWorkspace  *workspace = NSWorkspace.sharedWorkspace;
+  NSString  *filePath = fileItem.systemPath;
+
+  [workspace openURLs: @[[NSURL fileURLWithPath: filePath]]
+ withApplicationAtURL: appUrl
+          configuration: [NSWorkspaceOpenConfiguration configuration]
+    completionHandler: ^(NSRunningApplication *app, NSError *error) {
+    if (error == nil) {
+      NSLog(@"Opened %@ using %@", filePath, appUrl);
+      return;
+    }
+
+    NSLog(@"Failed to open %@ using %@: %@", filePath, appUrl, error.description);
+    dispatch_async(dispatch_get_main_queue(), ^() {
+      NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+
+      NSString  *msgFmt =
+        ( fileItem.isPackage
+          ? NSLocalizedString(@"Failed to open the package \"%@\"", @"Alert message")
+          : ( fileItem.isDirectory
+              // Opening directories should not be enabled, but handle it anyway
+              // here, just for robustness...
+              ? NSLocalizedString(@"Failed to open the folder \"%@\"", @"Alert message")
+              : NSLocalizedString(@"Failed to open the file \"%@\"", @"Alert message") ) );
+      NSString  *msg = [NSString stringWithFormat: msgFmt, fileItem.pathComponent];
+
+      [alert addButtonWithTitle: OK_BUTTON_TITLE];
+      alert.messageText = msg;
+      [alert setInformativeText: NOTE_IT_MAY_NOT_EXIST_ANYMORE];
+
+      [alert beginSheetModalForWindow: self.window completionHandler: nil];
+    });
+  }];
+}
+
 
 @end // @implementation DirectoryViewControl (PrivateMethods)
 
