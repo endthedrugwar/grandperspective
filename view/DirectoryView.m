@@ -709,18 +709,17 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
                         autorelease];
   int  itemCount = 0;
 
-
-  if ( [self canPerformAction: @selector(revealFileInFinder:)] ) {
-    [popUpMenu insertItemWithTitle: 
-                 NSLocalizedStringFromTable( @"Reveal in Finder", @"PopUpMenu", @"Menu item" )
-                            action: @selector(revealFileInFinder:) 
+  if ([self canPerformAction: @selector(openFile:)]) {
+    NSString  *title = NSLocalizedStringFromTable(@"Open", @"PopUpMenu", @"Menu item");
+    [popUpMenu insertItemWithTitle: title
+                            action: @selector(openFile:)
                      keyEquivalent: @""
                            atIndex: itemCount++];
   }
 
-  if ( [self canPerformAction: @selector(previewFile:)] ) {
-    NSMenuItem  *menuItem = [[[NSMenuItem alloc] initWithTitle:
-                            NSLocalizedStringFromTable( @"Quick Look", @"PopUpMenu", @"Menu item" )
+  if ([self canPerformAction: @selector(previewFile:)]) {
+    NSString  *title = NSLocalizedStringFromTable(@"Quick Look", @"PopUpMenu", @"Menu item");
+    NSMenuItem  *menuItem = [[[NSMenuItem alloc] initWithTitle: title
                                                         action: @selector(previewFile:)
                                                  keyEquivalent: @" "]
                              autorelease];
@@ -728,25 +727,27 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
     [popUpMenu insertItem: menuItem atIndex: itemCount++];
   }
   
-  if ( [self canPerformAction: @selector(openFile:)] ) {
-    [popUpMenu insertItemWithTitle: 
-     NSLocalizedStringFromTable( @"Open with Finder", @"PopUpMenu", @"Menu item" )
-                            action: @selector(openFile:) 
-                     keyEquivalent: @"" 
+  if ([self canPerformAction: @selector(revealFileInFinder:)]) {
+    NSString  *title = NSLocalizedStringFromTable(@"Reveal", @"PopUpMenu", @"Menu item");
+    [popUpMenu insertItemWithTitle: title
+                            action: @selector(revealFileInFinder:)
+                     keyEquivalent: @""
                            atIndex: itemCount++];
   }
-  
-  if ( [self canPerformAction: @selector(copy:)] ) {
-    [popUpMenu insertItemWithTitle:
-     NSLocalizedStringFromTable(@"Copy path", @"PopUpMenu", @"Menu item" )
+
+  if ([self canPerformAction: @selector(copy:)]) {
+    NSString  *title =  NSLocalizedStringFromTable(@"Copy Path", @"PopUpMenu", @"Menu item");
+    [popUpMenu insertItemWithTitle: title
                             action: @selector(copy:) 
                      keyEquivalent: @"c"
                            atIndex: itemCount++];
   }
   
-  if ( [self canPerformAction: @selector(deleteFile:)] ) {
-    [popUpMenu insertItemWithTitle: 
-     NSLocalizedStringFromTable( @"Delete file", @"PopUpMenu", @"Menu item" )
+  if ([self canPerformAction: @selector(deleteFile:)]) {
+    NSString  *title = (pathModelView.selectedFileItem.isDirectory
+                        ? NSLocalizedStringFromTable(@"Delete Folder", @"PopUpMenu", @"Menu item")
+                        : NSLocalizedStringFromTable(@"Delete File", @"PopUpMenu", @"Menu item"));
+    [popUpMenu insertItemWithTitle: title
                             action: @selector(deleteFile:) 
                      keyEquivalent: @""
                            atIndex: itemCount++];

@@ -286,6 +286,37 @@
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="Selection" id="8Lj-RY-z1e">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Selection" id="4K2-IU-hcw">
+                        <items>
+                            <menuItem title="Open" id="33Q-IV-RrZ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="openFile:" target="-1" id="PT2-tJ-UJC"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Quick Look" keyEquivalent=" " id="9gG-CK-G0v">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="previewFile:" target="-1" id="Bfm-um-sWM"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Reveal" id="wVF-ys-3UQ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="revealFileInFinder:" target="-1" id="bqU-Gh-tYY"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Delete" id="lnG-FS-oUL">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="deleteFile:" target="-1" id="ZQo-kD-l8R"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
                 <menuItem title="Window" id="19">
                     <menu key="submenu" title="Window" systemMenu="window" id="24">
                         <items>

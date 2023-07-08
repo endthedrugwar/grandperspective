@@ -497,55 +497,20 @@ static dispatch_once_t  singletonOnceToken;
     return YES;
   }
 
+  // The remaining actions require an active Directory View window
   NSWindow  *window = NSApplication.sharedApplication.mainWindow;
   BOOL  mainWindowIsDirectoryView =
     [window.windowController isMemberOfClass:[DirectoryViewControl class]];
-  DirectoryViewControl  *dirViewControl =
-    mainWindowIsDirectoryView ? (DirectoryViewControl *)window.windowController : nil;
 
-  if ( action == @selector(toggleToolbarShown:) ) {
-    if (!mainWindowIsDirectoryView) {
-      return NO;
-    }
-    item.title = window.toolbar.visible
-       ? NSLocalizedStringFromTable(@"Hide Toolbar", @"Toolbar", @"Menu item")
-       : NSLocalizedStringFromTable(@"Show Toolbar", @"Toolbar", @"Menu item");
-
-    return YES;
+  if (!mainWindowIsDirectoryView) {
+    return NO;
   }
 
-  if ( action == @selector(toggleControlPanelShown:) ) {
-    if (!mainWindowIsDirectoryView) {
-      return NO;
-    }
-    item.title = ControlPanelControl.singletonInstance.isPanelShown
-      ? NSLocalizedString(@"Hide Control Panel", @"Menu item")
-      : NSLocalizedString(@"Show Control Panel", @"Menu item");
-
-    return YES;
-  }
-
-  if ( action == @selector(rescanSelected:) ) {
-    // Selection must be locked
-    return dirViewControl.isSelectedFileLocked;
-  }
-
-  if ( action == @selector(rescanWithMaskAsFilter:) ) {
-    // There should be a mask
-    return dirViewControl.directoryViewControlSettings.displaySettings.fileItemMaskEnabled;
-  }
-
-  if ( action == @selector(refresh:) ) {
-    // There must be a monitored change
-    return dirViewControl.treeContext.numTreeChanges > 0;
-  }
-
-  if (
-      action == @selector(duplicateDirectoryView:) ||
+  if (action == @selector(duplicateDirectoryView:) ||
       action == @selector(twinDirectoryView:)  ||
 
       action == @selector(customizeToolbar:) ||
-       
+
       action == @selector(saveScanData:) ||
       action == @selector(saveDirectoryViewImage:) ||
       action == @selector(saveScanDataAsText:) ||
@@ -556,7 +521,45 @@ static dispatch_once_t  singletonOnceToken;
 
       action == @selector(filterDirectoryView:)
   ) {
-    return mainWindowIsDirectoryView;
+    return YES;
+  }
+
+  if (action == @selector(toggleToolbarShown:)) {
+    item.title = window.toolbar.visible
+       ? NSLocalizedStringFromTable(@"Hide Toolbar", @"Toolbar", @"Menu item")
+       : NSLocalizedStringFromTable(@"Show Toolbar", @"Toolbar", @"Menu item");
+
+    return YES;
+  }
+
+  if (action == @selector(toggleControlPanelShown:)) {
+    item.title = ControlPanelControl.singletonInstance.isPanelShown
+      ? NSLocalizedString(@"Hide Control Panel", @"Menu item")
+      : NSLocalizedString(@"Show Control Panel", @"Menu item");
+
+    return YES;
+  }
+
+  DirectoryViewControl  *dirViewControl = (DirectoryViewControl *)window.windowController;
+
+  if (action == @selector(rescanSelected:)) {
+    // Selection must be locked
+    return dirViewControl.isSelectedFileLocked;
+  }
+
+  if (action == @selector(rescanWithMaskAsFilter:)) {
+    // There should be a mask
+    return dirViewControl.directoryViewControlSettings.displaySettings.fileItemMaskEnabled;
+  }
+
+  if (action == @selector(refresh:)) {
+    // There must be a monitored change
+    return dirViewControl.treeContext.numTreeChanges > 0;
+  }
+
+
+  if ([dirViewControl validateAction: action]) {
+    return YES;
   }
 
   return NO;

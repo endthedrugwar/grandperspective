@@ -491,23 +491,35 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 
 - (BOOL) validateAction:(SEL)action {
-  if ( action == @selector(openFile:) ) {
+  if (action == @selector(openFile:)) {
     return self.canOpenSelectedFile;
   }
-  if ( action == @selector(previewFile:) ) {
+  if (action == @selector(previewFile:)) {
     return self.canPreviewSelectedFile;
   }
-  if ( action == @selector(revealFileInFinder:) ) {
+  if (action == @selector(revealFileInFinder:)) {
     return self.canRevealSelectedFile;
   }
-  if ( action == @selector(deleteFile:) ) {
+  if (action == @selector(deleteFile:)) {
     return self.canDeleteSelectedFile;
   }
-  if ( action == @selector(copy:) ) {
+  if (action == @selector(copy:)) {
     return self.canCopySelectedPathToPasteboard;
   }
 
   return NO;
+}
+
+- (BOOL) validateMenuItem:(NSMenuItem *)menuItem {
+  SEL action = menuItem.action;
+
+  if (action == @selector(deleteFile:)) {
+    menuItem.title = pathModelView.selectedFileItem.isDirectory
+      ? NSLocalizedStringFromTable(@"Delete Folder", @"Localizable", @"Menu item")
+      : NSLocalizedStringFromTable(@"Delete File", @"Localizable", @"Menu item");
+  }
+
+  return [self validateAction: menuItem.action];
 }
 
 
@@ -612,47 +624,47 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 - (BOOL) canOpenSelectedFile {
   FileItem  *selectedFile = pathModelView.selectedFileItem;
 
-  return
-    ( // Can only open actual files
-      selectedFile.isPhysical
+  return (self.isSelectedFileLocked
+
+          // Can only open actual files
+          && selectedFile.isPhysical
       
-      // Can only open plain files and packages
-      && ( !selectedFile.isDirectory || selectedFile.isPackage )
-    );
+          // Can only open plain files and packages
+          && ( !selectedFile.isDirectory || selectedFile.isPackage ));
 }
 
 - (BOOL) canPreviewSelectedFile {
-  return pathModelView.selectedFileItem.isPhysical;
+  return self.isSelectedFileLocked && pathModelView.selectedFileItem.isPhysical;
 }
 
 - (BOOL) canRevealSelectedFile {
-  return pathModelView.selectedFileItem.isPhysical;
+  return self.isSelectedFileLocked && pathModelView.selectedFileItem.isPhysical;
 }
 
 - (BOOL) canDeleteSelectedFile {
   FileItem  *selectedFile = pathModelView.selectedFileItem;
 
-  return 
-    ( // Can only delete actual files.
-      selectedFile.isPhysical
+  return (self.isSelectedFileLocked
 
-      // Can this type of item be deleted (according to the preferences)?
-      && ( (canDeleteFiles && !selectedFile.isDirectory)
-           || (canDeleteFolders && selectedFile.isDirectory) )
+          // Can only delete actual files.
+          && selectedFile.isPhysical
 
-      // Can only delete the entire scan tree when it is an actual folder 
-      // within the volume. You cannot delete the root folder.
-      && ! ( (selectedFile == pathModelView.scanTree)
-             && [pathModelView.scanTree.systemPathComponent isEqualToString: @""])
+          // Can this type of item be deleted (according to the preferences)?
+          && ((canDeleteFiles && !selectedFile.isDirectory)
+              || (canDeleteFolders && selectedFile.isDirectory))
 
-      // Don't enable Click-through for deletion. The window needs to be 
-      // active for the file deletion controls to be enabled.
-      && self.window.keyWindow
-    );
+          // Can only delete the entire scan tree when it is an actual folder
+          // within the volume. You cannot delete the root folder.
+          && ! ( (selectedFile == pathModelView.scanTree)
+                && [pathModelView.scanTree.systemPathComponent isEqualToString: @""])
+
+          // Don't enable Click-through for deletion. The window needs to be
+          // active for the file deletion controls to be enabled.
+          && self.window.keyWindow);
 }
 
 - (BOOL) canCopySelectedPathToPasteboard {
-  return YES;
+  return self.isSelectedFileLocked;
 }
 
 

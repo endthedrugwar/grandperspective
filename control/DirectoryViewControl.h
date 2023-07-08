@@ -17,7 +17,7 @@ extern NSString  *ViewWillCloseEvent;
 @class TreeContext;
 @class AnnotatedTreeContext;
 
-@interface DirectoryViewControl : NSWindowController {
+@interface DirectoryViewControl : NSWindowController<NSMenuItemValidation> {
 
   // Main window
   IBOutlet NSTextField  *itemPathField;

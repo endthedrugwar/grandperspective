@@ -520,51 +520,45 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 //----------------------------------------------------------------------------
 
 - (BOOL) validateAction:(SEL)action {
-  if ( action == @selector(moveFocusUp:) ) {
+  if (action == @selector(moveFocusUp:)) {
     if (dirViewControl.isSelectedFileLocked) {
       return dirViewControl.directoryView.canMoveSelectionFocusUp;
     } else {
       return dirViewControl.directoryView.canMoveDisplayFocusUp;
     }
   }
-  if ( action == @selector(moveFocusDown:) ) {
+  if (action == @selector(moveFocusDown:)) {
     if (dirViewControl.isSelectedFileLocked) {
       return dirViewControl.directoryView.canMoveSelectionFocusDown;
     } else {
       return dirViewControl.directoryView.canMoveDisplayFocusDown;
     }
   }
-  if ( action == @selector(resetFocus:) ) {
+  if (action == @selector(resetFocus:)) {
     if (dirViewControl.isSelectedFileLocked) {
       return dirViewControl.directoryView.canResetSelectionFocus;
     } else {
       return dirViewControl.directoryView.canResetDisplayFocus;
     }
   }
-  if ( action == @selector(openFile:) ||
-       action == @selector(previewFile:) ||
-       action == @selector(revealFileInFinder:) ||
-       action == @selector(deleteFile:) ) {
-    return ( [dirViewControl validateAction: action] &&
-    
-             // Selection must be locked, as it would otherwise change when the mouse is moved in
-             // order to click on the toolbar button.
-             dirViewControl.isSelectedFileLocked );
-  }
-  if ( action == @selector(rescan:) ) {
+  if (action == @selector(rescan:)) {
     return NSApplication.sharedApplication.mainWindow.windowController == dirViewControl;
   }
-  if ( action == @selector(refresh:) ) {
+  if (action == @selector(refresh:)) {
     return ( NSApplication.sharedApplication.mainWindow.windowController == dirViewControl &&
 
              // There must be a monitored change
             dirViewControl.treeContext.numTreeChanges > 0);
   }
-  if ( action == @selector(search:) ) {
+
+  if (action == @selector(search:)) {
     return YES;
   }
 
-  NSLog(@"Unrecognized action %@", NSStringFromSelector(action));
+  if ([dirViewControl validateAction: action]) {
+    return YES;
+  }
+
   return NO;
 }
 
