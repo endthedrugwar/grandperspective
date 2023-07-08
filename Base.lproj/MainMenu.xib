@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -200,6 +200,78 @@
                 <menuItem title="View" id="348">
                     <menu key="submenu" title="View" id="349">
                         <items>
+                            <menuItem title="Zoom" id="oY0-9q-f9z">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Zoom" id="qtI-xz-v9u">
+                                    <items>
+                                        <menuItem title="Zoom In" keyEquivalent="+" id="Iyw-2V-esC">
+                                            <connections>
+                                                <action selector="zoomIn:" target="-1" id="uqy-WU-hvT"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Zoom Out" keyEquivalent="-" id="bKM-Ec-4Gi">
+                                            <connections>
+                                                <action selector="zoomOut:" target="-1" id="fAF-AB-5kU"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Reset Zoom" id="y2y-vX-zhd">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="resetZoom:" target="-1" id="Z1N-KH-LdB"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Selection Focus" id="frA-lr-FOa">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Selection Focus" id="wHh-Gg-e7R">
+                                    <items>
+                                        <menuItem title="Move Focus Up" keyEquivalent="[" id="gZj-8W-T7o">
+                                            <connections>
+                                                <action selector="moveSelectionFocusUp:" target="-1" id="JdZ-1G-R4W"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Move Focus Down" keyEquivalent="]" id="QCC-Gl-y9i">
+                                            <connections>
+                                                <action selector="moveSelectionFocusDown:" target="-1" id="ejb-TT-bpU"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Reset Focus" id="l4V-Wf-FCv">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="resetSelectionFocus:" target="-1" id="Y3l-rD-KDc"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Display Focus" id="wd7-sh-TkA">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Display Focus" id="6AB-sL-t6U">
+                                    <items>
+                                        <menuItem title="Move Focus Up" id="K6z-Zt-rLu">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="moveDisplayFocusUp:" target="-1" id="VjL-AL-UBh"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Move Focus Down" id="dJ2-6K-v9P">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="moveDisplayFocusDown:" target="-1" id="H3Q-gg-U6E"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Reset Focus" id="15W-vC-r8v">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="resetDisplayFocus:" target="-1" id="rpU-ix-vlX"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="NvV-Xg-wc5"/>
                             <menuItem title="Show/Hide Toolbar" keyEquivalent="t" id="350">
                                 <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                 <connections>

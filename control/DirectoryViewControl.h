@@ -82,7 +82,7 @@ extern NSString  *ViewWillCloseEvent;
 @property (nonatomic, readonly, strong) AnnotatedTreeContext *annotatedTreeContext;
 
 /* Returns YES iff the action is currently enabled. 
- * 
+ *
  * Only works for a subset of of actions, e.g. openFile: and deleteFile:. See implementation for
  * complete list, which can be extended when needed.
  */

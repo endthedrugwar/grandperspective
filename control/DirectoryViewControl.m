@@ -495,20 +495,19 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   if ( action == @selector(openFile:) ) {
     return self.canOpenSelectedFile;
   }
-  else if ( action == @selector(previewFile:) ) {
+  if ( action == @selector(previewFile:) ) {
     return self.canPreviewSelectedFile;
   }
-  else if ( action == @selector(revealFileInFinder:) ) {
+  if ( action == @selector(revealFileInFinder:) ) {
     return self.canRevealSelectedFile;
   }
-  else if ( action == @selector(deleteFile:) ) {
+  if ( action == @selector(deleteFile:) ) {
     return self.canDeleteSelectedFile;
   }
-  else if ( action == @selector(copy:) ) {
+  if ( action == @selector(copy:) ) {
     return self.canCopySelectedPathToPasteboard;
   }
-  
-  NSLog(@"Unsupported action");
+
   return NO;
 }
 

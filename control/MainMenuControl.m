@@ -486,6 +486,17 @@ static dispatch_once_t  singletonOnceToken;
 - (BOOL) validateMenuItem:(NSMenuItem *)item {
   SEL  action = item.action;
 
+  if (action == @selector(scanDirectoryView:) ||
+      action == @selector(scanFilteredDirectoryView:) ||
+      action == @selector(scanFilteredDirectoryView:) ||
+      action == @selector(loadScanData:) ||
+      action == @selector(openWebsite:) ||
+      action == @selector(editPreferences:) ||
+      action == @selector(editFilters:) ||
+      action == @selector(editUniformTypeRanking:)) {
+    return YES;
+  }
+
   NSWindow  *window = NSApplication.sharedApplication.mainWindow;
   BOOL  mainWindowIsDirectoryView =
     [window.windowController isMemberOfClass:[DirectoryViewControl class]];
@@ -547,8 +558,8 @@ static dispatch_once_t  singletonOnceToken;
   ) {
     return mainWindowIsDirectoryView;
   }
-  
-  return YES;
+
+  return NO;
 }
 
 //----------------------------------------------------------------------------

@@ -59,10 +59,6 @@ static const NSUInteger FOCUS_RESET_TAG = 105;
 - (void) zoom:(id)sender;
 - (void) focus:(id)sender;
 
-- (void) zoomOut:(id)sender;
-- (void) zoomIn:(id)sender;
-- (void) resetZoom:(id)sender;
-
 - (void) moveFocusUp:(id)sender;
 - (void) moveFocusDown:(id)sender;
 - (void) resetFocus:(id)sender;
@@ -358,19 +354,9 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 
   ToolbarItemMenu  *menu =
     [[[ToolbarItemMenu alloc] initWithTitle: title target: self] autorelease];
-  NSMenuItem  *focusUpItem = [menu addAction: @selector(moveFocusUp:) withTitle: moveUpTitle];
-  NSMenuItem  *focusDownItem = [menu addAction: @selector(moveFocusDown:) withTitle: moveDownTitle];
-  NSMenuItem  *focusResetItem __unused =
-    [menu addAction: @selector(resetFocus:) withTitle: resetTitle];
-
-  // Set the key equivalents so that they show up in the menu (which may help to make the user aware
-  // of them or remind the user of them). They do not actually have an effect. Handling these key
-  // equivalents is handled in the DirectoryView class.
-  focusUpItem.keyEquivalent = @"[";
-  focusUpItem.keyEquivalentModifierMask = NSEventModifierFlagCommand;
-  
-  focusDownItem.keyEquivalent = @"]";
-  focusDownItem.keyEquivalentModifierMask = NSEventModifierFlagCommand;
+  [menu addAction: @selector(moveFocusUp:) withTitle: moveUpTitle];
+  [menu addAction: @selector(moveFocusDown:) withTitle: moveDownTitle];
+  [menu addAction: @selector(resetFocus:) withTitle: resetTitle];
 
   item.menuFormRepresentation = menu;
 
@@ -497,9 +483,9 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   NSSegmentedControl  *control = (NSSegmentedControl *)toolbarItem.view;
   DirectoryView  *dirView = dirViewControl.directoryView;
 
-  [control setEnabled: [dirView canZoomOut] forSegment: zoomOutSegment];
-  [control setEnabled: [dirView canZoomIn] forSegment: zoomInSegment];
-  [control setEnabled: [dirView canZoomOut] forSegment: zoomResetSegment];
+  [control setEnabled: dirView.canZoomOut forSegment: zoomOutSegment];
+  [control setEnabled: dirView.canZoomIn forSegment: zoomInSegment];
+  [control setEnabled: dirView.canZoomOut forSegment: zoomResetSegment];
 
   return self; // Always enable the overall control
 }
@@ -534,34 +520,25 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 //----------------------------------------------------------------------------
 
 - (BOOL) validateAction:(SEL)action {
-  if ( action == @selector(zoomOut:) ) {
-    return dirViewControl.directoryView.canZoomOut;
-  }
-  if ( action == @selector(zoomIn:) ) {
-    return dirViewControl.directoryView.canZoomIn;
-  }
-  if ( action == @selector(resetZoom:) ) {
-    return dirViewControl.directoryView.canResetZoom;
-  }
   if ( action == @selector(moveFocusUp:) ) {
     if (dirViewControl.isSelectedFileLocked) {
-      return dirViewControl.directoryView.canMoveFocusUp;
+      return dirViewControl.directoryView.canMoveSelectionFocusUp;
     } else {
-      return dirViewControl.directoryView.canMoveDisplayDepthUp;
+      return dirViewControl.directoryView.canMoveDisplayFocusUp;
     }
   }
   if ( action == @selector(moveFocusDown:) ) {
     if (dirViewControl.isSelectedFileLocked) {
-      return dirViewControl.directoryView.canMoveFocusDown;
+      return dirViewControl.directoryView.canMoveSelectionFocusDown;
     } else {
-      return dirViewControl.directoryView.canMoveDisplayDepthDown;
+      return dirViewControl.directoryView.canMoveDisplayFocusDown;
     }
   }
   if ( action == @selector(resetFocus:) ) {
     if (dirViewControl.isSelectedFileLocked) {
-      return dirViewControl.directoryView.canResetFocus;
+      return dirViewControl.directoryView.canResetSelectionFocus;
     } else {
-      return dirViewControl.directoryView.canResetDisplayDepth;
+      return dirViewControl.directoryView.canResetDisplayFocus;
     }
   }
   if ( action == @selector(openFile:) ||
@@ -596,13 +573,13 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   NSUInteger  selected = [sender selectedSegment];
 
   if (selected == zoomInSegment) {
-    [self zoomIn: sender];
+    [dirViewControl.directoryView zoomIn: sender];
   }
   else if (selected == zoomOutSegment) {
-    [self zoomOut: sender];
+    [dirViewControl.directoryView zoomOut: sender];
   }
   else if (selected == zoomResetSegment) {
-    [self resetZoom: sender];
+    [dirViewControl.directoryView resetZoom: sender];
   }
   else {
     NSAssert1(NO, @"Unexpected selected segment: %lu", (unsigned long)selected);
@@ -612,14 +589,14 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 
 - (void) focus:(id)sender {
   NSUInteger  selected = [sender selectedSegment];
-  
-  if ([sender selectedSegment] == focusDownSegment) {
+
+  if (selected == focusDownSegment) {
     [self moveFocusDown: sender];
   }
-  else if ([sender selectedSegment] == focusUpSegment) {
+  else if (selected == focusUpSegment) {
     [self moveFocusUp: sender];
   }
-  else if ([sender selectedSegment] == focusResetSegment) {
+  else if (selected == focusResetSegment) {
     [self resetFocus: sender];
   }
   else {
@@ -628,40 +605,27 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
 }
 
 
-- (void) zoomOut:(id)sender {
-  [dirViewControl.directoryView zoomOut];
-}
-
-- (void) zoomIn:(id)sender {
-  [dirViewControl.directoryView zoomIn];
-}
-
-- (void) resetZoom:(id)sender {
-  [dirViewControl.directoryView resetZoom];
-}
-
-
 - (void) moveFocusUp:(id)sender {
   if (dirViewControl.isSelectedFileLocked) {
-    [dirViewControl.directoryView moveFocusUp];
+    [dirViewControl.directoryView moveSelectionFocusUp: sender];
   } else {
-    [dirViewControl.directoryView moveDisplayDepthUp];
+    [dirViewControl.directoryView moveDisplayFocusUp: sender];
   }
 }
 
 - (void) moveFocusDown:(id)sender {
   if (dirViewControl.isSelectedFileLocked) {
-    [dirViewControl.directoryView moveFocusDown];
+    [dirViewControl.directoryView moveSelectionFocusDown: sender];
   } else {
-    [dirViewControl.directoryView moveDisplayDepthDown];
+    [dirViewControl.directoryView moveDisplayFocusDown: sender];
   }
 }
 
 - (void) resetFocus:(id)sender {
   if (dirViewControl.isSelectedFileLocked) {
-    [dirViewControl.directoryView resetFocus];
+    [dirViewControl.directoryView resetSelectionFocus: sender];
   } else {
-    [dirViewControl.directoryView resetDisplayDepth];
+    [dirViewControl.directoryView resetDisplayFocus: sender];
   }
 }
 

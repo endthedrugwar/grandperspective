@@ -49,7 +49,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
 @interface DirectoryView (PrivateMethods)
 
-- (BOOL) validateAction:(SEL)action;
+- (BOOL) canPerformAction:(SEL)action;
 
 - (void) forceRedraw;
 - (void) forceOverlayRedraw;
@@ -341,6 +341,41 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   return layoutBuilder;
 }
 
+- (BOOL) validateAction:(SEL)action {
+  if (action == @selector(zoomIn:)) {
+    return self.canZoomIn;
+  }
+  if (action == @selector(zoomOut:)) {
+    return self.canZoomOut;
+  }
+  if (action == @selector(resetZoom:)) {
+    return self.canResetZoom;
+  }
+  if (action == @selector(moveSelectionFocusUp:)) {
+    return self.canMoveSelectionFocusUp;
+  }
+  if (action == @selector(moveSelectionFocusDown:)) {
+    return self.canMoveSelectionFocusDown;
+  }
+  if (action == @selector(resetSelectionFocus:)) {
+    return self.canResetSelectionFocus;
+  }
+  if (action == @selector(moveDisplayFocusUp:)) {
+    return self.canMoveDisplayFocusUp;
+  }
+  if (action == @selector(moveDisplayFocusDown:)) {
+    return self.canMoveDisplayFocusDown;
+  }
+  if (action == @selector(resetDisplayFocus:)) {
+    return self.canResetDisplayFocus;
+  }
+
+  return NO;
+}
+
+- (BOOL) validateMenuItem:(NSMenuItem *)item {
+  return [self validateAction: item.action];
+}
 
 - (BOOL) canZoomIn {
   return (pathModelView.pathModel.isVisiblePathLocked &&
@@ -356,7 +391,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 }
 
 
-- (void) zoomIn {
+- (void) zoomIn:(id)sender {
   if (self.showEntireVolume) {
     [pathModelView moveVisibleTreeDown];
   } else {
@@ -364,7 +399,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   }
 }
 
-- (void) zoomOut {
+- (void) zoomOut:(id)sender {
   if (self.showEntireVolume) {
     [pathModelView moveVisibleTreeUp];
   } else {
@@ -372,34 +407,34 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   }
 }
 
-- (void) resetZoom {
+- (void) resetZoom:(id)sender {
   // Simple way to reset the zoom. The animation is not as nice as it can possibly be (as each
   // step is invidually animated and all but the last animation steps are aborted). However, it is
   // not worh the hassle/complexity to improve this.
   while (self.canZoomOut) {
-    [self zoomOut];
+    [self zoomOut: sender];
   }
 }
 
 
-- (BOOL) canMoveFocusUp {
+- (BOOL) canMoveSelectionFocusUp {
   return pathModelView.canMoveSelectionUp;
 }
 
-- (BOOL) canMoveFocusDown {
+- (BOOL) canMoveSelectionFocusDown {
   return !pathModelView.selectionSticksToEndPoint;
 }
 
-- (BOOL) canResetFocus {
+- (BOOL) canResetSelectionFocus {
   return !pathModelView.selectionSticksToEndPoint;
 }
 
 
-- (void) moveFocusUp {
+- (void) moveSelectionFocusUp:(id)sender {
   [pathModelView moveSelectionUp]; 
 }
 
-- (void) moveFocusDown {
+- (void) moveSelectionFocusDown:(id)sender {
   if (pathModelView.canMoveSelectionDown) {
     [pathModelView moveSelectionDown];
   }
@@ -408,32 +443,32 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   }
 }
 
-- (void) resetFocus {
+- (void) resetSelectionFocus:(id)sender {
   [pathModelView setSelectionSticksToEndPoint: YES];
 }
 
 
-- (BOOL) canMoveDisplayDepthUp {
+- (BOOL) canMoveDisplayFocusUp {
   return self.displayDepth > MIN_DISPLAY_DEPTH_LIMIT;
 }
 
-- (BOOL) canMoveDisplayDepthDown {
+- (BOOL) canMoveDisplayFocusDown {
   return self.displayDepth != NO_DISPLAY_DEPTH_LIMIT;
 }
 
-- (BOOL) canResetDisplayDepth {
+- (BOOL) canResetDisplayFocus {
   return self.displayDepth != TreeDrawerSettings.defaultDisplayDepth;
 }
 
-- (void) moveDisplayDepthUp {
-  if (!self.canMoveDisplayDepthUp) return;
+- (void) moveDisplayFocusUp:(id)sender {
+  if (!self.canMoveDisplayFocusUp) return;
 
   // Ensure the change is always visible
   self.displayDepth = MIN(self.maxDrawDepth, self.treeDrawerSettings.displayDepth) - 1;
 }
 
-- (void) moveDisplayDepthDown {
-  if (!self.canMoveDisplayDepthDown) return;
+- (void) moveDisplayFocusDown:(id)sender {
+  if (!self.canMoveDisplayFocusDown) return;
 
   // Ensure the change is always visible
   unsigned newDepth = self.treeDrawerSettings.displayDepth + 1;
@@ -444,7 +479,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   self.displayDepth = newDepth;
 }
 
-- (void) resetDisplayDepth {
+- (void) resetDisplayFocus:(id)sender {
   self.displayDepth = TreeDrawerSettings.defaultDisplayDepth;
 }
 
@@ -533,47 +568,12 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   NSString  *chars = theEvent.characters;
   unichar const  code = [chars characterAtIndex: 0];
   
-  if ([chars isEqualToString: @"]"]) {
-    if (flags == NSEventModifierFlagCommand) {
-      if ([self canMoveFocusDown]) {
-        [self moveFocusDown];
-      }
-      return YES;
-    }
-  }
-  else if ([chars isEqualToString: @"["]) {
-    if (flags == NSEventModifierFlagCommand) {
-      if ([self canMoveFocusUp]) {
-        [self moveFocusUp];
-      }
-      return YES;
-    }
-  }
-  else if ([chars isEqualToString: @"="]) {
-    // Accepting this with or without the Shift key-pressed, as having to use 
-    // the Shift key is a bit of a pain.
-    if ((flags | NSEventModifierFlagShift)
-        == (NSEventModifierFlagCommand | NSEventModifierFlagShift)) {
-      if ([self canZoomIn]) {
-        [self zoomIn];
-      }
-      return YES;
-    }
-  }
-  else if ([chars isEqualToString: @"-"]) {
-    if (flags == NSEventModifierFlagCommand) {
-      if ([self canZoomOut]) {
-        [self zoomOut];
-      }
-      return YES;
-    }
-  }
-  else if ([chars isEqualToString: @" "]) {
+  if ([chars isEqualToString: @" "]) {
     if (flags == 0) {
       SEL  action = @selector(previewFile:);
-      if ([self validateAction: action]) {
-        DirectoryViewControl*  target = (DirectoryViewControl*)
-          [[NSApplication sharedApplication] targetForAction: action];
+      DirectoryViewControl*  target = (DirectoryViewControl*)
+        [NSApplication.sharedApplication targetForAction: action];
+      if ([target validateAction: action]) {
         [target previewFile: self];
       }
       return YES;
@@ -603,24 +603,24 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   scrollWheelDelta += theEvent.deltaY;
   
   if (scrollWheelDelta > 0) {
-    if (! [self canMoveFocusDown]) {
+    if (! self.canMoveSelectionFocusDown) {
       // Keep it at zero, to make moving up not unnecessarily cumbersome.
       scrollWheelDelta = 0;
     }
     else if (scrollWheelDelta > SCROLL_WHEEL_SENSITIVITY + 0.5f) {
-      [self moveFocusDown];
+      [self moveSelectionFocusDown: nil];
 
       // Make it easy to move up down again.
       scrollWheelDelta = - SCROLL_WHEEL_SENSITIVITY;
     }
   }
   else {
-    if (! [self canMoveFocusUp]) {
+    if (! self.canMoveSelectionFocusUp) {
       // Keep it at zero, to make moving up not unnecessarily cumbersome.
       scrollWheelDelta = 0;
     }
     else if (scrollWheelDelta < - (SCROLL_WHEEL_SENSITIVITY + 0.5f)) {
-      [self moveFocusUp];
+      [self moveSelectionFocusUp: nil];
 
       // Make it easy to move back down again.
       scrollWheelDelta = SCROLL_WHEEL_SENSITIVITY;
@@ -710,7 +710,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   int  itemCount = 0;
 
 
-  if ( [self validateAction: @selector(revealFileInFinder:)] ) {
+  if ( [self canPerformAction: @selector(revealFileInFinder:)] ) {
     [popUpMenu insertItemWithTitle: 
                  NSLocalizedStringFromTable( @"Reveal in Finder", @"PopUpMenu", @"Menu item" )
                             action: @selector(revealFileInFinder:) 
@@ -718,7 +718,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
                            atIndex: itemCount++];
   }
 
-  if ( [self validateAction: @selector(previewFile:)] ) {
+  if ( [self canPerformAction: @selector(previewFile:)] ) {
     NSMenuItem  *menuItem = [[[NSMenuItem alloc] initWithTitle:
                             NSLocalizedStringFromTable( @"Quick Look", @"PopUpMenu", @"Menu item" )
                                                         action: @selector(previewFile:)
@@ -728,7 +728,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
     [popUpMenu insertItem: menuItem atIndex: itemCount++];
   }
   
-  if ( [self validateAction: @selector(openFile:)] ) {
+  if ( [self canPerformAction: @selector(openFile:)] ) {
     [popUpMenu insertItemWithTitle: 
      NSLocalizedStringFromTable( @"Open with Finder", @"PopUpMenu", @"Menu item" )
                             action: @selector(openFile:) 
@@ -736,7 +736,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
                            atIndex: itemCount++];
   }
   
-  if ( [self validateAction: @selector(copy:)] ) {
+  if ( [self canPerformAction: @selector(copy:)] ) {
     [popUpMenu insertItemWithTitle:
      NSLocalizedStringFromTable(@"Copy path", @"PopUpMenu", @"Menu item" )
                             action: @selector(copy:) 
@@ -744,7 +744,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
                            atIndex: itemCount++];
   }
   
-  if ( [self validateAction: @selector(deleteFile:)] ) {
+  if ( [self canPerformAction: @selector(deleteFile:)] ) {
     [popUpMenu insertItemWithTitle: 
      NSLocalizedStringFromTable( @"Delete file", @"PopUpMenu", @"Menu item" )
                             action: @selector(deleteFile:) 
@@ -772,9 +772,8 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
  * target has implemented validateAction:, which is the case when the target is
  * DirectoryViewControl.
  */
-- (BOOL) validateAction:(SEL)action {
-  DirectoryViewControl*  target =
-    (DirectoryViewControl *)[[NSApplication sharedApplication] targetForAction: action];
+- (BOOL) canPerformAction:(SEL)action {
+  DirectoryViewControl  *target = [NSApplication.sharedApplication targetForAction: action];
   return [target validateAction: action];
 }
 

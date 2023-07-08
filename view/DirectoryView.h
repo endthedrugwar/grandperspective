@@ -22,7 +22,7 @@ extern NSString  *ColorMappingChangedEvent;
 @class ItemLocator;
 @protocol FileItemMappingScheme;
 
-@interface DirectoryView : NSView {
+@interface DirectoryView : NSView<NSMenuItemValidation> {
   AsynchronousTaskManager  *drawTaskManager;
   AsynchronousTaskManager  *overlayDrawTaskManager;
 
@@ -102,28 +102,30 @@ extern NSString  *ColorMappingChangedEvent;
 
 @property (nonatomic, readonly, strong) TreeLayoutBuilder *layoutBuilder;
 
+- (BOOL) validateAction:(SEL)action;
+
 @property (nonatomic, readonly) BOOL canZoomIn;
 @property (nonatomic, readonly) BOOL canZoomOut;
 @property (nonatomic, readonly) BOOL canResetZoom;
 
-- (void) zoomIn;
-- (void) zoomOut;
-- (void) resetZoom;
+@property (nonatomic, readonly) BOOL canMoveSelectionFocusUp;
+@property (nonatomic, readonly) BOOL canMoveSelectionFocusDown;
+@property (nonatomic, readonly) BOOL canResetSelectionFocus;
 
-@property (nonatomic, readonly) BOOL canMoveFocusUp;
-@property (nonatomic, readonly) BOOL canMoveFocusDown;
-@property (nonatomic, readonly) BOOL canResetFocus;
+@property (nonatomic, readonly) BOOL canMoveDisplayFocusUp;
+@property (nonatomic, readonly) BOOL canMoveDisplayFocusDown;
+@property (nonatomic, readonly) BOOL canResetDisplayFocus;
 
-- (void) moveFocusUp;
-- (void) moveFocusDown;
-- (void) resetFocus;
+- (void) zoomIn:(id)sender;
+- (void) zoomOut:(id)sender;
+- (void) resetZoom:(id)sender;
 
-@property (nonatomic, readonly) BOOL canMoveDisplayDepthUp;
-@property (nonatomic, readonly) BOOL canMoveDisplayDepthDown;
-@property (nonatomic, readonly) BOOL canResetDisplayDepth;
+- (void) moveSelectionFocusUp:(id)sender;
+- (void) moveSelectionFocusDown:(id)sender;
+- (void) resetSelectionFocus:(id)sender;
 
-- (void) moveDisplayDepthUp;
-- (void) moveDisplayDepthDown;
-- (void) resetDisplayDepth;
+- (void) moveDisplayFocusUp:(id)sender;
+- (void) moveDisplayFocusDown:(id)sender;
+- (void) resetDisplayFocus:(id)sender;
 
 @end
