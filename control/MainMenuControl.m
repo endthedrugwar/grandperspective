@@ -480,6 +480,8 @@ static dispatch_once_t  singletonOnceToken;
   [self loadScanDataFromFile: fileUrl.path];
 }
 
+//----------------------------------------------------------------------------
+// NSMenuItemValidation
 
 - (BOOL) validateMenuItem:(NSMenuItem *)item {
   SEL  action = item.action;
@@ -548,6 +550,8 @@ static dispatch_once_t  singletonOnceToken;
   
   return YES;
 }
+
+//----------------------------------------------------------------------------
 
 - (IBAction) scanDirectoryView:(id)sender {
   [self scanFolderSelectingFilter: NO];

@@ -3,8 +3,9 @@
 
 @class DirectoryViewControl;
 
-@interface DirectoryViewToolbarControl : NSObject <NSToolbarDelegate> {
-
+@interface DirectoryViewToolbarControl : NSObject <NSToolbarDelegate,
+                                                   NSMenuItemValidation,
+                                                   NSToolbarItemValidation> {
   IBOutlet NSWindow  *dirViewWindow;
 
   IBOutlet NSSegmentedControl  *zoomControls;
@@ -19,7 +20,6 @@
   NSUInteger  focusResetSegment;
 
   DirectoryViewControl  *dirViewControl;
-
 }
 
 @end

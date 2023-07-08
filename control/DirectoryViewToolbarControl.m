@@ -272,7 +272,6 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
              ToolbarRescan,
              ToolbarShowInfo,
              ToolbarSearch,
-             NSToolbarSeparatorItemIdentifier,
              NSToolbarSpaceItemIdentifier,
              NSToolbarFlexibleSpaceItemIdentifier];
 }
@@ -518,15 +517,21 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   return self; // Always enable the overall control
 }
 
+//----------------------------------------------------------------------------
+// NSToolbarItemValidation
 
 - (BOOL) validateToolbarItem:(NSToolbarItem *)item {
   return [self validateAction: item.action];
 }
 
+//----------------------------------------------------------------------------
+// NSMenuItemValidation
+
 - (BOOL) validateMenuItem:(NSMenuItem *)item {
   return [self validateAction: item.action];
 }
-  
+
+//----------------------------------------------------------------------------
 
 - (BOOL) validateAction:(SEL)action {
   if ( action == @selector(zoomOut:) ) {

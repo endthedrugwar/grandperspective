@@ -9,7 +9,7 @@
 @class StartWindowControl;
 @class ExportAsTextDialogControl;
 
-@interface MainMenuControl : NSObject {
+@interface MainMenuControl : NSObject<NSMenuItemValidation> {
   WindowManager  *windowManager;
   
   VisibleAsynchronousTaskManager  *scanTaskManager;
