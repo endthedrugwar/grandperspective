@@ -469,7 +469,7 @@ NSMutableDictionary  *createToolbarItemLookup = nil;
   [item setLabel: NSLocalizedStringFromTable(@"Info", @"Toolbar", @"Toolbar action")];
   item.paletteLabel = item.label;
   [item setToolTip: NSLocalizedStringFromTable(@"Show info", @"Toolbar", "Tooltip")];
-  item.image = [NSImage imageWithSystemSymbolName: @"info"
+  item.image = [NSImage imageWithSystemSymbolName: @"info.circle.fill"
                          accessibilityDescription: nil];
   item.action = @selector(showInfo:);
   item.target = dirViewControl;
