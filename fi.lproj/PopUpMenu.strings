@@ -1,15 +1,15 @@
 /* Menu item */
-"Copy path" = "Kopioi polku";
+"Copy Path" = "Kopioi Polku";
 
 /* Menu item */
-"Delete file" = "Poista tiedosto";
+"Delete File" = "Poista Tiedosto";
 
 /* Menu item */
-"Open with Finder" = "Avaa Finderissa";
+"Open" = "Avaa";
 
 /* Menu item */
 "Quick Look" = "Pikakurkistus";
 
 /* Menu item */
-"Reveal in Finder" = "Näytä Finderissa";
+"Reveal" = "Paljasta";
 

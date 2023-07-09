@@ -1,15 +1,15 @@
 /* Menu item */
-"Copy path" = "Copiar caminho";
+"Copy Path" = "Copiar caminho";
 
 /* Menu item */
-"Delete file" = "Apagar arquivo";
+"Delete File" = "Apagar arquivo";
 
 /* Menu item */
-"Open with Finder" = "Abrir com Finder";
+"Open" = "Abrir";
 
 /* Menu item */
 "Quick Look" = "Vizualização Rápida";
 
 /* Menu item */
-"Reveal in Finder" = "Mostrar no Finder";
+"Reveal" = "Mostrar";
 

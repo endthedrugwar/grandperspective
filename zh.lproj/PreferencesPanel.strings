@@ -4,7 +4,7 @@
 /* Class = "NSBox"; title = "Display"; ObjectID = "29"; */
 "29.title" = "显示";
 
-/* Class = "NSBox"; title = "Info"; ObjectID = "57"; */
+/* Class = "NSBox"; title = "Scanning"; ObjectID = "57"; */
 "57.title" = "信息";
 
 /* Class = "NSBox"; title = "Actions"; ObjectID = "72"; */
@@ -37,7 +37,7 @@
 /* Class = "NSTextFieldCell"; title = "After full rescan:"; ObjectID = "178"; */
 "178.title" = "完整的重新扫描后:";
 
-/* Class = "NSTextFieldCell"; title = "Filter:"; ObjectID = "181"; */
+/* Class = "NSTextFieldCell"; title = "Mask:"; ObjectID = "181"; */
 "181.title" = "过滤:";
 
 /* Class = "NSButtonCell"; title = "Show entire volume"; ObjectID = "199"; */

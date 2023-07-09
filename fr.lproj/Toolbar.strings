@@ -1,9 +1,6 @@
 /* Toolbar action */
 "Delete" = "Supprimer";
 
-/* Toolbar action */
-"Drawer" = "Tiroir";
-
 /* Label for focus controls */
 "Focus" = "Focus";
 
@@ -27,9 +24,6 @@
 
 /* Tooltip */
 "Open with Finder" = "Ouvrir avec le Finder";
-
-/* Tooltip */
-"Open/close drawer" = "Ouvrir/fermer le tiroir";
 
 /* Tooltip */
 "Preview item in Quick Look panel" = "Aperçu de l'élément dans le panneau aperçu rapide";

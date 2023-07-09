@@ -1,15 +1,15 @@
 /* Menu item */
-"Copy path" = "拷贝路径";
+"Copy Path" = "拷贝路径";
 
 /* Menu item */
-"Delete file" = "删除文件";
+"Delete File" = "删除文件";
 
 /* Menu item */
-"Open with Finder" = "用Finder打开";
+"Open" = "开启";
 
 /* Menu item */
 "Quick Look" = "快速查看";
 
 /* Menu item */
-"Reveal in Finder" = "在Finder中揭示";
+"Reveal" = "揭示";
 

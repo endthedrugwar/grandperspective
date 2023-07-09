@@ -112,6 +112,9 @@
 /* Filter name */
 "No version control" = "无版本控制";
 
+/* Filter name */
+"None" = "无";
+
 /* Color mapping scheme */
 "nothing" = "没有";
 

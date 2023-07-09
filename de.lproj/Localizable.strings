@@ -34,7 +34,7 @@
 /* Message in progress panel while saving data */
 "%d folders saved" = "%d Verzeichnisse gespeichert";
 
-/* Message in progress panel while scanning */
+/* Message in progress panel while executing a full scan */
 "%d folders scanned" = "%d Verzeichnisse gescannt";
 
 /* Exact file size (in bytes) */
@@ -78,6 +78,9 @@
 
 /* Alert panel button */
 "Delete" = "Löschen";
+
+/* Menu item */
+"Delete File" = "Datei Löschen";
 
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "Wollen Sie die Datei \"%@\" löschen?";
@@ -274,9 +277,6 @@
 /* Header in exported text file */
 "Path" = "Pfad";
 
-/* Alert message */
-"Possible reasons are that it does not exist anymore (it may have been moved, renamed, or deleted by other means) or that you lack the required permissions." = "Mögliche Gründe sind, dass das Element nicht mehr existiert (möglicherweise verschoben, umbenannt oder gelöscht) oder Sie haben nicht die ausreichende Berechtigung.";
-
 /* Message in progress panel while loading data */
 "Reading %@" = "Lese %@";
 
@@ -291,9 +291,6 @@
 
 /* Alert message */
 "Remove the test named \"%@\"?" = "Die Prüfung mit dem Namen \"%@\" entfernen?";
-
-/* Title of save panel */
-"Save image" = "Speichere Bilddatei";
 
 /* Title of save panel */
 "Save scan data" = "Speichere Scandaten";

@@ -1,9 +1,6 @@
 /* Toolbar action */
 "Delete" = "Apagar";
 
-/* Toolbar action */
-"Drawer" = "Inspetor";
-
 /* Label for focus controls */
 "Focus" = "Foco";
 
@@ -27,9 +24,6 @@
 
 /* Tooltip */
 "Open with Finder" = "Abrir com finder";
-
-/* Tooltip */
-"Open/close drawer" = "Abrir/Fechar inspetor";
 
 /* Tooltip */
 "Preview item in Quick Look panel" = "Pré-Visualizar no Painel de Visualização Rápida";

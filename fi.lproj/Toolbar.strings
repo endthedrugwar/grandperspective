@@ -1,9 +1,6 @@
 /* Toolbar action */
 "Delete" = "Poista";
 
-/* Toolbar action */
-"Drawer" = "Sivuikkuna";
-
 /* Label for focus controls */
 "Focus" = "Kohdistus";
 
@@ -27,9 +24,6 @@
 
 /* Tooltip */
 "Open with Finder" = "Avaa Finderissa";
-
-/* Tooltip */
-"Open/close drawer" = "Avaa/sulje sivuikkuna";
 
 /* Tooltip */
 "Preview item in Quick Look panel" = "Esikatsele pikakurkistus paneelissa";

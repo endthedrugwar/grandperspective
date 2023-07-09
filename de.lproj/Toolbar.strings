@@ -1,9 +1,6 @@
 /* Toolbar action */
 "Delete" = "Entfernen";
 
-/* Toolbar action */
-"Drawer" = "Slider";
-
 /* Label for focus controls */
 "Focus" = "Auswahl";
 
@@ -27,9 +24,6 @@
 
 /* Tooltip */
 "Open with Finder" = "Öffne im Finder";
-
-/* Tooltip */
-"Open/close drawer" = "Öffne/Schließe Slider";
 
 /* Tooltip */
 "Preview item in Quick Look panel" = "Öffne im Schnellvorschaumodus";

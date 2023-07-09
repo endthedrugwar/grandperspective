@@ -1,9 +1,6 @@
 /* Toolbar action */
 "Delete" = "删除";
 
-/* Toolbar action */
-"Drawer" = "抽屉";
-
 /* Label for focus controls */
 "Focus" = "聚焦";
 
@@ -27,9 +24,6 @@
 
 /* Tooltip */
 "Open with Finder" = "用Finder开启";
-
-/* Tooltip */
-"Open/close drawer" = "开启／关闭抽屉";
 
 /* Tooltip */
 "Preview item in Quick Look panel" = "快速查看面板中的预览项目";

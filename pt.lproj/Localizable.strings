@@ -31,7 +31,7 @@
 /* Message in progress panel while saving data */
 "%d folders saved" = "%d pasta(s) salva(s) ";
 
-/* Message in progress panel while scanning */
+/* Message in progress panel while executing a full scan */
 "%d folders scanned" = "%d pasta(s) examinada(s) ";
 
 /* Exact file size (in bytes) */
@@ -67,11 +67,17 @@
 /* Alert panel button */
 "Cancel" = "Cancelar";
 
+/* Part of tool tip for uniform types */
+"Conforms to:" = "Coincide com:";
+
 /* Header in exported text file */
 "Created" = "Criado";
 
 /* Alert panel button */
 "Delete" = "Apagar";
+
+/* Menu item */
+"Delete File" = "Apagar arquivo";
 
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "Você quer apagar o arquivo \"%@\"?";
@@ -262,9 +268,6 @@
 /* Header in exported text file */
 "Path" = "Caminho";
 
-/* Alert message */
-"Possible reasons are that it does not exist anymore (it may have been moved, renamed, or deleted by other means) or that you lack the required permissions." = "Possíveis razões são que ele não existe mais (ele pode ter sido movido, renomeado ou apagado por outros meios) ou pode ser que você não tenha as permissões necessárias.";
-
 /* Message in progress panel while loading data */
 "Reading %@" = "Lendo %@";
 
@@ -276,9 +279,6 @@
 
 /* Alert message */
 "Remove the test named \"%@\"?" = "Remover o teste de nome ";
-
-/* Title of save panel */
-"Save image" = "Salvar imagem";
 
 /* Title of save panel */
 "Save scan data" = "Salvar dados do exame";

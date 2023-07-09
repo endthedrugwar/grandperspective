@@ -34,7 +34,7 @@
 /* Message in progress panel while saving data */
 "%d folders saved" = "%d hakemistoa talletettu";
 
-/* Message in progress panel while scanning */
+/* Message in progress panel while executing a full scan */
 "%d folders scanned" = "%d hakemistoa skannattu";
 
 /* Exact file size (in bytes) */
@@ -78,6 +78,9 @@
 
 /* Alert panel button */
 "Delete" = "Poista";
+
+/* Menu item */
+"Delete File" = "Poista Tiedosto";
 
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "Haluatko poistaa tiedoston \"%@\"?";
@@ -274,9 +277,6 @@
 /* Header in exported text file */
 "Path" = "Polku";
 
-/* Alert message */
-"Possible reasons are that it does not exist anymore (it may have been moved, renamed, or deleted by other means) or that you lack the required permissions." = "Sitä ei mahdollisesti ole enää olemassa (se on poistettu, uudelleennimetty tai muulla tavoin poistettu) tai sinulla ei ole vaadittavia oikeuksia.";
-
 /* Message in progress panel while loading data */
 "Reading %@" = "Luetaan %@";
 
@@ -291,9 +291,6 @@
 
 /* Alert message */
 "Remove the test named \"%@\"?" = "Poistetaanko ehto nimeltä \"%@\"?";
-
-/* Title of save panel */
-"Save image" = "Tallenna kuva";
 
 /* Title of save panel */
 "Save scan data" = "Tallenna skannitulokset";

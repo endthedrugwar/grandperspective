@@ -34,7 +34,7 @@
 /* Message in progress panel while saving data */
 "%d folders saved" = "%d 文件夹被保存";
 
-/* Message in progress panel while scanning */
+/* Message in progress panel while executing a full scan */
 "%d folders scanned" = "%d 文件夹被扫描";
 
 /* Exact file size (in bytes) */
@@ -78,6 +78,9 @@
 
 /* Alert panel button */
 "Delete" = "删除";
+
+/* Menu item */
+"Delete File" = "删除文件";
 
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "你要删除文件\"%@\"吗？";
@@ -274,9 +277,6 @@
 /* Header in exported text file */
 "Path" = "路径";
 
-/* Alert message */
-"Possible reasons are that it does not exist anymore (it may have been moved, renamed, or deleted by other means) or that you lack the required permissions." = "有可能的原因是它已不存在(它可能已被迁移，重新命名，或用其它方式被删除)或你缺必要的权限.";
-
 /* Message in progress panel while loading data */
 "Reading %@" = "读取 %@";
 
@@ -291,9 +291,6 @@
 
 /* Alert message */
 "Remove the test named \"%@\"?" = "去掉名为\"%@\"的测试?";
-
-/* Title of save panel */
-"Save image" = "保存图像";
 
 /* Title of save panel */
 "Save scan data" = "保存扫描数据";

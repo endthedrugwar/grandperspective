@@ -4,7 +4,7 @@
 /* Class = "NSBox"; title = "Display"; ObjectID = "29"; */
 "29.title" = "Mostrar";
 
-/* Class = "NSBox"; title = "Info"; ObjectID = "57"; */
+/* Class = "NSBox"; title = "Scanning"; ObjectID = "57"; */
 "57.title" = "Informação";
 
 /* Class = "NSBox"; title = "Actions"; ObjectID = "72"; */
@@ -37,14 +37,8 @@
 /* Class = "NSTextFieldCell"; title = "After full rescan:"; ObjectID = "178"; */
 "178.title" = "Depois de um exame completo:";
 
-/* Class = "NSTextFieldCell"; title = "Filter:"; ObjectID = "181"; */
+/* Class = "NSTextFieldCell"; title = "Mask:"; ObjectID = "181"; */
 "181.title" = "Filtro:";
-
-/* Class = "NSTextFieldCell"; title = "Rescan action:"; ObjectID = "189"; */
-"189.title" = "Ação de novo exame:";
-
-/* Class = "NSMenuItem"; title = "Rescan folder in view"; ObjectID = "193"; */
-"193.title" = "Novo exame na visão";
 
 /* Class = "NSButtonCell"; title = "Show entire volume"; ObjectID = "199"; */
 "199.title" = "Mostrar todo o volume";

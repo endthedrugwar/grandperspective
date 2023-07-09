@@ -112,6 +112,9 @@
 /* Filter name */
 "No version control" = "Sem controle de versão";
 
+/* Filter name */
+"None" = "Nenhum";
+
 /* Color mapping scheme */
 "nothing" = "Nada";
 
