@@ -200,13 +200,13 @@
 "nFT-y9-xF4.title" = "Alles herlezen";
 
 /* Class = "NSMenuItem"; title = "Zoom"; ObjectID = "oY0-9q-f9z"; */
-"oY0-9q-f9z.title" = "Zoom in/uit";
+"oY0-9q-f9z.title" = "Zoom In/Uit";
 
 /* Class = "NSMenuItem"; title = "Move Focus Down"; ObjectID = "QCC-Gl-y9i"; */
 "QCC-Gl-y9i.title" = "Verplaats Focus Omlaag";
 
 /* Class = "NSMenu"; title = "Zoom"; ObjectID = "qtI-xz-v9u"; */
-"qtI-xz-v9u.title" = "Zoom in/uit";
+"qtI-xz-v9u.title" = "Zoom In/Uit";
 
 /* Class = "NSMenu"; title = "Rescan"; ObjectID = "rfs-HZ-ODE"; */
 "rfs-HZ-ODE.title" = "Herlezen";
