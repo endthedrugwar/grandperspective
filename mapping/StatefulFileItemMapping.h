@@ -12,7 +12,6 @@
 
   // Backing field for property defined by FileItemMapping
   NSObject <FileItemMappingScheme>  *_scheme;
-
 }
 
 // Overrides designated initialiser

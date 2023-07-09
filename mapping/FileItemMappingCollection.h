@@ -7,7 +7,6 @@
 @interface FileItemMappingCollection : NSObject {
 
   NSMutableDictionary  *schemesDictionary;
-
 }
 
 @property (class, nonatomic, readonly) FileItemMappingCollection *defaultFileItemMappingCollection;

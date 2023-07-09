@@ -16,16 +16,13 @@
  * multiple base names that map to the same localized string).
  */
 @interface UniqueTagsTransformer : NSValueTransformer {
-
   NSMutableDictionary  *valueToTag;
   NSMutableDictionary  *tagToValue;
   
   NSUInteger  nextTag;
-
 }
 
 @property (class, nonatomic, readonly) UniqueTagsTransformer *defaultUniqueTagsTransformer;
-
 
 /* Uses the transformer to add localized items to the pop-up. Each item has a tag associated with it
  * that allows easy mapping back to the original, locale-independent name.

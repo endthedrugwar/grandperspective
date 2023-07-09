@@ -1,14 +1,11 @@
 #import <Cocoa/Cocoa.h>
-#import "Compatibility.h"
 
 @class DirectoryView;
 
 @interface ColorLegendTableViewControl : NSObject <NSTableViewDataSource> {
-
   DirectoryView  *dirView;
   NSTableView  *tableView;
   NSMutableArray  *colorImages;
-
 }
 
 // Overrides designated initialiser

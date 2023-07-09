@@ -9,24 +9,19 @@
 #import "CreationMappingScheme.h"
 #import "ModificationMappingScheme.h"
 
-@interface MappingByLevel : StatelessFileItemMapping {
-}
+@interface MappingByLevel : StatelessFileItemMapping
 @end
 
-@interface MappingByExtension : StatelessFileItemMapping {
-}
+@interface MappingByExtension : StatelessFileItemMapping
 @end
 
-@interface MappingByFilename : StatelessFileItemMapping {
-}
+@interface MappingByFilename : StatelessFileItemMapping
 @end
 
-@interface MappingByDirectoryName : StatelessFileItemMapping {
-}
+@interface MappingByDirectoryName : StatelessFileItemMapping
 @end
 
-@interface MappingByTopDirectoryName : StatelessFileItemMapping {
-}
+@interface MappingByTopDirectoryName : StatelessFileItemMapping
 @end
 
 @implementation MappingByLevel

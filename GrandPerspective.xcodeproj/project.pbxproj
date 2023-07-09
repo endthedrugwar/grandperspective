@@ -204,7 +204,6 @@
 		AA0DD93922F6F5BA00D9F9B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Taglines.strings; sourceTree = "<group>"; };
 		AA0DD93A22F6F5BA00D9F9B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Tests.strings; sourceTree = "<group>"; };
 		AA0DD93B22F6F5BA00D9F9B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Toolbar.strings; sourceTree = "<group>"; };
-		AA1049BF1511582C003C041C /* Compatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Compatibility.h; path = util/Compatibility.h; sourceTree = "<group>"; };
 		AA1115C10A84CA320023C5CD /* DirectoryViewControlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DirectoryViewControlSettings.h; path = control/DirectoryViewControlSettings.h; sourceTree = "<group>"; };
 		AA1115C20A84CA320023C5CD /* DirectoryViewControlSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DirectoryViewControlSettings.m; path = control/DirectoryViewControlSettings.m; sourceTree = "<group>"; };
 		AA13BA8D0B8A5746000AEAA9 /* Palettes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Palettes; sourceTree = "<group>"; };
@@ -895,7 +894,6 @@
 				AAA4FF1023C8F7C300A51C97 /* ColorListCollection.m */,
 				AAD50FCC21BDB30F00784BBF /* AlertMessage.h */,
 				AAD50FCD21BDB30F00784BBF /* AlertMessage.m */,
-				AA1049BF1511582C003C041C /* Compatibility.h */,
 				AA3B40DE0D1AF2B70070E889 /* UniqueTagsTransformer.h */,
 				AA3B40DF0D1AF2B70070E889 /* UniqueTagsTransformer.m */,
 				AA7DEA070D6718ED0057F5F8 /* UniformType.h */,

@@ -2,8 +2,7 @@
 
 #import "StringTest.h"
 
-/**
- * (Abstract) string test with one or more possible matches.
+/* (Abstract) string test with one or more possible matches.
  */
 @interface MultiMatchStringTest : StringTest {
 }

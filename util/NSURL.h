@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 
 
-
 @interface NSURL (HelperMethods)
 
 @property (nonatomic, getter=isDirectory, readonly) BOOL directory;

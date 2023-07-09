@@ -2,10 +2,8 @@
 
 
 @interface PeekingEnumerator : NSObject {
-
   NSEnumerator  *enumerator;
   id  nextObject;
-  
 }
 
 @property (nonatomic, readonly) id peekObject;

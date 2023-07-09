@@ -3,8 +3,7 @@
 #import "FileItemTest.h"
 #import "Item.h"
 
-/**
- * Item size test.
+/* Item size test.
  */
 @interface ItemSizeTest : FileItemTest  {
 }

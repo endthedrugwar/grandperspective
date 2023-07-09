@@ -3,8 +3,7 @@
 #import "FileItemTest.h"
 
 
-/**
- * (Abstract) compound item test.
+/* (Abstract) compound item test.
  */
 @interface CompoundItemTest : FileItemTest  {
 }

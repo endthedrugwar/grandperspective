@@ -41,8 +41,7 @@
     return items[0];
   }
   else if (items.count == 2) {
-    return
-      [NSString stringWithFormat: pairTemplate, items[0], items[1]];
+    return [NSString stringWithFormat: pairTemplate, items[0], items[1]];
   }
   else {
     NSEnumerator  *itemEnum = [items reverseObjectEnumerator];
@@ -50,7 +49,7 @@
     NSString  *item = [itemEnum nextObject]; // Last item
     NSString  *s = [NSString stringWithFormat: bootstrapTemplate, [itemEnum nextObject], item];
 
-    while ( item = [itemEnum nextObject] ) {
+    while (item = [itemEnum nextObject]) {
       s = [NSString stringWithFormat: repeatingTemplate, item, s];
     }
     

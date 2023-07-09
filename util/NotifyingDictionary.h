@@ -7,12 +7,9 @@ extern NSString  *ObjectUpdatedEvent;
 extern NSString  *ObjectRenamedEvent;
 
 
-
 @interface NotifyingDictionary : NSObject {
-
   NSMutableDictionary  *dict;
   NSNotificationCenter  *notificationCenter;
-
 }
 
 - (instancetype) initWithCapacity:(unsigned)capacity;
@@ -24,8 +21,7 @@ extern NSString  *ObjectRenamedEvent;
 @property (nonatomic, strong) NSNotificationCenter *notificationCenter;
 
 
-/**
- * Adds the object to the dictionary.
+/* Adds the object to the dictionary.
  *
  * Returns "YES" if the operation succeeded, and fires an ObjectAddedEvent notification. The key is
  * available in the userInfo under the "key" string.
@@ -34,8 +30,7 @@ extern NSString  *ObjectRenamedEvent;
  */
 - (BOOL) addObject:(id)object forKey:(id)key;
 
-/**
- * Removes the object from the dictionary.
+/* Removes the object from the dictionary.
  *
  * Returns "YES" if the operation succeeded, and fires an ObjectRemovedEvent notification. The key
  * is available in the userInfo under the "key" string.
@@ -44,8 +39,7 @@ extern NSString  *ObjectRenamedEvent;
  */
 - (BOOL) removeObjectForKey:(id)key;
 
-/**
- * Updates the object in the dictionary.
+/* Updates the object in the dictionary.
  *
  * Returns "YES" if the operation succeeded, and fires an ObjectUpdatedEvent notification. The key
  * is available in the userInfo under the "key" string.
@@ -58,8 +52,7 @@ extern NSString  *ObjectRenamedEvent;
  */
 - (BOOL) updateObject:(id)object forKey:(id)key;
 
-/**
- * Moves the object in the dictionary to a different key. It is assumed that the object itself did
+/* Moves the object in the dictionary to a different key. It is assumed that the object itself did
  * not change. If it did, you should also invoke updateObject:forKey:.
  *
  * Returns "YES" if the operation succeeded, and fires an ObjectRenamedEvent notification. The old

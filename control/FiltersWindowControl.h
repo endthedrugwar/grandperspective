@@ -1,5 +1,4 @@
 #import <Cocoa/Cocoa.h>
-#import "Compatibility.h"
 
 @class FilterRepository;
 @class FilterEditor;

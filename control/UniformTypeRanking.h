@@ -16,9 +16,8 @@ extern NSString  *UniformTypesRankingKey;
 
 @interface UniformTypeRanking : NSObject {
 
-  // Ordered list of all known types (UniformType)
-  NSMutableArray  *rankedTypes;
-
+  // Ordered list of all known types
+  NSMutableArray<UniformType *>  *rankedTypes;
 }
 
 @property (class, nonatomic, readonly) UniformTypeRanking *defaultUniformTypeRanking;

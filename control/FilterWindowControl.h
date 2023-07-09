@@ -1,13 +1,11 @@
 #import <Cocoa/Cocoa.h>
-#import "Compatibility.h"
 
 @class FilterTestRepository;
 @class FilterTestEditor;
 @class NamedFilter;
 @protocol NameValidator;
 
-/**
- * A control for a FilterWindow.
+/* A control for a FilterWindow.
  *
  * The control fires "okPerformed", "cancelPerformed", "applyPerformed", and "closePerformed"
  * notifications to signal that respectively the OK, Cancel, Apply and Close buttons have been

@@ -4,11 +4,9 @@
 @class FileItem;
 
 @interface FileItemPathStringCache : NSObject {
-
   BOOL  addTrailingSlashToDirectoryPaths;
   NSMutableArray  *cachedPathStrings;
   NSMutableArray  *cachedFileItems;
-
 }
 
 @property (nonatomic) BOOL addTrailingSlashToDirectoryPaths;

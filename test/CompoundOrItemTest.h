@@ -4,7 +4,6 @@
 
 
 @interface CompoundOrItemTest : CompoundItemTest {
-
 }
 
 + (FileItemTest *)fileItemTestFromDictionary:(NSDictionary *)dict;

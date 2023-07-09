@@ -4,8 +4,7 @@
 
 @class StringTest;
 
-/**
- * (Abstract) item string-based test.
+/* (Abstract) item string-based test.
  */
 @interface ItemStringTest : FileItemTest  {
 }

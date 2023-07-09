@@ -175,4 +175,3 @@ const int  minTimeDelta = 60;
 }
 
 @end // @implementation TimeBasedMapping (PrivateMethods)
-

@@ -4,7 +4,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class FileItemTest;
 
-@interface OverlayDrawTaskInput : DrawTaskInput
+@interface OverlayDrawTaskInput : DrawTaskInput {
+}
 
 // Override designated initializer of super.
 - (instancetype) initWithVisibleTree:(FileItem *)visibleTree

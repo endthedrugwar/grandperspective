@@ -7,7 +7,7 @@
  */
 @interface AsynchronousTaskManager : NSObject {
 
-  NSObject <TaskExecutor>*  executor;
+  NSObject <TaskExecutor>  *executor;
 
   NSConditionLock  *workLock;
   NSLock  *settingsLock;

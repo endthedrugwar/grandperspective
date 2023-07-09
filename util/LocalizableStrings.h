@@ -6,7 +6,6 @@ static inline NSString *LocalizationNotNeeded(NSString *s) {
 }
 
 @interface LocalizableStrings : NSObject {
-
 }
 
 + (NSString *)localizedAndEnumerationString:(NSArray *)items;

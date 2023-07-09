@@ -3,8 +3,7 @@
 #import "FileItem.h"
 #import "TimeBasedMapping.h"
 
-@interface MappingByAccess : TimeBasedMapping {
-}
+@interface MappingByAccess : TimeBasedMapping
 @end // @interface MappingByAccess
 
 

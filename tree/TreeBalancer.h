@@ -1,6 +1,5 @@
 #import <Cocoa/Cocoa.h>
 
-
 @class Item;
 @class CompoundItem;
 

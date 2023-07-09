@@ -5,7 +5,6 @@
  * is not intended for critical errors, e.g. assertion failures due to bugs.
  */
 @interface ApplicationError : NSError {
-
 }
 
 // Overrides designated initialiser
