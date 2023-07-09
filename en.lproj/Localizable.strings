@@ -79,6 +79,12 @@
 /* Alert panel button */
 "Delete" = "Delete";
 
+/* Menu item */
+"Delete File" = "Delete File";
+
+/* Menu item */
+"Delete Folder" = "Delete Folder";
+
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "Do you want to delete the file \"%@\"?";
 
