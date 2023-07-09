@@ -1,15 +1,18 @@
 /* Menu item */
-"Copy path" = "Yolu Kopyala";
+"Copy Path" = "Yolu Kopyala";
 
 /* Menu item */
-"Delete file" = "Dosyayı sil";
+"Delete File" = "Dosyayı Sil";
 
 /* Menu item */
-"Open with Finder" = "Finder ile Aç";
+"Delete Folder" = "Dosyayı Klasör";
+
+/* Menu item */
+"Open" = "Aç";
 
 /* Menu item */
 "Quick Look" = "Göz At";
 
 /* Menu item */
-"Reveal in Finder" = "Finder'da Göster";
+"Reveal" = "Göster";
 

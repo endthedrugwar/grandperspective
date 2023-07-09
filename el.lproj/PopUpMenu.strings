@@ -1,15 +1,15 @@
 /* Menu item */
-"Copy path" = "Αντιγραφή μονοπατιού";
+"Copy Path" = "Αντιγραφή μονοπατιού";
 
 /* Menu item */
-"Delete file" = "Διαγραφή αρχείου";
+"Delete File" = "Διαγραφή αρχείου";
 
 /* Menu item */
-"Open with Finder" = "Άνοιγμα με Finder";
+"Open" = "Άνοιγμα";
 
 /* Menu item */
 "Quick Look" = "Γρήγορη ματιά";
 
 /* Menu item */
-"Reveal in Finder" = "Εμφάνιση στο Finder";
+"Reveal" = "Εμφάνιση";
 

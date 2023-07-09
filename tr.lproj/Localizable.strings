@@ -79,6 +79,12 @@
 /* Alert panel button */
 "Delete" = "Sil";
 
+/* Menu item */
+"Delete File" = "Dosyayı Sil";
+
+/* Menu item */
+"Delete Folder" = "Dosyayı Klasör";
+
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "\"%@\" dosyasını silmek istiyor musunuz?";
 

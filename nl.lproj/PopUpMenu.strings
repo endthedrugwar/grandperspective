@@ -1,15 +1,18 @@
 /* Menu item */
-"Copy path" = "Kopieer pad";
+"Copy Path" = "Kopieer Pad";
 
 /* Menu item */
-"Delete file" = "Verwijder bestand";
+"Delete File" = "Verwijder Bestand";
 
 /* Menu item */
-"Open with Finder" = "Open via Finder";
+"Delete Folder" = "Verwijder Map";
+
+/* Menu item */
+"Open" = "Open";
 
 /* Menu item */
 "Quick Look" = "Geef snel weer";
 
 /* Menu item */
-"Reveal in Finder" = "Toon in Finder";
+"Reveal" = "Toon";
 

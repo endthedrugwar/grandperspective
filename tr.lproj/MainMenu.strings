@@ -4,11 +4,20 @@
 /* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5"; */
 "5.title" = "Hepsini Öne Getir";
 
+/* Class = "NSMenu"; title = "Display Focus"; ObjectID = "6AB-sL-t6U"; */
+"6AB-sL-t6U.title" = "Görüntü Odağı";
+
 /* Class = "NSMenuItem"; title = "Refresh"; ObjectID = "9aB-S3-Sb7"; */
 "9aB-S3-Sb7.title" = "Yenile";
 
+/* Class = "NSMenuItem"; title = "Quick Look"; ObjectID = "9gG-CK-G0v"; */
+"9gG-CK-G0v.title" = "Göz At";
+
 /* Class = "NSMenuItem"; title = "Show/Hide Control Panel"; ObjectID = "9Ho-ON-BCj"; */
 "9Ho-ON-BCj.title" = "Denetim Panelini Göster/Gizle";
+
+/* Class = "NSMenuItem"; title = "Reset Focus"; ObjectID = "15W-vC-r8v"; */
+"15W-vC-r8v.title" = "Odağı Sıfırla";
 
 /* Class = "NSMenuItem"; title = "Window"; ObjectID = "19"; */
 "19.title" = "Pencere";
@@ -21,6 +30,9 @@
 
 /* Class = "NSMenu"; title = "MainMenu"; ObjectID = "29"; */
 "29.title" = "Ana Menü";
+
+/* Class = "NSMenuItem"; title = "Open"; ObjectID = "33Q-IV-RrZ"; */
+"33Q-IV-RrZ.title" = "Aç";
 
 /* Class = "NSMenuItem"; title = "About GrandPerspective"; ObjectID = "58"; */
 "58.title" = "GrandPerspective Hakkında";
@@ -133,14 +145,23 @@
 /* Class = "NSMenu"; title = "Services"; ObjectID = "426"; */
 "426.title" = "Hizmetler";
 
+/* Class = "NSMenuItem"; title = "Zoom Out"; ObjectID = "bKM-Ec-4Gi"; */
+"bKM-Ec-4Gi.title" = "Uzaklaştır";
+
 /* Class = "NSMenuItem"; title = "Rescan with mask as filter"; ObjectID = "BMK-MQ-DB3"; */
 "BMK-MQ-DB3.title" = "Maskeyi süzgeç yaparak yeniden tara";
 
 /* Class = "NSMenuItem"; title = "Rescan folder in view"; ObjectID = "CV5-Fw-5D7"; */
 "CV5-Fw-5D7.title" = "Görüntüdeki klasörü yeniden tara";
 
+/* Class = "NSMenuItem"; title = "Move Focus Down"; ObjectID = "dJ2-6K-v9P"; */
+"dJ2-6K-v9P.title" = "Odağı Aşağı Al";
+
 /* Class = "NSMenuItem"; title = "Rescan"; ObjectID = "gUG-Nh-FTx"; */
 "gUG-Nh-FTx.title" = "Yeniden Tara";
+
+/* Class = "NSMenuItem"; title = "Move Focus Up"; ObjectID = "gZj-8W-T7o"; */
+"gZj-8W-T7o.title" = "Odağı Yukarı Al";
 
 /* Class = "NSMenuItem"; title = "Export As Text..."; ObjectID = "hJw-Fc-daG"; */
 "hJw-Fc-daG.title" = "Metin Olarak Dışa Aktar...";
@@ -151,12 +172,42 @@
 /* Class = "NSMenu"; title = "Scan Recent"; ObjectID = "HXb-90-KwJ"; */
 "HXb-90-KwJ.title" = "Son Taramalar";
 
+/* Class = "NSMenuItem"; title = "Zoom In"; ObjectID = "Iyw-2V-esC"; */
+"Iyw-2V-esC.title" = "Yakınlaştır";
+
+/* Class = "NSMenuItem"; title = "Move Focus Up"; ObjectID = "K6z-Zt-rLu"; */
+"K6z-Zt-rLu.title" = "Odağı Yukarı Al";
+
+/* Class = "NSMenuItem"; title = "Reset Focus"; ObjectID = "l4V-Wf-FCv"; */
+"l4V-Wf-FCv.title" = "Odağı Sıfırla";
+
+/* Class = "NSMenuItem"; title = "Delete"; ObjectID = "lnG-FS-oUL"; */
+"lnG-FS-oUL.title" = "Sil";
+
 /* Class = "NSMenuItem"; title = "Rescan selected"; ObjectID = "Lsx-9H-7TJ"; */
 "Lsx-9H-7TJ.title" = "Seçiliyi yeniden tara";
 
 /* Class = "NSMenuItem"; title = "Rescan all"; ObjectID = "nFT-y9-xF4"; */
 "nFT-y9-xF4.title" = "Tümünü Yeniden Tara";
 
+/* Class = "NSMenuItem"; title = "Zoom"; ObjectID = "oY0-9q-f9z"; */
+"oY0-9q-f9z.title" = "Yakınlaştırma";
+
+/* Class = "NSMenuItem"; title = "Move Focus Down"; ObjectID = "QCC-Gl-y9i"; */
+"QCC-Gl-y9i.title" = "Odağı Aşağı Al";
+
+/* Class = "NSMenu"; title = "Zoom"; ObjectID = "qtI-xz-v9u"; */
+"qtI-xz-v9u.title" = "Yakınlaştırma";
+
 /* Class = "NSMenu"; title = "Rescan"; ObjectID = "rfs-HZ-ODE"; */
 "rfs-HZ-ODE.title" = "Yeniden Tara";
+
+/* Class = "NSMenuItem"; title = "Display Focus"; ObjectID = "wd7-sh-TkA"; */
+"wd7-sh-TkA.title" = "Görüntü Odağı";
+
+/* Class = "NSMenuItem"; title = "Reveal"; ObjectID = "wVF-ys-3UQ"; */
+"wVF-ys-3UQ.title" = "Göster";
+
+/* Class = "NSMenuItem"; title = "Reset Zoom"; ObjectID = "y2y-vX-zhd"; */
+"y2y-vX-zhd.title" = "Yakınlaştırmayı Sıfırla";
 

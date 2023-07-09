@@ -79,6 +79,9 @@
 /* Alert panel button */
 "Delete" = "Διαγραφή";
 
+/* Menu item */
+"Delete File" = "Διαγραφή αρχείου";
+
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "Θέλετε να διαγράψετε το αρχείο \"%@\";";
 

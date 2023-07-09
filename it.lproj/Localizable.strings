@@ -79,6 +79,12 @@
 /* Alert panel button */
 "Delete" = "Cancella";
 
+/* Menu item */
+"Delete File" = "Elimina File";
+
+/* Menu item */
+"Delete Folder" = "Elimina Cartella";
+
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "Vuoi cancellare il file \"%@\"?";
 

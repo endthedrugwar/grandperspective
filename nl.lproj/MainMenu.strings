@@ -1,14 +1,29 @@
 /* Class = "NSMenuItem"; title = "Item"; ObjectID = "3LR-fJ-0Ck"; */
 "3LR-fJ-0Ck.title" = "Item";
 
+/* Class = "NSMenu"; title = "Selection"; ObjectID = "4K2-IU-hcw"; */
+"4K2-IU-hcw.title" = "Selectie";
+
 /* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5"; */
 "5.title" = "Alles op voorgrond";
+
+/* Class = "NSMenu"; title = "Display Focus"; ObjectID = "6AB-sL-t6U"; */
+"6AB-sL-t6U.title" = "Weergave Focus";
+
+/* Class = "NSMenuItem"; title = "Selection"; ObjectID = "8Lj-RY-z1e"; */
+"8Lj-RY-z1e.title" = "Selectie";
 
 /* Class = "NSMenuItem"; title = "Refresh"; ObjectID = "9aB-S3-Sb7"; */
 "9aB-S3-Sb7.title" = "Verversen";
 
+/* Class = "NSMenuItem"; title = "Quick Look"; ObjectID = "9gG-CK-G0v"; */
+"9gG-CK-G0v.title" = "Geef Snel Weer";
+
 /* Class = "NSMenuItem"; title = "Show/Hide Control Panel"; ObjectID = "9Ho-ON-BCj"; */
 "9Ho-ON-BCj.title" = "Toon/verberg Besturingspaneel";
+
+/* Class = "NSMenuItem"; title = "Reset Focus"; ObjectID = "15W-vC-r8v"; */
+"15W-vC-r8v.title" = "Herstel Standaard Focus";
 
 /* Class = "NSMenuItem"; title = "Window"; ObjectID = "19"; */
 "19.title" = "Venster";
@@ -21,6 +36,9 @@
 
 /* Class = "NSMenu"; title = "MainMenu"; ObjectID = "29"; */
 "29.title" = "MainMenu";
+
+/* Class = "NSMenuItem"; title = "Open"; ObjectID = "33Q-IV-RrZ"; */
+"33Q-IV-RrZ.title" = "Open";
 
 /* Class = "NSMenuItem"; title = "About GrandPerspective"; ObjectID = "58"; */
 "58.title" = "Over GrandPerspective";
@@ -133,14 +151,26 @@
 /* Class = "NSMenu"; title = "Services"; ObjectID = "426"; */
 "426.title" = "Voorzieningen";
 
+/* Class = "NSMenuItem"; title = "Zoom Out"; ObjectID = "bKM-Ec-4Gi"; */
+"bKM-Ec-4Gi.title" = "Zoom Uit";
+
 /* Class = "NSMenuItem"; title = "Rescan with mask as filter"; ObjectID = "BMK-MQ-DB3"; */
 "BMK-MQ-DB3.title" = "Data herlezen met masker als filter";
 
 /* Class = "NSMenuItem"; title = "Rescan folder in view"; ObjectID = "CV5-Fw-5D7"; */
 "CV5-Fw-5D7.title" = "Map in venster herlezen";
 
+/* Class = "NSMenuItem"; title = "Move Focus Down"; ObjectID = "dJ2-6K-v9P"; */
+"dJ2-6K-v9P.title" = "Verplaats Focus Omlaag";
+
+/* Class = "NSMenuItem"; title = "Selection Focus"; ObjectID = "frA-lr-FOa"; */
+"frA-lr-FOa.title" = "Selectie Focus";
+
 /* Class = "NSMenuItem"; title = "Rescan"; ObjectID = "gUG-Nh-FTx"; */
 "gUG-Nh-FTx.title" = "Herlezen";
+
+/* Class = "NSMenuItem"; title = "Move Focus Up"; ObjectID = "gZj-8W-T7o"; */
+"gZj-8W-T7o.title" = "Verplaats Focus Omhoog";
 
 /* Class = "NSMenuItem"; title = "Export As Text..."; ObjectID = "hJw-Fc-daG"; */
 "hJw-Fc-daG.title" = "Exporteer Als Tekst...";
@@ -151,12 +181,45 @@
 /* Class = "NSMenu"; title = "Scan Recent"; ObjectID = "HXb-90-KwJ"; */
 "HXb-90-KwJ.title" = "Recente map inlezen";
 
+/* Class = "NSMenuItem"; title = "Zoom In"; ObjectID = "Iyw-2V-esC"; */
+"Iyw-2V-esC.title" = "Zoom In";
+
+/* Class = "NSMenuItem"; title = "Move Focus Up"; ObjectID = "K6z-Zt-rLu"; */
+"K6z-Zt-rLu.title" = "Verplaats Focus Omhoog";
+
+/* Class = "NSMenuItem"; title = "Reset Focus"; ObjectID = "l4V-Wf-FCv"; */
+"l4V-Wf-FCv.title" = "Herstel Standaard Focus";
+
+/* Class = "NSMenuItem"; title = "Delete"; ObjectID = "lnG-FS-oUL"; */
+"lnG-FS-oUL.title" = "Verwijder";
+
 /* Class = "NSMenuItem"; title = "Rescan selected"; ObjectID = "Lsx-9H-7TJ"; */
 "Lsx-9H-7TJ.title" = "Selectie herlezen";
 
 /* Class = "NSMenuItem"; title = "Rescan all"; ObjectID = "nFT-y9-xF4"; */
 "nFT-y9-xF4.title" = "Alles herlezen";
 
+/* Class = "NSMenuItem"; title = "Zoom"; ObjectID = "oY0-9q-f9z"; */
+"oY0-9q-f9z.title" = "Zoom in/uit";
+
+/* Class = "NSMenuItem"; title = "Move Focus Down"; ObjectID = "QCC-Gl-y9i"; */
+"QCC-Gl-y9i.title" = "Verplaats Focus Omlaag";
+
+/* Class = "NSMenu"; title = "Zoom"; ObjectID = "qtI-xz-v9u"; */
+"qtI-xz-v9u.title" = "Zoom in/uit";
+
 /* Class = "NSMenu"; title = "Rescan"; ObjectID = "rfs-HZ-ODE"; */
 "rfs-HZ-ODE.title" = "Herlezen";
+
+/* Class = "NSMenuItem"; title = "Display Focus"; ObjectID = "wd7-sh-TkA"; */
+"wd7-sh-TkA.title" = "Weergave Focus";
+
+/* Class = "NSMenu"; title = "Selection Focus"; ObjectID = "wHh-Gg-e7R"; */
+"wHh-Gg-e7R.title" = "Selectie Focus";
+
+/* Class = "NSMenuItem"; title = "Reveal"; ObjectID = "wVF-ys-3UQ"; */
+"wVF-ys-3UQ.title" = "Toon";
+
+/* Class = "NSMenuItem"; title = "Reset Zoom"; ObjectID = "y2y-vX-zhd"; */
+"y2y-vX-zhd.title" = "Herstel Standaard Zoom";
 

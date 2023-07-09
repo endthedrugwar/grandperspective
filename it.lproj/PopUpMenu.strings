@@ -1,15 +1,18 @@
 /* Menu item */
-"Copy path" = "Copia percorso";
+"Copy Path" = "Copia Percorso";
 
 /* Menu item */
-"Delete file" = "Elimina file";
+"Delete File" = "Elimina File";
 
 /* Menu item */
-"Open with Finder" = "Apri nel Finder";
+"Delete Folder" = "Elimina Cartella";
+
+/* Menu item */
+"Open" = "Apri";
 
 /* Menu item */
 "Quick Look" = "Quick Look";
 
 /* Menu item */
-"Reveal in Finder" = "Mostra nel Finder";
+"Reveal" = "Mostra";
 

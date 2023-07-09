@@ -79,6 +79,12 @@
 /* Alert panel button */
 "Delete" = "Verwijder";
 
+/* Menu item */
+"Delete File" = "Verwijder Bestand";
+
+/* Menu item */
+"Delete Folder" = "Verwijder Map";
+
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "Wilt u het bestand \"%@\" verwijderen?";
 
