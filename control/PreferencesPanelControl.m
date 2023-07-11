@@ -267,7 +267,7 @@ static BOOL appHasDeletePermission;
            withTitle: title
              toPopUp: popUp
              atIndex: index
-              select: [title isEqualToString: prefValue]];
+              select: [UnlimitedDisplayFocusValue isEqualToString: prefValue]];
 }
 
 - (void) setPopUp: (NSPopUpButton *)popUp toValue:(NSString *)value {
