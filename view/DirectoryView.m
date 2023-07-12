@@ -37,6 +37,7 @@ static const float ZOOM_ANIMATION_MAXLEN_THRESHOLD = 0.80;
 
 NSString  *ColorPaletteChangedEvent = @"colorPaletteChanged";
 NSString  *ColorMappingChangedEvent = @"colorMappingChanged";
+NSString  *DisplayFocusChangedEvent = @"displayFocusChanged";
 
 CGFloat rectArea(NSRect rect) {
   return rect.size.width * rect.size.height;
@@ -76,6 +77,7 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
 - (void) postColorPaletteChanged;
 - (void) postColorMappingChanged;
+- (void) postDisplayFocusChanged;
 
 - (void) selectedItemChanged:(NSNotification *)notification;
 - (void) visibleTreeChanged:(NSNotification *)notification;
@@ -465,6 +467,8 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
   // Ensure the change is always visible
   self.displayDepth = MIN(self.maxDrawDepth, self.treeDrawerSettings.displayDepth) - 1;
+
+  [self postDisplayFocusChanged];
 }
 
 - (void) moveDisplayFocusDown:(id)sender {
@@ -477,10 +481,14 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   }
 
   self.displayDepth = newDepth;
+
+  [self postDisplayFocusChanged];
 }
 
 - (void) resetDisplayFocus:(id)sender {
   self.displayDepth = TreeDrawerSettings.defaultDisplayDepth;
+
+  [self postDisplayFocusChanged];
 }
 
 
@@ -1062,6 +1070,11 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
 
 - (void) postColorMappingChanged {
   [NSNotificationCenter.defaultCenter postNotificationName: ColorMappingChangedEvent
+                                                    object: self];
+}
+
+- (void) postDisplayFocusChanged {
+  [NSNotificationCenter.defaultCenter postNotificationName: DisplayFocusChangedEvent
                                                     object: self];
 }
 

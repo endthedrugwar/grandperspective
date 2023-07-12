@@ -10,6 +10,9 @@ extern NSString  *ColorPaletteChangedEvent;
  */
 extern NSString  *ColorMappingChangedEvent;
 
+/* Event fired when the display focus changed.
+ */
+extern NSString  *DisplayFocusChangedEvent;
 
 @class AsynchronousTaskManager;
 @class TreeLayoutBuilder;

@@ -43,7 +43,10 @@ extern NSString  *ViewWillCloseEvent;
   
   // The part of the (absolute) path that is outside the visible tree.
   NSString  *invisiblePathName;
-  
+
+  // Status message that is temporarily shown in the status bar
+  NSString  *statusMessage;
+
   // The size of the view when it is not zoomed.
   NSSize  unzoomedViewSize;
 }

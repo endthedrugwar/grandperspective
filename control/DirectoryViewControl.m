@@ -64,7 +64,10 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 - (void) displaySettingsChanged:(NSNotification *)notification;
 - (void) propagateDisplaySettings;
 
+- (void) displayFocusChanged:(NSNotification *)notification;
+
 - (void) updateSelectionInStatusbar:(NSString *)itemSizeString;
+- (void) showStatusUpdateMessage:(NSString *)message;
 - (void) validateControls;
 
 - (void) updateFileDeletionSupport;
@@ -119,8 +122,8 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
     displaySettings = [initialSettings.displaySettings retain];
     
     scanPathName = [treeContext.scanTree.path retain];
-    
     invisiblePathName = nil;
+    statusMessage = nil;
   }
 
   // The control is responsible for itself. It auto-releases when the window closes.
@@ -143,6 +146,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   
   [scanPathName release];
   [invisiblePathName release];
+  [statusMessage release];
 
   [_previewPanel release];
   
@@ -220,6 +224,10 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
          selector: @selector(displaySettingsChanged:)
              name: DisplaySettingsChangedEvent
            object: ControlPanelControl.singletonInstance];
+  [nc addObserver: self
+         selector: @selector(displayFocusChanged:)
+             name: DisplayFocusChangedEvent
+           object: mainView];
 
   [userDefaults addObserver: self 
                  forKeyPath: FileDeletionTargetsKey
@@ -756,8 +764,24 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   [self updateSelectionInStatusbar: nil];
 }
 
+- (void) displayFocusChanged:(NSNotification *)notification {
+  NSString  *format = NSLocalizedString(@"Display focus changed to %@", @"Status update message");
+  NSString  *value;
+  if (mainView.displayDepth != NO_DISPLAY_DEPTH_LIMIT) {
+    value = @(mainView.displayDepth).stringValue;
+  } else {
+    value = [NSBundle.mainBundle localizedStringForKey: UnlimitedDisplayFocusValue
+                                                 value: nil
+                                                 table: @"Names"];
+  }
+
+  [self showStatusUpdateMessage: [NSString stringWithFormat: format, value]];
+}
+
 
 - (void) updateSelectionInStatusbar:(NSString *)itemSizeString {
+  if (statusMessage != nil) return;
+
   FileItem  *selectedItem = pathModelView.selectedFileItem;
 
   if (selectedItem == nil) {
@@ -820,6 +844,32 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   itemPathField.stringValue = relativeItemPath;
 }
 
+- (void) showStatusUpdateMessage:(NSString *)message {
+  if (statusMessage == message) return;
+
+  // Set or modify, or even clear the temporary status message
+  [message retain];
+  [statusMessage release];
+  statusMessage = message;
+
+  if (message == nil) {
+    // The message was cleared. Show the path again
+    [self updateSelectionInStatusbar: nil];
+  } else {
+    itemPathField.stringValue = statusMessage;
+
+    // Clear the message after a short delay
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 2), dispatch_get_main_queue(),
+                   ^() {
+      if (statusMessage != message) return;
+
+      [statusMessage release];
+      statusMessage = nil;
+
+      [self updateSelectionInStatusbar: nil];
+    });
+  }
+}
 
 - (void) validateControls {
   // Note: Maybe not strictly necessary, as toolbar seems to frequently auto-update its visible
