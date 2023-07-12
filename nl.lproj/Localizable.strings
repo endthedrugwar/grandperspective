@@ -85,6 +85,9 @@
 /* Menu item */
 "Delete Folder" = "Verwijder Map";
 
+/* Status update message */
+"Display focus changed to %@" = "Weergave focus is gewijzigd naar %@";
+
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "Wilt u het bestand \"%@\" verwijderen?";
 
