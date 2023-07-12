@@ -85,6 +85,9 @@
 /* Menu item */
 "Delete Folder" = "Delete Folder";
 
+/* Status update message */
+"Display focus changed to %@" = "Display focus changed to %@";
+
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "Do you want to delete the file \"%@\"?";
 
