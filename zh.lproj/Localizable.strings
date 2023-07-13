@@ -82,6 +82,12 @@
 /* Menu item */
 "Delete File" = "删除文件";
 
+/* Menu item */
+"Delete Folder" = "删除文件夾";
+
+/* Status update message */
+"Display focus changed to %@" = "显示焦点改成 $@";
+
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "你要删除文件\"%@\"吗？";
 

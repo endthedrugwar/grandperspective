@@ -80,7 +80,13 @@
 "Delete" = "Löschen";
 
 /* Menu item */
-"Delete File" = "Datei Löschen";
+"Delete File" = "Datei löschen";
+
+/* Menu item */
+"Delete Folder" = "Verzeichnis löschen";
+
+/* Status update message */
+"Display focus changed to %@" = "Auswahlanzeige geändert zu %@";
 
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "Wollen Sie die Datei \"%@\" löschen?";

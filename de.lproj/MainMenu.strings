@@ -1,8 +1,17 @@
 /* Class = "NSMenuItem"; title = "Item"; ObjectID = "3LR-fJ-0Ck"; */
 "3LR-fJ-0Ck.title" = "Eintrag";
 
+/* Class = "NSMenu"; title = "Selection"; ObjectID = "4K2-IU-hcw"; */
+"4K2-IU-hcw.title" = "Auswahl";
+
 /* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5"; */
 "5.title" = "Alles nach vorne bringen";
+
+/* Class = "NSMenu"; title = "Display Focus"; ObjectID = "6AB-sL-t6U"; */
+"6AB-sL-t6U.title" = "Auswahlanzeige";
+
+/* Class = "NSMenuItem"; title = "Selection"; ObjectID = "8Lj-RY-z1e"; */
+"8Lj-RY-z1e.title" = "Auswahl";
 
 /* Class = "NSMenuItem"; title = "Refresh"; ObjectID = "9aB-S3-Sb7"; */
 "9aB-S3-Sb7.title" = "Aktualisieren";
@@ -68,7 +77,7 @@
 "150.title" = "Alle anzeigen";
 
 /* Class = "NSMenuItem"; title = "Zoom"; ObjectID = "197"; */
-"197.title" = "Aufzoomen";
+"197.title" = "Vergrößern";
 
 /* Class = "NSMenuItem"; title = "Duplicate"; ObjectID = "272"; */
 "272.title" = "Duplizieren";
@@ -143,7 +152,7 @@
 "426.title" = "Services";
 
 /* Class = "NSMenuItem"; title = "Zoom Out"; ObjectID = "bKM-Ec-4Gi"; */
-"bKM-Ec-4Gi.title" = "Zoom Verkleinern";
+"bKM-Ec-4Gi.title" = "Herauszoomen";
 
 /* Class = "NSMenuItem"; title = "Rescan with mask as filter"; ObjectID = "BMK-MQ-DB3"; */
 "BMK-MQ-DB3.title" = "Wiederhole mit Maskierung als Filter";
@@ -152,13 +161,16 @@
 "CV5-Fw-5D7.title" = "Wiederhole Scan in aktueller Ansicht";
 
 /* Class = "NSMenuItem"; title = "Move Focus Down"; ObjectID = "dJ2-6K-v9P"; */
-"dJ2-6K-v9P.title" = "Auswahl Verkleinern";
+"dJ2-6K-v9P.title" = "Auswahl verkleinern";
+
+/* Class = "NSMenuItem"; title = "Selection Focus"; ObjectID = "frA-lr-FOa"; */
+"frA-lr-FOa.title" = "Auswahlfokus";
 
 /* Class = "NSMenuItem"; title = "Rescan"; ObjectID = "gUG-Nh-FTx"; */
 "gUG-Nh-FTx.title" = "Wiederhole Scan";
 
 /* Class = "NSMenuItem"; title = "Move Focus Up"; ObjectID = "gZj-8W-T7o"; */
-"gZj-8W-T7o.title" = "Auswahl Vergrößern";
+"gZj-8W-T7o.title" = "Auswahl vergrößern";
 
 /* Class = "NSMenuItem"; title = "Export As Text..."; ObjectID = "hJw-Fc-daG"; */
 "hJw-Fc-daG.title" = "Als Text exportieren...";
@@ -170,13 +182,13 @@
 "HXb-90-KwJ.title" = "Letzte ausgeführte Scans";
 
 /* Class = "NSMenuItem"; title = "Zoom In"; ObjectID = "Iyw-2V-esC"; */
-"Iyw-2V-esC.title" = "Zoom Vergrößern";
+"Iyw-2V-esC.title" = "Hineinzoomen";
 
 /* Class = "NSMenuItem"; title = "Move Focus Up"; ObjectID = "K6z-Zt-rLu"; */
-"K6z-Zt-rLu.title" = "Auswahl Vergrößern";
+"K6z-Zt-rLu.title" = "Auswahl vergrößern";
 
 /* Class = "NSMenuItem"; title = "Reset Focus"; ObjectID = "l4V-Wf-FCv"; */
-"l4V-Wf-FCv.title" = "Auswahl Zurücksetzen";
+"l4V-Wf-FCv.title" = "Auswahl zurücksetzen";
 
 /* Class = "NSMenuItem"; title = "Delete"; ObjectID = "lnG-FS-oUL"; */
 "lnG-FS-oUL.title" = "Löschen";
@@ -187,15 +199,27 @@
 /* Class = "NSMenuItem"; title = "Rescan all"; ObjectID = "nFT-y9-xF4"; */
 "nFT-y9-xF4.title" = "Wiederhole alle Scans";
 
+/* Class = "NSMenuItem"; title = "Zoom"; ObjectID = "oY0-9q-f9z"; */
+"oY0-9q-f9z.title" = "Vergrößern";
+
 /* Class = "NSMenuItem"; title = "Move Focus Down"; ObjectID = "QCC-Gl-y9i"; */
-"QCC-Gl-y9i.title" = "Auswahl Verkleinern";
+"QCC-Gl-y9i.title" = "Auswahl verkleinern";
+
+/* Class = "NSMenu"; title = "Zoom"; ObjectID = "qtI-xz-v9u"; */
+"qtI-xz-v9u.title" = "Vergrößern";
 
 /* Class = "NSMenu"; title = "Rescan"; ObjectID = "rfs-HZ-ODE"; */
 "rfs-HZ-ODE.title" = "Wiederhole Scan";
+
+/* Class = "NSMenuItem"; title = "Display Focus"; ObjectID = "wd7-sh-TkA"; */
+"wd7-sh-TkA.title" = "Auswahlanzeige";
+
+/* Class = "NSMenu"; title = "Selection Focus"; ObjectID = "wHh-Gg-e7R"; */
+"wHh-Gg-e7R.title" = "Auswahlfokus";
 
 /* Class = "NSMenuItem"; title = "Reveal"; ObjectID = "wVF-ys-3UQ"; */
 "wVF-ys-3UQ.title" = "Zeige";
 
 /* Class = "NSMenuItem"; title = "Reset Zoom"; ObjectID = "y2y-vX-zhd"; */
-"y2y-vX-zhd.title" = "Zoom Zurücksetzen";
+"y2y-vX-zhd.title" = "Zoom zurücksetzen";
 

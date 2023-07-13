@@ -85,6 +85,9 @@
 /* Menu item */
 "Delete Folder" = "Dosyayı Klasör";
 
+/* Status update message */
+"Display focus changed to %@" = "Görüntüleme odağı %@ olarak değişti";
+
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "\"%@\" dosyasını silmek istiyor musunuz?";
 

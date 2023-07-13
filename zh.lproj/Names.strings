@@ -107,6 +107,9 @@
 "name" = "名字";
 
 /* Filter name */
+"No cloud files" = "没有云端文件";
+
+/* Filter name */
 "No hard-links" = "没有硬链接";
 
 /* Filter name */
@@ -162,6 +165,9 @@
 
 /* Color mapping scheme */
 "uniform type" = "文件类型";
+
+/* Preference option for display focus */
+"unlimited" = "无限";
 
 /* Filter test */
 "Version control" = "版本控制";

@@ -85,6 +85,9 @@
 /* Menu item */
 "Delete Folder" = "Elimina Cartella";
 
+/* Status update message */
+"Display focus changed to %@" = "Focus area cambiata a %@";
+
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "Vuoi cancellare il file \"%@\"?";
 

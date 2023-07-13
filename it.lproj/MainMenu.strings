@@ -1,11 +1,17 @@
 /* Class = "NSMenuItem"; title = "Item"; ObjectID = "3LR-fJ-0Ck"; */
 "3LR-fJ-0Ck.title" = "Elemento";
 
+/* Class = "NSMenu"; title = "Selection"; ObjectID = "4K2-IU-hcw"; */
+"4K2-IU-hcw.title" = "Selezione";
+
 /* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5"; */
 "5.title" = "Porta Tutto in Primo Piano";
 
 /* Class = "NSMenu"; title = "Display Focus"; ObjectID = "6AB-sL-t6U"; */
 "6AB-sL-t6U.title" = "Focus Area";
+
+/* Class = "NSMenuItem"; title = "Selection"; ObjectID = "8Lj-RY-z1e"; */
+"8Lj-RY-z1e.title" = "Selezione";
 
 /* Class = "NSMenuItem"; title = "Refresh"; ObjectID = "9aB-S3-Sb7"; */
 "9aB-S3-Sb7.title" = "Aggiorna";
@@ -157,6 +163,9 @@
 /* Class = "NSMenuItem"; title = "Move Focus Down"; ObjectID = "dJ2-6K-v9P"; */
 "dJ2-6K-v9P.title" = "Sposta Focus Livello Inferiore";
 
+/* Class = "NSMenuItem"; title = "Selection Focus"; ObjectID = "frA-lr-FOa"; */
+"frA-lr-FOa.title" = "Focus Selezione";
+
 /* Class = "NSMenuItem"; title = "Rescan"; ObjectID = "gUG-Nh-FTx"; */
 "gUG-Nh-FTx.title" = "Riscansiona";
 
@@ -204,6 +213,9 @@
 
 /* Class = "NSMenuItem"; title = "Display Focus"; ObjectID = "wd7-sh-TkA"; */
 "wd7-sh-TkA.title" = "Focus Area";
+
+/* Class = "NSMenu"; title = "Selection Focus"; ObjectID = "wHh-Gg-e7R"; */
+"wHh-Gg-e7R.title" = "Focus Selezione";
 
 /* Class = "NSMenuItem"; title = "Reveal"; ObjectID = "wVF-ys-3UQ"; */
 "wVF-ys-3UQ.title" = "Mostra";
