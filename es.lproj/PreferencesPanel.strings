@@ -70,3 +70,6 @@
 /* Class = "NSMenuItem"; title = "Terminate application"; ObjectID = "Rrr-CG-7lo"; */
 "Rrr-CG-7lo.title" = "Terminar la aplicación";
 
+/* Class = "NSTextFieldCell"; title = "Display focus:"; ObjectID = "tci-ro-rrH"; */
+"tci-ro-rrH.title" = "Visualizar enfoque:";
+

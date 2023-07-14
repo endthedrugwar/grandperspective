@@ -11,7 +11,7 @@
 "base-10" = "Decimal";
 
 /* Color palette */
-"BlueSkyTulips" = "Tulipanes con cielo azul ";
+"BlueSkyTulips" = "Tulipanes con cielo azul";
 
 /* Color palette */
 "Bujumbura" = "Bujumbura";
@@ -35,7 +35,7 @@
 "delete nothing" = "Ninguno";
 
 /* Preference option for what to do after last view is closed */
-"do nothing" = "No hacer nada ";
+"do nothing" = "No hacer nada";
 
 /* Color mapping scheme */
 "extension" = "Extensión";
@@ -59,7 +59,7 @@
 "GreenEggs" = "Huevos verdes";
 
 /* Filter test */
-"Hard-linked items" = "Enlaces permanentes ";
+"Hard-linked items" = "Enlaces permanentes";
 
 /* Color palette */
 "Heatmap-12" = "Mapa térmico 12";
@@ -110,7 +110,7 @@
 "No cloud files" = "Sin archivos en la nube";
 
 /* Filter name */
-"No hard-links" = "Sin enlaces permanentes ";
+"No hard-links" = "Sin enlaces permanentes";
 
 /* Filter name */
 "No version control" = "Sin control de versión";
@@ -140,7 +140,7 @@
 "quit" = "Salir";
 
 /* Color palette */
-"Rainbow" = "Arcoíris ";
+"Rainbow" = "Arcoíris";
 
 /* Rescan preference option */
 "rescan all" = "Reanalizar todo";
@@ -158,13 +158,16 @@
 "tally" = "Recuento";
 
 /* Filter test */
-"Tiny files" = "Archivos diminutos ";
+"Tiny files" = "Archivos diminutos";
 
 /* Color mapping scheme */
 "top folder" = "Carpeta superior";
 
 /* Color mapping scheme */
 "uniform type" = "Tipo de archivo";
+
+/* Preference option for display focus */
+"unlimited" = "Ilimitado";
 
 /* Filter test */
 "Version control" = "Control de versión";

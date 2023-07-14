@@ -17,7 +17,7 @@
 "911.title" = "Tamaño de los archivos";
 
 /* Class = "NSTextFieldCell"; title = "Initial free space:"; ObjectID = "912"; */
-"912.title" = "Espacio libre inicial\n";
+"912.title" = "Espacio libre inicial";
 
 /* Class = "NSTextFieldCell"; title = "Physical"; ObjectID = "915"; */
 "915.title" = "Físico";
@@ -29,7 +29,7 @@
 "918.title" = "Tamaño unidad";
 
 /* Class = "NSTextFieldCell"; title = "Miscellaneous used space:"; ObjectID = "921"; */
-"921.title" = "Espacio usado misceláneo ";
+"921.title" = "Espacio usado misceláneo";
 
 /* Class = "NSTextFieldCell"; title = "Freed space:"; ObjectID = "923"; */
 "923.title" = "Espacio liberado";
@@ -44,7 +44,7 @@
 "927.title" = "Nº de archivos escaneados";
 
 /* Class = "NSTextFieldCell"; title = "Number of deleted files:"; ObjectID = "930"; */
-"930.title" = "Nº de archivos eliminados ";
+"930.title" = "Nº de archivos eliminados";
 
 /* Class = "NSTextFieldCell"; title = "Mask:"; ObjectID = "931"; */
 "931.title" = "Máscara";

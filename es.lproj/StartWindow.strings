@@ -22,3 +22,9 @@
 /* Class = "NSTextFieldCell"; title = "Path"; ObjectID = "UhX-F8-bW1"; */
 "UhX-F8-bW1.title" = "Ruta";
 
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "xvh-L4-J3V"; */
+"xvh-L4-J3V.title" = "Celda de texto";
+
+/* Class = "NSTextFieldCell"; title = "GrandPerspective"; ObjectID = "zcR-VQ-ffQ"; */
+"zcR-VQ-ffQ.title" = "GrandPerspective";
+

@@ -82,6 +82,12 @@
 /* Menu item */
 "Delete File" = "Borrar Archivo";
 
+/* Menu item */
+"Delete Folder" = "Borrar carpeta";
+
+/* Status update message */
+"Display focus changed to %@" = "Mostrar enfoque cambiado a %@";
+
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "¿Quieres borrar el archivo  \"%@\"?";
 
@@ -137,7 +143,7 @@
 "Export scan data as text" = "Exportar datos escaneados como texto";
 
 /* Alert message */
-"Failed to bind one or more filter tests:\n%@" = "Fallo al enlazar uno o más filtros: %@";
+"Failed to bind one or more filter tests:\n%@" = "Fallo al enlazar uno o más filtros:\n%@";
 
 /* Alert message */
 "Failed to delete the file \"%@\"" = "Fallo al eliminar el fichero \"%@\"";
@@ -176,7 +182,7 @@
 "Failed to save the scan data to \"%@\"" = "Fallo al guardar los datos escaneados a \"%@\"";
 
 /* Alert message */
-"Failed to update one or more filters:\n%@" = "Fallo al actualizar uno o más filtros: %@";
+"Failed to update one or more filters:\n%@" = "Fallo al actualizar uno o más filtros:\n%@";
 
 /* Error message */
 "Failed to write entire buffer." = "Fallo al escribir el búfer completo.";
