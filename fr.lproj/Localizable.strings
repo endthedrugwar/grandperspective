@@ -82,6 +82,12 @@
 /* Menu item */
 "Delete File" = "Supprimer le Fichier";
 
+/* Menu item */
+"Delete Folder" = "Supprimer le dossier";
+
+/* Status update message */
+"Display focus changed to %@" = "Mise au point de l’affichage changée à %@";
+
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "Voulez vous supprimer le fichier \"%@\"?";
 

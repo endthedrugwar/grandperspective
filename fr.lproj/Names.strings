@@ -166,6 +166,9 @@
 /* Color mapping scheme */
 "uniform type" = "Type de fichier";
 
+/* Preference option for display focus */
+"unlimited" = "Illimité";
+
 /* Filter test */
 "Version control" = "Contrôle de version";
 
