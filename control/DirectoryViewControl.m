@@ -806,6 +806,14 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   }
   else {
     itemPath = selectedItem.path;
+
+    if (selectedItem.isDirectory
+        && (!selectedItem.isPackage || mainView.treeDrawerSettings.showPackageContents)) {
+      // Append to indicate that the item is not a plain file. This is especially helpful
+      // when the files in the directory are hidden by the display focus as the view then does not
+      // show that the item is a directory.
+      itemPath = [itemPath stringByAppendingString: @"/"];
+    }
       
     NSAssert([itemPath hasPrefix: scanPathName], @"Invalid path prefix.");
     relativeItemPath = [itemPath substringFromIndex: scanPathName.length];
