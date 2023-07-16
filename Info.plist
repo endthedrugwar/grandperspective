@@ -78,9 +78,9 @@
 		<key>defaultDisplayFocus</key>
 		<string>unlimited</string>
 		<key>scanFilter</key>
-		<string>No hard-links</string>
+		<string>No cloud files</string>
 		<key>maskFilter</key>
-		<string>No hard-links</string>
+		<string>No cloud files</string>
 		<key>defaultRescanAction</key>
 		<string>rescan all</string>
 		<key>defaultViewWindowHeight</key>
