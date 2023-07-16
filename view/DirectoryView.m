@@ -151,6 +151,8 @@ CGFloat ramp(CGFloat x, CGFloat minX, CGFloat maxX) {
   DrawTaskExecutor  *drawTaskExecutor =
     [[[DrawTaskExecutor alloc] initWithTreeContext: treeContext] autorelease];
   drawTaskManager = [[AsynchronousTaskManager alloc] initWithTaskExecutor: drawTaskExecutor];
+
+  pathModelView.showPackageContents = self.treeDrawerSettings.showPackageContents;
   pathModelView.displayDepth = self.treeDrawerSettings.displayDepth;
 
   OverlayDrawTaskExecutor  *overlayDrawTaskExecutor =
