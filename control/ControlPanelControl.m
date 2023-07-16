@@ -184,16 +184,25 @@ NSString  *DisplaySettingsChangedEvent = @"displaySettingsChanged";
   UniqueTagsTransformer  *tagMaker = UniqueTagsTransformer.defaultUniqueTagsTransformer;
 
   [colorMappingPopUp removeAllItems];
-  [tagMaker addLocalisedNames: colorMappings.allKeys
-                      toPopUp: colorMappingPopUp
-                       select: nil // displaySettings.colorMappingKey
-                        table: @"Names"];
+  [tagMaker addLocalisedNamesFor: colorMappings.allKeys
+                         toPopUp: colorMappingPopUp
+                          select: nil // displaySettings.colorMappingKey
+                           table: @"Names"];
 
   [colorPalettePopUp removeAllItems];
-  [tagMaker addLocalisedNames: colorPalettes.allKeys
-                      toPopUp: colorPalettePopUp
-                       select: nil // displaySettings.colorPaletteKey
-                        table: @"Names"];
+
+  // Use palette size as main sort criterion for palettes (with the localized name as tie-breaker)
+  NSArray  *sortedKeys = [colorPalettes allKeysSortedByPaletteSize:
+                           ^NSComparisonResult(id _Nonnull key1, id _Nonnull key2) {
+    NSString  *s1 = [NSBundle.mainBundle localizedStringForKey: key1 value: nil table: @"Names"];
+    NSString  *s2 = [NSBundle.mainBundle localizedStringForKey: key2 value: nil table: @"Names"];
+
+    return [s1 compare: s2];
+  }];
+  [tagMaker addSortedLocalisedNamesFor: sortedKeys
+                               toPopUp: colorPalettePopUp
+                                select: nil
+                                 table: @"Names"];
 
   maskPopUpControl = [[FilterPopUpControl alloc] initWithPopUpButton: maskPopUp
                                                     filterRepository: filterRepository];

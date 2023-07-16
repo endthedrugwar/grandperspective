@@ -25,17 +25,33 @@
 @property (class, nonatomic, readonly) UniqueTagsTransformer *defaultUniqueTagsTransformer;
 
 /* Uses the transformer to add localized items to the pop-up. Each item has a tag associated with it
- * that allows easy mapping back to the original, locale-independent name.
+ * that allows easy mapping back to the original, locale-independent name. The items are sorted by
+ * their localized name.
+ *
+ * @param names       The locale-independent names
+ * @param popUp       The pop-up to populate
+ * @param selectName  Indicates which value to select (by its locale-independent name)
+ * @param tableName   The localization table to use
  */
-- (void) addLocalisedNames:(NSArray *)names
-                   toPopUp:(NSPopUpButton *)popUp
-                    select:(NSString *)selectName
-                     table:(NSString *)tableName;
+- (void) addLocalisedNamesFor:(NSArray *)names
+                      toPopUp:(NSPopUpButton *)popUp
+                       select:(NSString *)selectName
+                        table:(NSString *)tableName;
 
-- (void) addLocalisedName:(NSString *)name 
-                  toPopUp:(NSPopUpButton *)popUp
-                   select:(BOOL)select
-                    table:(NSString *)tableName;
+/* Adds a single item to a pop-up. It preserves the sorting (assuming that the items are sorted by
+ * name).
+ */
+- (void) addLocalisedNameFor:(NSString *)name
+                     toPopUp:(NSPopUpButton *)popUp
+                      select:(BOOL)select
+                       table:(NSString *)tableName;
+
+/* Adds items to the pop-up, preserving the order in which the names are sorted.
+ */
+- (void) addSortedLocalisedNamesFor:(NSArray *)names
+                            toPopUp:(NSPopUpButton *)popUp
+                             select:(NSString *)selectName
+                              table:(NSString *)tableName;
 
 /* Lower-level method. It can be used to populate pop-ups (partially) with non-localized values,
  * for example numeric values.

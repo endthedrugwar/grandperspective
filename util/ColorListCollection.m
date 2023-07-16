@@ -28,8 +28,8 @@ NSColor* colorForHexString(NSString* hexColor) {
   return [NSColor colorWithDeviceRed:r green:g blue:b alpha:0];
 }
 
-NSColorList* createPalette(NSArray *colors) {
-  NSColorList  *colorList = [[[NSColorList alloc] initWithName: fallbackColorListName] autorelease];
+NSColorList* createPalette(NSString *name, NSArray *colors) {
+  NSColorList  *colorList = [[[NSColorList alloc] initWithName: name] autorelease];
 
   int count = 0;
   for (id colorString in colors) {
@@ -43,7 +43,7 @@ NSColorList* createFallbackPalette(void) {
   // Hardcoded CoffeeBeans palette
   NSArray  *colors = @[@"CC3333", @"CC9933", @"FFCC66", @"CC6633", @"CC6666", @"993300", @"666600"];
 
-  return createPalette(colors);
+  return createPalette(fallbackColorListName, colors);
 }
 
 #ifdef ENABLE_PALETTE_GRANDPERSPECTIVE
@@ -124,8 +124,32 @@ NSColorList* createGrandPerspectivePalette(void) {
 }
 
 
-- (NSArray *)allKeys {
+- (NSArray<NSString *> *)allKeys {
   return colorListDictionary.allKeys;
+}
+
+- (NSArray<NSString *> *)allKeysSortedByPaletteSize:(NSComparator)tieBreaker {
+  NSMutableDictionary  *colorListSizes =
+    [NSMutableDictionary dictionaryWithCapacity: colorListDictionary.count];
+
+  // Store palette sizes in a temporary dictionary (to be sure there's no repeated instantiation of
+  // the allKeys array)
+  [colorListDictionary enumerateKeysAndObjectsUsingBlock:^(NSString *name, NSColorList *list,
+                                                           BOOL *stop) {
+    colorListSizes[name] = @(list.allKeys.count);
+  }];
+
+  // Sort the palettes first by their size, using the provided tie-breaker for equal sizes (to
+  // enable sorting by localized name)
+  return [colorListDictionary.allKeys
+          sortedArrayUsingComparator:^NSComparisonResult(id _Nonnull key1, id _Nonnull key2) {
+    NSComparisonResult  result = [colorListSizes[key1] compare: colorListSizes[key2]];
+    if (result != NSOrderedSame) {
+      return result;
+    }
+
+    return tieBreaker(key1, key2);
+  }];
 }
 
 - (NSColorList *)colorListForKey:(NSString *)key {

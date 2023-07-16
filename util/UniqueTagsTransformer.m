@@ -4,7 +4,7 @@
 @implementation UniqueTagsTransformer
 
 + (Class) transformedValueClass {
-  return [NSNumber class];
+  return NSNumber.class;
 }
 
 + (BOOL) allowsReverseTransformation {
@@ -70,22 +70,22 @@
 }
 
 
-- (void) addLocalisedNames:(NSArray *)names
-                   toPopUp:(NSPopUpButton *)popUp
-                    select:(NSString *)selectName
-                     table:(NSString *)tableName {
+- (void) addLocalisedNamesFor:(NSArray *)names
+                      toPopUp:(NSPopUpButton *)popUp
+                       select:(NSString *)selectName
+                        table:(NSString *)tableName {
   for (NSString *name in [names objectEnumerator]) {
-    [self addLocalisedName: name
-                   toPopUp: popUp
-                    select: [name isEqualToString: selectName]
-                     table: tableName];
+    [self addLocalisedNameFor: name
+                      toPopUp: popUp
+                       select: [name isEqualToString: selectName]
+                        table: tableName];
   }
 }
 
-- (void) addLocalisedName:(NSString *)name 
-                  toPopUp:(NSPopUpButton *)popUp
-                   select:(BOOL) select
-                    table:(NSString *)tableName {
+- (void) addLocalisedNameFor:(NSString *)name
+                     toPopUp:(NSPopUpButton *)popUp
+                      select:(BOOL) select
+                       table:(NSString *)tableName {
   NSString  *localizedName = [NSBundle.mainBundle localizedStringForKey: name
                                                                   value: nil
                                                                   table: tableName];
@@ -106,6 +106,24 @@
          toPopUp: popUp
          atIndex: index
           select: select];
+}
+
+- (void) addSortedLocalisedNamesFor:(NSArray *)names
+                            toPopUp:(NSPopUpButton *)popUp
+                             select:(NSString *)selectName
+                              table:(NSString *)tableName {
+  int  index = (int)popUp.numberOfItems;
+
+  for (NSString *name in [names objectEnumerator]) {
+    NSString  *localizedName = [NSBundle.mainBundle localizedStringForKey: name
+                                                                    value: nil
+                                                                    table: tableName];
+    [self addValue: name
+         withTitle: localizedName
+           toPopUp: popUp
+           atIndex: index++
+            select: [name isEqualToString: selectName]];
+  }
 }
 
 - (void) addValue:(NSObject *)value

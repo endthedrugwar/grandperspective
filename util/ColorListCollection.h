@@ -2,7 +2,7 @@
 
 @interface ColorListCollection : NSObject {
 
-  NSMutableDictionary  *colorListDictionary;
+  NSMutableDictionary<NSString*, NSColorList*>  *colorListDictionary;
 }
 
 @property (class, nonatomic, readonly) ColorListCollection *defaultColorListCollection;
@@ -10,7 +10,9 @@
 - (void) addColorList:(NSColorList *)colorList key:(NSString *)key;
 - (void) removeColorListForKey:(NSString *)key;
 
-@property (nonatomic, readonly, copy) NSArray *allKeys;
+@property (nonatomic, readonly, copy) NSArray<NSString *> *allKeys;
+
+- (NSArray<NSString *> *)allKeysSortedByPaletteSize:(NSComparator)tieBreaker;
 
 - (NSColorList *)colorListForKey:(NSString *)key;
 

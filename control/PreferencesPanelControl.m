@@ -228,10 +228,10 @@ static BOOL appHasDeletePermission;
 
   // Initialise the pop-up with its (localized) content
   [popUp removeAllItems];
-  [tagMaker addLocalisedNames: names
-                      toPopUp: popUp
-                       select: [userDefaults stringForKey: key]
-                        table: @"Names"];
+  [tagMaker addLocalisedNamesFor: names
+                         toPopUp: popUp
+                          select: [userDefaults stringForKey: key]
+                           table: @"Names"];
 }
 
 - (void) setupDefaultDisplayFocusPopUp {

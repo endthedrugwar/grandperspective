@@ -67,16 +67,16 @@ NSString  *SelectedFilterUpdated = @"selectedFilterUpdated";
              object: repositoryFiltersByName];
 
     [popUpButton removeAllItems];
-    [tagMaker addLocalisedNames: filterRepository.filtersByName.allKeys
-                        toPopUp: popUpButton
-                         select: nil
-                          table: @"Names"];
+    [tagMaker addLocalisedNamesFor: filterRepository.filtersByName.allKeys
+                           toPopUp: popUpButton
+                            select: nil
+                             table: @"Names"];
 
     if (addNoneOption) {
-      [tagMaker addLocalisedName: NoneFilter
-                         toPopUp: popUpButton
-                          select: NO
-                           table: @"Names"];
+      [tagMaker addLocalisedNameFor: NoneFilter
+                            toPopUp: popUpButton
+                             select: NO
+                              table: @"Names"];
     }
   }
   return self;
@@ -125,7 +125,7 @@ NSString  *SelectedFilterUpdated = @"selectedFilterUpdated";
 - (void) filterAddedToRepository:(NSNotification *)notification {
   NSString  *name = notification.userInfo[@"key"];
   
-  [tagMaker addLocalisedName: name toPopUp: popUpButton select: NO table: @"Names"];
+  [tagMaker addLocalisedNameFor: name toPopUp: popUpButton select: NO table: @"Names"];
 }
 
 - (void) filterRemovedFromRepository:(NSNotification *)notification {
@@ -160,7 +160,7 @@ NSString  *SelectedFilterUpdated = @"selectedFilterUpdated";
   BOOL  wasSelected = popUpButton.indexOfSelectedItem == index;
   
   [popUpButton removeItemAtIndex: index];
-  [tagMaker addLocalisedName: newName toPopUp: popUpButton select: wasSelected table: @"Names"];
+  [tagMaker addLocalisedNameFor: newName toPopUp: popUpButton select: wasSelected table: @"Names"];
 
   if (wasSelected) {
     [notificationCenter postNotificationName: SelectedFilterRenamed object: self];
