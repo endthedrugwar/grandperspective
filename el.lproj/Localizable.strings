@@ -82,6 +82,12 @@
 /* Menu item */
 "Delete File" = "Διαγραφή αρχείου";
 
+/* Menu item */
+"Delete Folder" = "Διαγραφή φακέλου";
+
+/* Status update message */
+"Display focus changed to %@" = "Η Εστίαση εμφάνισης άλλαξε σε %@";
+
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "Θέλετε να διαγράψετε το αρχείο \"%@\";";
 
