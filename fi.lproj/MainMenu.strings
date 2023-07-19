@@ -1,11 +1,17 @@
 /* Class = "NSMenuItem"; title = "Item"; ObjectID = "3LR-fJ-0Ck"; */
 "3LR-fJ-0Ck.title" = "Kohde";
 
+/* Class = "NSMenu"; title = "Selection"; ObjectID = "4K2-IU-hcw"; */
+"4K2-IU-hcw.title" = "Valinta";
+
 /* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5"; */
 "5.title" = "Tuo kaikki eteen";
 
 /* Class = "NSMenu"; title = "Display Focus"; ObjectID = "6AB-sL-t6U"; */
 "6AB-sL-t6U.title" = "Kohdistus";
+
+/* Class = "NSMenuItem"; title = "Selection"; ObjectID = "8Lj-RY-z1e"; */
+"8Lj-RY-z1e.title" = "Valinta";
 
 /* Class = "NSMenuItem"; title = "Refresh"; ObjectID = "9aB-S3-Sb7"; */
 "9aB-S3-Sb7.title" = "Virkistä";
@@ -157,6 +163,9 @@
 /* Class = "NSMenuItem"; title = "Move Focus Down"; ObjectID = "dJ2-6K-v9P"; */
 "dJ2-6K-v9P.title" = "Vie Kohdistusta Alaspäin";
 
+/* Class = "NSMenuItem"; title = "Selection Focus"; ObjectID = "frA-lr-FOa"; */
+"frA-lr-FOa.title" = "Valinnan Kohdistus";
+
 /* Class = "NSMenuItem"; title = "Rescan"; ObjectID = "gUG-Nh-FTx"; */
 "gUG-Nh-FTx.title" = "Skannaa uudelleen";
 
@@ -204,6 +213,9 @@
 
 /* Class = "NSMenuItem"; title = "Display Focus"; ObjectID = "wd7-sh-TkA"; */
 "wd7-sh-TkA.title" = "Kohdistus";
+
+/* Class = "NSMenu"; title = "Selection Focus"; ObjectID = "wHh-Gg-e7R"; */
+"wHh-Gg-e7R.title" = "Valinnan Kohdistus";
 
 /* Class = "NSMenuItem"; title = "Reveal"; ObjectID = "wVF-ys-3UQ"; */
 "wVF-ys-3UQ.title" = "Paljasta";

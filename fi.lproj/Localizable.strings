@@ -82,6 +82,9 @@
 /* Menu item */
 "Delete File" = "Poista Tiedosto";
 
+/* Menu item */
+"Delete Folder" = "Poista Hakemisto";
+
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "Haluatko poistaa tiedoston \"%@\"?";
 

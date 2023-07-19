@@ -5,6 +5,9 @@
 "Delete File" = "Poista Tiedosto";
 
 /* Menu item */
+"Delete Folder" = "Poista Hakemisto";
+
+/* Menu item */
 "Open" = "Avaa";
 
 /* Menu item */
