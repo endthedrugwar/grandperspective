@@ -85,6 +85,9 @@
 /* Menu item */
 "Delete Folder" = "Poista Hakemisto";
 
+/* Status update message */
+"Display focus changed to %@" = "Kohdistus on nyt %@";
+
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "Haluatko poistaa tiedoston \"%@\"?";
 
