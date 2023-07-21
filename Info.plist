@@ -78,7 +78,7 @@
 		<key>defaultDisplayFocus</key>
 		<string>unlimited</string>
 		<key>scanFilter</key>
-		<string>No cloud files</string>
+		<string>None</string>
 		<key>maskFilter</key>
 		<string>No cloud files</string>
 		<key>defaultRescanAction</key>
