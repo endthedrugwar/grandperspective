@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -51,14 +51,14 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" rightStrut="YES" topStrut="YES"/>
             <rect key="contentRect" x="1571" y="573" width="302" height="418"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <value key="minSize" type="size" width="302" height="418"/>
             <value key="maxSize" type="size" width="400" height="690"/>
             <view key="contentView" id="SPV-wt-Ebs">
                 <rect key="frame" x="0.0" y="0.0" width="302" height="418"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <tabView translatesAutoresizingMaskIntoConstraints="NO" id="94">
+                    <tabView initialItem="92" translatesAutoresizingMaskIntoConstraints="NO" id="94">
                         <rect key="frame" x="13" y="10" width="276" height="402"/>
                         <font key="font" metaFont="system"/>
                         <tabViewItems>
@@ -84,7 +84,7 @@
                                                             <fragment content="Name/of/Scanned/Folder/which/could/be/pretty/long/really/pretty/long">
                                                                 <attributes>
                                                                     <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                    <font key="NSFont" metaFont="user"/>
+                                                                    <font key="NSFont" usesAppearanceFont="YES"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                                 </attributes>
                                                             </fragment>
@@ -126,7 +126,7 @@ Bla
 Bla</string>
                                                                 <attributes>
                                                                     <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                    <font key="NSFont" metaFont="user"/>
+                                                                    <font key="NSFont" usesAppearanceFont="YES"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                                 </attributes>
                                                             </fragment>
@@ -403,7 +403,7 @@ Bla</string>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="204">
-                                            <rect key="frame" x="18" y="86" width="36" height="14"/>
+                                            <rect key="frame" x="18" y="91" width="36" height="14"/>
                                             <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="left" title="Mask:" id="931">
                                                 <font key="font" metaFont="controlContent" size="11"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -411,7 +411,7 @@ Bla</string>
                                             </textFieldCell>
                                         </textField>
                                         <button translatesAutoresizingMaskIntoConstraints="NO" id="206">
-                                            <rect key="frame" x="18" y="58" width="220" height="18"/>
+                                            <rect key="frame" x="18" y="63" width="218" height="18"/>
                                             <buttonCell key="cell" type="check" title="Enable mask" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="933">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -421,10 +421,10 @@ Bla</string>
                                             </connections>
                                         </button>
                                         <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="211">
-                                            <rect key="frame" x="70" y="329" width="169" height="25"/>
+                                            <rect key="frame" x="69" y="329" width="171" height="25"/>
                                             <popUpButtonCell key="cell" type="push" title="Item1" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="210" id="934">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="menu"/>
                                                 <menu key="menu" title="OtherViews" id="208">
                                                     <items>
                                                         <menuItem title="Item1" state="on" id="210"/>
@@ -446,10 +446,10 @@ Bla</string>
                                             </textFieldCell>
                                         </textField>
                                         <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="221">
-                                            <rect key="frame" x="70" y="298" width="169" height="25"/>
+                                            <rect key="frame" x="69" y="299" width="171" height="25"/>
                                             <popUpButtonCell key="cell" type="push" title="Item1" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="224" id="936">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="menu"/>
                                                 <menu key="menu" title="OtherViews" id="225">
                                                     <items>
                                                         <menuItem title="Item1" state="on" id="224"/>
@@ -463,7 +463,7 @@ Bla</string>
                                             </popUpButtonCell>
                                         </popUpButton>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="226">
-                                            <rect key="frame" x="14" y="305" width="52" height="14"/>
+                                            <rect key="frame" x="14" y="306" width="52" height="14"/>
                                             <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="left" title="Palette:" id="937">
                                                 <font key="font" metaFont="controlContent" size="11"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -471,7 +471,7 @@ Bla</string>
                                             </textFieldCell>
                                         </textField>
                                         <button translatesAutoresizingMaskIntoConstraints="NO" id="242">
-                                            <rect key="frame" x="18" y="38" width="220" height="18"/>
+                                            <rect key="frame" x="18" y="41" width="218" height="18"/>
                                             <buttonCell key="cell" type="check" title="Show entire volume" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="938">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -481,13 +481,13 @@ Bla</string>
                                             </buttonCell>
                                         </button>
                                         <scrollView verticalHuggingPriority="249" verticalCompressionResistancePriority="249" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="279">
-                                            <rect key="frame" x="20" y="123" width="216" height="170"/>
+                                            <rect key="frame" x="20" y="128" width="216" height="167"/>
                                             <clipView key="contentView" id="5QD-6f-ymB">
-                                                <rect key="frame" x="1" y="1" width="199" height="168"/>
-                                                <autoresizingMask key="autoresizingMask"/>
+                                                <rect key="frame" x="1" y="1" width="199" height="165"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" id="280">
-                                                        <rect key="frame" x="0.0" y="0.0" width="199" height="168"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="199" height="165"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -505,7 +505,7 @@ Bla</string>
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn width="153" minWidth="40" maxWidth="1000" id="282">
+                                                            <tableColumn width="144" minWidth="40" maxWidth="1000" id="282">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" white="0.33333299" alpha="1" colorSpace="calibratedWhite"/>
@@ -526,12 +526,12 @@ Bla</string>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                             <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="958">
-                                                <rect key="frame" x="200" y="1" width="15" height="168"/>
+                                                <rect key="frame" x="200" y="1" width="15" height="165"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                         </scrollView>
                                         <button translatesAutoresizingMaskIntoConstraints="NO" id="357">
-                                            <rect key="frame" x="18" y="18" width="220" height="18"/>
+                                            <rect key="frame" x="18" y="19" width="218" height="18"/>
                                             <buttonCell key="cell" type="check" title="Show package contents" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="939">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -541,10 +541,10 @@ Bla</string>
                                             </connections>
                                         </button>
                                         <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="964">
-                                            <rect key="frame" x="58" y="79" width="181" height="25"/>
+                                            <rect key="frame" x="57" y="84" width="183" height="25"/>
                                             <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" inset="2" selectedItem="967" id="965">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="menu"/>
                                                 <menu key="menu" title="OtherViews" id="966">
                                                     <items>
                                                         <menuItem title="Item 1" state="on" id="967"/>
@@ -608,7 +608,7 @@ Bla</string>
                                             <rect key="frame" x="20" y="286" width="216" height="45"/>
                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="97P-6U-vGZ">
                                                 <rect key="frame" x="1" y="1" width="214" height="43"/>
-                                                <autoresizingMask key="autoresizingMask"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textView editable="NO" drawsBackground="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" usesFontPanel="YES" continuousSpellChecking="YES" usesRuler="YES" spellingCorrection="YES" smartInsertDelete="YES" id="187">
                                                         <rect key="frame" x="0.0" y="0.0" width="214" height="84"/>
@@ -627,7 +627,7 @@ Bla
 Bla</string>
                                                                 <attributes>
                                                                     <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                    <font key="NSFont" metaFont="user"/>
+                                                                    <font key="NSFont" usesAppearanceFont="YES"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                                 </attributes>
                                                             </fragment>
@@ -668,7 +668,7 @@ Bla</string>
                                             <rect key="frame" x="20" y="145" width="216" height="87"/>
                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="Cgn-Ds-6mC">
                                                 <rect key="frame" x="1" y="1" width="214" height="85"/>
-                                                <autoresizingMask key="autoresizingMask"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textView editable="NO" drawsBackground="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" usesFontPanel="YES" continuousSpellChecking="YES" usesRuler="YES" spellingCorrection="YES" smartInsertDelete="YES" id="190">
                                                         <rect key="frame" x="0.0" y="0.0" width="214" height="85"/>
@@ -687,7 +687,7 @@ Bla
 Bla</string>
                                                                 <attributes>
                                                                     <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                    <font key="NSFont" metaFont="user"/>
+                                                                    <font key="NSFont" usesAppearanceFont="YES"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                                 </attributes>
                                                             </fragment>
