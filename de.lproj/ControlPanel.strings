@@ -47,7 +47,7 @@
 "930.title" = "Anzahl gelöschter Dateien:";
 
 /* Class = "NSTextFieldCell"; title = "Mask:"; ObjectID = "931"; */
-"931.title" = "Maskierung (Ausblendung) von Dateien:";
+"931.title" = "Maskierung:";
 
 /* Class = "NSButtonCell"; title = "Enable mask"; ObjectID = "933"; */
 "933.title" = "Maskierung einschalten";
