@@ -10,6 +10,9 @@
 /* Privacy - Downloads Folder Usage Description */
 "NSDownloadsFolderUsageDescription" = "Die Anwendung prüft, wieviel Platz die Downloads verbrauchen";
 
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Die Anwendung prüft, wie viel Speicherplatz die Fotos belegen";
+
 /* Privacy - Reminders Usage Description */
 "NSRemindersUsageDescription" = "Die Anwendung prüft, wieviel Platz die Erinnerungen verbrauchen";
 

@@ -10,6 +10,9 @@
 /* Privacy - Downloads Folder Usage Description */
 "NSDownloadsFolderUsageDescription" = "Η εφαρμογή ελέγχει πόσο χώρο στο δίσκο χρησιμοποιούν οι λήψεις σας";
 
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Η εφαρμογή ελέγχει πόσο χώρο στο δίσκο χρησιμοποιούν οι φωτογραφίες σας";
+
 /* Privacy - Reminders Usage Description */
 "NSRemindersUsageDescription" = "Η εφαρμογή ελέγχει πόσο χώρο στο δίσκο χρησιμοποιούν οι υπομνήσεις σας (Reminders)";
 

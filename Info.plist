@@ -364,17 +364,19 @@
 	<key>LSMinimumSystemVersion</key>
 	<string>11.0</string>
 	<key>NSDesktopFolderUsageDescription</key>
-	<string>The app checks how much disk space your Desktop uses</string>
+	<string>This lets the app visualize how much disk space your desktop uses</string>
 	<key>NSDocumentsFolderUsageDescription</key>
-	<string>The app checks how much disk space your Documents use</string>
+	<string>This lets the app visualize how much disk space your documents use</string>
 	<key>NSDownloadsFolderUsageDescription</key>
-	<string>The app checks how much disk space your Downloads use</string>
+	<string>This lets the app visualize how much disk space your downloaded files use</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This lets the app visualize how much disk space your photos use</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>This lets the app visualize how much disk space your reminders use</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>NSRemindersUsageDescription</key>
-	<string>The app checks how much disk space your Reminders use</string>
 	<key>NSServices</key>
 	<array>
 		<dict>

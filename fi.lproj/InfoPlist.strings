@@ -10,6 +10,9 @@
 /* Privacy - Downloads Folder Usage Description */
 "NSDownloadsFolderUsageDescription" = "Ohjelma tarkistaa miten paljon levytilaa Lataukset käyttää";
 
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Ohjelma tarkistaa, kuinka paljon levytilaa valokuvat käyttävät";
+
 /* Privacy - Reminders Usage Description */
 "NSRemindersUsageDescription" = "Ohjelma tarkistaa miten paljon levytilaa Muistutukset käyttää";
 
