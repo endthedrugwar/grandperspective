@@ -32,6 +32,12 @@
 "Quick Look" = "Visualização Rápida";
 
 /* Toolbar action */
+"Refresh" = "Atualizar";
+
+/* Tooltip */
+"Refresh view data" = "Atualizar visualização dos dados";
+
+/* Toolbar action */
 "Rescan" = "Re-Examinar";
 
 /* Tooltip */
@@ -48,6 +54,12 @@
 
 /* Tooltip */
 "Reveal in Finder" = "Mostar no Finder";
+
+/* Tooltip */
+"Search files by name" = "Procurar arquivos pelo nome";
+
+/* Tooltip */
+"Show info" = "Mostrar informaçoes";
 
 /* Menu item */
 "Show Toolbar" = "Mostrar Barra de Ferramentas";

@@ -1,14 +1,29 @@
 /* Class = "NSMenuItem"; title = "Item"; ObjectID = "3LR-fJ-0Ck"; */
 "3LR-fJ-0Ck.title" = "Item";
 
+/* Class = "NSMenu"; title = "Selection"; ObjectID = "4K2-IU-hcw"; */
+"4K2-IU-hcw.title" = "Seleção";
+
 /* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5"; */
 "5.title" = "Trazer tudo para a frente";
+
+/* Class = "NSMenu"; title = "Display Focus"; ObjectID = "6AB-sL-t6U"; */
+"6AB-sL-t6U.title" = "Mostrar Foco";
+
+/* Class = "NSMenuItem"; title = "Selection"; ObjectID = "8Lj-RY-z1e"; */
+"8Lj-RY-z1e.title" = "Seleção";
+
+/* Class = "NSMenuItem"; title = "Refresh"; ObjectID = "9aB-S3-Sb7"; */
+"9aB-S3-Sb7.title" = "Atualizar";
 
 /* Class = "NSMenuItem"; title = "Quick Look"; ObjectID = "9gG-CK-G0v"; */
 "9gG-CK-G0v.title" = "Visualização Rápida";
 
+/* Class = "NSMenuItem"; title = "Show/Hide Control Panel"; ObjectID = "9Ho-ON-BCj"; */
+"9Ho-ON-BCj.title" = "Mostrar/Esconder Painel de Controle";
+
 /* Class = "NSMenuItem"; title = "Reset Focus"; ObjectID = "15W-vC-r8v"; */
-"15W-vC-r8v.title" = "Restaurar o foco";
+"15W-vC-r8v.title" = "Restaurar Foco";
 
 /* Class = "NSMenuItem"; title = "Window"; ObjectID = "19"; */
 "19.title" = "Janela";
@@ -80,13 +95,13 @@
 "331.title" = "Filtro...";
 
 /* Class = "NSMenuItem"; title = "Filtered Scan..."; ObjectID = "335"; */
-"335.title" = "Resultado filtrado..";
+"335.title" = "Escaneamento filtrado..";
 
 /* Class = "NSMenuItem"; title = "Save Scan Data..."; ObjectID = "339"; */
-"339.title" = "Salvar Dados de Exame";
+"339.title" = "Salvar Dados Escaneados";
 
 /* Class = "NSMenuItem"; title = "Load Scan Data..."; ObjectID = "340"; */
-"340.title" = "Carregar Dados de Exame...";
+"340.title" = "Carregar Dados Escaneados...";
 
 /* Class = "NSMenuItem"; title = "GrandPerspective Website"; ObjectID = "345"; */
 "345.title" = "Website do GrandPerspective";
@@ -139,32 +154,38 @@
 /* Class = "NSMenuItem"; title = "Zoom Out"; ObjectID = "bKM-Ec-4Gi"; */
 "bKM-Ec-4Gi.title" = "Reduzir";
 
+/* Class = "NSMenuItem"; title = "Rescan with mask as filter"; ObjectID = "BMK-MQ-DB3"; */
+"BMK-MQ-DB3.title" = "Re-escanear com mascara como filtro";
+
 /* Class = "NSMenuItem"; title = "Rescan folder in view"; ObjectID = "CV5-Fw-5D7"; */
 "CV5-Fw-5D7.title" = "Re-Examinar pastas na visualização";
 
 /* Class = "NSMenuItem"; title = "Move Focus Down"; ObjectID = "dJ2-6K-v9P"; */
-"dJ2-6K-v9P.title" = "Mover o foco para baixo";
+"dJ2-6K-v9P.title" = "Mover Foco para baixo";
+
+/* Class = "NSMenuItem"; title = "Selection Focus"; ObjectID = "frA-lr-FOa"; */
+"frA-lr-FOa.title" = "Foco da Seleção";
 
 /* Class = "NSMenuItem"; title = "Rescan"; ObjectID = "gUG-Nh-FTx"; */
 "gUG-Nh-FTx.title" = "Re-Examinar";
 
 /* Class = "NSMenuItem"; title = "Move Focus Up"; ObjectID = "gZj-8W-T7o"; */
-"gZj-8W-T7o.title" = "Mover o foco para cima";
+"gZj-8W-T7o.title" = "Mover Foco para cima";
 
 /* Class = "NSMenuItem"; title = "Export As Text..."; ObjectID = "hJw-Fc-daG"; */
 "hJw-Fc-daG.title" = "Exportar como Texto...";
 
 /* Class = "NSMenuItem"; title = "Scan Recent"; ObjectID = "hUr-J9-FbH"; */
-"hUr-J9-FbH.title" = "Exame Recente";
+"hUr-J9-FbH.title" = "Escaneamento Recente";
 
 /* Class = "NSMenu"; title = "Scan Recent"; ObjectID = "HXb-90-KwJ"; */
-"HXb-90-KwJ.title" = "Exame Recente";
+"HXb-90-KwJ.title" = "Escaneamento Recente";
 
 /* Class = "NSMenuItem"; title = "Zoom In"; ObjectID = "Iyw-2V-esC"; */
 "Iyw-2V-esC.title" = "Ampliar";
 
 /* Class = "NSMenuItem"; title = "Move Focus Up"; ObjectID = "K6z-Zt-rLu"; */
-"K6z-Zt-rLu.title" = "Mover o foco para cima";
+"K6z-Zt-rLu.title" = "Mover Foco para cima";
 
 /* Class = "NSMenuItem"; title = "Reset Focus"; ObjectID = "l4V-Wf-FCv"; */
 "l4V-Wf-FCv.title" = "Restaurar o foco";
@@ -182,13 +203,19 @@
 "oY0-9q-f9z.title" = "Ampliar";
 
 /* Class = "NSMenuItem"; title = "Move Focus Down"; ObjectID = "QCC-Gl-y9i"; */
-"QCC-Gl-y9i.title" = "Mover o foco para baixo";
+"QCC-Gl-y9i.title" = "Mover Foco para baixo";
 
 /* Class = "NSMenu"; title = "Zoom"; ObjectID = "qtI-xz-v9u"; */
 "qtI-xz-v9u.title" = "Ampliar";
 
 /* Class = "NSMenu"; title = "Rescan"; ObjectID = "rfs-HZ-ODE"; */
 "rfs-HZ-ODE.title" = "Re-Examinar";
+
+/* Class = "NSMenuItem"; title = "Display Focus"; ObjectID = "wd7-sh-TkA"; */
+"wd7-sh-TkA.title" = "Mostrar Foco";
+
+/* Class = "NSMenu"; title = "Selection Focus"; ObjectID = "wHh-Gg-e7R"; */
+"wHh-Gg-e7R.title" = "Fodo da Seleção";
 
 /* Class = "NSMenuItem"; title = "Reveal"; ObjectID = "wVF-ys-3UQ"; */
 "wVF-ys-3UQ.title" = "Mostrar";

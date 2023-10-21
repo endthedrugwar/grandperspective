@@ -25,6 +25,9 @@
 /* Message in progress panel while filtering */
 "%d folders filtered" = "%d pasta(s) filtrada(s) ";
 
+/* Message in progress panel while executing refresh-based scan */
+"%d folders processed" = "%d pastas processadas";
+
 /* Message in progress panel while loading data */
 "%d folders read" = "%d pasta(s) lida(s) ";
 
@@ -50,7 +53,7 @@
 "A test named \"%@\" already exists." = "Um teste com o nome \"%@\" já existe.";
 
 /* Alert message (with filename arg) */
-"Aborted saving the scan data to \"%@\"" = "Abortado o salvamento dos dados do exame em \"%@\" ";
+"Aborted saving the scan data to \"%@\"" = "Abortado o salvamento dos dados do escaneamento em \"%@\"";
 
 /* Header in exported text file */
 "Accessed" = "Acessado";
@@ -79,6 +82,12 @@
 /* Menu item */
 "Delete File" = "Apagar arquivo";
 
+/* Menu item */
+"Delete Folder" = "Deletar Pasta";
+
+/* Status update message */
+"Display focus changed to %@" = "Foco da tela mudou para %@";
+
 /* Alert message */
 "Do you want to delete the file \"%@\"?" = "Você quer apagar o arquivo \"%@\"?";
 
@@ -104,7 +113,7 @@
 "Error parsing \"%@\" attribute: %@" = "Erro de avaliação \"%1$@\" atributo: %2$@";
 
 /* Parse error */
-"Expected %@ element." = "Esperado %@ elemento. ";
+"Expected %@ element." = "Esperado %@ elemento.";
 
 /* Error message */
 "Expected a folder." = "Esperada uma pasta.";
@@ -119,7 +128,7 @@
 "Expected integer value." = "Esperado um valor inteiro.";
 
 /* Error message */
-"Expected scandata file." = "Esperado um arquivo de dados de exame.";
+"Expected scandata file." = "Esperado um arquivo de dados escaneados.";
 
 /* Parse error */
 "Expected time value." = "Esperado um valor de tempo.";
@@ -131,46 +140,46 @@
 "Export image" = "Exportar imagem";
 
 /* Title of save panel */
-"Export scan data as text" = "Exportar varredura de dados como texto";
+"Export scan data as text" = "Exportar dados escaneados como texto";
 
 /* Alert message */
 "Failed to bind one or more filter tests:\n%@" = "Falha em associar um ou mais dos filtros de teste:\n%@";
 
 /* Alert message */
-"Failed to delete the file \"%@\"" = "Falha em apagar o arquivo \"%@\" ";
+"Failed to delete the file \"%@\"" = "Falha em apagar o arquivo \"%@\"";
 
 /* Alert message */
-"Failed to delete the folder \"%@\"" = "Falha em apagar a pasta \"%@\" ";
+"Failed to delete the folder \"%@\"" = "Falha em apagar a pasta \"%@\"";
 
 /* Error message */
 "Failed to get path from pasteboard." = "Falha em obter o caminho da área de colagem.";
 
 /* Alert message (with filename arg) */
-"Failed to load the scan data from \"%@\"" = "Falha em carregar os dados do exame \"%@\" ";
+"Failed to load the scan data from \"%@\"" = "Falha em carregar os dados do escaneamento de \"%@\"";
 
 /* Alert message */
-"Failed to open the file \"%@\"" = "Falha em abrir o arquivo \"%@\" ";
+"Failed to open the file \"%@\"" = "Falha em abrir o arquivo \"%@\"";
 
 /* Alert message */
-"Failed to open the folder \"%@\"" = "Falha em abrir a pasta \"%@\" ";
+"Failed to open the folder \"%@\"" = "Falha em abrir a pasta \"%@\"";
 
 /* Alert message */
-"Failed to open the package \"%@\"" = "Falha em em abrir o pacote \"%@\" ";
+"Failed to open the package \"%@\"" = "Falha em em abrir o pacote \"%@\"";
 
 /* Alert message */
-"Failed to reveal the file \"%@\"" = "Falha em mostrar o arquivo \"%@\" ";
+"Failed to reveal the file \"%@\"" = "Falha em mostrar o arquivo \"%@\"";
 
 /* Alert message */
-"Failed to reveal the folder \"%@\"" = "Falha em mostrar a pasta \"%@\" ";
+"Failed to reveal the folder \"%@\"" = "Falha em mostrar a pasta \"%@\"";
 
 /* Alert message */
-"Failed to reveal the package \"%@\"" = "Falha em mostrar o pacote \"%@\" ";
+"Failed to reveal the package \"%@\"" = "Falha em mostrar o pacote \"%@\"";
 
 /* Alert message */
 "Failed to save the image." = "Falha em salvar a imagem.";
 
 /* Alert message (with filename arg) */
-"Failed to save the scan data to \"%@\"" = "Falhou em salvar os dados do exame para \"%@\" ";
+"Failed to save the scan data to \"%@\"" = "Falhou em salvar os dados escaneados para \"%@\"";
 
 /* Alert message */
 "Failed to update one or more filters:\n%@" = "Falha em atualizar um ou mais filtros:\n%@";
@@ -179,7 +188,7 @@
 "Failed to write entire buffer." = "Falha escrevendo todo o buffer.";
 
 /* Error message */
-"Failed to write last data to file." = "Falha escrevendo últimos dados para o arquivo ";
+"Failed to write last data to file." = "Falha escrevendo últimos dados para o arquivo";
 
 /* Label in Focus panel */
 "File in view:" = "Mostrando arquivo";
@@ -208,6 +217,12 @@
 /* File size unit for gigabytes. */
 "GB" = "GB";
 
+/* Menu item */
+"Hide Control Panel" = "Esconder Painel de Controle";
+
+/* Alert message */
+"Inaccuracies in hard-linked folder contents" = "Imprecisões no conteúdo da pasta com link físico";
+
 /* File size unit for kilobytes. */
 "kB" = "kB";
 
@@ -215,7 +230,7 @@
 "Level %d" = "Nível %d";
 
 /* Title of load panel */
-"Load scan data" = "Carregar Dados de Exame";
+"Load scan data" = "Carregar dados escaneados";
 
 /* Title of progress panel. */
 "Loading in progress" = "Carregamento em progresso";
@@ -271,6 +286,9 @@
 /* Message in progress panel while loading data */
 "Reading %@" = "Lendo %@";
 
+/* Title of progress panel. */
+"Refresh in progress" = "Atualização em andamento";
+
 /* Alert panel button */
 "Remove" = "Remover";
 
@@ -281,7 +299,7 @@
 "Remove the test named \"%@\"?" = "Remover o teste de nome ";
 
 /* Title of save panel */
-"Save scan data" = "Salvar dados do exame";
+"Save scan data" = "Salvar dados escaneeados";
 
 /* Message in progress panel while saving data */
 "Saving %@" = "Salvando %@";
@@ -298,8 +316,11 @@
 /* Message in progress panel while scanning */
 "Scanning %@" = "Examinando %@";
 
+/* Alert message */
+"Scanning failed" = "Falha no escaneamento";
+
 /* Title of progress panel. */
-"Scanning in progress" = "Exame em progresso";
+"Scanning in progress" = "Escaneamento em progresso";
 
 /* Solitairy entry in Start window */
 "Select Folder" = "Selecionar pasta";
@@ -319,11 +340,14 @@
 /* Label in Focus panel */
 "Selected package:" = "Pacote selecionado:";
 
+/* Menu item */
+"Show Control Panel" = "Mostrar Painel de Controle";
+
 /* Header in exported text file */
 "Size" = "Tamanho";
 
 /* Alert message (with filename arg) */
-"Successfully saved the scan data to \"%@\"" = "Dados do exame salvos com sucesso para\"%@\" ";
+"Successfully saved the scan data to \"%@\"" = "Dados escaneados salvos com sucesso para \"%@\"";
 
 /* File size unit for terabytes. */
 "TB" = "TB";
@@ -339,6 +363,12 @@
 
 /* Alert informative text */
 "The filter will be replaced by the default filter with this name." = "O filtro será trocado pelo filtro padrão com esse nome.";
+
+/* Alert message */
+"The path %@ does not exist or is not a folder" = "O Caminho %@ não existe ou não é uma pasta";
+
+/* Alert message */
+"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once." = "O conteúdo atualizado pode não ser totalmente preciso. Itens com link físico podem ocorrer mais de uma vez ou podem estar ausentes. Execute uma nova varredura para garantir que cada item com link físico ocorra apenas uma vez.";
 
 /* Alert message */
 "The reported size of some files is larger than their actual size on disk" = "O tamanho relatado de alguns arquivos é maior que seu tamanho real em disco";
@@ -372,6 +402,9 @@
 
 /* Alert informative text */
 "These filters do not exist anymore. Their old definition is used instead." = "Esses filtros não existem mais. Será usada a antiga definição.";
+
+/* Part of tool tip for uniform types */
+"Top-level type" = "Tipo de Alto Nível";
 
 /* Header in exported text file */
 "Type" = "Tipo";

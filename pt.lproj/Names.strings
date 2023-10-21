@@ -107,6 +107,9 @@
 "name" = "Nome";
 
 /* Filter name */
+"No cloud files" = "Sem arquivos da nuvem";
+
+/* Filter name */
 "No hard-links" = "Sem hard-links";
 
 /* Filter name */
@@ -162,6 +165,9 @@
 
 /* Color mapping scheme */
 "uniform type" = "Tipo de arquivo";
+
+/* Preference option for display focus */
+"unlimited" = "Ilimitado";
 
 /* Filter test */
 "Version control" = "Controle de versão";

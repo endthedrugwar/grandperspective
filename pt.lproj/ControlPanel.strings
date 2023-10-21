@@ -1,5 +1,5 @@
 /* Class = "NSTabViewItem"; label = "Info"; ObjectID = "92"; */
-"92.label" = "Informação";
+"92.label" = "Informações";
 
 /* Class = "NSTabViewItem"; label = "Display"; ObjectID = "93"; */
 "93.label" = "Mostrar";
@@ -8,7 +8,7 @@
 "97.label" = "Foco";
 
 /* Class = "NSTextFieldCell"; title = "Time of scan:"; ObjectID = "909"; */
-"909.title" = "Tempo de exame:";
+"909.title" = "Tempo de escaneamento:";
 
 /* Class = "NSTextFieldCell"; title = "Size of scanned files:"; ObjectID = "910"; */
 "910.title" = "Tamanho dos arquivos examinados:";
@@ -78,4 +78,7 @@
 
 /* Class = "NSTextFieldCell"; title = "Accessed:"; ObjectID = "984"; */
 "984.title" = "Acessado:";
+
+/* Class = "NSWindow"; title = "Control"; ObjectID = "GHT-tk-zeb"; */
+"GHT-tk-zeb.title" = "Controle";
 
