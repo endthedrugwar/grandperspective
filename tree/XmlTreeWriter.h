@@ -46,8 +46,10 @@ extern NSString  *AccessedAttr;
 
 @interface XmlTreeWriter (ProtectedMethods)
 
-/* Writes the tree in XML format.
- */
+// Creates compressed text output.
+- (TextOutput *)createTextOutput:(NSString *)filename;
+
+// Writes the tree in XML format.
 - (void) writeTree:(AnnotatedTreeContext *)tree options:(id)options;
 
 @end

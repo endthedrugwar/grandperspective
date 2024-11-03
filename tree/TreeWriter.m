@@ -42,7 +42,7 @@ NSLocalizedString(@"Failed to write entire buffer.", @"Error message")
 - (BOOL) writeTree:(AnnotatedTreeContext *)tree toFile:(NSString *)filename options:(id)options {
   NSAssert(!textOutput, @"textOutput not nil");
 
-  textOutput = [[TextOutput alloc] init: filename];
+  textOutput = [self createTextOutput: filename];
   [progressTracker startingTask];
 
   [self writeTree: tree options: options];
@@ -52,6 +52,7 @@ NSLocalizedString(@"Failed to write entire buffer.", @"Error message")
   }
 
   [progressTracker finishedTask];
+  [textOutput release];
 
   return (error==nil) && !abort;
 }
@@ -99,6 +100,10 @@ NSLocalizedString(@"Failed to write entire buffer.", @"Error message")
     return [self.nsTimeFormatter stringFromDate:
             [NSDate dateWithTimeIntervalSinceReferenceDate: time]];
   }
+}
+
+- (TextOutput *)createTextOutput:(NSString *)filename {
+  return [[TextOutput alloc] init: filename];
 }
 
 - (void) appendString:(NSString *)s {

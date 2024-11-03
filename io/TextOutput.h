@@ -1,9 +1,4 @@
-//
-//  TextOutput.h
-//  GrandPerspective
-//
-//  Created by Erwin on 03/11/2024.
-//
+extern const NSUInteger TEXT_OUTPUT_BUFFER_SIZE;
 
 @interface TextOutput : NSObject {
   FILE  *file;

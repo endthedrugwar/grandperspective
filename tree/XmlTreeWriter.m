@@ -13,6 +13,8 @@
 
 #import "TreeVisitingProgressTracker.h"
 
+#import "CompressedTextOutput.h"
+
 
 static const int AUTORELEASE_PERIOD = 1024;
 
@@ -171,6 +173,10 @@ NSString *escapedXML(NSString *s, CharacterOptions escapeCharMask) {
   NSAssert(autoreleasePool == nil, @"autoreleasePool should be nil");
 
   [super dealloc];
+}
+
+- (TextOutput *)createTextOutput:(NSString *)filename {
+  return [[CompressedTextOutput alloc] init: filename];
 }
 
 - (void) writeTree:(AnnotatedTreeContext *)tree options:(id)options {

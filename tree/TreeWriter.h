@@ -63,6 +63,8 @@ extern NSString  *DateTimeFormat;
 
 + (nullable NSString *)stringForTime:(CFAbsoluteTime)time;
 
+- (TextOutput *)createTextOutput:(NSString *)filename;
+
 - (void) appendString:(NSString *)s;
 
 /* Dumps the contents of the given item by invoking appendFileElement: and appendFolderElement: as

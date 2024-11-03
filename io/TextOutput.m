@@ -1,15 +1,8 @@
-//
-//  TextOutput.m
-//  GrandPerspective
-//
-//  Created by Erwin on 03/11/2024.
-//
-
 #import <Foundation/Foundation.h>
 
 #import "TextOutput.h"
 
-static const NSUInteger BUFFER_SIZE = 4096 * 16;
+const NSUInteger TEXT_OUTPUT_BUFFER_SIZE = 4096 * 16;
 
 
 @implementation TextOutput
@@ -25,12 +18,12 @@ static const NSUInteger BUFFER_SIZE = 4096 * 16;
 
 - (instancetype) init:(NSString *)filename {
   if (self = [super init]) {
-    file = fopen( filename.UTF8String, "w");
+    file = fopen(filename.UTF8String, "w");
     if (!file) {
       return nil;
     }
 
-    dataBuffer = malloc(BUFFER_SIZE);
+    dataBuffer = malloc(TEXT_OUTPUT_BUFFER_SIZE);
   }
   return self;
 }
@@ -42,24 +35,17 @@ static const NSUInteger BUFFER_SIZE = 4096 * 16;
   NSUInteger  newDataPos = 0;
 
   while (numToAppend > 0) {
-    NSUInteger  numToCopy = ( (dataBufferPos + numToAppend <= BUFFER_SIZE)
+    NSUInteger  numToCopy = (dataBufferPos + numToAppend <= TEXT_OUTPUT_BUFFER_SIZE
                              ? numToAppend
-                             : BUFFER_SIZE - dataBufferPos );
+                             : TEXT_OUTPUT_BUFFER_SIZE - dataBufferPos);
 
     memcpy(dataBuffer + dataBufferPos, newDataBytes + newDataPos, numToCopy);
     dataBufferPos += numToCopy;
     newDataPos += numToCopy;
     numToAppend -= numToCopy;
 
-    if (dataBufferPos == BUFFER_SIZE) {
-      NSUInteger  numWritten = fwrite(dataBuffer, 1, BUFFER_SIZE, file);
-
-      if (numWritten != BUFFER_SIZE) {
-        NSLog(@"Failed to write entire buffer, %lu bytes written", (unsigned long)numWritten);
-        return NO;
-      }
-
-      dataBufferPos = 0;
+    if (dataBufferPos == TEXT_OUTPUT_BUFFER_SIZE && ![self flush]) {
+      return NO;
     }
   }
 
@@ -72,7 +58,7 @@ static const NSUInteger BUFFER_SIZE = 4096 * 16;
     NSUInteger  numWritten = fwrite(dataBuffer, 1, dataBufferPos, file);
 
     if (numWritten != dataBufferPos) {
-      NSLog(@"Failed to write last data: %lu bytes written out of %lu.",
+      NSLog(@"Failed to write text data: %lu bytes written out of %lu.",
             (unsigned long)numWritten, (unsigned long)dataBufferPos);
       return NO;
     }
