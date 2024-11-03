@@ -6,6 +6,7 @@
 #import "ApplicationError.h"
 
 #import "TreeVisitingProgressTracker.h"
+#import "TextOutput.h"
 
 // Formatting string used in XML (RFC 3339)
 NSString  *DateTimeFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
@@ -17,9 +18,6 @@ NSLocalizedString(@"Failed to write last data to file.", @"Error message")
 NSLocalizedString(@"Failed to write entire buffer.", @"Error message")
 
 
-static const NSUInteger BUFFER_SIZE = 4096 * 16;
-
-
 @implementation TreeWriter
 
 - (instancetype) init {
@@ -28,8 +26,7 @@ static const NSUInteger BUFFER_SIZE = 4096 * 16;
     error = nil;
 
     progressTracker = [[TreeVisitingProgressTracker alloc] init];
-
-    dataBuffer = malloc(BUFFER_SIZE);
+    textOutput = nil;
   }
   return self;
 }
@@ -39,39 +36,20 @@ static const NSUInteger BUFFER_SIZE = 4096 * 16;
 
   [progressTracker release];
 
-  free(dataBuffer);
-
   [super dealloc];
 }
 
 - (BOOL) writeTree:(AnnotatedTreeContext *)tree toFile:(NSString *)filename options:(id)options {
-  NSAssert(file == NULL, @"File not NULL");
+  NSAssert(!textOutput, @"textOutput not nil");
 
+  textOutput = [[TextOutput alloc] init: filename];
   [progressTracker startingTask];
-
-  file = fopen( filename.UTF8String, "w");
-  if (file == NULL) {
-    return NO;
-  }
-
-  dataBufferPos = 0;
 
   [self writeTree: tree options: options];
 
-  if (error==nil && dataBufferPos > 0) {
-    // Write remaining characters in buffer
-    NSUInteger  numWritten = fwrite( dataBuffer, 1, dataBufferPos, file );
-
-    if (numWritten != dataBufferPos) {
-      NSLog(@"Failed to write last data: %lu bytes written out of %lu.",
-            (unsigned long)numWritten, (unsigned long)dataBufferPos);
-
-      error = [[ApplicationError alloc] initWithLocalizedDescription: WRITING_LAST_DATA_FAILED];
-    }
+  if (error==nil && ![textOutput flush]) {
+    error = [[ApplicationError alloc] initWithLocalizedDescription: WRITING_LAST_DATA_FAILED];
   }
-
-  fclose(file);
-  file = NULL;
 
   [progressTracker finishedTask];
 
@@ -132,35 +110,10 @@ static const NSUInteger BUFFER_SIZE = 4096 * 16;
     return;
   }
 
-  NSData  *newData = [s dataUsingEncoding: NSUTF8StringEncoding];
-  const void  *newDataBytes = newData.bytes;
-  NSUInteger  numToAppend = newData.length;
-  NSUInteger  newDataPos = 0;
+  if (![textOutput appendString: s]) {
+    error = [[ApplicationError alloc] initWithLocalizedDescription: WRITING_BUFFER_FAILED];
 
-  while (numToAppend > 0) {
-    NSUInteger  numToCopy = ( (dataBufferPos + numToAppend <= BUFFER_SIZE)
-                             ? numToAppend
-                             : BUFFER_SIZE - dataBufferPos );
-
-    memcpy( dataBuffer + dataBufferPos, newDataBytes + newDataPos, numToCopy );
-    dataBufferPos += numToCopy;
-    newDataPos += numToCopy;
-    numToAppend -= numToCopy;
-
-    if (dataBufferPos == BUFFER_SIZE) {
-      NSUInteger  numWritten = fwrite( dataBuffer, 1, BUFFER_SIZE, file );
-
-      if (numWritten != BUFFER_SIZE) {
-        NSLog(@"Failed to write entire buffer, %lu bytes written", (unsigned long)numWritten);
-
-        error = [[ApplicationError alloc] initWithLocalizedDescription: WRITING_BUFFER_FAILED];
-        abort = YES;
-
-        return; // Do not attempt anymore writes to file.
-      }
-
-      dataBufferPos = 0;
-    }
+    abort = YES;
   }
 }
 

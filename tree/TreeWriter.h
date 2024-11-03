@@ -8,6 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Item;
 @class PlainFileItem;
 @class DirectoryItem;
+@class TextOutput;
 
 // Formatting string used in XML
 extern NSString  *DateTimeFormat;
@@ -19,11 +20,7 @@ extern NSString  *DateTimeFormat;
   NSError  *error;
 
   ProgressTracker  *progressTracker;
-
-  FILE  *file;
-
-  void  *dataBuffer;
-  NSUInteger  dataBufferPos;
+  TextOutput  *textOutput;
 }
 
 /* Writes the tree to file. Returns YES if the operation completed successfully. Returns NO if an

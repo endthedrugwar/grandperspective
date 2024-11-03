@@ -140,6 +140,7 @@
 		AAA4FF1723C8FA7200A51C97 /* WindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4FF1623C8FA7200A51C97 /* WindowManager.m */; };
 		AAA6E72D0EFD29CB00B4E71E /* ToolbarSegmentedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA6E72C0EFD29CB00B4E71E /* ToolbarSegmentedCell.m */; };
 		AAA8724C111492E600ED5112 /* ScanTreeRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA8724B111492E600ED5112 /* ScanTreeRoot.m */; };
+		AAA923F22CD7CC9900ED4551 /* TextOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA923F12CD7CC9900ED4551 /* TextOutput.m */; };
 		AAAEEEA521AAE3C800B7C024 /* ScanTaskOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAEEEA421AAE3C800B7C024 /* ScanTaskOutput.m */; };
 		AAB907F92496749F00681E2E /* OverlayDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB907F82496749F00681E2E /* OverlayDrawer.m */; };
 		AAB907FD24981BAC00681E2E /* OverlayDrawTaskInput.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB907FC24981BAC00681E2E /* OverlayDrawTaskInput.m */; };
@@ -550,6 +551,8 @@
 		AAA857FE22F7643300DB3BE5 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Toolbar.strings; sourceTree = "<group>"; };
 		AAA8724A111492E600ED5112 /* ScanTreeRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScanTreeRoot.h; path = tree/ScanTreeRoot.h; sourceTree = "<group>"; };
 		AAA8724B111492E600ED5112 /* ScanTreeRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScanTreeRoot.m; path = tree/ScanTreeRoot.m; sourceTree = "<group>"; };
+		AAA923F12CD7CC9900ED4551 /* TextOutput.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TextOutput.m; sourceTree = "<group>"; };
+		AAA923F32CD7CCBB00ED4551 /* TextOutput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextOutput.h; sourceTree = "<group>"; };
 		AAAB9A3E0EF3C25A00B3C482 /* nl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Toolbar.strings; sourceTree = "<group>"; };
 		AAAEEEA321AAE3C800B7C024 /* ScanTaskOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScanTaskOutput.h; path = task/ScanTaskOutput.h; sourceTree = "<group>"; };
 		AAAEEEA421AAE3C800B7C024 /* ScanTaskOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScanTaskOutput.m; path = task/ScanTaskOutput.m; sourceTree = "<group>"; };
@@ -691,6 +694,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				AAA923F02CD7CC5800ED4551 /* io */,
 				AA8A37FA0D7B437300DB872C /* mapping */,
 				AAFDC5FF0A8BD6F800DB84D7 /* task */,
 				AA6178720A38B8E600B8AB16 /* util */,
@@ -992,6 +996,15 @@
 			name = strings;
 			sourceTree = "<group>";
 		};
+		AAA923F02CD7CC5800ED4551 /* io */ = {
+			isa = PBXGroup;
+			children = (
+				AAA923F12CD7CC9900ED4551 /* TextOutput.m */,
+				AAA923F32CD7CCBB00ED4551 /* TextOutput.h */,
+			);
+			path = io;
+			sourceTree = "<group>";
+		};
 		AAB4719F0A3AE2460096C5B6 /* control */ = {
 			isa = PBXGroup;
 			children = (
@@ -1258,6 +1271,7 @@
 				AA16DABC0AF93C7D005052D1 /* NotifyingPanel.m in Sources */,
 				AAFB1197238AD5E900D616C3 /* RawTreeWriter.m in Sources */,
 				AAD8DFB30B077ED20060DADA /* PreferencesPanelControl.m in Sources */,
+				AAA923F22CD7CC9900ED4551 /* TextOutput.m in Sources */,
 				AA5974CA0B31687600EF3248 /* FileItemPathStringCache.m in Sources */,
 				AA8FEB510B6CD0810049FF42 /* ScanTaskInput.m in Sources */,
 				AA054A9523940BE4001A5826 /* ExportAsTextDialogControl.m in Sources */,
@@ -1871,7 +1885,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3.4.2;
+				CURRENT_PROJECT_VERSION = 6;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 3Z75QZGN66;
@@ -1906,7 +1920,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 3.4.2;
+				CURRENT_PROJECT_VERSION = 6;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 3Z75QZGN66;
@@ -1937,7 +1951,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3.4.2;
+				CURRENT_PROJECT_VERSION = 6;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 3Z75QZGN66;
