@@ -186,8 +186,8 @@
 		AA04903D1CFB3A4400ADAA76 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/StartWindow.strings; sourceTree = "<group>"; };
 		AA04903E1CFB3A4500ADAA76 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		AA04903F1CFB3A4500ADAA76 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SaveImageDialog.strings; sourceTree = "<group>"; };
-		AA054A8F2393C439001A5826 /* RawTreeWriterOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RawTreeWriterOptions.h; path = tree/RawTreeWriterOptions.h; sourceTree = "<group>"; };
-		AA054A902393C439001A5826 /* RawTreeWriterOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RawTreeWriterOptions.m; path = tree/RawTreeWriterOptions.m; sourceTree = "<group>"; };
+		AA054A8F2393C439001A5826 /* RawTreeWriterOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RawTreeWriterOptions.h; sourceTree = "<group>"; };
+		AA054A902393C439001A5826 /* RawTreeWriterOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RawTreeWriterOptions.m; sourceTree = "<group>"; };
 		AA054A9223940BE4001A5826 /* ExportAsTextDialogControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ExportAsTextDialogControl.h; path = control/ExportAsTextDialogControl.h; sourceTree = "<group>"; };
 		AA054A9323940BE4001A5826 /* ExportAsTextDialogControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ExportAsTextDialogControl.m; path = control/ExportAsTextDialogControl.m; sourceTree = "<group>"; };
 		AA054A9823942FE0001A5826 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ExportAsTextDialog.xib; sourceTree = "<group>"; };
@@ -416,10 +416,10 @@
 		AA819B451D5FA0A5003C7139 /* ReadProgressTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReadProgressTracker.m; path = task/ReadProgressTracker.m; sourceTree = "<group>"; };
 		AA8261EA2A4888D9007D9211 /* TreeDrawerBaseSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TreeDrawerBaseSettings.h; path = view/TreeDrawerBaseSettings.h; sourceTree = "<group>"; };
 		AA8261EB2A4888D9007D9211 /* TreeDrawerBaseSettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TreeDrawerBaseSettings.m; path = view/TreeDrawerBaseSettings.m; sourceTree = "<group>"; };
-		AA837DBD0E29ECE5005384E0 /* XmlTreeWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XmlTreeWriter.h; path = tree/XmlTreeWriter.h; sourceTree = "<group>"; };
-		AA837DBE0E29ECE5005384E0 /* XmlTreeWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XmlTreeWriter.m; path = tree/XmlTreeWriter.m; sourceTree = "<group>"; };
-		AA837E720E2D171D005384E0 /* TreeReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TreeReader.h; path = tree/TreeReader.h; sourceTree = "<group>"; };
-		AA837E730E2D171D005384E0 /* TreeReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TreeReader.m; path = tree/TreeReader.m; sourceTree = "<group>"; };
+		AA837DBD0E29ECE5005384E0 /* XmlTreeWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XmlTreeWriter.h; sourceTree = "<group>"; };
+		AA837DBE0E29ECE5005384E0 /* XmlTreeWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XmlTreeWriter.m; sourceTree = "<group>"; };
+		AA837E720E2D171D005384E0 /* TreeReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreeReader.h; sourceTree = "<group>"; };
+		AA837E730E2D171D005384E0 /* TreeReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeReader.m; sourceTree = "<group>"; };
 		AA83A33E10F0D329002542E4 /* MutableFilterTestRef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MutableFilterTestRef.h; path = filter/MutableFilterTestRef.h; sourceTree = "<group>"; };
 		AA83A33F10F0D329002542E4 /* MutableFilterTestRef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MutableFilterTestRef.m; path = filter/MutableFilterTestRef.m; sourceTree = "<group>"; };
 		AA83A46D10F14280002542E4 /* NamedFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NamedFilter.h; path = filter/NamedFilter.h; sourceTree = "<group>"; };
@@ -677,10 +677,10 @@
 		AAF951AF0EDEE2E100844FD5 /* DirectoryViewToolbarControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DirectoryViewToolbarControl.h; path = control/DirectoryViewToolbarControl.h; sourceTree = "<group>"; };
 		AAF951B00EDEE2E100844FD5 /* DirectoryViewToolbarControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DirectoryViewToolbarControl.m; path = control/DirectoryViewToolbarControl.m; sourceTree = "<group>"; };
 		AAF9F7D30B30118C00FA4C51 /* ControlConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ControlConstants.h; path = control/ControlConstants.h; sourceTree = "<group>"; };
-		AAFB1192238ABF3B00D616C3 /* TreeWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TreeWriter.h; path = tree/TreeWriter.h; sourceTree = "<group>"; };
-		AAFB1193238ABF3B00D616C3 /* TreeWriter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TreeWriter.m; path = tree/TreeWriter.m; sourceTree = "<group>"; };
-		AAFB1195238AD5E900D616C3 /* RawTreeWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RawTreeWriter.h; path = tree/RawTreeWriter.h; sourceTree = "<group>"; };
-		AAFB1196238AD5E900D616C3 /* RawTreeWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RawTreeWriter.m; path = tree/RawTreeWriter.m; sourceTree = "<group>"; };
+		AAFB1192238ABF3B00D616C3 /* TreeWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TreeWriter.h; sourceTree = "<group>"; };
+		AAFB1193238ABF3B00D616C3 /* TreeWriter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TreeWriter.m; sourceTree = "<group>"; };
+		AAFB1195238AD5E900D616C3 /* RawTreeWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RawTreeWriter.h; sourceTree = "<group>"; };
+		AAFB1196238AD5E900D616C3 /* RawTreeWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RawTreeWriter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -841,16 +841,6 @@
 				AA6013220A5AFCC500DEBCB8 /* TreeBuilder.m */,
 				AA28013F284CEFBA00E9EB7A /* TreeRefresher.h */,
 				AA28013E284CEFBA00E9EB7A /* TreeRefresher.m */,
-				AAFB1192238ABF3B00D616C3 /* TreeWriter.h */,
-				AAFB1193238ABF3B00D616C3 /* TreeWriter.m */,
-				AA054A8F2393C439001A5826 /* RawTreeWriterOptions.h */,
-				AA054A902393C439001A5826 /* RawTreeWriterOptions.m */,
-				AAFB1195238AD5E900D616C3 /* RawTreeWriter.h */,
-				AAFB1196238AD5E900D616C3 /* RawTreeWriter.m */,
-				AA837DBD0E29ECE5005384E0 /* XmlTreeWriter.h */,
-				AA837DBE0E29ECE5005384E0 /* XmlTreeWriter.m */,
-				AA837E720E2D171D005384E0 /* TreeReader.h */,
-				AA837E730E2D171D005384E0 /* TreeReader.m */,
 				AA6013240A5AFCC500DEBCB8 /* TreeBalancer.h */,
 				AA60131C0A5AFCC500DEBCB8 /* TreeBalancer.m */,
 				AA987F5F0DF16D0300A6EA33 /* FilteredTreeGuide.h */,
@@ -1002,10 +992,20 @@
 		AAA923F02CD7CC5800ED4551 /* io */ = {
 			isa = PBXGroup;
 			children = (
-				AAA923F12CD7CC9900ED4551 /* TextOutput.m */,
 				AAA923F32CD7CCBB00ED4551 /* TextOutput.h */,
-				AAA923F42CD7D79900ED4551 /* CompressedTextOutput.m */,
+				AAA923F12CD7CC9900ED4551 /* TextOutput.m */,
 				AAA923F62CD7D7AF00ED4551 /* CompressedTextOutput.h */,
+				AAA923F42CD7D79900ED4551 /* CompressedTextOutput.m */,
+				AAFB1192238ABF3B00D616C3 /* TreeWriter.h */,
+				AAFB1193238ABF3B00D616C3 /* TreeWriter.m */,
+				AA054A8F2393C439001A5826 /* RawTreeWriterOptions.h */,
+				AA054A902393C439001A5826 /* RawTreeWriterOptions.m */,
+				AAFB1195238AD5E900D616C3 /* RawTreeWriter.h */,
+				AAFB1196238AD5E900D616C3 /* RawTreeWriter.m */,
+				AA837DBD0E29ECE5005384E0 /* XmlTreeWriter.h */,
+				AA837DBE0E29ECE5005384E0 /* XmlTreeWriter.m */,
+				AA837E720E2D171D005384E0 /* TreeReader.h */,
+				AA837E730E2D171D005384E0 /* TreeReader.m */,
 			);
 			path = io;
 			sourceTree = "<group>";
