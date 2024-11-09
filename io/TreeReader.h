@@ -32,7 +32,7 @@
  * reading is aborted, or if there is an error. In the latter case, the error can be retrieved
  * using -error.
  */
-- (AnnotatedTreeContext *)readTreeFromFile:(NSString *)path;
+- (AnnotatedTreeContext *)readTreeFromFile:(NSURL *)url;
 
 /* Aborts reading (when it is carried out in a different execution thread). 
  */

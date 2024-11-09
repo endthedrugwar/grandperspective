@@ -160,7 +160,7 @@ NSString  *AfterClosingLastViewDoNothing = @"do nothing";
            settings:(DirectoryViewControlSettings *)controlSettings
           filterSet:(FilterSet *)filterSet;
 
-- (void) loadScanDataFromFile:(NSString *)path;
+- (void) loadScanDataFromFile:(NSURL *)sourceUrl;
 - (void) saveScanDataToFile:(NSSavePanel *)savePanel
            usingTaskManager:(VisibleAsynchronousTaskManager *)taskManager
                     options:(id)options;
@@ -395,7 +395,7 @@ static dispatch_once_t  singletonOnceToken;
     else if ([filename.pathExtension.lowercaseString isEqualToString: @"gpscan"]) {
       showWelcomeWindow = NO;
 
-      [self loadScanDataFromFile: filename];
+      [self loadScanDataFromFile: [NSURL fileURLWithPath: filename]];
       // Loading is done asynchronously, so starting a load is assumed a successful action
       return YES;
     }
@@ -477,7 +477,7 @@ static dispatch_once_t  singletonOnceToken;
     return;
   }
   
-  [self loadScanDataFromFile: fileUrl.path];
+  [self loadScanDataFromFile: fileUrl];
 }
 
 //----------------------------------------------------------------------------
@@ -757,7 +757,7 @@ static dispatch_once_t  singletonOnceToken;
   if ([openPanel runModal] == NSModalResponseOK) {
     NSURL  *sourceURL = openPanel.URL;
     if (sourceURL.fileURL) {
-      [self loadScanDataFromFile: sourceURL.path];
+      [self loadScanDataFromFile: sourceURL];
     } else {
       NSLog(@"Source '%@' is not a file?", sourceURL); 
     }
@@ -1062,10 +1062,10 @@ static dispatch_once_t  singletonOnceToken;
 }
 
 
-- (void) loadScanDataFromFile:(NSString *)path {
+- (void) loadScanDataFromFile:(NSURL *)sourceUrl {
   [self hideWelcomeWindow]; // Auto-close window if it was showing
 
-  ReadTaskInput  *input = [[[ReadTaskInput alloc] initWithPath: path] autorelease];
+  ReadTaskInput  *input = [[[ReadTaskInput alloc] initWithSourceUrl: sourceUrl] autorelease];
 
   ReadTaskCallback  *callback = 
     [[[ReadTaskCallback alloc] initWithWindowManager: windowManager readTaskInput: input]
@@ -1315,7 +1315,7 @@ static dispatch_once_t  singletonOnceToken;
                         @"Alert message (with filename arg)");
 
     [alert addButtonWithTitle: OK_BUTTON_TITLE];
-    alert.messageText = [NSString stringWithFormat: format, taskInput.path.lastPathComponent];
+    alert.messageText = [NSString stringWithFormat: format, taskInput.sourceUrl.lastPathComponent];
     alert.informativeText = treeReader.error.localizedDescription;
 
     [alert runModal];

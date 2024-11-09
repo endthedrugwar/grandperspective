@@ -3,16 +3,16 @@
 
 @implementation ReadTaskInput
 
-- (instancetype) initWithPath:(NSString *)path {
+- (instancetype) initWithSourceUrl:(NSURL *)sourceUrl {
   if (self = [super init]) {
-    _path = [path retain];
+    _sourceUrl = [sourceUrl retain];
   }
   
   return self;
 }
 
 - (void) dealloc {
-  [_path release];
+  [_sourceUrl release];
   
   [super dealloc];
 }

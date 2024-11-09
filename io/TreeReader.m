@@ -354,17 +354,12 @@ static const int AUTORELEASE_PERIOD = 1024;
   [super dealloc];
 }
 
-- (AnnotatedTreeContext *)readTreeFromFile:(NSString *)path {
+- (AnnotatedTreeContext *)readTreeFromFile:(NSURL *)url {
   NSAssert(parser == nil, @"Invalid state. Already reading?");
 
-  NSData  *data = [NSData dataWithContentsOfFile: path
-                                         options: NSDataReadingMappedIfSafe
-                                           error: &error];
-  if (data == nil) {
-    return nil;
-  }
+  NSInputStream  *inputStream = [NSInputStream inputStreamWithURL: url];
+  parser = [[NSXMLParser alloc] initWithStream: inputStream];
 
-  parser = [[NSXMLParser alloc] initWithData: data];
   parser.delegate = self;
   
   [tree release];
@@ -375,8 +370,6 @@ static const int AUTORELEASE_PERIOD = 1024;
   error = nil;
   
   [unboundTests removeAllObjects];
-  
-  [progressTracker startingTaskOnInputData: data];
   
   [parser parse];
   
@@ -530,7 +523,6 @@ didStartElement:(NSString *)elementName
                       parseError.localizedDescription]];
   }
 }
-
 
 
 - (void) processingFolder:(DirectoryItem *)dirItem {

@@ -38,7 +38,7 @@ NSString  *ReadTaskAbortedEvent = @"readTaskAborted";
   treeReader = [[TreeReader alloc] init];
   [taskLock unlock];
 
-  [treeReader readTreeFromFile: myInput.path];
+  [treeReader readTreeFromFile: myInput.sourceUrl];
   TreeReader  *retVal = [[treeReader retain] autorelease];
 
   if (treeReader.aborted) {

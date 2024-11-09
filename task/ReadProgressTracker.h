@@ -8,11 +8,6 @@
   NSInteger  processedLines;
 }
 
-/* This method should be called by the task, from its background thread, before it starts processing
- * the input data.
- */
-- (void) startingTaskOnInputData: (NSData *)inputData;
-
 - (void) processingFolder:(DirectoryItem *)dirItem
            processedLines:(NSInteger)numProcessed;
 
