@@ -16,6 +16,7 @@
 #import "TreeBuilder.h"
 #import "TreeBalancer.h"
 #import "XmlTreeWriter.h"
+#import "CompressedInput.h"
 
 #import "ReadProgressTracker.h"
 
@@ -357,8 +358,22 @@ static const int AUTORELEASE_PERIOD = 1024;
 - (AnnotatedTreeContext *)readTreeFromFile:(NSURL *)url {
   NSAssert(parser == nil, @"Invalid state. Already reading?");
 
-  NSInputStream  *inputStream = [NSInputStream inputStreamWithURL: url];
-  parser = [[NSXMLParser alloc] initWithStream: inputStream];
+  NSInputStream  *parserInput = nil;
+  CompressedInput  *decompressor = nil;
+  if (NO) {
+    parserInput = [NSInputStream inputStreamWithURL: url];
+  } else {
+    NSOutputStream  *output;
+
+    [NSStream getBoundStreamsWithBufferSize: DECOMPRESSED_BUFFER_SIZE
+                                inputStream: &parserInput
+                               outputStream: &output];
+
+    decompressor = [[[CompressedInput alloc] initWithSourceUrl: url
+                                                  outputStream: output] autorelease];
+    [parserInput open];
+  }
+  parser = [[NSXMLParser alloc] initWithStream: parserInput];
 
   parser.delegate = self;
   
@@ -370,7 +385,10 @@ static const int AUTORELEASE_PERIOD = 1024;
   error = nil;
   
   [unboundTests removeAllObjects];
-  
+
+  if (decompressor != nil) {
+    [decompressor open];
+  }
   [parser parse];
   
   [progressTracker finishedTask];
@@ -526,6 +544,7 @@ didStartElement:(NSString *)elementName
 
 
 - (void) processingFolder:(DirectoryItem *)dirItem {
+  NSLog(@"processingFolder %@", dirItem.path);
   [progressTracker processingFolder: dirItem processedLines: parser.lineNumber];
 }
 

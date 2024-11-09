@@ -142,6 +142,7 @@
 		AAA8724C111492E600ED5112 /* ScanTreeRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA8724B111492E600ED5112 /* ScanTreeRoot.m */; };
 		AAA923F22CD7CC9900ED4551 /* TextOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA923F12CD7CC9900ED4551 /* TextOutput.m */; };
 		AAA923F52CD7D79900ED4551 /* CompressedTextOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA923F42CD7D79900ED4551 /* CompressedTextOutput.m */; };
+		AAA923FC2CDFA41800ED4551 /* CompressedInput.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA923FB2CDFA41800ED4551 /* CompressedInput.m */; };
 		AAAEEEA521AAE3C800B7C024 /* ScanTaskOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAEEEA421AAE3C800B7C024 /* ScanTaskOutput.m */; };
 		AAB907F92496749F00681E2E /* OverlayDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB907F82496749F00681E2E /* OverlayDrawer.m */; };
 		AAB907FD24981BAC00681E2E /* OverlayDrawTaskInput.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB907FC24981BAC00681E2E /* OverlayDrawTaskInput.m */; };
@@ -556,6 +557,8 @@
 		AAA923F32CD7CCBB00ED4551 /* TextOutput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextOutput.h; sourceTree = "<group>"; };
 		AAA923F42CD7D79900ED4551 /* CompressedTextOutput.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CompressedTextOutput.m; sourceTree = "<group>"; };
 		AAA923F62CD7D7AF00ED4551 /* CompressedTextOutput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CompressedTextOutput.h; sourceTree = "<group>"; };
+		AAA923FA2CDFA16000ED4551 /* CompressedInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CompressedInput.h; sourceTree = "<group>"; };
+		AAA923FB2CDFA41800ED4551 /* CompressedInput.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CompressedInput.m; sourceTree = "<group>"; };
 		AAAB9A3E0EF3C25A00B3C482 /* nl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Toolbar.strings; sourceTree = "<group>"; };
 		AAAEEEA321AAE3C800B7C024 /* ScanTaskOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScanTaskOutput.h; path = task/ScanTaskOutput.h; sourceTree = "<group>"; };
 		AAAEEEA421AAE3C800B7C024 /* ScanTaskOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScanTaskOutput.m; path = task/ScanTaskOutput.m; sourceTree = "<group>"; };
@@ -996,6 +999,8 @@
 				AAA923F12CD7CC9900ED4551 /* TextOutput.m */,
 				AAA923F62CD7D7AF00ED4551 /* CompressedTextOutput.h */,
 				AAA923F42CD7D79900ED4551 /* CompressedTextOutput.m */,
+				AAA923FA2CDFA16000ED4551 /* CompressedInput.h */,
+				AAA923FB2CDFA41800ED4551 /* CompressedInput.m */,
 				AAFB1192238ABF3B00D616C3 /* TreeWriter.h */,
 				AAFB1193238ABF3B00D616C3 /* TreeWriter.m */,
 				AA054A8F2393C439001A5826 /* RawTreeWriterOptions.h */,
@@ -1300,6 +1305,7 @@
 				AAD50FCE21BDB30F00784BBF /* AlertMessage.m in Sources */,
 				AA7BF5BB1E61E44000A42F0F /* ItemLocator.m in Sources */,
 				AA7BF5B81E61E28900A42F0F /* ItemPathModelView.m in Sources */,
+				AAA923FC2CDFA41800ED4551 /* CompressedInput.m in Sources */,
 				AA8A380C0D7B437300DB872C /* StatefulFileItemMapping.m in Sources */,
 				AA8A380E0D7B437300DB872C /* StatelessFileItemMapping.m in Sources */,
 				AA8A38100D7B437300DB872C /* UniformTypeMappingScheme.m in Sources */,
