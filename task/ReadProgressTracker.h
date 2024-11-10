@@ -1,14 +1,13 @@
 #import "ProgressTracker.h"
 
 @interface ReadProgressTracker : ProgressTracker {
-  // The total number of lines in the input file
-  NSInteger  totalLines;
-
-  // The number of lines processed sofar.
-  NSInteger  processedLines;
+  unsigned long long inputFileSize;
+  unsigned long long bytesRead;
 }
 
-- (void) processingFolder:(DirectoryItem *)dirItem
-           processedLines:(NSInteger)numProcessed;
+- (instancetype) init NS_UNAVAILABLE;
+- (instancetype) initWithInputFile:(NSURL *)inputFile NS_DESIGNATED_INITIALIZER;
+
+- (void) processingFolder:(DirectoryItem *)dirItem bytesRead:(unsigned long long)bytesRead;
 
 @end

@@ -126,6 +126,8 @@ const NSUInteger DECOMPRESSED_BUFFER_SIZE = 4096 * 16;
   compressionStream.src_size = numRead;
   NSLog(@"numRead = %ld", (long)numRead);
 
+  self.totalBytesRead = self.totalBytesRead + numRead;
+
   if (![self decompress]) {
     return NO;
   }

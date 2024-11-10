@@ -2,37 +2,30 @@
 
 @implementation ReadProgressTracker
 
-- (instancetype) init {
+- (instancetype) initWithInputFile:(NSURL *)inputFile {
   if (self = [super init]) {
-    totalLines = 0;
-    processedLines = 0;
+    inputFileSize = [[NSFileManager.defaultManager attributesOfItemAtPath: inputFile.path
+                                                                    error: nil] fileSize];
+    bytesRead = 0;
   }
 
   return self;
 }
 
-- (void) processingFolder:(DirectoryItem *)dirItem
-           processedLines:(NSInteger)numProcessed {
+- (void) processingFolder:(DirectoryItem *)dirItem bytesRead:(unsigned long long)bytesReadVal {
   [mutex lock];
 
   // For efficiency, call internal method that assumes mutex has been locked.
   [self _processingFolder: dirItem];
 
-//  NSAssert(numProcessed <= totalLines,
-//           @"More lines processed than expected (%ld > %ld).",
-//           (long)numProcessed, (long)totalLines);
-//  processedLines = numProcessed;
+  bytesRead = bytesReadVal;
 
   [mutex unlock];
 }
 
 
 - (float) estimatedProgress {
-  if (totalLines == 0) {
-    return 0;
-  } else {
-    return 100.0 * processedLines / totalLines;
-  }
+  return inputFileSize > 0 ? 100.0 * bytesRead / inputFileSize : 0;
 }
 
 @end

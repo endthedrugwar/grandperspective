@@ -329,12 +329,12 @@ static const int AUTORELEASE_PERIOD = 1024;
     autoreleasePool = nil;
     error = nil;
     abort = NO;
-    
-    unboundTests = [[NSMutableArray alloc] initWithCapacity: 8];
-    
-    progressTracker = [[ReadProgressTracker alloc] init];
+    decompressor = nil;
+    unboundTests = nil;
 
     treeBalancer = [[TreeBalancer alloc] init];
+
+    progressTracker = nil;
   }
   
   return self;
@@ -357,10 +357,9 @@ static const int AUTORELEASE_PERIOD = 1024;
 }
 
 - (AnnotatedTreeContext *)readTreeFromFile:(NSURL *)url {
-  NSAssert(parser == nil, @"Invalid state. Already reading?");
+  NSAssert(parser == nil && tree == nil, @"Invalid state. Already reading?");
 
   NSInputStream  *parserInput = nil;
-  CompressedInput  *decompressor = nil;
   if (NO) {
     parserInput = [NSInputStream inputStreamWithURL: url];
   } else {
@@ -371,22 +370,19 @@ static const int AUTORELEASE_PERIOD = 1024;
                                 inputStream: &decompressedOutput
                                outputStream: &output];
 
+    decompressor = [[CompressedInput alloc] initWithSourceUrl: url outputStream: output];
+
     parserInput = [[[InputStreamAdapter alloc] initWithInputStream: decompressedOutput]
                    autorelease];
-
-    decompressor = [[[CompressedInput alloc] initWithSourceUrl: url
-                                                  outputStream: output] autorelease];
     [parserInput open];
   }
-  parser = [[NSXMLParser alloc] initWithStream: parserInput];
 
+  parser = [[NSXMLParser alloc] initWithStream: parserInput];
   parser.delegate = self;
-  
-  [tree release];
-  tree = nil;
-  
+
+  progressTracker = [[ReadProgressTracker alloc] initWithInputFile: url];
+  unboundTests = [[NSMutableArray alloc] initWithCapacity: 8];
   abort = NO;
-  [error release];
   error = nil;
   
   [unboundTests removeAllObjects];
@@ -403,6 +399,9 @@ static const int AUTORELEASE_PERIOD = 1024;
 
   [autoreleasePool release];
   autoreleasePool = nil;
+
+  [decompressor release];
+  decompressor = nil;
 
   return (error != nil || abort) ? nil : tree;
 }
@@ -549,8 +548,8 @@ didStartElement:(NSString *)elementName
 
 
 - (void) processingFolder:(DirectoryItem *)dirItem {
-  NSLog(@"processingFolder %@", dirItem.path);
-  [progressTracker processingFolder: dirItem processedLines: parser.lineNumber];
+  unsigned long long bytesRead = decompressor != nil ? decompressor.totalBytesRead : 0;
+  [progressTracker processingFolder: dirItem bytesRead: bytesRead];
 }
 
 - (void) processedFolder:(DirectoryItem *)dirItem {

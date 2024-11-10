@@ -4,6 +4,7 @@
 @class AnnotatedTreeContext;
 @class TreeBalancer;
 @class ReadProgressTracker;
+@class CompressedInput;
 
 @interface TreeReader : NSObject <NSXMLParserDelegate> {
 
@@ -17,7 +18,8 @@
   NSError  *error;
   
   NSMutableArray  *unboundTests;
-  
+
+  CompressedInput  *decompressor;
   ReadProgressTracker  *progressTracker;
   TreeBalancer  *treeBalancer;
 

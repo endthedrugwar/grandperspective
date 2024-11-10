@@ -20,6 +20,8 @@ extern const NSUInteger DECOMPRESSED_BUFFER_SIZE;
   NSOutputStream  *outputStream;
 }
 
+@property (atomic) unsigned long long totalBytesRead;
+
 // Overrides designated initialiser
 - (instancetype) init NS_UNAVAILABLE;
 
