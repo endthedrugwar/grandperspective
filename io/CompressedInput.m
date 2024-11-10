@@ -188,6 +188,7 @@ const NSUInteger DECOMPRESSED_BUFFER_SIZE = 4096 * 16;
   decompressionDone = (result == COMPRESSION_STATUS_END);
 
   numDecompressedBytesAvailable = DECOMPRESSED_BUFFER_SIZE - compressionStream.dst_size;
+  compressionStream.dst_ptr = decompressedDataBuffer;  // Let it point to bytes to write
   if (numDecompressedBytesAvailable == 0) {
     NSLog(@"Warning: No data after decompression");
     return YES;

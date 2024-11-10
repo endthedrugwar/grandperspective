@@ -143,6 +143,7 @@
 		AAA923F22CD7CC9900ED4551 /* TextOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA923F12CD7CC9900ED4551 /* TextOutput.m */; };
 		AAA923F52CD7D79900ED4551 /* CompressedTextOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA923F42CD7D79900ED4551 /* CompressedTextOutput.m */; };
 		AAA923FC2CDFA41800ED4551 /* CompressedInput.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA923FB2CDFA41800ED4551 /* CompressedInput.m */; };
+		AAA923FF2CE10DED00ED4551 /* InputStreamAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA923FE2CE10DED00ED4551 /* InputStreamAdapter.m */; };
 		AAAEEEA521AAE3C800B7C024 /* ScanTaskOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAEEEA421AAE3C800B7C024 /* ScanTaskOutput.m */; };
 		AAB907F92496749F00681E2E /* OverlayDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB907F82496749F00681E2E /* OverlayDrawer.m */; };
 		AAB907FD24981BAC00681E2E /* OverlayDrawTaskInput.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB907FC24981BAC00681E2E /* OverlayDrawTaskInput.m */; };
@@ -559,6 +560,8 @@
 		AAA923F62CD7D7AF00ED4551 /* CompressedTextOutput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CompressedTextOutput.h; sourceTree = "<group>"; };
 		AAA923FA2CDFA16000ED4551 /* CompressedInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CompressedInput.h; sourceTree = "<group>"; };
 		AAA923FB2CDFA41800ED4551 /* CompressedInput.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CompressedInput.m; sourceTree = "<group>"; };
+		AAA923FD2CE10C0500ED4551 /* InputStreamAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InputStreamAdapter.h; sourceTree = "<group>"; };
+		AAA923FE2CE10DED00ED4551 /* InputStreamAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InputStreamAdapter.m; sourceTree = "<group>"; };
 		AAAB9A3E0EF3C25A00B3C482 /* nl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Toolbar.strings; sourceTree = "<group>"; };
 		AAAEEEA321AAE3C800B7C024 /* ScanTaskOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScanTaskOutput.h; path = task/ScanTaskOutput.h; sourceTree = "<group>"; };
 		AAAEEEA421AAE3C800B7C024 /* ScanTaskOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScanTaskOutput.m; path = task/ScanTaskOutput.m; sourceTree = "<group>"; };
@@ -1001,6 +1004,8 @@
 				AAA923F42CD7D79900ED4551 /* CompressedTextOutput.m */,
 				AAA923FA2CDFA16000ED4551 /* CompressedInput.h */,
 				AAA923FB2CDFA41800ED4551 /* CompressedInput.m */,
+				AAA923FD2CE10C0500ED4551 /* InputStreamAdapter.h */,
+				AAA923FE2CE10DED00ED4551 /* InputStreamAdapter.m */,
 				AAFB1192238ABF3B00D616C3 /* TreeWriter.h */,
 				AAFB1193238ABF3B00D616C3 /* TreeWriter.m */,
 				AA054A8F2393C439001A5826 /* RawTreeWriterOptions.h */,
@@ -1347,6 +1352,7 @@
 				AA7A7F0A0E4F326D00EB366E /* ReadProgressPanelControl.m in Sources */,
 				AA7A7F0D0E4F339D00EB366E /* ReadTaskInput.m in Sources */,
 				AA7A7F110E4F342100EB366E /* ReadTaskExecutor.m in Sources */,
+				AAA923FF2CE10DED00ED4551 /* InputStreamAdapter.m in Sources */,
 				AA7A7F170E4F3C2800EB366E /* ProgressTracker.m in Sources */,
 				AAE476C21D0D945E007CF42F /* RecentDocumentTableCellView.m in Sources */,
 				AAE476C51D0D947E007CF42F /* StartWindowControl.m in Sources */,

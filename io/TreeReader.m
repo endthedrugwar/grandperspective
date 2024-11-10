@@ -17,6 +17,7 @@
 #import "TreeBalancer.h"
 #import "XmlTreeWriter.h"
 #import "CompressedInput.h"
+#import "InputStreamAdapter.h"
 
 #import "ReadProgressTracker.h"
 
@@ -364,10 +365,14 @@ static const int AUTORELEASE_PERIOD = 1024;
     parserInput = [NSInputStream inputStreamWithURL: url];
   } else {
     NSOutputStream  *output;
+    NSInputStream  *decompressedOutput;
 
     [NSStream getBoundStreamsWithBufferSize: DECOMPRESSED_BUFFER_SIZE
-                                inputStream: &parserInput
+                                inputStream: &decompressedOutput
                                outputStream: &output];
+
+    parserInput = [[[InputStreamAdapter alloc] initWithInputStream: decompressedOutput]
+                   autorelease];
 
     decompressor = [[[CompressedInput alloc] initWithSourceUrl: url
                                                   outputStream: output] autorelease];
