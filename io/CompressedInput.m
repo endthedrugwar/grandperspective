@@ -5,6 +5,9 @@
 const NSUInteger COMPRESSED_BUFFER_SIZE = 4096 * 2;
 const NSUInteger DECOMPRESSED_BUFFER_SIZE = 4096 * 16;
 
+const NSUInteger GZIP_HEADER_SIZE = 10; // TODO: Make dynamic
+const NSUInteger GZIP_FOOTER_SIZE = 8;
+
 @interface CompressedInput (PrivateMethods)
 
 - (void) process;
@@ -24,6 +27,10 @@ const NSUInteger DECOMPRESSED_BUFFER_SIZE = 4096 * 16;
     outputStream = [outputStreamVal retain];
 
     inputStream = [[NSInputStream alloc] initWithURL: sourceUrl];
+
+    // Get the input file size (so that the gzip-footer can be easily skipped.
+    _inputFileSize = [[NSFileManager.defaultManager attributesOfItemAtPath: sourceUrl.path
+                                                                     error: nil] fileSize];
 
     compressedDataBuffer = malloc(COMPRESSED_BUFFER_SIZE);
     decompressedDataBuffer = malloc(DECOMPRESSED_BUFFER_SIZE);
@@ -113,20 +120,40 @@ const NSUInteger DECOMPRESSED_BUFFER_SIZE = 4096 * 16;
     }
   }
 
-  if (numDecompressedBytesAvailable == 0 && decompressionDone) {
+  if (numDecompressedBytesAvailable == 0 &&
+      inputEndEncountered && (!isCompressed || decompressionDone)) {
     // All decompressed data has been processed
     [self close];
   }
 }
 
 - (BOOL) processNewInput {
+  unsigned long long readSofar = self.totalBytesRead;
+
   NSInteger numRead = [inputStream read: compressedDataBuffer
                               maxLength: COMPRESSED_BUFFER_SIZE];
   compressionStream.src_ptr = compressedDataBuffer;
   compressionStream.src_size = numRead;
   NSLog(@"numRead = %ld", (long)numRead);
 
-  self.totalBytesRead = self.totalBytesRead + numRead;
+  if (readSofar == 0) {
+    isCompressed = (compressedDataBuffer[0] == 0x1f && compressedDataBuffer[1] == 0x8b);
+
+    if (isCompressed) {
+      // Skip header
+      compressionStream.src_ptr += GZIP_HEADER_SIZE;
+      compressionStream.src_size -= GZIP_HEADER_SIZE;
+    }
+  }
+  readSofar += numRead;
+  self.totalBytesRead = readSofar;
+
+  BOOL containsFooterBytes = isCompressed && readSofar > _inputFileSize - GZIP_FOOTER_SIZE;
+  if (containsFooterBytes) {
+    // Skip footer
+    NSUInteger numFooterBytes = readSofar + GZIP_FOOTER_SIZE - _inputFileSize;
+    compressionStream.src_size -= MIN(compressionStream.src_size, numFooterBytes);
+  }
 
   if (![self decompress]) {
     return NO;
@@ -138,7 +165,7 @@ const NSUInteger DECOMPRESSED_BUFFER_SIZE = 4096 * 16;
 }
 
 - (BOOL) writeNewOutput {
-  NSInteger numWritten = [outputStream write: compressionStream.dst_ptr
+  NSInteger numWritten = [outputStream write: decompressedDataP
                                    maxLength: numDecompressedBytesAvailable];
   NSLog(@"numWritten = %ld", (long)numWritten);
 
@@ -148,7 +175,7 @@ const NSUInteger DECOMPRESSED_BUFFER_SIZE = 4096 * 16;
     return NO;
   }
 
-  compressionStream.dst_ptr += numWritten;
+  decompressedDataP += numWritten;
   numDecompressedBytesAvailable -= numWritten;
 
   outputSpaceAvailable = outputStream.hasSpaceAvailable;
@@ -158,10 +185,14 @@ const NSUInteger DECOMPRESSED_BUFFER_SIZE = 4096 * 16;
 
 - (BOOL) finalize {
   NSAssert(inputEndEncountered, @"Finalizing without encountering input end");
-  compressionStream.src_ptr = compressedDataBuffer;
-  compressionStream.src_size = 0;
+  if (isCompressed) {
+    compressionStream.src_ptr = compressedDataBuffer;
+    compressionStream.src_size = 0;
 
-  return [self decompress];
+    return [self decompress];
+  } else {
+    return YES;
+  }
 }
 
 - (void) close {
@@ -176,27 +207,32 @@ const NSUInteger DECOMPRESSED_BUFFER_SIZE = 4096 * 16;
   NSAssert(numDecompressedBytesAvailable == 0,
            @"New decompress initiated while old data is still available");
 
-  int flags = inputEndEncountered ? COMPRESSION_STREAM_FINALIZE : 0;
+  if (isCompressed) {
+    int flags = inputEndEncountered ? COMPRESSION_STREAM_FINALIZE : 0;
 
-  compressionStream.dst_ptr = decompressedDataBuffer;
-  compressionStream.dst_size = DECOMPRESSED_BUFFER_SIZE;
+    compressionStream.dst_ptr = decompressedDataBuffer;
+    compressionStream.dst_size = DECOMPRESSED_BUFFER_SIZE;
 
-  compression_status result = compression_stream_process(&compressionStream, flags);
-  if (result == COMPRESSION_STATUS_ERROR) {
-    NSLog(@"Error invoking compression_stream_process");
-    return NO;
+    compression_status result = compression_stream_process(&compressionStream, flags);
+    if (result == COMPRESSION_STATUS_ERROR) {
+      NSLog(@"Error invoking compression_stream_process");
+      return NO;
+    }
+
+    decompressionDone = (result == COMPRESSION_STATUS_END);
+
+    numDecompressedBytesAvailable = DECOMPRESSED_BUFFER_SIZE - compressionStream.dst_size;
+    decompressedDataP = decompressedDataBuffer;
+    if (numDecompressedBytesAvailable == 0) {
+      NSLog(@"Warning: No data after decompression");
+      return YES;
+    }
+  } else {
+    numDecompressedBytesAvailable = compressionStream.src_size;
+    decompressedDataP = compressedDataBuffer;
   }
 
-  decompressionDone = (result == COMPRESSION_STATUS_END);
-
-  numDecompressedBytesAvailable = DECOMPRESSED_BUFFER_SIZE - compressionStream.dst_size;
-  compressionStream.dst_ptr = decompressedDataBuffer;  // Let it point to bytes to write
-  if (numDecompressedBytesAvailable == 0) {
-    NSLog(@"Warning: No data after decompression");
-    return YES;
-  }
-
-  if (outputSpaceAvailable) {
+  if (numDecompressedBytesAvailable > 0 && outputSpaceAvailable) {
     if (! [self writeNewOutput]) {
       return NO;
     }

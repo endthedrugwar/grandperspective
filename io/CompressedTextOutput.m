@@ -28,7 +28,7 @@
   }
 
   originalSize = 0;
-  crc = crc32(0L, Z_NULL, 0);;
+  crc = crc32(0L, Z_NULL, 0);
 
   int8_t header[] = {
     0x1f, 0x8b,             // GZIP ID

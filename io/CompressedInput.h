@@ -4,14 +4,20 @@
 
 extern const NSUInteger DECOMPRESSED_BUFFER_SIZE;
 
+// Reads gzip-ed compressed data, de-compressiong it on the fly.
+//
+// For backward compatibility, it also supports reading uncompressed text data
 @interface CompressedInput : NSObject <NSStreamDelegate> {
 
-  void  *compressedDataBuffer;
+  uint8_t  *compressedDataBuffer;
   void  *decompressedDataBuffer;
+
+  BOOL  isCompressed;
 
   BOOL  inputDataAvailable;
   BOOL  inputEndEncountered;
   BOOL  decompressionDone;
+  const uint8_t  *decompressedDataP;
   NSInteger numDecompressedBytesAvailable;
   BOOL  outputSpaceAvailable;
 
@@ -20,6 +26,7 @@ extern const NSUInteger DECOMPRESSED_BUFFER_SIZE;
   NSOutputStream  *outputStream;
 }
 
+@property (nonatomic) unsigned long long inputFileSize;
 @property (atomic) unsigned long long totalBytesRead;
 
 // Overrides designated initialiser
