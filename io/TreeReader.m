@@ -359,23 +359,18 @@ static const int AUTORELEASE_PERIOD = 1024;
 - (AnnotatedTreeContext *)readTreeFromFile:(NSURL *)url {
   NSAssert(parser == nil && tree == nil, @"Invalid state. Already reading?");
 
-  NSInputStream  *parserInput = nil;
-  if (NO) {
-    parserInput = [NSInputStream inputStreamWithURL: url];
-  } else {
-    NSOutputStream  *output;
-    NSInputStream  *decompressedOutput;
+  NSOutputStream  *output;
+  NSInputStream  *decompressedOutput;
 
-    [NSStream getBoundStreamsWithBufferSize: DECOMPRESSED_BUFFER_SIZE
-                                inputStream: &decompressedOutput
-                               outputStream: &output];
+  [NSStream getBoundStreamsWithBufferSize: DECOMPRESSED_BUFFER_SIZE
+                              inputStream: &decompressedOutput
+                             outputStream: &output];
 
-    decompressor = [[CompressedInput alloc] initWithSourceUrl: url outputStream: output];
+  decompressor = [[CompressedInput alloc] initWithSourceUrl: url outputStream: output];
 
-    parserInput = [[[InputStreamAdapter alloc] initWithInputStream: decompressedOutput]
-                   autorelease];
-    [parserInput open];
-  }
+  NSInputStream  *parserInput = [[[InputStreamAdapter alloc]
+                                  initWithInputStream: decompressedOutput] autorelease];
+  [parserInput open];
 
   parser = [[NSXMLParser alloc] initWithStream: parserInput];
   parser.delegate = self;
