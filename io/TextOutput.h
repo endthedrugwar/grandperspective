@@ -8,9 +8,10 @@ extern const NSUInteger TEXT_OUTPUT_BUFFER_SIZE;
 }
 
 // Overrides designated initialiser
-- (instancetype) init NS_UNAVAILABLE;
+- (instancetype) init NS_DESIGNATED_INITIALIZER;
 
-- (instancetype) init:(NSString *)filename NS_DESIGNATED_INITIALIZER;
+- (BOOL) open:(NSString *)filename;
+- (BOOL) close;
 
 - (BOOL) appendString:(NSString *)s;
 - (BOOL) flush;

@@ -1,11 +1,11 @@
-#import <Foundation/Foundation.h>
+#import <zlib.h>
 
 #import "CompressedTextOutput.h"
 
 @implementation CompressedTextOutput
 
-- (instancetype) init:(NSString *)filename {
-  if (self = [super init: filename]) {
+- (instancetype) init {
+  if (self = [super init]) {
     compressedDataBuffer = malloc(TEXT_OUTPUT_BUFFER_SIZE);
 
     compression_stream_init(&outStream, COMPRESSION_STREAM_ENCODE, COMPRESSION_ZLIB);
@@ -22,6 +22,32 @@
   [super dealloc];
 }
 
+- (BOOL) open:(NSString *)filename {
+  if (![super open: filename]) {
+    return NO;
+  }
+
+  originalSize = 0;
+  crc = crc32(0L, Z_NULL, 0);;
+
+  int8_t header[] = {
+    0x1f, 0x8b,             // GZIP ID
+    0x08,                   // Compression method - DEFLATE
+    0x01,                   // Flags: FTEXT
+    0x00, 0x00, 0x00, 0x00, // Modification time: unset
+    0x00,                   // Extra flags
+    0x07                    // OS: Macintosh
+  };
+  return fwrite(header, 1, sizeof(header), file) == sizeof(header);
+}
+
+- (BOOL) close {
+  BOOL ok = (fwrite(&crc, 4, 1, file) == 1 &&
+             fwrite(&originalSize, 4, 1, file) == 1);
+
+  return [super close] && ok;
+}
+
 - (BOOL) flush {
   int flags = (dataBufferPos < TEXT_OUTPUT_BUFFER_SIZE) ? COMPRESSION_STREAM_FINALIZE : 0;
 
@@ -29,6 +55,10 @@
   outStream.src_size = dataBufferPos;
   outStream.dst_ptr = compressedDataBuffer;
   outStream.dst_size = TEXT_OUTPUT_BUFFER_SIZE;
+
+  originalSize += dataBufferPos;
+
+  crc = crc32(crc, dataBuffer, (unsigned int)dataBufferPos);
 
   compression_status result = compression_stream_process(&outStream, flags);
   if (result == COMPRESSION_STATUS_ERROR) {

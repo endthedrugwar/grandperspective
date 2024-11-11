@@ -63,7 +63,7 @@ extern NSString  *DateTimeFormat;
 
 + (nullable NSString *)stringForTime:(CFAbsoluteTime)time;
 
-- (TextOutput *)createTextOutput:(NSString *)filename;
+- (TextOutput *)createTextOutput;
 
 - (void) appendString:(NSString *)s;
 

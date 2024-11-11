@@ -8,24 +8,36 @@ const NSUInteger TEXT_OUTPUT_BUFFER_SIZE = 4096 * 16;
 @implementation TextOutput
 
 - (void) dealloc {
-  fclose(file);
-  file = NULL;
+  if (file) {
+    fclose(file);
+    file = NULL;
+  }
 
   free(dataBuffer);
 
   [super dealloc];
 }
 
-- (instancetype) init:(NSString *)filename {
+- (instancetype) init {
   if (self = [super init]) {
-    file = fopen(filename.UTF8String, "w");
-    if (!file) {
-      return nil;
-    }
-
+    file = NULL;
     dataBuffer = malloc(TEXT_OUTPUT_BUFFER_SIZE);
   }
   return self;
+}
+
+- (BOOL) open:(NSString *)filename {
+  file = fopen(filename.UTF8String, "w");
+
+  return file != NULL;
+}
+
+- (BOOL) close {
+  BOOL ok = fclose(file) == 0;
+
+  file = NULL;
+
+  return ok;
 }
 
 - (BOOL) appendString:(NSString *)s {

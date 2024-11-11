@@ -12,10 +12,12 @@
 NSString  *DateTimeFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
 
 // Localized error messages
-#define WRITING_LAST_DATA_FAILED \
-NSLocalizedString(@"Failed to write last data to file.", @"Error message")
-#define WRITING_BUFFER_FAILED \
-NSLocalizedString(@"Failed to write entire buffer.", @"Error message")
+#define FAILED_TO_CREATE_FILE \
+NSLocalizedString(@"Failed to create file.", @"Error message")
+#define FAILED_TO_CLOSE_FILE \
+NSLocalizedString(@"Failed to close file.", @"Error message")
+#define FAILED_TO_WRITE \
+NSLocalizedString(@"Failed to write to file.", @"Error message")
 
 
 @implementation TreeWriter
@@ -42,16 +44,26 @@ NSLocalizedString(@"Failed to write entire buffer.", @"Error message")
 - (BOOL) writeTree:(AnnotatedTreeContext *)tree toFile:(NSString *)filename options:(id)options {
   NSAssert(!textOutput, @"textOutput not nil");
 
-  textOutput = [self createTextOutput: filename];
-  [progressTracker startingTask];
+  textOutput = [self createTextOutput];
 
-  [self writeTree: tree options: options];
+  if (![textOutput open: filename]) {
+    error = [[ApplicationError alloc] initWithLocalizedDescription: FAILED_TO_CREATE_FILE];
+  } else {
+    [progressTracker startingTask];
 
-  if (error==nil && ![textOutput flush]) {
-    error = [[ApplicationError alloc] initWithLocalizedDescription: WRITING_LAST_DATA_FAILED];
+    [self writeTree: tree options: options];
+
+    if (error==nil) {
+      if (![textOutput flush]) {
+        error = [[ApplicationError alloc] initWithLocalizedDescription: FAILED_TO_WRITE];
+      } else if (![textOutput close]) {
+        error = [[ApplicationError alloc] initWithLocalizedDescription: FAILED_TO_CLOSE_FILE];
+      }
+    }
+
+    [progressTracker finishedTask];
   }
 
-  [progressTracker finishedTask];
   [textOutput release];
 
   return (error==nil) && !abort;
@@ -102,8 +114,8 @@ NSLocalizedString(@"Failed to write entire buffer.", @"Error message")
   }
 }
 
-- (TextOutput *)createTextOutput:(NSString *)filename {
-  return [[TextOutput alloc] init: filename];
+- (TextOutput *)createTextOutput {
+  return [[TextOutput alloc] init];
 }
 
 - (void) appendString:(NSString *)s {
@@ -116,7 +128,7 @@ NSLocalizedString(@"Failed to write entire buffer.", @"Error message")
   }
 
   if (![textOutput appendString: s]) {
-    error = [[ApplicationError alloc] initWithLocalizedDescription: WRITING_BUFFER_FAILED];
+    error = [[ApplicationError alloc] initWithLocalizedDescription: FAILED_TO_WRITE];
 
     abort = YES;
   }
