@@ -1,10 +1,10 @@
 #import <Foundation/Foundation.h>
 
-#import <compression.h>
+#import <zlib.h>
 
 extern const NSUInteger DECOMPRESSED_BUFFER_SIZE;
 
-// Reads gzip-ed compressed data, de-compressiong it on the fly.
+// Reads gzip-ed compressed data, de-compressing it on the fly.
 //
 // For backward compatibility, it also supports reading uncompressed text data
 @interface CompressedInput : NSObject <NSStreamDelegate> {
@@ -21,7 +21,8 @@ extern const NSUInteger DECOMPRESSED_BUFFER_SIZE;
   NSInteger numDecompressedBytesAvailable;
   BOOL  outputSpaceAvailable;
 
-  compression_stream  compressionStream;
+  struct z_stream_s  compressionStream;
+
   NSInputStream  *inputStream;
   NSOutputStream  *outputStream;
 }
