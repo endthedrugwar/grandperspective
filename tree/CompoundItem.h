@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /* Replaces the contents of the compound-item.
  *
- * Note: Unlike the individual replace methods, the change of the item may change. That implies
+ * Note: Unlike the individual replace methods, the size of the item may change. That implies
  * that this method should only be used on items that are not yet part of a balanced tree (as this
  * may "upset" the balance)
  */

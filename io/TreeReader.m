@@ -608,8 +608,8 @@ didStartElement:(NSString *)childElement
   qualifiedName:(NSString *)qName
      attributes:(NSDictionary *)attribs {
   if (reader.aborted) {
-    // Although the TreeReader actually ignores it, given that the error callback
-    // is used for consistency providing a properly initialised error object.
+    // Although the TreeReader actually ignores it, given that the error callback is used, for
+    // consistency provide a properly initialised error object.
     NSError  *error = [ApplicationError errorWithLocalizedDescription: PARSING_ABORTED_MSG];
     [callback handler: self failedParsingElement: error];
   }
