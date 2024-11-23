@@ -2,8 +2,8 @@
 
 #import "CompressedInput.h"
 
-const NSUInteger COMPRESSED_BUFFER_SIZE = 4096 * 2;
-const NSUInteger DECOMPRESSED_BUFFER_SIZE = 4096 * 16;
+const NSUInteger COMPRESSED_BUFFER_SIZE = 4096;
+const NSUInteger DECOMPRESSED_BUFFER_SIZE = 4096 * 32;
 
 @interface CompressedInput (PrivateMethods)
 
