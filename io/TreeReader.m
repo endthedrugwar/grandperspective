@@ -75,6 +75,7 @@ static const int AUTORELEASE_PERIOD = 1024;
 
 @property (nonatomic, readonly, strong) FilterTestRepository *filterTestRepository;
 @property (nonatomic, readonly, copy) NSMutableArray *mutableUnboundFilterTests;
+@property (nonatomic, readonly, strong) NSMutableDictionary *timeCache;
 
 - (void) setParseError:(NSError *)error;
 
@@ -333,6 +334,7 @@ static const int AUTORELEASE_PERIOD = 1024;
     unboundTests = nil;
 
     treeBalancer = [[TreeBalancer alloc] init];
+    timeCache = [[NSMutableDictionary alloc] init];
 
     progressTracker = nil;
   }
@@ -352,6 +354,8 @@ static const int AUTORELEASE_PERIOD = 1024;
   
   [progressTracker release];
   [treeBalancer release];
+
+  [timeCache release];
 
   [super dealloc];
 }
@@ -391,6 +395,8 @@ static const int AUTORELEASE_PERIOD = 1024;
   
   [parser release];
   parser = nil;
+
+  [timeCache removeAllObjects];
 
   [autoreleasePool release];
   autoreleasePool = nil;
@@ -524,6 +530,10 @@ didStartElement:(NSString *)elementName
 
 - (NSMutableArray *)mutableUnboundFilterTests {
   return unboundTests;
+}
+
+- (NSMutableDictionary *)timeCache {
+  return timeCache;
 }
 
 
@@ -809,24 +819,24 @@ didStartElement:(NSString *)childElement
 - (NSDate *)parseDateAttribute:(NSString *)name value:(NSString *)stringValue {
   // Try to parse format used by writer
   NSDate  *dateValue = [TreeWriter.nsTimeFormatter dateFromString: stringValue];
+  if (dateValue != nil) {
+    return dateValue;
+  }
 
   // Try to parse format formerly used for <ScanInfo>: -(NSString*)description
-  if (dateValue == nil) {
-    static NSDateFormatter *descriptionFormat = nil;
-    if (descriptionFormat == nil) {
-        descriptionFormat = [[NSDateFormatter alloc] init];
-        descriptionFormat.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-        descriptionFormat.dateFormat = @"yyyy-MM-dd HH:mm:ss X";
-    }
-    dateValue = [descriptionFormat dateFromString: stringValue];
+  static NSDateFormatter *descriptionFormat = nil;
+  if (descriptionFormat == nil) {
+      descriptionFormat = [[NSDateFormatter alloc] init];
+      descriptionFormat.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+      descriptionFormat.dateFormat = @"yyyy-MM-dd HH:mm:ss X";
   }
-  
-  if (dateValue == nil) {
-    @throw [AttributeParseException exceptionWithAttributeName: name
-                                                        reason: EXPECTED_DATE_VALUE_MSG];
+  dateValue = [descriptionFormat dateFromString: stringValue];
+  if (dateValue != nil) {
+    return dateValue;
   }
 
-  return dateValue;
+  @throw [AttributeParseException exceptionWithAttributeName: name
+                                                      reason: EXPECTED_DATE_VALUE_MSG];
 }
 
 - (int) parseIntegerAttribute:(NSString *)name value:(NSString *)stringValue {
@@ -861,37 +871,41 @@ didStartElement:(NSString *)childElement
 }
           
 - (CFAbsoluteTime) parseTimeAttribute:(NSString *)name value:(NSString *)stringValue {
+  NSNumber  *timeValue = [reader.timeCache objectForKey: stringValue];
+  if (timeValue != nil) {
+    return timeValue.doubleValue;
+  }
+
   // Try to parse format used by writer
-  NSDate  *timeValue = [TreeWriter.nsTimeFormatter dateFromString: stringValue];
+  NSDate  *dateValue = [TreeWriter.nsTimeFormatter dateFromString: stringValue];
+  if (dateValue != nil) goto DONE;
 
   // Try to parse format formerly used for <File>s and <Folder>s: en_GB
-  if (timeValue == nil) {
-    static NSDateFormatter *enGBFormat = nil;
-    if (enGBFormat == nil) {
-      enGBFormat = [[NSDateFormatter alloc] init];
-      enGBFormat.locale = [NSLocale localeWithLocaleIdentifier: @"en_US_POSIX"];
-      enGBFormat.dateFormat = @"dd/MM/yyyy HH:mm";
-    }
-    timeValue = [enGBFormat dateFromString: stringValue];
+  static NSDateFormatter *enGBFormat = nil;
+  if (enGBFormat == nil) {
+    enGBFormat = [[NSDateFormatter alloc] init];
+    enGBFormat.locale = [NSLocale localeWithLocaleIdentifier: @"en_US_POSIX"];
+    enGBFormat.dateFormat = @"dd/MM/yyyy HH:mm";
   }
+  dateValue = [enGBFormat dateFromString: stringValue];
+  if (dateValue != nil) goto DONE;
 
   // en_GB format changed in OS X 10.11 to add a comma for some reason
-  if (timeValue == nil) {
-    static NSDateFormatter *enGBCommaFormat = nil;
-    if (enGBCommaFormat == nil) {
-      enGBCommaFormat = [[NSDateFormatter alloc] init];
-      enGBCommaFormat.locale = [NSLocale localeWithLocaleIdentifier: @"en_US_POSIX"];
-      enGBCommaFormat.dateFormat = @"dd/MM/yyyy, HH:mm";
-    }
-    timeValue = [enGBCommaFormat dateFromString: stringValue];
+  static NSDateFormatter *enGBCommaFormat = nil;
+  if (enGBCommaFormat == nil) {
+    enGBCommaFormat = [[NSDateFormatter alloc] init];
+    enGBCommaFormat.locale = [NSLocale localeWithLocaleIdentifier: @"en_US_POSIX"];
+    enGBCommaFormat.dateFormat = @"dd/MM/yyyy, HH:mm";
   }
+  if (dateValue != nil) goto DONE;
 
-  if (timeValue == nil) {
-    @throw [AttributeParseException exceptionWithAttributeName: name
-                                                        reason: EXPECTED_TIME_VALUE_MSG];
-  }
+  @throw [AttributeParseException exceptionWithAttributeName: name
+                                                      reason: EXPECTED_TIME_VALUE_MSG];
 
-  return CFDateGetAbsoluteTime((CFDateRef)timeValue);
+  DONE:
+  timeValue = @(CFDateGetAbsoluteTime((CFDateRef)dateValue));
+  [reader.timeCache setValue: timeValue forKey: stringValue];
+  return timeValue.doubleValue;
 }
 
 @end // @implementation ElementHandler (PrivateMethods) 

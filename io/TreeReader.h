@@ -19,6 +19,10 @@
   
   NSMutableArray  *unboundTests;
 
+  // Parsing datetime strings is slow. There are typically also many duplicate values. Using a
+  // cache speeds up parsing by about a factor ten.
+  NSMutableDictionary  *timeCache;
+
   CompressedInput  *decompressor;
   ReadProgressTracker  *progressTracker;
   TreeBalancer  *treeBalancer;
