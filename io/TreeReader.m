@@ -46,6 +46,8 @@ static const int AUTORELEASE_PERIOD = 1024;
   NSLocalizedString(@"Encountered more than one root folder.", @"Parse error")
 #define FILTER_AFTER_FOLDER_MSG \
   NSLocalizedString(@"Encountered filter after folder.", @"Parse error")
+#define NO_TREE_ERROR_MSG \
+  NSLocalizedString(@"Failed to read any tree data.", @"Parse error")
 
 #define PARSING_ABORTED_MSG \
   NSLocalizedString(@"Parsing aborted", @"Parse error")
@@ -371,6 +373,7 @@ static const int AUTORELEASE_PERIOD = 1024;
                              outputStream: &output];
 
   decompressor = [[CompressedInput alloc] initWithSourceUrl: url outputStream: output];
+  [decompressor open];
 
   NSInputStream  *parserInput = [[[InputStreamAdapter alloc]
                                   initWithInputStream: decompressedOutput] autorelease];
@@ -386,9 +389,6 @@ static const int AUTORELEASE_PERIOD = 1024;
   
   [unboundTests removeAllObjects];
 
-  if (decompressor != nil) {
-    [decompressor open];
-  }
   [parser parse];
   
   [progressTracker finishedTask];
@@ -403,6 +403,11 @@ static const int AUTORELEASE_PERIOD = 1024;
 
   [decompressor release];
   decompressor = nil;
+
+  if (tree == nil && error == nil) {
+    // Trigger error when an empty file was read (or a file without any XML elements).
+    error = [[ApplicationError errorWithLocalizedDescription: NO_TREE_ERROR_MSG] retain];
+  }
 
   return (error != nil || abort) ? nil : tree;
 }
