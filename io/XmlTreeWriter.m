@@ -175,8 +175,8 @@ NSString *escapedXML(NSString *s, CharacterOptions escapeCharMask) {
   [super dealloc];
 }
 
-- (TextOutput *)createTextOutput {
-  return [[CompressedTextOutput alloc] init];
+- (TextOutput *)createTextOutput:(NSURL *)path {
+  return [[CompressedTextOutput alloc] initWithPath: path];
 }
 
 - (void) writeTree:(AnnotatedTreeContext *)tree options:(id)options {

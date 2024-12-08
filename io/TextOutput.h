@@ -7,10 +7,12 @@ extern const NSUInteger TEXT_OUTPUT_BUFFER_SIZE;
   NSUInteger  dataBufferPos;
 }
 
-// Overrides designated initialiser
-- (instancetype) init NS_DESIGNATED_INITIALIZER;
+- (instancetype) init NS_UNAVAILABLE;
+- (instancetype) initWithPath:(NSURL *)path NS_DESIGNATED_INITIALIZER;
 
-- (BOOL) open:(NSString *)filename;
+@property (nonatomic, strong, readonly) NSURL *path;
+
+- (BOOL) open;
 - (BOOL) close;
 
 - (BOOL) appendString:(NSString *)s;

@@ -4,12 +4,12 @@
 @implementation WriteTaskInput
 
 - (instancetype) initWithAnnotatedTreeContext:(AnnotatedTreeContext *)context
-                                         path:(NSString *)path {
+                                         path:(NSURL *)path {
   return [self initWithAnnotatedTreeContext: context path: path options: nil];
 }
 
 - (instancetype) initWithAnnotatedTreeContext:(AnnotatedTreeContext *)context
-                                         path:(NSString *)path
+                                         path:(NSURL *)path
                                       options:(id)options {
   if (self = [super init]) {
     _annotatedTreeContext = [context retain];

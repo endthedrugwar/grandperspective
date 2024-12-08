@@ -41,12 +41,12 @@ NSLocalizedString(@"Failed to write to file.", @"Error message")
   [super dealloc];
 }
 
-- (BOOL) writeTree:(AnnotatedTreeContext *)tree toFile:(NSString *)filename options:(id)options {
+- (BOOL) writeTree:(AnnotatedTreeContext *)tree toFile:(NSURL *)path options:(id)options {
   NSAssert(!textOutput, @"textOutput not nil");
 
-  textOutput = [self createTextOutput];
+  textOutput = [self createTextOutput: path];
 
-  if (![textOutput open: filename]) {
+  if (![textOutput open]) {
     error = [[ApplicationError alloc] initWithLocalizedDescription: FAILED_TO_CREATE_FILE];
   } else {
     [progressTracker startingTask];
@@ -114,8 +114,8 @@ NSLocalizedString(@"Failed to write to file.", @"Error message")
   }
 }
 
-- (TextOutput *)createTextOutput {
-  return [[TextOutput alloc] init];
+- (TextOutput *)createTextOutput:(NSURL *)path {
+  return [[TextOutput alloc] initWithPath: path];
 }
 
 - (void) appendString:(NSString *)s {

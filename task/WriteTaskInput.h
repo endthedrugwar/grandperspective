@@ -10,13 +10,13 @@
 - (instancetype) init NS_UNAVAILABLE;
 
 - (instancetype) initWithAnnotatedTreeContext:(AnnotatedTreeContext *)context
-                                         path:(NSString *)path;
+                                         path:(NSURL *)path;
 - (instancetype) initWithAnnotatedTreeContext:(AnnotatedTreeContext *)context
-                                         path:(NSString *)path
+                                         path:(NSURL *)path
                                       options:(id)options NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, readonly, strong) AnnotatedTreeContext *annotatedTreeContext;
-@property (nonatomic, readonly, copy) NSString *path;
+@property (nonatomic, readonly, strong) NSURL *path;
 @property (nonatomic, readonly, strong) id options;
 
 @end

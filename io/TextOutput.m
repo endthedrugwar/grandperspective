@@ -11,6 +11,7 @@ const NSUInteger TEXT_OUTPUT_BUFFER_SIZE = 4096 * 16;
   if (file) {
     fclose(file);
     file = NULL;
+    [_path release];
   }
 
   free(dataBuffer);
@@ -18,16 +19,17 @@ const NSUInteger TEXT_OUTPUT_BUFFER_SIZE = 4096 * 16;
   [super dealloc];
 }
 
-- (instancetype) init {
+- (instancetype) initWithPath:(NSURL *)pathVal {
   if (self = [super init]) {
+    _path = [pathVal retain];
     file = NULL;
     dataBuffer = malloc(TEXT_OUTPUT_BUFFER_SIZE);
   }
   return self;
 }
 
-- (BOOL) open:(NSString *)filename {
-  file = fopen(filename.UTF8String, "w");
+- (BOOL) open {
+  file = fopen(self.path.path.UTF8String, "w");
 
   return file != NULL;
 }

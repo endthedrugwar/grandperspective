@@ -4,8 +4,8 @@
 
 @implementation CompressedTextOutput
 
-- (instancetype) init {
-  if (self = [super init]) {
+- (instancetype) initWithPath:(NSURL *)path {
+  if (self = [super initWithPath: path]) {
     compressedDataBuffer = malloc(TEXT_OUTPUT_BUFFER_SIZE);
 
     outStream.zalloc = Z_NULL;

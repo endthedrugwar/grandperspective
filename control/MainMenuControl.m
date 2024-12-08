@@ -1088,7 +1088,7 @@ static dispatch_once_t  singletonOnceToken;
     if (destURL.fileURL) {
       WriteTaskInput  *input =
         [[[WriteTaskInput alloc] initWithAnnotatedTreeContext: [dirViewControl annotatedTreeContext]
-                                                         path: destURL.path
+                                                         path: destURL
                                                       options: options]
        autorelease];
 

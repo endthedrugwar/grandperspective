@@ -12,7 +12,7 @@
   struct z_stream_s  outStream;
 }
 
-- (instancetype) init NS_DESIGNATED_INITIALIZER;
+- (instancetype) initWithPath:(NSURL *)path NS_DESIGNATED_INITIALIZER;
 
 - (BOOL) flush;
 

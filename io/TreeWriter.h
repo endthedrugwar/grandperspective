@@ -27,7 +27,7 @@ extern NSString  *DateTimeFormat;
  * error occurred, or if the operation has been aborted. In the latter case the file will still be
  * valid. It simply will not contain all files/folders in the tree.
  */
-- (BOOL) writeTree:(AnnotatedTreeContext *)tree toFile:(NSString *)path options:(id)options;
+- (BOOL) writeTree:(AnnotatedTreeContext *)tree toFile:(NSURL *)path options:(id)options;
 
 /* Abstract method that should write the tree via repeated invocations of appendString:.
  */
@@ -63,7 +63,7 @@ extern NSString  *DateTimeFormat;
 
 + (nullable NSString *)stringForTime:(CFAbsoluteTime)time;
 
-- (TextOutput *)createTextOutput;
+- (TextOutput *)createTextOutput:(NSURL *)path;
 
 - (void) appendString:(NSString *)s;
 
