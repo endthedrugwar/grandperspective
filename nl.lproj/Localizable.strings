@@ -172,6 +172,9 @@
 /* Alert message */
 "Failed to open the package \"%@\"" = "Het openen van het pakket \"%@\" is mislukt";
 
+/* Parse error */
+"Failed to read any tree data." = "Het is niet gelukt data in te lezen.";
+
 /* Alert message */
 "Failed to reveal the file \"%@\"" = "Het tonen van het bestand \"%@\" is mislukt";
 
