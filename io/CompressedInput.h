@@ -27,7 +27,6 @@ extern const NSUInteger DECOMPRESSED_BUFFER_SIZE;
   NSOutputStream  *outputStream;
 }
 
-@property (nonatomic) unsigned long long inputFileSize;
 @property (atomic) unsigned long long totalBytesRead;
 
 // Overrides designated initialiser

@@ -31,10 +31,6 @@ const NSUInteger DECOMPRESSED_BUFFER_SIZE = 4096 * 32;
 
     inputStream = [[NSInputStream alloc] initWithURL: sourceUrl];
 
-    // Get the input file size (so that the gzip-footer can be easily skipped.
-    _inputFileSize = [[NSFileManager.defaultManager attributesOfItemAtPath: sourceUrl.path
-                                                                     error: nil] fileSize];
-
     compressedDataBuffer = malloc(COMPRESSED_BUFFER_SIZE);
     decompressedDataBuffer = malloc(DECOMPRESSED_BUFFER_SIZE);
   }
