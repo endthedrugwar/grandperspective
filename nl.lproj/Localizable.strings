@@ -145,6 +145,12 @@
 /* Alert message */
 "Failed to bind one or more filter tests:\n%@" = "Onbekende filtertesten:\n%@";
 
+/* Error message */
+"Failed to close file." = "Het sluiten van het bestand is mislukt.";
+
+/* Error message */
+"Failed to create file." = "Het aanmaken van het bestand is mislukt.";
+
 /* Alert message */
 "Failed to delete the file \"%@\"" = "Het verwijderen van het bestand \"%@\" is mislukt";
 
@@ -189,6 +195,9 @@
 
 /* Error message */
 "Failed to write last data to file." = "Het wegschrijven van de laatste data is mislukt.";
+
+/* Error message */
+"Failed to write to file." = "Het schrijven van data is mislukt.";
 
 /* Label in Focus panel */
 "File in view:" = "Getoond bestand:";
