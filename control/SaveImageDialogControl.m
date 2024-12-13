@@ -117,7 +117,7 @@ static const int MINIMUM_SIZE = 16;
       NSAlert *alert = [[[NSAlert alloc] init] autorelease];
 
       [alert addButtonWithTitle: OK_BUTTON_TITLE];
-      [alert setMessageText: NSLocalizedString(@"Failed to save the image.", @"Alert message")];
+      [alert setMessageText: NSLocalizedString(@"Failed to save the image", @"Alert message")];
 
       [alert runModal];
     }

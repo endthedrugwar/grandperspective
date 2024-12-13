@@ -198,11 +198,11 @@
 
 - (NSString *)checkNameIsValid:(NSString *)name {
   if ([name isEqualToString:@""]) {
-    return NSLocalizedString(@"The filter must have a name.", @"Alert message");
+    return NSLocalizedString(@"The filter must have a name", @"Alert message");
   }
   else if ( ![allowedName isEqualToString: name] &&
             allFilters[name] != nil) {
-    NSString  *fmt = NSLocalizedString(@"A filter named \"%@\" already exists.",
+    NSString  *fmt = NSLocalizedString(@"A filter named \"%@\" already exists",
                                        @"Alert message");
     return [NSString stringWithFormat: fmt, name];
   }

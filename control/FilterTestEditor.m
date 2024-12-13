@@ -204,10 +204,10 @@
 
 - (NSString *)checkNameIsValid:(NSString *)name {
   if ([name isEqualToString:@""]) {
-    return NSLocalizedString(@"The test must have a name.", @"Alert message");
+    return NSLocalizedString(@"The test must have a name", @"Alert message");
   }
   else if (![allowedName isEqualToString: name] && allTests[name] != nil) {
-    NSString  *fmt = NSLocalizedString(@"A test named \"%@\" already exists.", @"Alert message");
+    NSString  *fmt = NSLocalizedString(@"A test named \"%@\" already exists", @"Alert message");
     return [NSString stringWithFormat: fmt, name];
   }
   

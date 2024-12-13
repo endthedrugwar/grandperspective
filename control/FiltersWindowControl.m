@@ -118,9 +118,9 @@
   NSString  *fmt = NSLocalizedString(@"Remove the filter named \"%@\"?", @"Alert message");
   NSString  *infoMsg = 
     ([filterRepository applicationProvidedFilterForName: filterName] != nil) ?
-      NSLocalizedString(@"The filter will be replaced by the default filter with this name.",
+      NSLocalizedString(@"The filter will be replaced by the default filter with this name",
                         @"Alert informative text") :
-      NSLocalizedString(@"The filter will be irrevocably removed from the filter repository.",
+      NSLocalizedString(@"The filter will be irrevocably removed from the filter repository",
                         @"Alert informative text");
 
   NSBundle  *mainBundle = NSBundle.mainBundle;

@@ -249,7 +249,7 @@ static dispatch_once_t  singletonOnceToken;
   NSString  *format =
     NSLocalizedString(@"Failed to update one or more filters:\n%@", @"Alert message");
   NSString  *infoText = 
-    NSLocalizedString(@"These filters do not exist anymore. Their old definition is used instead.",
+    NSLocalizedString(@"These filters do not exist anymore. Their old definition is used instead",
                       @"Alert informative text");
   [self reportUnbound: unboundFilters messageFormat: format infoText: infoText];
 }
@@ -258,7 +258,7 @@ static dispatch_once_t  singletonOnceToken;
   NSString  *format = 
     NSLocalizedString(@"Failed to bind one or more filter tests:\n%@", @"Alert message");
   NSString  *infoText = 
-    NSLocalizedString(@"The unbound tests have been omitted from the filter.",
+    NSLocalizedString(@"The unbound tests have been omitted from the filter",
                       @"Alert informative text");
   [self reportUnbound: unboundTests messageFormat: format infoText: infoText];
 }
@@ -444,13 +444,13 @@ static dispatch_once_t  singletonOnceToken;
 
   NSURL  *fileUrl = [NSURL getFileURLFromPasteboard: pboard];
   if (fileUrl == nil) {
-    *error = NSLocalizedString(@"Failed to get path from pasteboard.", @"Error message");
+    *error = NSLocalizedString(@"Failed to get path from pasteboard", @"Error message");
     NSLog(@"%@", *error); // Also logging. Setting *error does not seem to work?
     return;
   }
   
   if (!fileUrl.isDirectory) {
-    *error = NSLocalizedString(@"Expected a folder.", @"Error message");
+    *error = NSLocalizedString(@"Expected a folder", @"Error message");
     NSLog(@"%@", *error); // Also logging. Setting *error does not seem to work?
     return;
   }
@@ -466,13 +466,13 @@ static dispatch_once_t  singletonOnceToken;
 
   NSURL  *fileUrl = [NSURL getFileURLFromPasteboard: pboard];
   if (fileUrl == nil) {
-    *error = NSLocalizedString(@"Failed to get path from pasteboard.", @"Error message" );
+    *error = NSLocalizedString(@"Failed to get path from pasteboard", @"Error message" );
     NSLog(@"%@", *error); // Also logging. Setting *error does not seem to work?
     return;
   }
   
   if (! [fileUrl.pathExtension.lowercaseString isEqualToString: @"gpscan"]) {
-    *error = NSLocalizedString(@"Expected scandata file.", @"Error message" );
+    *error = NSLocalizedString(@"Expected scandata file", @"Error message" );
     NSLog(@"%@", *error); // Also logging. Setting *error does not seem to work?
     return;
   }
@@ -1378,7 +1378,7 @@ static dispatch_once_t  singletonOnceToken;
     msgFormat = NSLocalizedString(@"Aborted saving the scan data to \"%@\"",
                                   @"Alert message (with filename arg)");
     [alert setInformativeText: 
-       NSLocalizedString(@"The resulting file is valid but incomplete.",
+       NSLocalizedString(@"The resulting file is valid but incomplete",
                          @"Alert informative text")];
   }
   else {

@@ -34,7 +34,7 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
 
 #define NOTE_IT_MAY_NOT_EXIST_ANYMORE \
   NSLocalizedString(\
-    @"A possible reason is that it does not exist anymore.", \
+    @"A possible reason is that it does not exist anymore", \
     @"Alert message (Note: 'it' can refer to a file or a folder)")
 
 
@@ -420,26 +420,26 @@ NSString  *ViewWillCloseEvent = @"viewWillClose";
   if (isDir) {
     mainMsg = NSLocalizedString(@"Do you want to delete the folder \"%@\"?", @"Alert message");
     infoMsg = NSLocalizedString( 
-      @"The selected folder, with all its contents, will be moved to Trash. Beware, any files in the folder that are not shown in the view will also be deleted.", 
+      @"The selected folder, with all its contents, will be moved to Trash. Beware, any files in the folder that are not shown in the view will also be deleted", 
       @"Alert informative text");
     hardLinkMsg = NSLocalizedString(
-      @"Note: The folder is hard-linked. It will take up space until all links to it are deleted.",
+      @"Note: The folder is hard-linked. It will take up space until all links to it are deleted",
       @"Alert additional informative text");
   }
   else if (isPackage) {
     mainMsg = NSLocalizedString(@"Do you want to delete the package \"%@\"?", @"Alert message");
-    infoMsg = NSLocalizedString(@"The selected package will be moved to Trash.",
+    infoMsg = NSLocalizedString(@"The selected package will be moved to Trash",
                                 @"Alert informative text" );
     hardLinkMsg = NSLocalizedString( 
-      @"Note: The package is hard-linked. It will take up space until all links to it are deleted.",
+      @"Note: The package is hard-linked. It will take up space until all links to it are deleted",
       @"Alert additional informative text");
   }
   else {
     mainMsg = NSLocalizedString(@"Do you want to delete the file \"%@\"?", @"Alert message");
-    infoMsg = NSLocalizedString(@"The selected file will be moved to Trash.",
+    infoMsg = NSLocalizedString(@"The selected file will be moved to Trash",
                                 @"Alert informative text");
     hardLinkMsg = NSLocalizedString( 
-      @"Note: The file is hard-linked. It will take up space until all links to it are deleted.",
+      @"Note: The file is hard-linked. It will take up space until all links to it are deleted",
       @"Alert additional informative text");
   }
   

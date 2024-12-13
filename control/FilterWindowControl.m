@@ -234,9 +234,9 @@ NSString  *MatchColumn = @"match";
   NSString  *fmt = NSLocalizedString(@"Remove the test named \"%@\"?", @"Alert message");
   NSString  *infoMsg = 
     ([testRepository applicationProvidedTestForName: testName] != nil)
-    ? NSLocalizedString(@"The test will be replaced by the default test with this name.",
+    ? NSLocalizedString(@"The test will be replaced by the default test with this name",
                         @"Alert informative text")
-    : NSLocalizedString(@"The test will be irrevocably removed from the test repository.",
+    : NSLocalizedString(@"The test will be irrevocably removed from the test repository",
                         @"Alert informative text");
 
   NSString  *localizedName =

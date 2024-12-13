@@ -36,38 +36,38 @@ static const int AUTORELEASE_PERIOD = 1024;
   NSLocalizedString(@"Error parsing \"%@\" attribute: %@", @"Parse error")
 
 #define EXPECTED_ELEM_MSG \
-  NSLocalizedString(@"Expected %@ element.", @"Parse error")
+  NSLocalizedString(@"Expected %@ element", @"Parse error")
 
 #define MULTIPLE_ELEM_MSG \
-  NSLocalizedString(@"Encountered multiple %@ elements.", @"Parse error")
+  NSLocalizedString(@"Encountered multiple %@ elements", @"Parse error")
 #define MULTIPLE_ROOT_ELEM_MSG \
-  NSLocalizedString(@"Encountered more than one root element.", @"Parse error")
+  NSLocalizedString(@"Encountered more than one root element", @"Parse error")
 #define MULTIPLE_ROOT_FOLDER_MSG \
-  NSLocalizedString(@"Encountered more than one root folder.", @"Parse error")
+  NSLocalizedString(@"Encountered more than one root folder", @"Parse error")
 #define FILTER_AFTER_FOLDER_MSG \
-  NSLocalizedString(@"Encountered filter after folder.", @"Parse error")
+  NSLocalizedString(@"Encountered filter after folder", @"Parse error")
 #define NO_TREE_ERROR_MSG \
-  NSLocalizedString(@"Failed to read any tree data.", @"Parse error")
+  NSLocalizedString(@"Failed to read any tree data", @"Parse error")
 
 #define PARSING_ABORTED_MSG \
   NSLocalizedString(@"Parsing aborted", @"Parse error")
 
 #define ATTR_NOT_FOUND_MSG \
-  NSLocalizedString(@"Attribute not found.", @"Parse error")
+  NSLocalizedString(@"Attribute not found", @"Parse error")
 
 #define EXPECTED_UINT_VALUE_MSG \
-  NSLocalizedString(@"Expected unsigned integer value.", @"Parse error")
+  NSLocalizedString(@"Expected unsigned integer value", @"Parse error")
 #define EXPECTED_INT_VALUE_MSG \
-  NSLocalizedString(@"Expected integer value.", @"Parse error")
+  NSLocalizedString(@"Expected integer value", @"Parse error")
 #define EXPECTED_BOOL_VALUE_MSG \
-  NSLocalizedString(@"Expected boolean value.", @"Parse error")
+  NSLocalizedString(@"Expected boolean value", @"Parse error")
 #define EXPECTED_DATE_VALUE_MSG \
-  NSLocalizedString(@"Expected date value.", @"Parse error")
+  NSLocalizedString(@"Expected date value", @"Parse error")
 #define EXPECTED_TIME_VALUE_MSG \
-  NSLocalizedString(@"Expected time value.", @"Parse error")
+  NSLocalizedString(@"Expected time value", @"Parse error")
 
 #define UNRECOGNIZED_VALUE_MSG \
-  NSLocalizedString(@"Unrecognized value.", @"Parse error")
+  NSLocalizedString(@"Unrecognized value", @"Parse error")
 
 
 @interface TreeReader (PrivateMethods) 

@@ -13,11 +13,11 @@ NSString  *DateTimeFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
 
 // Localized error messages
 #define FAILED_TO_CREATE_FILE \
-NSLocalizedString(@"Failed to create file.", @"Error message")
+NSLocalizedString(@"Failed to create file", @"Error message")
 #define FAILED_TO_CLOSE_FILE \
-NSLocalizedString(@"Failed to close file.", @"Error message")
+NSLocalizedString(@"Failed to close file", @"Error message")
 #define FAILED_TO_WRITE \
-NSLocalizedString(@"Failed to write to file.", @"Error message")
+NSLocalizedString(@"Failed to write to file", @"Error message")
 
 
 @implementation TreeWriter
