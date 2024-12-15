@@ -44,13 +44,13 @@
 "%qu files" = "%qu files";
 
 /* Alert message */
-"A filter named \"%@\" already exists." = "A filter named \"%@\" already exists";
+"A filter named \"%@\" already exists" = "A filter named \"%@\" already exists";
 
 /* Alert message (Note: 'it' can refer to a file or a folder) */
-"A possible reason is that it does not exist anymore." = "A possible reason is that it does not exist anymore";
+"A possible reason is that it does not exist anymore" = "A possible reason is that it does not exist anymore";
 
 /* Alert message */
-"A test named \"%@\" already exists." = "A test named \"%@\" already exists";
+"A test named \"%@\" already exists" = "A test named \"%@\" already exists";
 
 /* Alert message (with filename arg) */
 "Aborted saving the scan data to \"%@\"" = "Aborted saving the scan data to \"%@\"";
@@ -62,7 +62,7 @@
 "Area in view:" = "Area in view:";
 
 /* Parse error */
-"Attribute not found." = "Attribute not found";
+"Attribute not found" = "Attribute not found";
 
 /* File size unit for bytes. */
 "B" = "B";
@@ -98,43 +98,43 @@
 "Do you want to delete the package \"%@\"?" = "Do you want to delete the package \"%@\"?";
 
 /* Parse error */
-"Encountered filter after folder." = "Encountered filter after folder";
+"Encountered filter after folder" = "Encountered filter after folder";
 
 /* Parse error */
-"Encountered more than one root element." = "Encountered more than one root element";
+"Encountered more than one root element" = "Encountered more than one root element";
 
 /* Parse error */
-"Encountered more than one root folder." = "Encountered more than one root folder";
+"Encountered more than one root folder" = "Encountered more than one root folder";
 
 /* Parse error */
-"Encountered multiple %@ elements." = "Encountered multiple %@ elements";
+"Encountered multiple %@ elements" = "Encountered multiple %@ elements";
 
 /* Parse error */
 "Error parsing \"%@\" attribute: %@" = "Error parsing \"%1$@\" attribute: %2$@";
 
 /* Parse error */
-"Expected %@ element." = "Expected %@ element";
+"Expected %@ element" = "Expected %@ element";
 
 /* Error message */
-"Expected a folder." = "Expected a folder";
+"Expected a folder" = "Expected a folder";
 
 /* Parse error */
-"Expected boolean value." = "Expected boolean value";
+"Expected boolean value" = "Expected boolean value";
 
 /* Parse error */
-"Expected date value." = "Expected date value";
+"Expected date value" = "Expected date value";
 
 /* Parse error */
-"Expected integer value." = "Expected integer value";
+"Expected integer value" = "Expected integer value";
 
 /* Error message */
-"Expected scandata file." = "Expected scandata file";
+"Expected scandata file" = "Expected scandata file";
 
 /* Parse error */
-"Expected time value." = "Expected time value";
+"Expected time value" = "Expected time value";
 
 /* Parse error */
-"Expected unsigned integer value." = "Expected unsigned integer value";
+"Expected unsigned integer value" = "Expected unsigned integer value";
 
 /* Title of save panel */
 "Export image" = "Export image";
@@ -145,6 +145,12 @@
 /* Alert message */
 "Failed to bind one or more filter tests:\n%@" = "Failed to bind one or more filter tests:\n%@";
 
+/* Error message */
+"Failed to close file" = "Failed to close file";
+
+/* Error message */
+"Failed to create file" = "Failed to create file";
+
 /* Alert message */
 "Failed to delete the file \"%@\"" = "Failed to delete the file \"%@\"";
 
@@ -152,7 +158,7 @@
 "Failed to delete the folder \"%@\"" = "Failed to delete the folder \"%@\"";
 
 /* Error message */
-"Failed to get path from pasteboard." = "Failed to get path from pasteboard";
+"Failed to get path from pasteboard" = "Failed to get path from pasteboard";
 
 /* Alert message (with filename arg) */
 "Failed to load the scan data from \"%@\"" = "Failed to load the scan data from \"%@\"";
@@ -166,6 +172,9 @@
 /* Alert message */
 "Failed to open the package \"%@\"" = "Failed to open the package \"%@\"";
 
+/* Parse error */
+"Failed to read any tree data" = "Failed to read any tree data";
+
 /* Alert message */
 "Failed to reveal the file \"%@\"" = "Failed to reveal the file \"%@\"";
 
@@ -176,7 +185,7 @@
 "Failed to reveal the package \"%@\"" = "Failed to reveal the package \"%@\"";
 
 /* Alert message */
-"Failed to save the image." = "Failed to save the image";
+"Failed to save the image" = "Failed to save the image";
 
 /* Alert message (with filename arg) */
 "Failed to save the scan data to \"%@\"" = "Failed to save the scan data to \"%@\"";
@@ -185,10 +194,7 @@
 "Failed to update one or more filters:\n%@" = "Failed to update one or more filters:\n%@";
 
 /* Error message */
-"Failed to write entire buffer." = "Failed to write entire buffer";
-
-/* Error message */
-"Failed to write last data to file." = "Failed to write last data to file";
+"Failed to write to file" = "Failed to write to file";
 
 /* Label in Focus panel */
 "File in view:" = "File in view:";
@@ -254,13 +260,13 @@
 "None" = "None";
 
 /* Alert additional informative text */
-"Note: The file is hard-linked. It will take up space until all links to it are deleted." = "Note: The file is hard-linked. It will take up space until all links to it are deleted";
+"Note: The file is hard-linked. It will take up space until all links to it are deleted" = "Note: The file is hard-linked. It will take up space until all links to it are deleted";
 
 /* Alert additional informative text */
-"Note: The folder is hard-linked. It will take up space until all links to it are deleted." = "Note: The folder is hard-linked. It will take up space until all links to it are deleted";
+"Note: The folder is hard-linked. It will take up space until all links to it are deleted" = "Note: The folder is hard-linked. It will take up space until all links to it are deleted";
 
 /* Alert additional informative text */
-"Note: The package is hard-linked. It will take up space until all links to it are deleted." = "Note: The package is hard-linked. It will take up space until all links to it are deleted";
+"Note: The package is hard-linked. It will take up space until all links to it are deleted" = "Note: The package is hard-linked. It will take up space until all links to it are deleted";
 
 /* Alert panel button */
 "OK" = "OK";
@@ -356,19 +362,19 @@
 "The actual (physical) size is %.1f%% of the reported (logical) size. Consider rescanning using the Physical file size measure" = "The actual (physical) size is %.1f%% of the reported (logical) size. Consider rescanning using the Physical file size measure";
 
 /* Alert message */
-"The filter must have a name." = "The filter must have a name";
+"The filter must have a name" = "The filter must have a name";
 
 /* Alert informative text */
-"The filter will be irrevocably removed from the filter repository." = "The filter will be irrevocably removed from the filter repository";
+"The filter will be irrevocably removed from the filter repository" = "The filter will be irrevocably removed from the filter repository";
 
 /* Alert informative text */
-"The filter will be replaced by the default filter with this name." = "The filter will be replaced by the default filter with this name";
+"The filter will be replaced by the default filter with this name" = "The filter will be replaced by the default filter with this name";
 
 /* Alert message */
 "The path %@ does not exist or is not a folder" = "The path %@ does not exist or is not a folder";
 
 /* Alert message */
-"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once." = "The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once";
+"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once" = "The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once";
 
 /* Alert message */
 "The reported size of some files is larger than their actual size on disk" = "The reported size of some files is larger than their actual size on disk";
@@ -377,31 +383,31 @@
 "The reported total size is larger than the actual size on disk" = "The reported total size is larger than the actual size on disk";
 
 /* Alert informative text */
-"The resulting file is valid but incomplete." = "The resulting file is valid but incomplete";
+"The resulting file is valid but incomplete" = "The resulting file is valid but incomplete";
 
 /* Alert informative text */
-"The selected file will be moved to Trash." = "The selected file will be moved to Trash";
+"The selected file will be moved to Trash" = "The selected file will be moved to Trash";
 
 /* Alert informative text */
-"The selected folder, with all its contents, will be moved to Trash. Beware, any files in the folder that are not shown in the view will also be deleted." = "The selected folder, with all its contents, will be moved to Trash. Beware, any files in the folder that are not shown in the view will also be deleted";
+"The selected folder, with all its contents, will be moved to Trash. Beware, any files in the folder that are not shown in the view will also be deleted" = "The selected folder, with all its contents, will be moved to Trash. Beware, any files in the folder that are not shown in the view will also be deleted";
 
 /* Alert informative text */
-"The selected package will be moved to Trash." = "The selected package will be moved to Trash";
+"The selected package will be moved to Trash" = "The selected package will be moved to Trash";
 
 /* Alert message */
-"The test must have a name." = "The test must have a name";
+"The test must have a name" = "The test must have a name";
 
 /* Alert informative text */
-"The test will be irrevocably removed from the test repository." = "The test will be irrevocably removed from the test repository";
+"The test will be irrevocably removed from the test repository" = "The test will be irrevocably removed from the test repository";
 
 /* Alert informative text */
-"The test will be replaced by the default test with this name." = "The test will be replaced by the default test with this name";
+"The test will be replaced by the default test with this name" = "The test will be replaced by the default test with this name";
 
 /* Alert informative text */
-"The unbound tests have been omitted from the filter." = "The unbound tests have been omitted from the filter";
+"The unbound tests have been omitted from the filter" = "The unbound tests have been omitted from the filter";
 
 /* Alert informative text */
-"These filters do not exist anymore. Their old definition is used instead." = "These filters do not exist anymore. Their old definition is used instead";
+"These filters do not exist anymore. Their old definition is used instead" = "These filters do not exist anymore. Their old definition is used instead";
 
 /* Part of tool tip for uniform types */
 "Top-level type" = "Top-level type";
@@ -419,5 +425,5 @@
 "Unnamed filter test" = "Unnamed filter test";
 
 /* Parse error */
-"Unrecognized value." = "Unrecognized value";
+"Unrecognized value" = "Unrecognized value";
 
