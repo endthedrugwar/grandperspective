@@ -145,6 +145,12 @@
 /* Alert message */
 "Failed to bind one or more filter tests:\n%@" = "Impossible de lier un ou plusieurs essais de filtres:\n%@";
 
+/* Error message */
+"Failed to close file" = "Echec de la fermeture du fichier";
+
+/* Error message */
+"Failed to create file" = "Echec de la création du fichier";
+
 /* Alert message */
 "Failed to delete the file \"%@\"" = "Impossible de supprimer le fichier \"%@\"";
 
@@ -166,6 +172,9 @@
 /* Alert message */
 "Failed to open the package \"%@\"" = "Echec d'ouverture du paquet \"%@\"";
 
+/* Parse error */
+"Failed to read any tree data" = "Echec de la lecture des données de l'arbre";
+
 /* Alert message */
 "Failed to reveal the file \"%@\"" = "Echec de la révélation du fichier \"%@\"";
 
@@ -183,6 +192,9 @@
 
 /* Alert message */
 "Failed to update one or more filters:\n%@" = "Echec de la mise à jour d'un ou plusieurs filtres:\n%@";
+
+/* Error message */
+"Failed to write to file" = "Echec de l'écriture dans le fichier";
 
 /* Label in Focus panel */
 "File in view:" = "Affichage du fichier:";
