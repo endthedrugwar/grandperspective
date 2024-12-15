@@ -98,16 +98,16 @@
 "Do you want to delete the package \"%@\"?" = "Wilt u het pakket \"%@\" verwijderen?";
 
 /* Parse error */
-"Encountered filter after folder" = "Een filter tegengekomen na de folder";
+"Encountered filter after folder" = "Een filter volgde na een folder";
 
 /* Parse error */
-"Encountered more than one root element" = "Meer dan één buitenste element tegengekomen";
+"Encountered more than one root element" = "Meer dan één buitenste element";
 
 /* Parse error */
-"Encountered more than one root folder" = "Meer dan één buitenste map tegengekomen";
+"Encountered more than one root folder" = "Meer dan één buitenste map";
 
 /* Parse error */
-"Encountered multiple %@ elements" = "Meerdere %@ elementen tegengekomen";
+"Encountered multiple %@ elements" = "Meerdere %@ elementen";
 
 /* Parse error */
 "Error parsing \"%@\" attribute: %@" = "Ongeldige waarde van attribuut \"%1$@\": %2$@";
