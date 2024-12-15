@@ -44,13 +44,13 @@
 "%qu files" = "%qu tiedostoa";
 
 /* Alert message */
-"A filter named \"%@\" already exists" = "Suodatin nimeltä \"%@\" on jo olemassa.";
+"A filter named \"%@\" already exists" = "Suodatin nimeltä \"%@\" on jo olemassa";
 
 /* Alert message (Note: 'it' can refer to a file or a folder) */
-"A possible reason is that it does not exist anymore" = "Se ei ehkä ole enää olemassa.";
+"A possible reason is that it does not exist anymore" = "Se ei ehkä ole enää olemassa";
 
 /* Alert message */
-"A test named \"%@\" already exists" = "Ehto nimeltä \"%@\" on jo olemassa.";
+"A test named \"%@\" already exists" = "Ehto nimeltä \"%@\" on jo olemassa";
 
 /* Alert message (with filename arg) */
 "Aborted saving the scan data to \"%@\"" = "Skannin tulosten talletus kohteeseen \"%@\" keskeytettiin";
@@ -62,7 +62,7 @@
 "Area in view:" = "Alue näkymässä:";
 
 /* Parse error */
-"Attribute not found" = "Ominaisuutta ei löytynyt.";
+"Attribute not found" = "Ominaisuutta ei löytynyt";
 
 /* File size unit for bytes. */
 "B" = "t";
@@ -98,43 +98,43 @@
 "Do you want to delete the package \"%@\"?" = "Haluatko poistaa paketin \"%@\"?";
 
 /* Parse error */
-"Encountered filter after folder" = "Suodatin kohdattiin hakemiston jälkeen.";
+"Encountered filter after folder" = "Suodatin kohdattiin hakemiston jälkeen";
 
 /* Parse error */
-"Encountered more than one root element" = "Enemmän kuin yksi juurielementti.";
+"Encountered more than one root element" = "Enemmän kuin yksi juurielementti";
 
 /* Parse error */
-"Encountered more than one root folder" = "Enemmän kuin yksi juurielementti.";
+"Encountered more than one root folder" = "Enemmän kuin yksi juurielementti";
 
 /* Parse error */
-"Encountered multiple %@ elements" = "Kohdattiin useita %@ elementtejä.";
+"Encountered multiple %@ elements" = "Kohdattiin useita %@ elementtejä";
 
 /* Parse error */
 "Error parsing \"%@\" attribute: %@" = "Virhe käsitellessä \"%1$@\" ominaisuutta: %2$@";
 
 /* Parse error */
-"Expected %@ element" = "Odotettiin %@ elementtiä.";
+"Expected %@ element" = "Odotettiin %@ elementtiä";
 
 /* Error message */
-"Expected a folder" = "Odotettiin hakemistoa.";
+"Expected a folder" = "Odotettiin hakemistoa";
 
 /* Parse error */
-"Expected boolean value" = "Odotettiin boolean arvoa.";
+"Expected boolean value" = "Odotettiin boolean arvoa";
 
 /* Parse error */
-"Expected date value" = "Odotettiin päivämääräarvoa.";
+"Expected date value" = "Odotettiin päivämääräarvoa";
 
 /* Parse error */
-"Expected integer value" = "Odotettiin kokonaislukua.";
+"Expected integer value" = "Odotettiin kokonaislukua";
 
 /* Error message */
-"Expected scandata file" = "Odotettiin skannitieto tiedostoa.";
+"Expected scandata file" = "Odotettiin skannitieto tiedostoa";
 
 /* Parse error */
-"Expected time value" = "Odotettiin aika-arvoa.";
+"Expected time value" = "Odotettiin aika-arvoa";
 
 /* Parse error */
-"Expected unsigned integer value" = "Odotettiin etumerkitöntä kokonaislukuarvoa.";
+"Expected unsigned integer value" = "Odotettiin etumerkitöntä kokonaislukuarvoa";
 
 /* Title of save panel */
 "Export image" = "Vie kuva";
@@ -158,7 +158,7 @@
 "Failed to delete the folder \"%@\"" = "Hakemiston \"%@\" poisto epäonnistui";
 
 /* Error message */
-"Failed to get path from pasteboard" = "Polun hakeminen leikepöydältä epäonnistui.";
+"Failed to get path from pasteboard" = "Polun hakeminen leikepöydältä epäonnistui";
 
 /* Alert message (with filename arg) */
 "Failed to load the scan data from \"%@\"" = "Skannitulosten lataaminen kohteesta \"%@\" epäonnistui";
@@ -185,7 +185,7 @@
 "Failed to reveal the package \"%@\"" = "Paketin \"%@\" näyttäminen epäonnistui";
 
 /* Alert message */
-"Failed to save the image" = "Kuvan tallettaminen epäonnistui.";
+"Failed to save the image" = "Kuvan tallettaminen epäonnistui";
 
 /* Alert message (with filename arg) */
 "Failed to save the scan data to \"%@\"" = "Skannitulosten tallettaminen kohteeseen \"%@\" epäonnistui";
@@ -260,13 +260,13 @@
 "None" = "Ei mitään";
 
 /* Alert additional informative text */
-"Note: The file is hard-linked. It will take up space until all links to it are deleted" = "Huom: Tiedosto on linkitetty (hard). Se vie tilaa niin kauan kuin siihen on linkkejä.";
+"Note: The file is hard-linked. It will take up space until all links to it are deleted" = "Huom: Tiedosto on linkitetty (hard). Se vie tilaa niin kauan kuin siihen on linkkejä";
 
 /* Alert additional informative text */
-"Note: The folder is hard-linked. It will take up space until all links to it are deleted" = "Huom: Hakemisto on linkitetty (hard). Se vie tilaa niin kauan kuin siihen on linkkejä.";
+"Note: The folder is hard-linked. It will take up space until all links to it are deleted" = "Huom: Hakemisto on linkitetty (hard). Se vie tilaa niin kauan kuin siihen on linkkejä";
 
 /* Alert additional informative text */
-"Note: The package is hard-linked. It will take up space until all links to it are deleted" = "Huom: Paketti on linkitetty (hard). Se vie tilaa niin kauan kuin siihen on linkkejä.";
+"Note: The package is hard-linked. It will take up space until all links to it are deleted" = "Huom: Paketti on linkitetty (hard). Se vie tilaa niin kauan kuin siihen on linkkejä";
 
 /* Alert panel button */
 "OK" = "OK";
@@ -362,19 +362,19 @@
 "The actual (physical) size is %.1f%% of the reported (logical) size. Consider rescanning using the Physical file size measure" = "Varsinainen fyysinen koko on %.1f%% loogisesta koosta. Harkitse uudelleenskannausta käyttäen fyysistä tiedostokokomittaa";
 
 /* Alert message */
-"The filter must have a name" = "Anna suotimelle nimi.";
+"The filter must have a name" = "Anna suotimelle nimi";
 
 /* Alert informative text */
-"The filter will be irrevocably removed from the filter repository" = "Suodatin poistetaan lopullisesti suodatinkirjastosta.";
+"The filter will be irrevocably removed from the filter repository" = "Suodatin poistetaan lopullisesti suodatinkirjastosta";
 
 /* Alert informative text */
-"The filter will be replaced by the default filter with this name" = "Suodatin korvataan oletussuodattimella käyttäen tätä nimeä.";
+"The filter will be replaced by the default filter with this name" = "Suodatin korvataan oletussuodattimella käyttäen tätä nimeä";
 
 /* Alert message */
 "The path %@ does not exist or is not a folder" = "Polkua %@ ei ole tai se ei ole hakemisto";
 
 /* Alert message */
-"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once" = "Virkistetty sisältö ei ehkä ole täysin tarkka. Linkit (hard) saattavat puuttua tai esiintyä useamman kerran. Suorita uudelleenskannaus varmistuaksesi että jokainen linkki (hard) esiintyy vain yhden kerran.";
+"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once" = "Virkistetty sisältö ei ehkä ole täysin tarkka. Linkit (hard) saattavat puuttua tai esiintyä useamman kerran. Suorita uudelleenskannaus varmistuaksesi että jokainen linkki (hard) esiintyy vain yhden kerran";
 
 /* Alert message */
 "The reported size of some files is larger than their actual size on disk" = "Joidenkin tiedostojen koko on suurempi kuin niiden varsinainen koko levyllä";
@@ -383,31 +383,31 @@
 "The reported total size is larger than the actual size on disk" = "Yhteiskoko on suurempi kuin varsinainen koko levyllä";
 
 /* Alert informative text */
-"The resulting file is valid but incomplete" = "Kohdetiedosto on ok mutta epätäydellinen.";
+"The resulting file is valid but incomplete" = "Kohdetiedosto on ok mutta epätäydellinen";
 
 /* Alert informative text */
-"The selected file will be moved to Trash" = "Valittu tiedosto siirretään Roskakoriin.";
+"The selected file will be moved to Trash" = "Valittu tiedosto siirretään Roskakoriin";
 
 /* Alert informative text */
-"The selected folder, with all its contents, will be moved to Trash. Beware, any files in the folder that are not shown in the view will also be deleted" = "Valittu hakemisto sisältöineen siirretään Roskakoriin. Varoitus: myös tiedostot mitkä ovat hakemistossa mutta eivät ole nyt näkyvissä poistetaan myös.";
+"The selected folder, with all its contents, will be moved to Trash. Beware, any files in the folder that are not shown in the view will also be deleted" = "Valittu hakemisto sisältöineen siirretään Roskakoriin. Varoitus: myös tiedostot mitkä ovat hakemistossa mutta eivät ole nyt näkyvissä poistetaan myös";
 
 /* Alert informative text */
-"The selected package will be moved to Trash" = "Valittu paketti siirretään roskakoriin.";
+"The selected package will be moved to Trash" = "Valittu paketti siirretään roskakoriin";
 
 /* Alert message */
-"The test must have a name" = "Ehdolla pitää olla nimi.";
+"The test must have a name" = "Ehdolla pitää olla nimi";
 
 /* Alert informative text */
-"The test will be irrevocably removed from the test repository" = "Ehto poistetaan lopullisesti ehtovarastosta.";
+"The test will be irrevocably removed from the test repository" = "Ehto poistetaan lopullisesti ehtovarastosta";
 
 /* Alert informative text */
-"The test will be replaced by the default test with this name" = "Ehto korvataan samannimisellä oletusehdolla.";
+"The test will be replaced by the default test with this name" = "Ehto korvataan samannimisellä oletusehdolla";
 
 /* Alert informative text */
-"The unbound tests have been omitted from the filter" = "Rajoittamattomat ehdot on jätetty huomioimatta suotimessa.";
+"The unbound tests have been omitted from the filter" = "Rajoittamattomat ehdot on jätetty huomioimatta suotimessa";
 
 /* Alert informative text */
-"These filters do not exist anymore. Their old definition is used instead" = "Näitä suotimia ei ole enää olemassa. Sen sijaan käytössä on niiden vanha määritelmä.";
+"These filters do not exist anymore. Their old definition is used instead" = "Näitä suotimia ei ole enää olemassa. Sen sijaan käytössä on niiden vanha määritelmä";
 
 /* Part of tool tip for uniform types */
 "Top-level type" = "Ylätason tyyppi";
@@ -425,5 +425,5 @@
 "Unnamed filter test" = "Nimetön suodatinehto";
 
 /* Parse error */
-"Unrecognized value" = "Tunnistamaton arvo.";
+"Unrecognized value" = "Tunnistamaton arvo";
 

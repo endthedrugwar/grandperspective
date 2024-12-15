@@ -44,13 +44,13 @@
 "%qu files" = "%qu Dateien";
 
 /* Alert message */
-"A filter named \"%@\" already exists" = "Ein Filter mit dem Namen \"%@\" existiert schon.";
+"A filter named \"%@\" already exists" = "Ein Filter mit dem Namen \"%@\" existiert schon";
 
 /* Alert message (Note: 'it' can refer to a file or a folder) */
-"A possible reason is that it does not exist anymore" = "Möglicherweise ist der Eintrag nicht mehr vorhanden.";
+"A possible reason is that it does not exist anymore" = "Möglicherweise ist der Eintrag nicht mehr vorhanden";
 
 /* Alert message */
-"A test named \"%@\" already exists" = "Eine Prüfung mit dem Namen \"%@\" existiert schon.";
+"A test named \"%@\" already exists" = "Eine Prüfung mit dem Namen \"%@\" existiert schon";
 
 /* Alert message (with filename arg) */
 "Aborted saving the scan data to \"%@\"" = "Speicherung der Scandaten in \"%@\" abgebrochen";
@@ -62,7 +62,7 @@
 "Area in view:" = "Bereich in Ansicht:";
 
 /* Parse error */
-"Attribute not found" = "Attribut wurde nicht gefunden.";
+"Attribute not found" = "Attribut wurde nicht gefunden";
 
 /* File size unit for bytes. */
 "B" = "B";
@@ -98,16 +98,16 @@
 "Do you want to delete the package \"%@\"?" = "Wollen Sie das Paket \"%@\" löschen?";
 
 /* Parse error */
-"Encountered filter after folder" = "Vorgefundene Verzeichnisse nach Filterung.";
+"Encountered filter after folder" = "Vorgefundene Verzeichnisse nach Filterung";
 
 /* Parse error */
 "Encountered more than one root element" = "Mehr als ein Wurzel-Element vorgefunden. ";
 
 /* Parse error */
-"Encountered more than one root folder" = "Mehr als ein Wurzel-Verzeichnis vorgefunden.";
+"Encountered more than one root folder" = "Mehr als ein Wurzel-Verzeichnis vorgefunden";
 
 /* Parse error */
-"Encountered multiple %@ elements" = "Mehrere %@ Elemente vorgefunden.";
+"Encountered multiple %@ elements" = "Mehrere %@ Elemente vorgefunden";
 
 /* Parse error */
 "Error parsing \"%@\" attribute: %@" = "Fehler beim Parsen von \"%1$@\", Attribut: %2$@";
@@ -116,25 +116,25 @@
 "Expected %@ element" = "%@ Element erwartet";
 
 /* Error message */
-"Expected a folder" = "Verzeichnis erwartet.";
+"Expected a folder" = "Verzeichnis erwartet";
 
 /* Parse error */
-"Expected boolean value" = "Wahrheitswert erwartet.";
+"Expected boolean value" = "Wahrheitswert erwartet";
 
 /* Parse error */
-"Expected date value" = "Datumswert erwartet.";
+"Expected date value" = "Datumswert erwartet";
 
 /* Parse error */
-"Expected integer value" = "Ganzzahliger Wert erwartet.";
+"Expected integer value" = "Ganzzahliger Wert erwartet";
 
 /* Error message */
-"Expected scandata file" = "Scandaten-Format erwartet.";
+"Expected scandata file" = "Scandaten-Format erwartet";
 
 /* Parse error */
-"Expected time value" = "Zeitformat erwartet.";
+"Expected time value" = "Zeitformat erwartet";
 
 /* Parse error */
-"Expected unsigned integer value" = "Ganzzahliger Wert erwartet.";
+"Expected unsigned integer value" = "Ganzzahliger Wert erwartet";
 
 /* Title of save panel */
 "Export image" = "Bilddatei exportieren";
@@ -152,7 +152,7 @@
 "Failed to delete the folder \"%@\"" = "Fehlgeschlagen: Löschen von Verzeichnis \"%@\"";
 
 /* Error message */
-"Failed to get path from pasteboard" = "Fehlgeschlagen: Pfad aus Zwischenablage einfügen.";
+"Failed to get path from pasteboard" = "Fehlgeschlagen: Pfad aus Zwischenablage einfügen";
 
 /* Alert message (with filename arg) */
 "Failed to load the scan data from \"%@\"" = "Fehlgeschlagen: Laden des Scans aus Datei \"%@\"";
@@ -176,7 +176,7 @@
 "Failed to reveal the package \"%@\"" = "Fehlgeschlagen: Anzeigen des Pakets \"%@\"";
 
 /* Alert message */
-"Failed to save the image" = "Fehlgeschlagen: Speichern der Bild Datei.";
+"Failed to save the image" = "Fehlgeschlagen: Speichern der Bild Datei";
 
 /* Alert message (with filename arg) */
 "Failed to save the scan data to \"%@\"" = "Fehlgeschlagen: Speichern der Scandaten in \"%@\"";
@@ -248,13 +248,13 @@
 "None" = "Nichts";
 
 /* Alert additional informative text */
-"Note: The file is hard-linked. It will take up space until all links to it are deleted" = "Achtung: Diese Datei ist hardlinked. Dies wird Speicherplatz verbrauchen, es sei denn alle Links zu ihr werden gelöscht.";
+"Note: The file is hard-linked. It will take up space until all links to it are deleted" = "Achtung: Diese Datei ist hardlinked. Dies wird Speicherplatz verbrauchen, es sei denn alle Links zu ihr werden gelöscht";
 
 /* Alert additional informative text */
-"Note: The folder is hard-linked. It will take up space until all links to it are deleted" = "Achtung: Dieses Verzeichnis ist hardlinked. Dies wird Speicherplatz verbrauchen, es sei denn alle Links zu ihm werden gelöscht.";
+"Note: The folder is hard-linked. It will take up space until all links to it are deleted" = "Achtung: Dieses Verzeichnis ist hardlinked. Dies wird Speicherplatz verbrauchen, es sei denn alle Links zu ihm werden gelöscht";
 
 /* Alert additional informative text */
-"Note: The package is hard-linked. It will take up space until all links to it are deleted" = "Achtung: Dieses Paket ist hardlinked. Dies wird Speicherplatz verbrauchen, es sei denn alle Links dazu werden gelöscht.";
+"Note: The package is hard-linked. It will take up space until all links to it are deleted" = "Achtung: Dieses Paket ist hardlinked. Dies wird Speicherplatz verbrauchen, es sei denn alle Links dazu werden gelöscht";
 
 /* Alert panel button */
 "OK" = "OK";
@@ -350,19 +350,19 @@
 "The actual (physical) size is %.1f%% of the reported (logical) size. Consider rescanning using the Physical file size measure" = "Die tatsächliche (physikalische) Größe ist %.1f%% der gemeldeten (logischen) Größe. Erwägen Sie, den Scan mit der physikalischen Dateigröße zu wiederholen";
 
 /* Alert message */
-"The filter must have a name" = "Der Filter muss einen Namen haben.";
+"The filter must have a name" = "Der Filter muss einen Namen haben";
 
 /* Alert informative text */
-"The filter will be irrevocably removed from the filter repository" = "Dieser Filter wird nicht widerrufbar aus der Filterliste entfernt.";
+"The filter will be irrevocably removed from the filter repository" = "Dieser Filter wird nicht widerrufbar aus der Filterliste entfernt";
 
 /* Alert informative text */
-"The filter will be replaced by the default filter with this name" = "Dieser Filter wird durch den Standard-Filter dieses Namens ersetzt.";
+"The filter will be replaced by the default filter with this name" = "Dieser Filter wird durch den Standard-Filter dieses Namens ersetzt";
 
 /* Alert message */
 "The path %@ does not exist or is not a folder" = "Der Pfad %@ existiert nicht oder ist kein Verzeichnis";
 
 /* Alert message */
-"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once" = "Der aktualisierte Inhalt ist möglichweise nicht vollständig oder nicht eindeutig, hart-verlinkte Elemente können mehr als einmal erscheinen oder fehlen. Führen Sie einen neuen Suchlauf durch, um sicher zu sein, dass jedes hart-verlinkte Element nur einmal erscheint.";
+"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once" = "Der aktualisierte Inhalt ist möglichweise nicht vollständig oder nicht eindeutig, hart-verlinkte Elemente können mehr als einmal erscheinen oder fehlen. Führen Sie einen neuen Suchlauf durch, um sicher zu sein, dass jedes hart-verlinkte Element nur einmal erscheint";
 
 /* Alert message */
 "The reported size of some files is larger than their actual size on disk" = "Die gemeldete Größe einiger Dateien ist größer als die tatsächliche Größe auf dem Laufwerk";
@@ -371,31 +371,31 @@
 "The reported total size is larger than the actual size on disk" = "Die gemeldete Gesamtgröße ist größer als die tatsächliche Größe auf dem Laufwerk";
 
 /* Alert informative text */
-"The resulting file is valid but incomplete" = "Die erstellte Datei ist gültig, aber unvollständig.";
+"The resulting file is valid but incomplete" = "Die erstellte Datei ist gültig, aber unvollständig";
 
 /* Alert informative text */
-"The selected file will be moved to Trash" = "Die ausgewählte Datei wird in den Papierkorb verschoben.";
+"The selected file will be moved to Trash" = "Die ausgewählte Datei wird in den Papierkorb verschoben";
 
 /* Alert informative text */
-"The selected folder, with all its contents, will be moved to Trash. Beware, any files in the folder that are not shown in the view will also be deleted" = "Das ausgewählte Verzeichnis mit allen darin enthaltenden (auch in dieser Ansicht möglicherweise ausgeblendeten) Dateien wird gelöscht.";
+"The selected folder, with all its contents, will be moved to Trash. Beware, any files in the folder that are not shown in the view will also be deleted" = "Das ausgewählte Verzeichnis mit allen darin enthaltenden (auch in dieser Ansicht möglicherweise ausgeblendeten) Dateien wird gelöscht";
 
 /* Alert informative text */
-"The selected package will be moved to Trash" = "Das Paket wird in den Papierkorb verschoben.";
+"The selected package will be moved to Trash" = "Das Paket wird in den Papierkorb verschoben";
 
 /* Alert message */
-"The test must have a name" = "Die Prüfung muss einen Namen erhalten.";
+"The test must have a name" = "Die Prüfung muss einen Namen erhalten";
 
 /* Alert informative text */
-"The test will be irrevocably removed from the test repository" = "Die Prüfung wird unwiderruflich von der Liste der Prüfungen entfernt.";
+"The test will be irrevocably removed from the test repository" = "Die Prüfung wird unwiderruflich von der Liste der Prüfungen entfernt";
 
 /* Alert informative text */
-"The test will be replaced by the default test with this name" = "Diese Prüfung wird durch die Standard-Prüfung dieses Namens ersetzt.";
+"The test will be replaced by the default test with this name" = "Diese Prüfung wird durch die Standard-Prüfung dieses Namens ersetzt";
 
 /* Alert informative text */
-"The unbound tests have been omitted from the filter" = "Diese unverbundene Prüfung ist vom Filter entfernt worden.";
+"The unbound tests have been omitted from the filter" = "Diese unverbundene Prüfung ist vom Filter entfernt worden";
 
 /* Alert informative text */
-"These filters do not exist anymore. Their old definition is used instead" = "Dieser Filter existiert nicht mehr. Stattdessen wird dessen alte Definition verwendet.";
+"These filters do not exist anymore. Their old definition is used instead" = "Dieser Filter existiert nicht mehr. Stattdessen wird dessen alte Definition verwendet";
 
 /* Part of tool tip for uniform types */
 "Top-level type" = "Top-Level Typ";
