@@ -2,7 +2,7 @@
 
 #import "CompressedInput.h"
 
-const NSUInteger COMPRESSED_BUFFER_SIZE = 4096;
+const NSUInteger COMPRESSED_BUFFER_SIZE = 2048;
 const NSUInteger DECOMPRESSED_BUFFER_SIZE = 4096 * 32;
 
 @interface CompressedInput (PrivateMethods)
@@ -145,7 +145,6 @@ const NSUInteger DECOMPRESSED_BUFFER_SIZE = 4096 * 32;
                               maxLength: COMPRESSED_BUFFER_SIZE];
   compressionStream.next_in = compressedDataBuffer;
   compressionStream.avail_in = (unsigned int)numRead;
-  NSLog(@"numRead = %ld", (long)numRead);
 
   if (readSofar == 0) {
     isCompressed = (compressedDataBuffer[0] == 0x1f && compressedDataBuffer[1] == 0x8b);
@@ -165,8 +164,6 @@ const NSUInteger DECOMPRESSED_BUFFER_SIZE = 4096 * 32;
 - (BOOL) writeNewOutput {
   NSInteger numWritten = [outputStream write: decompressedDataP
                                    maxLength: numDecompressedBytesAvailable];
-  NSLog(@"numWritten = %ld", (long)numWritten);
-
   if (numWritten < 0) {
     NSError  *error = outputStream.streamError;
     NSLog(@"Error writing to stream: %@", error.localizedDescription);

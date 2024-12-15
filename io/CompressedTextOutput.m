@@ -48,8 +48,6 @@
     }
 
     NSUInteger  numProduced = TEXT_OUTPUT_BUFFER_SIZE - outStream.avail_out;
-    NSUInteger  numConsumed = dataBufferPos - outStream.avail_in;
-    NSLog(@"consumed = %lu, produced = %lu", numConsumed, numProduced);
 
     if (numProduced > 0) {
       NSUInteger  numWritten = fwrite(compressedDataBuffer, 1, numProduced, file);
