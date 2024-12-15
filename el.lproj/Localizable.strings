@@ -44,13 +44,13 @@
 "%qu files" = "%qu files";
 
 /* Alert message */
-"A filter named \"%@\" already exists." = "Το φίλτρο \"%@\" υπάρχει ήδη.";
+"A filter named \"%@\" already exists" = "Το φίλτρο \"%@\" υπάρχει ήδη.";
 
 /* Alert message (Note: 'it' can refer to a file or a folder) */
-"A possible reason is that it does not exist anymore." = "Πιθανώς να μην υπάρχει πια.";
+"A possible reason is that it does not exist anymore" = "Πιθανώς να μην υπάρχει πια.";
 
 /* Alert message */
-"A test named \"%@\" already exists." = "Το test \"%@\" υπάρχει ήδη.";
+"A test named \"%@\" already exists" = "Το test \"%@\" υπάρχει ήδη.";
 
 /* Alert message (with filename arg) */
 "Aborted saving the scan data to \"%@\"" = "Ματαιώθηκε η αποθήκευση των δεδομένων σάρωσης στο \"%@\"";
@@ -62,7 +62,7 @@
 "Area in view:" = "Περιοχή προβολής:";
 
 /* Parse error */
-"Attribute not found." = "Το χαρακτηριστικό δε βρέθηκε.";
+"Attribute not found" = "Το χαρακτηριστικό δε βρέθηκε.";
 
 /* File size unit for bytes. */
 "B" = "B";
@@ -98,43 +98,43 @@
 "Do you want to delete the package \"%@\"?" = "Θέλετε να διαγράψετε το πακέτο \"%@\";";
 
 /* Parse error */
-"Encountered filter after folder." = "Εντοπίστηκε φίλτρο μετά το φάκελο.";
+"Encountered filter after folder" = "Εντοπίστηκε φίλτρο μετά το φάκελο.";
 
 /* Parse error */
-"Encountered more than one root element." = "Εντοπίστηκαν πάνω από ένα βασικά (root) στοιχεία.";
+"Encountered more than one root element" = "Εντοπίστηκαν πάνω από ένα βασικά (root) στοιχεία.";
 
 /* Parse error */
-"Encountered more than one root folder." = "Εντοπίστηκαν περισσότεροι από ένας βασικοί (root) φάκελοι.";
+"Encountered more than one root folder" = "Εντοπίστηκαν περισσότεροι από ένας βασικοί (root) φάκελοι.";
 
 /* Parse error */
-"Encountered multiple %@ elements." = "Εντοπίστηκαν πολλαπλά %@ στοιχεία.";
+"Encountered multiple %@ elements" = "Εντοπίστηκαν πολλαπλά %@ στοιχεία.";
 
 /* Parse error */
 "Error parsing \"%@\" attribute: %@" = "Σφάλμα ανάλυσης χαρακτηριστικού \"%1$@\": %2$@ ";
 
 /* Parse error */
-"Expected %@ element." = "Αναμενόμενο στοιχείο: %@.";
+"Expected %@ element" = "Αναμενόμενο στοιχείο: %@.";
 
 /* Error message */
-"Expected a folder." = "Αναμενόταν φάκελος.";
+"Expected a folder" = "Αναμενόταν φάκελος.";
 
 /* Parse error */
-"Expected boolean value." = "Αναμενόταν λογική τιμή (boolean).";
+"Expected boolean value" = "Αναμενόταν λογική τιμή (boolean).";
 
 /* Parse error */
-"Expected date value." = "Αναμενόταν ημερομηνία.";
+"Expected date value" = "Αναμενόταν ημερομηνία.";
 
 /* Parse error */
-"Expected integer value." = "Αναμενόταν ακέραιος.";
+"Expected integer value" = "Αναμενόταν ακέραιος.";
 
 /* Error message */
-"Expected scandata file." = "Αναμενόταν αρχείο δεδομένων σάρωσης.";
+"Expected scandata file" = "Αναμενόταν αρχείο δεδομένων σάρωσης.";
 
 /* Parse error */
-"Expected time value." = "Αναμενόταν ώρα.";
+"Expected time value" = "Αναμενόταν ώρα.";
 
 /* Parse error */
-"Expected unsigned integer value." = "Αναμενόταν ανυπόγραφος ακέραιος.";
+"Expected unsigned integer value" = "Αναμενόταν ανυπόγραφος ακέραιος.";
 
 /* Title of save panel */
 "Export image" = "Εξαγωγή εικόνας";
@@ -152,7 +152,7 @@
 "Failed to delete the folder \"%@\"" = "Αποτυχία διαγραφής του φακέλου \"%@\"";
 
 /* Error message */
-"Failed to get path from pasteboard." = "Αποτυχία λήψης μονοπατιού από pasteboard.";
+"Failed to get path from pasteboard" = "Αποτυχία λήψης μονοπατιού από pasteboard.";
 
 /* Alert message (with filename arg) */
 "Failed to load the scan data from \"%@\"" = "Αποτυχία φόρτωσης δεδομέων σάρωσης από \"%@\"";
@@ -176,19 +176,13 @@
 "Failed to reveal the package \"%@\"" = "Αποτυχία εμφάνισης του πακέτου \"%@\"";
 
 /* Alert message */
-"Failed to save the image." = "Αποτυχία αποθήκευσης φωτογραφίας.";
+"Failed to save the image" = "Αποτυχία αποθήκευσης φωτογραφίας.";
 
 /* Alert message (with filename arg) */
 "Failed to save the scan data to \"%@\"" = "Αποτυχία αποθήκευσης δεδομένων σάρωσης σε \"%@\"";
 
 /* Alert message */
 "Failed to update one or more filters:\n%@" = "Αποτυχία ενημέρωσης ενός ή περισσοτέρων φίλτρων: %@";
-
-/* Error message */
-"Failed to write entire buffer." = "Αποτυχία εγγραφής ολόκληρου του buffer.";
-
-/* Error message */
-"Failed to write last data to file." = "Αποτυχία εγγραφής τελευταίων δεδομένων στο αρχείο.";
 
 /* Label in Focus panel */
 "File in view:" = "Αρχείο σε προβολή:";
@@ -254,13 +248,13 @@
 "None" = "Κανένα";
 
 /* Alert additional informative text */
-"Note: The file is hard-linked. It will take up space until all links to it are deleted." = "Σημείωση: Το αρχείο είναι σκληρά συνδεδεμένο (hard-linked). Θα καταλαμβάνει χώρο μέχρι να διαγραφούν όλοι οι σύνδεσμοι προς αυτό.";
+"Note: The file is hard-linked. It will take up space until all links to it are deleted" = "Σημείωση: Το αρχείο είναι σκληρά συνδεδεμένο (hard-linked). Θα καταλαμβάνει χώρο μέχρι να διαγραφούν όλοι οι σύνδεσμοι προς αυτό.";
 
 /* Alert additional informative text */
-"Note: The folder is hard-linked. It will take up space until all links to it are deleted." = "Σημείωση: Ο φάκελος είναι σκληρά συνδεδεμένος (hard-linked). Θα καταλαμβάνει χώρο μέχρι να διαγραφούν όλοι οι σύνδεσμοι προς αυτόν.";
+"Note: The folder is hard-linked. It will take up space until all links to it are deleted" = "Σημείωση: Ο φάκελος είναι σκληρά συνδεδεμένος (hard-linked). Θα καταλαμβάνει χώρο μέχρι να διαγραφούν όλοι οι σύνδεσμοι προς αυτόν.";
 
 /* Alert additional informative text */
-"Note: The package is hard-linked. It will take up space until all links to it are deleted." = "Σημείωση: Το πακέτο είναι σκληρά συνδεδεμένο (hard-linked). Θα καταλαμβάνει χώρο μέχρι να διαγραφούν όλοι οι σύνδεσμοι προς αυτό.";
+"Note: The package is hard-linked. It will take up space until all links to it are deleted" = "Σημείωση: Το πακέτο είναι σκληρά συνδεδεμένο (hard-linked). Θα καταλαμβάνει χώρο μέχρι να διαγραφούν όλοι οι σύνδεσμοι προς αυτό.";
 
 /* Alert panel button */
 "OK" = "OK";
@@ -356,19 +350,19 @@
 "The actual (physical) size is %.1f%% of the reported (logical) size. Consider rescanning using the Physical file size measure" = "Το πραγματικό (φυσικό) μέγεθος είναι %.1f%% του αναφερόμενου (λογικού) μεγέθους. Εξετάστε το ενδεχόμενο επανασάρωσης χρησιμοποιώντας τη μέτρηση Φυσικού μεγέθους αρχείου.";
 
 /* Alert message */
-"The filter must have a name." = "Το φίλτρο πρέπει να έχει όνομα.";
+"The filter must have a name" = "Το φίλτρο πρέπει να έχει όνομα.";
 
 /* Alert informative text */
-"The filter will be irrevocably removed from the filter repository." = "Το φίλτρο θα αφαιρεθεί αμετάκλητα από το αποθετήριο φίλτρων.";
+"The filter will be irrevocably removed from the filter repository" = "Το φίλτρο θα αφαιρεθεί αμετάκλητα από το αποθετήριο φίλτρων.";
 
 /* Alert informative text */
-"The filter will be replaced by the default filter with this name." = "Το φίλτρο θα αντικατασταθεί από το προεπιλεγμένο φίλτρο με αυτό το όνομα.";
+"The filter will be replaced by the default filter with this name" = "Το φίλτρο θα αντικατασταθεί από το προεπιλεγμένο φίλτρο με αυτό το όνομα.";
 
 /* Alert message */
 "The path %@ does not exist or is not a folder" = "Το μονοπάτι %@ δεν υπάρχει ή δεν είναι φάκελος";
 
 /* Alert message */
-"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once." = "Το ανανεωμένο περιεχόμενο ενδέχεται να μην είναι πλήρως ακριβές. Τα στοιχεία με σκληρή σύνδεση μπορεί να εμφανίζονται περισσότερες από μία φορές ή μπορεί να λείπουν. Πραγματοποιήστε εκ νέου σάρωση για να διασφαλίσετε ότι κάθε στοιχείο με σκληρή σύνδεση εμφανίζεται μόνο μία φορά.";
+"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once" = "Το ανανεωμένο περιεχόμενο ενδέχεται να μην είναι πλήρως ακριβές. Τα στοιχεία με σκληρή σύνδεση μπορεί να εμφανίζονται περισσότερες από μία φορές ή μπορεί να λείπουν. Πραγματοποιήστε εκ νέου σάρωση για να διασφαλίσετε ότι κάθε στοιχείο με σκληρή σύνδεση εμφανίζεται μόνο μία φορά.";
 
 /* Alert message */
 "The reported size of some files is larger than their actual size on disk" = "Το αναφερόμενο μέγεθος ορισμένων αρχείων είναι μεγαλύτερο από το πραγματικό τους μέγεθος στο δίσκο";
@@ -377,31 +371,31 @@
 "The reported total size is larger than the actual size on disk" = "Το αναφερόμενο συνολικό μέγεθος είναι μεγαλύτερο από το πραγματικό μέγεθος στο δίσκο";
 
 /* Alert informative text */
-"The resulting file is valid but incomplete." = "Το αρχείο που προκύπτει είναι έγκυρο αλλά ελλιπές.";
+"The resulting file is valid but incomplete" = "Το αρχείο που προκύπτει είναι έγκυρο αλλά ελλιπές.";
 
 /* Alert informative text */
-"The selected file will be moved to Trash." = "To επιλεγμένο αρχείο θα μεταφερθεί στον Κάδο απορριμμάτων.";
+"The selected file will be moved to Trash" = "To επιλεγμένο αρχείο θα μεταφερθεί στον Κάδο απορριμμάτων.";
 
 /* Alert informative text */
-"The selected folder, with all its contents, will be moved to Trash. Beware, any files in the folder that are not shown in the view will also be deleted." = "Ο επιλεγμένος φάκελος, με όλα τα περιεχόμενά του, θα μετακινηθεί στον Κάδο απορριμμάτων. Προσοχή, όλα τα αρχεία του φακέλου που δεν εμφανίζονται στην προβολή θα διαγραφούν επίσης.";
+"The selected folder, with all its contents, will be moved to Trash. Beware, any files in the folder that are not shown in the view will also be deleted" = "Ο επιλεγμένος φάκελος, με όλα τα περιεχόμενά του, θα μετακινηθεί στον Κάδο απορριμμάτων. Προσοχή, όλα τα αρχεία του φακέλου που δεν εμφανίζονται στην προβολή θα διαγραφούν επίσης.";
 
 /* Alert informative text */
-"The selected package will be moved to Trash." = "To επιλεγμένο πακέτο θα μεταφερθεί στον Κάδο απορριμμάτων.";
+"The selected package will be moved to Trash" = "To επιλεγμένο πακέτο θα μεταφερθεί στον Κάδο απορριμμάτων.";
 
 /* Alert message */
-"The test must have a name." = "Το test πρέπει να έχει όνομα.";
+"The test must have a name" = "Το test πρέπει να έχει όνομα.";
 
 /* Alert informative text */
-"The test will be irrevocably removed from the test repository." = "Το test θα αφαιρεθεί αμετάκλητα από το αποθετήριο δοκιμών.";
+"The test will be irrevocably removed from the test repository" = "Το test θα αφαιρεθεί αμετάκλητα από το αποθετήριο δοκιμών.";
 
 /* Alert informative text */
-"The test will be replaced by the default test with this name." = "Το test θα αντικατασταθεί από το προεπιλεγμένο test με αυτό το όνομα.";
+"The test will be replaced by the default test with this name" = "Το test θα αντικατασταθεί από το προεπιλεγμένο test με αυτό το όνομα.";
 
 /* Alert informative text */
-"The unbound tests have been omitted from the filter." = "Τα μη δεσμευμένα (unbound) tests έχουν παραλειφθεί από το φίλτρο.";
+"The unbound tests have been omitted from the filter" = "Τα μη δεσμευμένα (unbound) tests έχουν παραλειφθεί από το φίλτρο.";
 
 /* Alert informative text */
-"These filters do not exist anymore. Their old definition is used instead." = "Αυτά τα φίλτρα δεν υπάρχουν πλέον. Χρησιμοποιείται ο παλιός ορισμός τους.";
+"These filters do not exist anymore. Their old definition is used instead" = "Αυτά τα φίλτρα δεν υπάρχουν πλέον. Χρησιμοποιείται ο παλιός ορισμός τους.";
 
 /* Part of tool tip for uniform types */
 "Top-level type" = "Τύπος ανωτάτου επιπέδου (Top-level type)";
@@ -419,5 +413,5 @@
 "Unnamed filter test" = "Test φίλτρο χωρίς όνομα (Unnamed filter test)";
 
 /* Parse error */
-"Unrecognized value." = "Μη αναγνωρισμένη τιμή";
+"Unrecognized value" = "Μη αναγνωρισμένη τιμή";
 

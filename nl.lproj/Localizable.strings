@@ -44,13 +44,13 @@
 "%qu files" = "%qu bestanden";
 
 /* Alert message */
-"A filter named \"%@\" already exists." = "Een filter met naam \"%@\" bestaat al.";
+"A filter named \"%@\" already exists" = "Een filter met naam \"%@\" bestaat al.";
 
 /* Alert message (Note: 'it' can refer to a file or a folder) */
-"A possible reason is that it does not exist anymore." = "Het kan zijn dat het niet meer bestaat.";
+"A possible reason is that it does not exist anymore" = "Het kan zijn dat het niet meer bestaat.";
 
 /* Alert message */
-"A test named \"%@\" already exists." = "Een filtertest met naam \"%@\" bestaat al.";
+"A test named \"%@\" already exists" = "Een filtertest met naam \"%@\" bestaat al.";
 
 /* Alert message (with filename arg) */
 "Aborted saving the scan data to \"%@\"" = "De opslag van de data naar \"%@\" is geannuleerd";
@@ -62,7 +62,7 @@
 "Area in view:" = "Getoond gebied:";
 
 /* Parse error */
-"Attribute not found." = "Attribuut niet gevonden.";
+"Attribute not found" = "Attribuut niet gevonden.";
 
 /* File size unit for bytes. */
 "B" = "B";
@@ -98,43 +98,43 @@
 "Do you want to delete the package \"%@\"?" = "Wilt u het pakket \"%@\" verwijderen?";
 
 /* Parse error */
-"Encountered filter after folder." = "Een filter tegengekomen na de folder.";
+"Encountered filter after folder" = "Een filter tegengekomen na de folder.";
 
 /* Parse error */
-"Encountered more than one root element." = "Meer dan één buitenste element tegengekomen.";
+"Encountered more than one root element" = "Meer dan één buitenste element tegengekomen.";
 
 /* Parse error */
-"Encountered more than one root folder." = "Meer dan één buitenste map tegengekomen.";
+"Encountered more than one root folder" = "Meer dan één buitenste map tegengekomen.";
 
 /* Parse error */
-"Encountered multiple %@ elements." = "Meerdere %@ elementen tegengekomen.";
+"Encountered multiple %@ elements" = "Meerdere %@ elementen tegengekomen.";
 
 /* Parse error */
 "Error parsing \"%@\" attribute: %@" = "Ongeldige waarde van attribuut \"%1$@\": %2$@";
 
 /* Parse error */
-"Expected %@ element." = "%@ element verwacht.";
+"Expected %@ element" = "%@ element verwacht.";
 
 /* Error message */
-"Expected a folder." = "Map verwacht.";
+"Expected a folder" = "Map verwacht.";
 
 /* Parse error */
-"Expected boolean value." = "Booleaanse waarde verwacht.";
+"Expected boolean value" = "Booleaanse waarde verwacht.";
 
 /* Parse error */
-"Expected date value." = "Datum verwacht.";
+"Expected date value" = "Datum verwacht.";
 
 /* Parse error */
-"Expected integer value." = "Geheel getal verwacht.";
+"Expected integer value" = "Geheel getal verwacht.";
 
 /* Error message */
-"Expected scandata file." = "Data bestand verwacht.";
+"Expected scandata file" = "Data bestand verwacht.";
 
 /* Parse error */
-"Expected time value." = "Tijd verwacht.";
+"Expected time value" = "Tijd verwacht.";
 
 /* Parse error */
-"Expected unsigned integer value." = "Positief geheel getal verwacht.";
+"Expected unsigned integer value" = "Positief geheel getal verwacht.";
 
 /* Title of save panel */
 "Export image" = "Exporteer afbeelding";
@@ -146,10 +146,10 @@
 "Failed to bind one or more filter tests:\n%@" = "Onbekende filtertesten:\n%@";
 
 /* Error message */
-"Failed to close file." = "Het sluiten van het bestand is mislukt.";
+"Failed to close file" = "Het sluiten van het bestand is mislukt.";
 
 /* Error message */
-"Failed to create file." = "Het aanmaken van het bestand is mislukt.";
+"Failed to create file" = "Het aanmaken van het bestand is mislukt.";
 
 /* Alert message */
 "Failed to delete the file \"%@\"" = "Het verwijderen van het bestand \"%@\" is mislukt";
@@ -158,7 +158,7 @@
 "Failed to delete the folder \"%@\"" = "Het verwijderen van de map \"%@\" is mislukt";
 
 /* Error message */
-"Failed to get path from pasteboard." = "Het ophalen van de padnaam van het klembord is mislukt";
+"Failed to get path from pasteboard" = "Het ophalen van de padnaam van het klembord is mislukt";
 
 /* Alert message (with filename arg) */
 "Failed to load the scan data from \"%@\"" = "Het laden van de data in \"%@\" is mislukt";
@@ -173,7 +173,7 @@
 "Failed to open the package \"%@\"" = "Het openen van het pakket \"%@\" is mislukt";
 
 /* Parse error */
-"Failed to read any tree data." = "Het is niet gelukt data in te lezen.";
+"Failed to read any tree data" = "Het is niet gelukt data in te lezen.";
 
 /* Alert message */
 "Failed to reveal the file \"%@\"" = "Het tonen van het bestand \"%@\" is mislukt";
@@ -185,7 +185,7 @@
 "Failed to reveal the package \"%@\"" = "Het tonen van het pakket \"%@\" is mislukt";
 
 /* Alert message */
-"Failed to save the image." = "Het bewaren van het beeld is mislukt.";
+"Failed to save the image" = "Het bewaren van het beeld is mislukt.";
 
 /* Alert message (with filename arg) */
 "Failed to save the scan data to \"%@\"" = "Het opslaan van de data naar \"%@\" is mislukt";
@@ -194,13 +194,7 @@
 "Failed to update one or more filters:\n%@" = "De volgende filters konden niet bijgewerkt worden:\n%@";
 
 /* Error message */
-"Failed to write entire buffer." = "Het wegschrijven van de gehele buffer inhoud is mislukt.";
-
-/* Error message */
-"Failed to write last data to file." = "Het wegschrijven van de laatste data is mislukt.";
-
-/* Error message */
-"Failed to write to file." = "Het schrijven van data is mislukt.";
+"Failed to write to file" = "Het schrijven van data is mislukt.";
 
 /* Label in Focus panel */
 "File in view:" = "Getoond bestand:";
@@ -266,13 +260,13 @@
 "None" = "Geen";
 
 /* Alert additional informative text */
-"Note: The file is hard-linked. It will take up space until all links to it are deleted." = "Het bestand is een harde link. Deze zal ruimte innemen totdat alle links verwijderd zijn.";
+"Note: The file is hard-linked. It will take up space until all links to it are deleted" = "Het bestand is een harde link. Deze zal ruimte innemen totdat alle links verwijderd zijn.";
 
 /* Alert additional informative text */
-"Note: The folder is hard-linked. It will take up space until all links to it are deleted." = "De map is een harde link. Deze zal ruimte innemen totdat alle links verwijderd zijn.";
+"Note: The folder is hard-linked. It will take up space until all links to it are deleted" = "De map is een harde link. Deze zal ruimte innemen totdat alle links verwijderd zijn.";
 
 /* Alert additional informative text */
-"Note: The package is hard-linked. It will take up space until all links to it are deleted." = "Het pakket is een harde link. Deze zal ruimte innemen totdat alle links verwijderd zijn.";
+"Note: The package is hard-linked. It will take up space until all links to it are deleted" = "Het pakket is een harde link. Deze zal ruimte innemen totdat alle links verwijderd zijn.";
 
 /* Alert panel button */
 "OK" = "OK";
@@ -368,19 +362,19 @@
 "The actual (physical) size is %.1f%% of the reported (logical) size. Consider rescanning using the Physical file size measure" = "De werkelijke (fysische) grootte is %.1f%% van de geraporteerde (intrinsieke) grootte. Overweeg of u wilt herlezen met de Intrinsieke bestandsgrootte maat";
 
 /* Alert message */
-"The filter must have a name." = "De filter moet een naam hebben.";
+"The filter must have a name" = "De filter moet een naam hebben.";
 
 /* Alert informative text */
-"The filter will be irrevocably removed from the filter repository." = "De filter zal onherroepelijk verwijderd worden uit de filterverzameling.";
+"The filter will be irrevocably removed from the filter repository" = "De filter zal onherroepelijk verwijderd worden uit de filterverzameling.";
 
 /* Alert informative text */
-"The filter will be replaced by the default filter with this name." = "De filter zal worden vervangen door de standaard filter met dezelfde naam.";
+"The filter will be replaced by the default filter with this name" = "De filter zal worden vervangen door de standaard filter met dezelfde naam.";
 
 /* Alert message */
 "The path %@ does not exist or is not a folder" = "De padnaam %@ bestaat niet of is geen map";
 
 /* Alert message */
-"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once." = "De ververste inhoud is mogelijk niet volledig correct. Harde links komen mogelijk meer dan eens voor of kunnen ontbreken. Herlees alles om zeker te zijn dat harde links maar één keer voorkomen.";
+"The refreshed content may not be fully accurate. Hard-linked items may occur more than once or could be missing. Perform a rescan to ensure that each hard-linked item occurs only once" = "De ververste inhoud is mogelijk niet volledig correct. Harde links komen mogelijk meer dan eens voor of kunnen ontbreken. Herlees alles om zeker te zijn dat harde links maar één keer voorkomen.";
 
 /* Alert message */
 "The reported size of some files is larger than their actual size on disk" = "De geraporteerde grootte van sommige bestanden is groter dan de werkelijke benodigde opslagruimte";
@@ -389,31 +383,31 @@
 "The reported total size is larger than the actual size on disk" = "De geraporteerde totale grootte is groter dan de werkelijke gebruikte opslagruimte";
 
 /* Alert informative text */
-"The resulting file is valid but incomplete." = "Het bestand is geldig maar incompleet.";
+"The resulting file is valid but incomplete" = "Het bestand is geldig maar incompleet.";
 
 /* Alert informative text */
-"The selected file will be moved to Trash." = "Het geselecteerde bestand zal naar de Prullenbak verplaatst worden.";
+"The selected file will be moved to Trash" = "Het geselecteerde bestand zal naar de Prullenbak verplaatst worden.";
 
 /* Alert informative text */
-"The selected folder, with all its contents, will be moved to Trash. Beware, any files in the folder that are not shown in the view will also be deleted." = "De geselecteerde map zal met de gehele inhoud naar de Prullenbak verplaatst worden. Let op, bestanden in de map die eventueel niet getoond zijn, zullen ook verwijderd worden.";
+"The selected folder, with all its contents, will be moved to Trash. Beware, any files in the folder that are not shown in the view will also be deleted" = "De geselecteerde map zal met de gehele inhoud naar de Prullenbak verplaatst worden. Let op, bestanden in de map die eventueel niet getoond zijn, zullen ook verwijderd worden.";
 
 /* Alert informative text */
-"The selected package will be moved to Trash." = "Het geselecteerde pakket zal naar de Prullenbak verplaatst worden.";
+"The selected package will be moved to Trash" = "Het geselecteerde pakket zal naar de Prullenbak verplaatst worden.";
 
 /* Alert message */
-"The test must have a name." = "De filtertest moet een naam hebben.";
+"The test must have a name" = "De filtertest moet een naam hebben.";
 
 /* Alert informative text */
-"The test will be irrevocably removed from the test repository." = "De filtertest zal onherroepelijk verwijderd worden uit de filtertestverzameling.";
+"The test will be irrevocably removed from the test repository" = "De filtertest zal onherroepelijk verwijderd worden uit de filtertestverzameling.";
 
 /* Alert informative text */
-"The test will be replaced by the default test with this name." = "De filtertest zal worden vervangen door de standaard filtertest met dezelfde naam.";
+"The test will be replaced by the default test with this name" = "De filtertest zal worden vervangen door de standaard filtertest met dezelfde naam.";
 
 /* Alert informative text */
-"The unbound tests have been omitted from the filter." = "De niet-geinitialiseerde filtertesten zijn uit het filter verwijderd.";
+"The unbound tests have been omitted from the filter" = "De niet-geinitialiseerde filtertesten zijn uit het filter verwijderd.";
 
 /* Alert informative text */
-"These filters do not exist anymore. Their old definition is used instead." = "Deze filters bestaan niet meer. Hun oorspronkelijke definitie zal daarom gebruikt worden.";
+"These filters do not exist anymore. Their old definition is used instead" = "Deze filters bestaan niet meer. Hun oorspronkelijke definitie zal daarom gebruikt worden.";
 
 /* Part of tool tip for uniform types */
 "Top-level type" = "Basistype";
@@ -431,5 +425,5 @@
 "Unnamed filter test" = "Filtertest - ?";
 
 /* Parse error */
-"Unrecognized value." = "Waarde onbekend.";
+"Unrecognized value" = "Waarde onbekend.";
 
